@@ -1,0 +1,32 @@
+name: Bug
+description: Code, a test or the website does something wrong.
+labels: [bug]
+body:
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: For example aesthetic-mixer, simplex-pad, cell-layout, glyph-font, or docs.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: Commands, inputs or a minimal test. A failing test is ideal.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: Commit SHA, Node version, and browser and OS if it is a rendering or input problem.
+    validations:
+      required: true

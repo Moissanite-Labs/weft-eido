@@ -1,0 +1,36 @@
+name: DCO
+
+# Every commit in a pull request must carry a Developer Certificate of Origin
+# sign-off (`git commit -s`). See CONTRIBUTING.md.
+on:
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  dco:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+      - name: Check Signed-off-by on every commit
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha }}
+        run: |
+          fail=0
+          for sha in $(git rev-list --no-merges "$BASE..$HEAD"); do
+            author_email=$(git log -1 --format='%ae' "$sha")
+            if ! git log -1 --format='%B' "$sha" | grep -qiE "^Signed-off-by: .+ <${author_email//./\\.}>\$"; then
+              echo "::error::Commit $sha ($(git log -1 --format='%s' "$sha")) has no Signed-off-by line matching its author <$author_email>."
+              fail=1
+            fi
+          done
+          if [ "$fail" -ne 0 ]; then
+            echo "Fix with: git rebase --signoff $BASE && git push --force-with-lease"
+            exit 1
+          fi
+          echo "All commits are signed off."

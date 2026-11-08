@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eido · simplex mixer example</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { margin: 0; padding: 24px 16px; display: grid; gap: 20px; justify-items: center; }
+    .simplex-pad { width: 240px; height: 240px; touch-action: none; }
+    .simplex-guide { stroke: #8884; stroke-width: .6; }
+    .simplex-edge { fill: none; stroke: currentColor; stroke-width: 1.2; }
+    .simplex-label { fill: currentColor; font: 11px ui-monospace, monospace; }
+    .simplex-spoke { stroke: #c08a1e; }
+    .simplex-knob { fill: Canvas; stroke: #c08a1e; stroke-width: 3; }
+    .card { max-width: 340px; border: 1px solid; transition: all .2s; }
+    pre { font-size: 12px; max-width: 100%; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Style as a point in space</h1>
+  <div id="pad"></div>
+  <div class="card" id="card"><strong>Blended card</strong><p>Drag the point. Use arrow keys after focusing the triangle.</p></div>
+  <pre id="out"></pre>
+  <script type="module">
+    import { mountSimplexPad } from "../src/simplex-pad.js";
+    import { mixAestheticPresets } from "../src/aesthetic-mixer.js";
+    const presets = {
+      native: { rounding: 0.85, density: 0.3, hue: 0.12, contrast: 0.05 },
+      terminal: { rounding: 0.0, density: 0.1, hue: 0.45, contrast: 0.01 },
+      pastel: { rounding: 1.0, density: 0.85, hue: 0.85, contrast: 0.2 },
+    };
+    const names = Object.keys(presets);
+    const card = document.getElementById("card");
+    const apply = (w) => {
+      const v = mixAestheticPresets(presets, Object.fromEntries(names.map((n, i) => [n, w[i]])));
+      card.style.borderRadius = `${v.rounding * 24}px`;
+      card.style.padding = `${10 + v.density * 24}px`;
+      card.style.borderColor = `hsl(${v.hue * 360} 60% 50%)`;
+      card.style.background = `hsl(${v.hue * 360} 70% 50% / ${0.08 + v.contrast})`;
+      document.getElementById("out").textContent = JSON.stringify(v, null, 2);
+    };
+    mountSimplexPad(document.getElementById("pad"), { labels: names, weights: [0.5, 0.2, 0.3], hues: names.map((n) => presets[n].hue), onChange: apply });
+    apply([0.5, 0.2, 0.3]);
+  </script>
+</body>
+</html>

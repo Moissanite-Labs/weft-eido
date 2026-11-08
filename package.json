@@ -1,0 +1,32 @@
+{
+  "name": "@moissanite-labs/eido",
+  "version": "0.1.0",
+  "description": "Eido: the design language of ML Weft. Style as a point in a continuous space, value-encoded layouts and bitmask glyphs, as dependency-free ES modules.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "private": true,
+  "exports": {
+    "./aesthetic-mixer": "./src/aesthetic-mixer.js",
+    "./simplex-pad": "./src/simplex-pad.js",
+    "./cell-layout": "./src/cell-layout.js",
+    "./glyph-font": "./src/glyph-font.js"
+  },
+  "files": [
+    "src",
+    "docs",
+    "LICENSE",
+    "LICENSE-docs",
+    "NOTICE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moissanite-Labs/weft-eido"
+  },
+  "homepage": "https://w3ft.org"
+}
