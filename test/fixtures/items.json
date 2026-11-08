@@ -1,0 +1,100 @@
+{
+  "description": "Weighted items for layout tests: one entry per cell, weight = value encoded by area, labelLength = characters in its label, group = thread group. Taken from the Weft telemetry fixture with names removed.",
+  "items": [
+    {
+      "weight": 14,
+      "labelLength": 7,
+      "group": "governance"
+    },
+    {
+      "weight": 42,
+      "labelLength": 4,
+      "group": "interface"
+    },
+    {
+      "weight": 31,
+      "labelLength": 5,
+      "group": "interface"
+    },
+    {
+      "weight": 27,
+      "labelLength": 8,
+      "group": "substrate"
+    },
+    {
+      "weight": 19,
+      "labelLength": 8,
+      "group": "cognition"
+    },
+    {
+      "weight": 16,
+      "labelLength": 8,
+      "group": "cognition"
+    },
+    {
+      "weight": 22,
+      "labelLength": 8,
+      "group": "substrate"
+    },
+    {
+      "weight": 15,
+      "labelLength": 7,
+      "group": "interface"
+    },
+    {
+      "weight": 21,
+      "labelLength": 5,
+      "group": "ledger"
+    },
+    {
+      "weight": 12,
+      "labelLength": 6,
+      "group": "cognition"
+    },
+    {
+      "weight": 18,
+      "labelLength": 6,
+      "group": "cognition"
+    },
+    {
+      "weight": 29,
+      "labelLength": 9,
+      "group": "substrate"
+    },
+    {
+      "weight": 14,
+      "labelLength": 4,
+      "group": "interface"
+    },
+    {
+      "weight": 11,
+      "labelLength": 7,
+      "group": "interface"
+    },
+    {
+      "weight": 24,
+      "labelLength": 6,
+      "group": "substrate"
+    },
+    {
+      "weight": 13,
+      "labelLength": 9,
+      "group": "substrate"
+    },
+    {
+      "weight": 17,
+      "labelLength": 10,
+      "group": "interface"
+    },
+    {
+      "weight": 20,
+      "labelLength": 11,
+      "group": "cognition"
+    },
+    {
+      "weight": 9,
+      "labelLength": 13,
+      "group": "ledger"
+    }
+  ]
+}
