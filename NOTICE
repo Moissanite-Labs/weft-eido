@@ -1,0 +1,14 @@
+Eido
+Copyright 2026 Moissanite Labs and the Weft contributors.
+
+Source code (src/, test/, examples/, .github/) is licensed under the Apache
+License, Version 2.0 (LICENSE). Documentation (docs/ and the Markdown files at
+the repository root) is licensed under the Creative Commons Attribution 4.0
+International License (LICENSE-docs). Code listings in the documentation may
+also be used under the Apache License, Version 2.0.
+
+Attribution for CC BY 4.0 reuse: "Eido, Moissanite Labs, https://w3ft.org".
+
+"Eido", "ML Weft" and "Moissanite Labs" are names of Moissanite Labs. Neither
+license grants rights to use them except as needed to describe the origin of
+the work.

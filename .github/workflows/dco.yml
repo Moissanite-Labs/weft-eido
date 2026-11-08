@@ -1,0 +1,29 @@
+name: DCO
+
+# Every commit in a pull request must carry a Developer Certificate of Origin
+# sign-off (`git commit -s`) whose address equals the commit author's address.
+# See CONTRIBUTING.md.
+#
+# One narrow exemption: Dependabot cannot certify the DCO. Its commits are
+# skipped only when the pull request was opened by `dependabot[bot]` AND the
+# commit author is GitHub's fixed Dependabot identity. Neither alone suffices.
+on:
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  dco:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+      - name: Check Signed-off-by on every commit
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: bash .github/scripts/check-dco.sh

@@ -1,0 +1,24 @@
+name: Proposal
+description: New component, experiment, interface or website feature.
+labels: [proposal]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Name any new path you want to create. New components are scaffolded only after an issue names them.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: How we will know it works
+      description: Tests, metrics or a falsifier. What result would show this is wrong?
+    validations:
+      required: true

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/Moissanite-Labs/weft-eido/security/advisories/new
+    about: Please report vulnerabilities privately, not as public issues.
+  - name: Ask a question or share an idea
+    url: https://github.com/Moissanite-Labs/weft-eido/discussions
+    about: Open-ended questions and early ideas fit better in Discussions.
