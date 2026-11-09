@@ -1,0 +1,94 @@
+{
+ "version": 1,
+ "levels": [
+  "Full prose",
+  "Concise",
+  "Terse",
+  "Caveman"
+ ],
+ "blocks": {
+  "8c6dcb82": [
+   "ML Weft is an open research program from Moissanite Labs. It studies models that keep adapting after deployment, within limits a program can verify. Each model is a <em>cell</em>: bounded memory with a frozen core, a budget, and a rule that commits a change only within a measured distance of a saved baseline. Weft also builds compact verifiable formats and Eido, a design language for honest live-state interfaces; further out, purpose-built hardware and governance. Every component is labelled <em>running and tested</em>, <em>simulated</em>, or <em>design only</em>. Weft is not a product, has no token, and its biological vocabulary describes aims, not achievements. See Paper 1, <em>Models as Cells</em>, and Paper 2, <em>Checkable Computation</em>.",
+   "ML Weft: open research, Moissanite Labs. Models that keep adapting after deployment, within limits a program can verify. Model = <em>cell</em>: bounded memory, frozen core, budget, rule committing change only near saved baseline. Plus verifiable formats, Eido design language, hardware, governance. Components labelled <em>running and tested</em>, <em>simulated</em> or <em>design only</em>. Not a product, no token; biology words = aims. Paper 1 <em>Models as Cells</em>, Paper 2 <em>Checkable Computation</em>.",
+   "ML Weft = research. Model learn after ship. Each model one <em>cell</em>: small, hard core, budget, gate. Gate say no to big change. Not product. No token. Cell words mean wish, not done. Say what run and test, what only pretend, what only dream. See Paper 1, Paper 2."
+  ],
+  "629e3fdd": [
+   "Models are mostly built once, then frozen. Change means a retraining or fine-tuning run that someone starts, watches and accepts. That worked while change was rare. It strains as models move onto personal devices, adapt to users, and act as agents nobody watches.",
+   "Models mostly built once, then frozen. Change = deliberate retrain someone watches. Breaks on personal devices, per-user adaptation, long-running agents: small continual changes, no one watching.",
+   "Old model stop learn. New model keep learn. Nobody watch."
+  ],
+  "aea4f4ae": [
+   "Adaptation without limits is a safety problem. A self-rewriting model can drift from its approved behaviour. Today’s limits are mostly procedural: reviews, evaluations, policies. Rarely <em>executable</em>: a predicate run on every update that refuses those crossing a line.",
+   "Unlimited adaptation = safety problem. Self-rewriting model can drift from approved behaviour. Limits today procedural (reviews, evals, policy), rarely <em>executable</em>: predicate on every update, refuses line-crossers.",
+   "Model change self, may go bad. Rule only talk. Want rule in code, say no."
+  ],
+  "76b6a381": [
+   "Weft asks what making those limits executable would take. It starts small: one weight matrix in memory, then works outward.",
+   "Weft: make limits executable. Start smallest: one weight matrix in memory, then outward.",
+   "Weft make rule real. Start small. One matrix."
+  ],
+  "ac7d2e86": [
+   "Five rules drive the program, more than any diagram.",
+   "Five rules. Shape code > diagrams.",
+   "Five rule. Rule boss."
+  ],
+  "e638e3bb": [
+   "<strong>Bound change from a baseline.</strong> Weights may move only a fixed distance from approved ones, measured from baseline, not yesterday’s, so small steps can’t add up (Paper 1, §4).",
+   "<strong>Bound change.</strong> Move ≤ fixed distance from approved baseline, not yesterday’s weights → no creeping drift (Paper 1 §4).",
+   "<strong>Stay near saved model.</strong> Small step not add up."
+  ],
+  "dc057c32": [
+   "<strong>Stated is not checked.</strong> Safety properties are functions, tested on shared vectors, run on the real path. Docs say what is enforced, what only intended.",
+   "<strong>Stated ≠ checked.</strong> Safety rule = tested function on live path. Docs: enforced vs intended.",
+   "<strong>Say not check.</strong> Rule run in code."
+  ],
+  "9fdb78ff": [
+   "<strong>Keep the vision, label the evidence.</strong> Biological words (<em>cell, membrane, mitosis, homeostasis</em>) name behaviour aimed for. Each gets a plain note on what code does today (<a href=\"https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md\">glossary</a>).",
+   "<strong>Vision words, evidence labels.</strong> Bio terms (<em>cell, membrane, mitosis, homeostasis</em>) = aims. Each paired w/ what code does today (<a href=\"https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md\">glossary</a>).",
+   "<strong>Fancy word.</strong> Mean wish. <a href=\"https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md\">Glossary</a> say what code do."
+  ],
+  "69ca6438": [
+   "<strong>Small interfaces.</strong> Narrow formats, exact layouts, integrity checks: 64-byte frame, hashed message line, binary graph format. Each fully specified, tested in several languages.",
+   "<strong>Small interfaces.</strong> Exact narrow formats: 64-byte frame, hashed line, binary graph. Fully specified, multi-language tested.",
+   "<strong>Small box.</strong> Piece talk by tiny message. Easy check."
+  ],
+  "01d09eae": [
+   "<strong>Nothing live.</strong> No contracts deployed, no weights shipped between machines, no privileged hardware. No token.",
+   "<strong>Nothing live.</strong> Local only. No token.",
+   "<strong>Not live.</strong> No token."
+  ]
+ },
+ "headings": {
+  "abstract": [
+   "Summary",
+   "Gist",
+   "Big idea",
+   "TL;DR",
+   "What’s this about?"
+  ],
+  "the-problem": [
+   "1. The problem",
+   "1. Problem",
+   "Why care",
+   "Problem",
+   "What’s the problem?"
+  ],
+  "principles": [
+   "2. Principles",
+   "2. Rules",
+   "Rules",
+   "Five rules",
+   "What are the rules?"
+  ]
+ },
+ "tldr": {
+  "abstract": "Weft studies models that keep learning within checkable limits, with every claim labelled.",
+  "the-problem": "Self-adapting models need limits that code enforces, not just policies.",
+  "principles": "Five rules: bound change, test rules, label evidence, keep interfaces small, run nothing live."
+ },
+ "eli5": {
+  "abstract": "Some programs keep learning after people start using them. Weft asks how to keep that safe, like a kite that can move but only as far as its string. Every part is labelled <em>works</em>, <em>pretend</em> or <em>just an idea</em>.",
+  "the-problem": "Most programs that learn stop once they are built. Soon some will keep changing by themselves, with nobody watching. Rules on paper are easy to ignore, so Weft wants rules the computer checks on every change.",
+  "principles": "Weft follows five rules. A program may only wander a short way from an approved version, like a dog on a leash. Rules get tested, claims get honest labels, parts stay small, and nothing touches the real world."
+ }
+}

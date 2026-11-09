@@ -20,7 +20,11 @@ The design sessions start from a complaint about the "document prison" (`weft/de
 Eido applies the same habits Weft uses for models to the screen: continuous spaces instead of switches, exact
 geometry instead of approximations, compact verifiable state, and feedback that stays inside stated bounds.
 
-## 2. Five modules
+Weft studies models that change themselves within bounds you can check. Eido is the first place that idea is
+implemented in something people use every day: an interface that changes itself in response to the person using it,
+within bounds that person can see, check and undo.
+
+## 2. Six modules
 
 Each module can be adopted on its own.
 
@@ -84,6 +88,40 @@ People remember *where* something lives better than how far down a scroll bar it
 into a few named rooms on a persistent canvas. Choosing a room changes both the written content and the visual field,
 so each reinforces the other.
 
+### D6 · Text that answers how it is read
+
+*Builds on D2's reading calm. Implemented here: [`src/reading-weave.js`](../src/reading-weave.js),
+[`src/condense.js`](../src/condense.js). Guides: [reading weave](reading-weave.md),
+[condensing prose](condensing-prose.md).*
+
+A page usually treats every visitor the same, whether they read it or race past it. Eido treats how someone reads as
+a signal the page can answer.
+
+1. **One honest signal.** A restlessness score in [0, 1] rises when the reader skims: passages that were on screen
+   but not given time to read, sustained fast scrolling, sudden reversals, long jumps and jerky cursor movement. It
+   falls mostly by reading. A passage counts as read at about 600 words a minute, which is lenient on purpose. The
+   score is a heuristic, not a model of the reader, and it never leaves the page.
+2. **Two answers on the same score.**
+   - *The reading weave* resists skimming. Waves pass through the text as a medium: words bob as crests pass, fade in
+     the troughs and blur. At the top of the range, links slide away from a hurried cursor. A thread is woven beside
+     every paragraph that was actually read. Reading calms the page again.
+   - *Condensing prose* meets the skimmer instead. Each time the score crosses a step, the passages still on screen
+     are rewritten shorter: full, then concise with proper grammar, then terse, then caveman, then a one-line TL;DR
+     per section. An ELI5 button then offers a plain explanation. Words that survive stay in place; the rest strike
+     through and collapse.
+3. **Bounds the reader can check.** The page may change itself, but only inside limits the reader can see and undo:
+   - A panel shows the score, says what is happening and why, and has an off switch that persists.
+   - The focused element never moves, text stays text for assistive technology, displacement is capped, a cursor
+     held still on a link settles it, and nothing moves under `prefers-reduced-motion`.
+   - Condensing is a ratchet that only the reader can turn back. Passages the reader already read stay as written.
+     Every condensed passage ends with ≈, and pressing and holding it shows the original. Print shows the full text.
+4. **Authored, not generated in the page.** Condensed variants are written ahead of time and shipped as
+   `condensed.json`, keyed by a hash of each passage's text. The page never calls a model, so what a reader sees is
+   what an author approved.
+
+The two answers suit different pages. A landing page that wants to be read slowly suits the reading weave. A long
+paper that a reader may only need the gist of suits condensing prose.
+
 ## 3. Value-encoded fields
 
 [`src/cell-layout.js`](../src/cell-layout.js) lays out cells so that each visual channel encodes exactly one
@@ -103,5 +141,9 @@ Layout happens on the CPU in CSS pixels, and the renderer receives exact rectang
 
 - **[w3ft.org](https://w3ft.org)** uses D1 directly. Its "style as a point in space" demo runs `simplex-pad.js` and
   `aesthetic-mixer.js` from this repository.
+- **w3ft.org** is also where D6 started. The homepage runs the reading weave, and the papers condense as they are
+  skimmed.
+- **The [Eido site](https://moissanite-labs.github.io/weft-eido/)** runs every module on itself: its home page
+  ripples, its philosophy page condenses, and each component has an isolated demo and its source to copy.
 - **[ML Weft](https://github.com/Moissanite-Labs/weft)** builds its telemetry field from D1–D4: `weft-loom.js`, the
   WGSL shader and the SYM-2P worker live there and import these modules.

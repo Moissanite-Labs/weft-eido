@@ -10,6 +10,10 @@ Thanks for helping. Eido is small on purpose: a philosophy and a few modules tha
 - **One channel, one quantity.** If a change makes a visual channel encode two things, or none, explain why.
 - **Accessible by default.** Controls work with pointer and keyboard, expose their value to assistive technology, and
   respect `prefers-reduced-motion`.
+- **Show it on the site.** Every module in `src/` has a page in `site/components/` with an isolated demo, a snippet
+  that works when pasted, and its source. `npm test` checks this, along with every link on the site and the
+  `condensed.json` for the philosophy page. If you change a passage on `site/philosophy.html`, update its entry in
+  `site/condensed.json` (see [docs/condensing-prose.md](docs/condensing-prose.md)).
 - **Say what is implemented.** `docs/philosophy.md` marks each idea as implemented here, implemented in Weft, or
   design. Keep those labels honest when you change things.
 

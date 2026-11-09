@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Philosophy · Eido</title>
+  <meta name="description" content="Eido: a first-principles approach to spatial web design. Six principles, and where each one is built.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="../css/reading-weave.css">
+  <link rel="stylesheet" href="../css/condense.css">
+  <script src="assets/theme.js"></script>
+  <script type="module" src="assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="philosophy.html" aria-current="page">Philosophy</a>
+        <a href="components/index.html">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <article class="article paper" id="paper">
+      <h1 style="font-size:clamp(1.9rem,1.3rem + 2.6vw,2.8rem);margin-bottom:.4em">Eido: a first-principles approach to spatial web design</h1>
+      <p class="src"><em>Developed inside ML Weft under the internal name <strong>Aywa</strong>. Code paths in Weft still say <code>aywa</code>.</em></p>
+      <p>Citations such as <code>weft/design/anew.md</code> refer to the design sessions preserved in <a href="https://github.com/Moissanite-Labs/weft-corpus">Moissanite-Labs/weft-corpus</a>. Those sessions are sources and hypotheses, not specifications. Each module below says what is implemented today and where.</p>
+
+      <section id="why">
+      <h2>1. Why another foundation</h2>
+      <p>The design sessions start from a complaint about the "document prison" (<code>weft/design/anew.md</code>):</p>
+      <ol>
+        <li><strong>Static box trees.</strong> Information is flattened into nested rectangles, and layout is recomputed whenever content changes.</li>
+        <li><strong>Discrete themes.</strong> Style is a handful of fixed classes (light, dark, a few breakpoints) that cannot move smoothly with content density, system state or the reader's preference.</li>
+        <li><strong>Passive scrolling.</strong> Layered systems are forced into one long scroll, which throws away spatial memory and the relationships between parts.</li>
+      </ol>
+      <p>Eido applies the same habits Weft uses for models to the screen: continuous spaces instead of switches, exact geometry instead of approximations, compact verifiable state, and feedback that stays inside stated bounds.</p>
+      <p>Weft studies models that change themselves within bounds you can check. Eido is the first place that idea is implemented in something people use every day: an interface that changes itself in response to the person using it, within bounds that person can see, check and undo.</p>
+
+      </section>
+      <section id="modules">
+      <h2>2. Six modules</h2>
+      <p>Each module can be adopted on its own.</p>
+
+      </section>
+      <section id="d1">
+      <h3>D1 · Style as a point in a continuous space</h3>
+      <p class="src"><em>Sources: <code>weft/design/baryonic.md</code>, <code>weft/design/discovery.md</code>, <code>weft/design/core.md</code>. Implemented here: <a href="components/aesthetic-mixer.html"><code>src/aesthetic-mixer.js</code></a>, <a href="components/simplex-pad.html"><code>src/simplex-pad.js</code></a>.</em></p>
+      <p>A visual style is a vector <strong>a</strong> = (rounding, density, hue, contrast), computed as a barycentric blend of <span class="math"><i>K</i></span> reference presets <span class="math"><i>P₁…P<sub>K</sub></i></span> with weights <span class="math"><i>w<sub>k</sub> ≥ 0</i></span> normalised onto the simplex (<span class="math"><i>ŵ<sub>k</sub> = w<sub>k</sub> / Σ w<sub>j</sub></i></span>).</p>
+      <ol>
+        <li><strong>Linear tokens.</strong> Rounding, density and contrast interpolate linearly: <span class="math"><i>r = Σ ŵ<sub>k</sub> r<sub>k</sub></i></span>, <span class="math"><i>d = Σ ŵ<sub>k</sub> d<sub>k</sub></i></span>, <span class="math"><i>c = Σ ŵ<sub>k</sub> c<sub>k</sub></i></span>.</li>
+        <li><strong>Hue on the circle.</strong> Hue is periodic on [0, 1), so a linear average gives false midpoints. Averaging crimson at 0.95 and scarlet at 0.05 linearly gives cyan at 0.50. Eido maps each hue to an angle <span class="math"><i>θ<sub>k</sub> = 2π h<sub>k</sub></i></span> and takes the circular mean: <span class="math"><i>h̄ = atan2(Σ ŵ<sub>k</sub> sin θ<sub>k</sub>, Σ ŵ<sub>k</sub> cos θ<sub>k</sub>) / 2π  (mod 1)</i></span>.</li>
+        <li><strong>A triangle, not three sliders.</strong> With <span class="math"><i>K</i></span> = 3 the weights live on a 2-simplex. Three independent sliders cannot show the sum-to-one constraint, but a triangle can: every point inside it has unique barycentric coordinates, and those coordinates are the weights. <code>simplex-pad.js</code> is that control. It supports pointer and keyboard input and reports its value to assistive technology.</li>
+      </ol>
+
+      </section>
+      <section id="d2">
+      <h3>D2 · Analytical geometry and reading cadence</h3>
+      <p class="src"><em>Sources: <code>weft/design/craft.md</code>, <code>weft/design/alive.md</code>, <code>weft/design/feeed.md</code>. Implemented here: <a href="components/glyph-font.html"><code>src/glyph-font.js</code></a>. Implemented in Weft: the field shader and the cadence heuristic.</em></p>
+      <ol>
+        <li><strong>Signed distance fields.</strong> Cells, borders and glyphs are evaluated per fragment from signed distance functions, so they stay sharp at any zoom or pixel ratio and need no textures.</li>
+        <li><strong>Bitmask glyphs.</strong> <code>weft/design/feeed.md</code> proposes drawing text inside the shader from integer bitmasks. Its version packs a 5×7 glyph into one <code>u32</code>, which cannot work because 35 bits don't fit in 32. <code>glyph-font.js</code> uses two words per glyph and feeds the same table to WebGPU and Canvas2D, so both renderers draw identical letters.</li>
+        <li><strong>Reading calm.</strong> A scroll-speed heuristic, not a model, produces a calm value in [0, 1] that softens grain and deepens panels while the reader dwells. <code>weft/design/alive.md</code> also proposes changing line height with it. Eido deliberately does not, because that reflows the paragraph the reader is in the middle of.</li>
+      </ol>
+
+      </section>
+      <section id="d3">
+      <h3>D3 · Compact, verified state</h3>
+      <p class="src"><em>Sources: <code>weft/design/craft.md</code> (field widths at lines 136–145), <code>weft/design/build.md</code>. Implemented in Weft: the SYM-2P codec (Python and JS), the telemetry worker, and the 64-byte frame packer.</em></p>
+      <ol>
+        <li><strong>One 64-byte frame.</strong> Everything the renderer needs fits in sixteen <code>float32</code>s, which is one cache line.</li>
+        <li><strong>Verify before display.</strong> Each packet carries the SHA-256 of its payload. The browser checks it with WebCrypto before any value reaches the screen, and a line without a hash counts as unverified, not valid.</li>
+      </ol>
+
+      </section>
+      <section id="d4">
+      <h3>D4 · Surfaces that show strain</h3>
+      <p class="src"><em>Source: <code>weft/design/bio.md</code>. Implemented in Weft: the field shader.</em></p>
+      <p>Regions behave like tissue governed by local rules. While a system's tension stays inside its normal band, edges pulse gently in the chosen hue. As tension rises toward its hard limit, glow and grain change, so strain is visible without a modal alert. The biological language names what the design aims for. The current implementation is a shader driven by a few numbers.</p>
+
+      </section>
+      <section id="d5">
+      <h3>D5 · Places, not pages</h3>
+      <p class="src"><em>Sources: <code>weft/design/aywa.md</code>, <code>weft/design/converge.md</code>. Status: design. An earlier version of w3ft.org used six "loci", and the current site is a single page.</em></p>
+      <p>People remember <em>where</em> something lives better than how far down a scroll bar it was. Eido organises a large system into a few named rooms on a persistent canvas. Choosing a room changes both the written content and the visual field, so each reinforces the other.</p>
+
+      </section>
+      <section id="d6">
+      <h3>D6 · Text that answers how it is read</h3>
+      <p class="src"><em>Builds on D2's reading calm. Implemented here: <a href="components/reading-weave.html"><code>src/reading-weave.js</code></a>, <a href="components/condense.html"><code>src/condense.js</code></a>. Guides: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/reading-weave.md">reading weave</a>, <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/condensing-prose.md">condensing prose</a>.</em></p>
+      <p>A page usually treats every visitor the same, whether they read it or race past it. Eido treats how someone reads as a signal the page can answer.</p>
+      <ol>
+        <li><strong>One honest signal.</strong> A restlessness score in [0, 1] rises when the reader skims: passages that were on screen but not given time to read, sustained fast scrolling, sudden reversals, long jumps and jerky cursor movement. It falls mostly by reading. A passage counts as read at about 600 words a minute, which is lenient on purpose. The score is a heuristic, not a model of the reader, and it never leaves the page.</li>
+        <li><strong>Two answers on the same score.</strong>
+          <ul>
+            <li><em>The reading weave</em> resists skimming. Waves pass through the text as a medium: words bob as crests pass, fade in the troughs and blur. At the top of the range, links slide away from a hurried cursor. A thread is woven beside every paragraph that was actually read. Reading calms the page again.</li>
+            <li><em>Condensing prose</em> meets the skimmer instead. Each time the score crosses a step, the passages still on screen are rewritten shorter: full, then concise with proper grammar, then terse, then caveman, then a one-line TL;DR per section. An ELI5 button then offers a plain explanation. Words that survive stay in place; the rest strike through and collapse.</li>
+          </ul>
+        </li>
+        <li><strong>Bounds the reader can check.</strong> The page may change itself, but only inside limits the reader can see and undo:
+          <ul>
+            <li>A panel shows the score, says what is happening and why, and has an off switch that persists.</li>
+            <li>The focused element never moves, text stays text for assistive technology, displacement is capped, a cursor held still on a link settles it, and nothing moves under <code>prefers-reduced-motion</code>.</li>
+            <li>Condensing is a ratchet that only the reader can turn back. Passages the reader already read stay as written. Every condensed passage ends with ≈, and pressing and holding it shows the original. Print shows the full text.</li>
+          </ul>
+        </li>
+        <li><strong>Authored, not generated in the page.</strong> Condensed variants are written ahead of time and shipped as <code>condensed.json</code>, keyed by a hash of each passage's text. The page never calls a model, so what a reader sees is what an author approved.</li>
+      </ol>
+      <p>The two answers suit different pages. A landing page that wants to be read slowly suits the reading weave. A long paper that a reader may only need the gist of suits condensing prose.</p>
+
+      </section>
+      <section id="fields">
+      <h2>3. Value-encoded fields</h2>
+      <p><a href="components/cell-layout.html"><code>src/cell-layout.js</code></a> lays out cells so that each visual channel encodes exactly one quantity, and the legend can say so:</p>
+      <table>
+        <thead><tr><th scope="col">Channel</th><th scope="col">Rule</th><th scope="col">Code</th></tr></thead>
+        <tbody>
+          <tr><td>Cell area</td><td>side = s·√value, so area ratios equal value ratios at every viewport</td><td><code>layoutCells</code></td></tr>
+          <tr><td>Position</td><td>rank by value, golden-angle (137.508°) packing stretched to the region's aspect, scale fitted by bisection</td><td><code>layoutCells</code></td></tr>
+          <tr><td>Threads</td><td>minimum spanning tree of cell centres within each group (Prim)</td><td><code>layerThreads</code></td></tr>
+          <tr><td>Picking</td><td>point-in-footprint test over the computed layout</td><td><code>hitTest</code></td></tr>
+          <tr><td>Text</td><td>5×7 bitmask font, two <code>u32</code> per glyph, drawn at whole device pixels</td><td><code>glyph-font.js</code></td></tr>
+        </tbody>
+      </table>
+      <p>Layout happens on the CPU in CSS pixels, and the renderer receives exact rectangles. It never assumes an aspect ratio.</p>
+
+      </section>
+      <section id="in-use">
+      <h2>4. Eido in use</h2>
+      <ul>
+        <li><strong><a href="https://w3ft.org">w3ft.org</a></strong> uses D1 directly. Its "style as a point in space" demo runs <code>simplex-pad.js</code> and <code>aesthetic-mixer.js</code> from this repository.</li>
+        <li><strong>w3ft.org</strong> is also where D6 started. The homepage runs the reading weave, and the papers condense as they are skimmed.</li>
+        <li><strong>The <a href="https://moissanite-labs.github.io/weft-eido/">Eido site</a></strong> runs every module on itself: its home page ripples, its philosophy page condenses, and each component has an isolated demo and its source to copy.</li>
+        <li><strong><a href="https://github.com/Moissanite-Labs/weft">ML Weft</a></strong> builds its telemetry field from D1–D4: <code>weft-loom.js</code>, the WGSL shader and the SYM-2P worker live there and import these modules.</li>
+      </ul>
+      </section>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { setupReadingWeave } from "../src/reading-weave.js";
+    import { loadCondensed, setupCondense } from "../src/condense.js";
+
+    // Variants are written ahead of time in condensed.json. Without them the page keeps the plain reading score.
+    loadCondensed("condensed.json").then((data) => {
+      if (!data) return setupReadingWeave();
+      const reading = setupReadingWeave({ motion: false, panel: false });
+      if (reading) setupCondense(data, reading, { heading: ":scope > :is(h2, h3)", noun: "page" });
+    });
+  </script>
+</body>
+</html>

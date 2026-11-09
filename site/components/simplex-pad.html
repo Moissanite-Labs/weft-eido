@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simplex pad · Eido</title>
+  <meta name="description" content="An SVG triangle control whose point is the weight vector.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>#pad-demo .simplex-pad{margin:0 auto}</style>
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D1</p><h1 id="t">Simplex pad</h1><p class="lede">A triangle you drag. The point is the blend: its distances to the three corners are the three weights.</p></div></section>
+
+    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+      <p class="crumbs"><a href="index.html">Components</a> / Simplex pad</p>
+      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>Three sliders that must sum to one fight each other. A triangle does not. Every point inside it has exactly one set of three weights that add up to one, so dragging the point is moving through the blend.</p>
+<p>The pad works with a pointer, a finger or the arrow keys. It exposes its value as a slider to screen readers. Points dragged outside the triangle snap to its edge.</p><p>Principle: <a href="../philosophy.html#d1">D1 · Style as a point in a continuous space</a>.</p></section>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><div class="controls"><button class="btn small" type="button" id="reset">Reset to the middle</button><button class="btn small" type="button" id="focus-pad">Focus the pad</button></div><div id="pad-demo"></div>
+<div class="readout" id="pad-out"></div>
+<p class="readout">Keyboard: focus the triangle, then press the arrow keys. Each press moves the point by 2% of the triangle height.</p></div></section>
+      <section aria-labelledby="use"><h2 id="use">Use it</h2>
+        <h3>1. Copy the files</h3>
+        <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/simplex-pad.js">src/simplex-pad.js</a><button class="copy" type="button" data-copy-text="src/simplex-pad.js">Copy path</button></li></ul>
+        <p>No dependencies and no build step. Put the files anywhere your pages can import them.</p>
+        <h3>2. Paste this</h3>
+        <figure class="codeblock"><figcaption><span>index.html</span><button class="copy" type="button" data-copy-target="#code-3">Copy</button></figcaption><pre tabindex="0"><code id="code-3" class="language-html">&lt;div id=&quot;pad&quot;&gt;&lt;/div&gt;
+&lt;style&gt;
+  .simplex-pad { width: 240px; height: 240px; touch-action: none; }
+  .simplex-guide { stroke: #8884; stroke-width: .6; }
+  .simplex-edge { fill: none; stroke: currentColor; stroke-width: 1.2; }
+  .simplex-label { fill: currentColor; font: 11px ui-monospace, monospace; }
+  .simplex-spoke { stroke: #c08a1e; }
+  .simplex-knob { fill: Canvas; stroke: #c08a1e; stroke-width: 3; }
+&lt;/style&gt;
+&lt;script type=&quot;module&quot;&gt;
+  import { mountSimplexPad } from &quot;./src/simplex-pad.js&quot;;
+
+  const pad = mountSimplexPad(document.getElementById(&quot;pad&quot;), {
+    labels: [&quot;calm&quot;, &quot;sharp&quot;, &quot;airy&quot;],
+    weights: [0.5, 0.2, 0.3],
+    onChange: (w) =&gt; console.log(w), // [wA, wB, wC], sums to 1
+  });
+  pad.set([0, 1, 0]); // move the point to the &quot;sharp&quot; corner
+&lt;/script&gt;</code></pre></figure>
+        <h3>3. Or read the source</h3>
+        <p>These blocks are fetched from the repository when the page loads, so they always match the code.</p>
+        <figure class="codeblock tall"><figcaption><span>src/simplex-pad.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-4">Copy</button></figcaption><pre tabindex="0"><code id="src-4" data-src="../../src/simplex-pad.js">Loading src/simplex-pad.js…</code></pre></figure>
+      </section>
+      <section aria-labelledby="api"><h2 id="api">API</h2><h3>mountSimplexPad(container, options)</h3>
+<table class="api"><thead><tr><th scope="col">Option</th><th scope="col">Default</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>labels</code></td><td>required</td><td>Three vertex names, top, bottom-left, bottom-right.</td></tr><tr><td><code>weights</code></td><td><code>[1, 0, 0]</code></td><td>Starting weights. They are normalised onto the simplex.</td></tr><tr><td><code>hues</code></td><td><code>[]</code></td><td>Optional hues in [0, 1) used to colour the three vertices.</td></tr><tr><td><code>onChange</code></td><td>none</td><td>Called with the normalised weights <code>[wA, wB, wC]</code> on every change.</td></tr><tr><td><code>returns</code></td><td></td><td><code>{ set(weights, emit = true), get() }</code>.</td></tr></tbody></table>
+<h3>Pure functions</h3>
+<p>All take points as <code>[x, y]</code>.</p>
+<table class="api"><thead><tr><th scope="col">Function</th><th scope="col"></th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>barycentric(p, a, b, c)</code></td><td></td><td>Barycentric coordinates of <code>p</code> in triangle <code>abc</code>. Throws on a degenerate triangle.</td></tr><tr><td><code>pointFromWeights(w, a, b, c)</code></td><td></td><td>The point for weights <code>w</code>.</td></tr><tr><td><code>projectToSimplex(w)</code></td><td></td><td>Clamps negatives to 0 and renormalises to sum 1.</td></tr><tr><td><code>weightsAt(p, a, b, c)</code></td><td></td><td>Weights for a pointer position. Outside the triangle they snap to the edge.</td></tr></tbody></table>
+<h3>CSS classes the pad uses</h3>
+<p><code>.simplex-pad</code>, <code>.simplex-guide</code>, <code>.simplex-edge</code>, <code>.simplex-vertex</code>, <code>.simplex-label</code>, <code>.simplex-spoke</code>, <code>.simplex-knob</code>. The module ships no stylesheet, so style these yourself.</p><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/philosophy.md">docs/philosophy.md</a> on GitHub.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { mountSimplexPad } from "../../src/simplex-pad.js";
+    const out = document.getElementById("pad-out");
+    const labels = ["north", "west", "east"];
+    const pad = mountSimplexPad(document.getElementById("pad-demo"), {
+      labels, weights: [0.6, 0.2, 0.2], hues: [0.12, 0.45, 0.85],
+      onChange: (w) => { out.textContent = "onChange " + JSON.stringify(w.map((x) => Number(x.toFixed(3)))) + "  sum " + w.reduce((a, b) => a + b, 0).toFixed(3); },
+    });
+    out.textContent = "get() " + JSON.stringify(pad.get().map((x) => Number(x.toFixed(3))));
+    document.getElementById("reset").addEventListener("click", () => pad.set([1, 1, 1]));
+    document.getElementById("focus-pad").addEventListener("click", () => document.querySelector("#pad-demo svg").focus());
+  </script>
+</body>
+</html>

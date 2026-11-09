@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reading weave · Eido</title>
+  <meta name="description" content="A page that rewards reading and resists skimming.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../../css/reading-weave.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D6</p><h1 id="t">Reading weave</h1><p class="lede">The page notices when you skim and answers inside limits you can see. Words ripple. Reading calms them.</p></div></section>
+
+    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+      <p class="crumbs"><a href="index.html">Components</a> / Reading weave</p>
+      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>The module watches how a visitor reads and keeps one number, a restlessness score from 0 to 1. Skimming raises it and reading lowers it. The score drives waves that pass through the text, links that drift away from a hurried cursor, and a thin gold thread beside every paragraph that was actually read.</p>
+<p>The page never blocks anything and never hides text. A panel shows the score and has an off switch that is remembered. The focused element never moves, displacement is capped, and nothing moves under <code>prefers-reduced-motion</code>. Everything is measured in the browser.</p><p>Principle: <a href="../philosophy.html#d6">D6 · Text that answers how it is read</a>.</p></section>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><p>Scroll the box below fast, or read it slowly, and watch the panel at its bottom right.</p>
+<div class="controls">
+  <button class="btn small" type="button" id="rw-restart">Restart (destroy, then set up again)</button>
+  <button class="btn small" type="button" id="rw-calm">calm(0)</button>
+</div>
+<div class="field"><label for="rw-pin">Pin restlessness (0 = measure the reader)</label><input id="rw-pin" type="range" min="0" max="1" step="0.05" value="0"><output for="rw-pin">off</output></div>
+<div class="scrollbox-wrap" id="rw-wrap"><div class="scrollbox" id="rw-box" tabindex="0" role="region" aria-label="Demo article, scrollable">
+<h3 style="margin-bottom:.6em">How this box reads you</h3>
+<p style="padding-left:6px">Read this box slowly and a thin gold thread appears beside each paragraph you have given time to. Scroll through it quickly and the words begin to ripple.</p>
+<p style="padding-left:6px">The page keeps one number, a restlessness score from zero to one. Skimming raises it. Reading lowers it. The panel at the bottom of the box shows it, says what is happening, and can switch the effects off.</p>
+<p style="padding-left:6px">A passage counts as read when it has been on screen for about as long as a quick reader needs. Ten words a second is the allowance, which is roughly six hundred words a minute.</p>
+<p style="padding-left:6px">If a passage leaves the top of the box having had less than a third of that time, it counts as skipped. Skipped passages push the score up, and longer ones push harder.</p>
+<p style="padding-left:6px">Fast scrolling, sudden changes of direction and long jumps add to the score as well. So does a cursor that darts about. None of this is a model of you. It is a handful of simple rules.</p>
+<p style="padding-left:6px">At low scores nothing visible happens. Above about a tenth, words begin to bob as waves pass through the text. Higher up they fade in the troughs, tilt a little and then blur.</p>
+<p style="padding-left:6px">Links drift when the score is high, and slide away from a cursor that is in a hurry. Hold the cursor still on one and it settles. The link you are focusing with the keyboard never moves.</p>
+<p style="padding-left:6px">Every effect has a cap. A word moves at most seven pixels. A link moves at most forty. Under reduced motion nothing moves at all, though the score and the threads still work.</p>
+<p style="padding-left:6px">Reading calms the page again. Stay with one paragraph for long enough and the score falls, the waves die away, and the text sits still.</p>
+<p style="padding-left:6px">Use the slider above to pin the score at one value and see what that value looks like. Pinning stops the score from rising or falling, so you can look at the effect without chasing it.</p>
+<p style="padding-left:6px">Nothing here is sent anywhere. The score lives in this page and is gone when you leave. The only thing remembered is whether you switched the effects off.</p>
+<p style="padding-left:6px">The restart button tears the whole thing down and sets it up again. That is the same call you would make when a page area closes and another opens.</p>
+</div></div>
+<div class="readout" id="rw-out" aria-live="off">score 0.00</div></div></section>
+      <section aria-labelledby="use"><h2 id="use">Use it</h2>
+        <h3>1. Copy the files</h3>
+        <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/reading-weave.js">src/reading-weave.js</a><button class="copy" type="button" data-copy-text="src/reading-weave.js">Copy path</button></li><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/css/reading-weave.css">css/reading-weave.css</a><button class="copy" type="button" data-copy-text="css/reading-weave.css">Copy path</button></li></ul>
+        <p>No dependencies and no build step. Put the files anywhere your pages can import them.</p>
+        <h3>2. Paste this</h3>
+        <figure class="codeblock"><figcaption><span>index.html</span><button class="copy" type="button" data-copy-target="#code-9">Copy</button></figcaption><pre tabindex="0"><code id="code-9" class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;./css/reading-weave.css&quot;&gt;
+
+&lt;main&gt;
+  &lt;p&gt;Read this page slowly and a thread appears beside each paragraph you give time to.&lt;/p&gt;
+  &lt;p&gt;Scroll through it fast and the words begin to ripple, fade and blur a little.&lt;/p&gt;
+  &lt;p&gt;Every effect is capped, and the reader can switch all of it off from the panel.&lt;/p&gt;
+  &lt;p&gt;Nothing is measured outside the browser, and nothing leaves the page at all.&lt;/p&gt;
+&lt;/main&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+  import { setupReadingWeave } from &quot;./src/reading-weave.js&quot;;
+  const weave = setupReadingWeave();  // null if there are fewer than 3 readable blocks
+  // weave.restless is the score; weave.destroy() undoes everything.
+&lt;/script&gt;</code></pre></figure>
+        <h3>3. Or read the source</h3>
+        <p>These blocks are fetched from the repository when the page loads, so they always match the code.</p>
+        <figure class="codeblock tall"><figcaption><span>src/reading-weave.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-10">Copy</button></figcaption><pre tabindex="0"><code id="src-10" data-src="../../src/reading-weave.js">Loading src/reading-weave.js…</code></pre></figure>
+<figure class="codeblock tall"><figcaption><span>css/reading-weave.css<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-11">Copy</button></figcaption><pre tabindex="0"><code id="src-11" data-src="../../css/reading-weave.css">Loading css/reading-weave.css…</code></pre></figure>
+      </section>
+      <section aria-labelledby="api"><h2 id="api">API</h2><h3>setupReadingWeave(options)</h3>
+<p>Returns a handle, or <code>null</code> when the page has fewer than three readable blocks or a weave is already running. It does not start by itself.</p>
+<table class="api"><thead><tr><th scope="col">Name</th><th scope="col">Default</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>root</code></td><td><code>document</code></td><td>Element or document searched for blocks and links.</td></tr><tr><td><code>scroller</code></td><td>window</td><td>An element whose scroll drives the score, for a page area that scrolls by itself.</td></tr><tr><td><code>blocks</code></td><td><code>"main :is(p, li)"</code></td><td>Selector for the passages to read.</td></tr><tr><td><code>skip</code></td><td><code>"pre, code, button, label, form, figure, table, nav, aside, [data-eido-skip]"</code></td><td>Anything inside a match is never read or rippled.</td></tr><tr><td><code>drift</code></td><td><code>"header a, nav a, footer a, .btn, [data-eido-drift]"</code></td><td>Elements that drift and flee a hurried cursor. Used only when <code>motion</code> is true.</td></tr><tr><td><code>motion</code></td><td><code>true</code></td><td>Move words and links and draw the waves. <code>false</code> keeps the score and threads only.</td></tr><tr><td><code>panel</code></td><td><code>true</code></td><td><code>true</code> mounts the panel fixed at the bottom right. An element mounts it inside that element. <code>false</code> shows none.</td></tr><tr><td><code>storage</code></td><td><code>"eido-weave"</code></td><td>Prefix for <code>localStorage</code> keys. <code>false</code> keeps nothing.</td></tr><tr><td><code>wordsPerSecond</code></td><td><code>10</code></td><td>Reading speed that sets how long a block needs.</td></tr><tr><td><code>params</code></td><td><code>true</code></td><td>Honour <code>?attn</code> (raw numbers) and <code>?restless=0.7</code> (pin the score) in the URL.</td></tr><tr><td><code>pin</code></td><td><code>null</code></td><td>A number in [0, 1] holds the score there, for demos and review. <code>handle.pin(value)</code> changes it later; <code>null</code> measures the reader again.</td></tr><tr><td><code>onChange(score)</code></td><td>none</td><td>Called when the score has changed by more than 0.004.</td></tr></tbody></table>
+<h3>Handle</h3>
+<table class="api"><thead><tr><th scope="col">Member</th><th scope="col"></th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>blocks</code></td><td></td><td>The tracked block elements.</td></tr><tr><td><code>stats</code></td><td></td><td>Live <code>{ skippedWords, readWords, jumps, flips }</code>.</td></tr><tr><td><code>calm(to = 0)</code></td><td></td><td>Lowers the score to at most <code>to</code>. Never raises it.</td></tr><tr><td><code>recount(el)</code></td><td></td><td>Re-counts a block's words after you changed its text.</td></tr><tr><td><code>pin(value)</code></td><td></td><td>Holds the score at a value in [0, 1]; <code>null</code> measures the reader again.</td></tr><tr><td><code>restless</code></td><td></td><td>The current score (a getter).</td></tr><tr><td><code>destroy()</code></td><td></td><td>Stops everything and restores the page. Safe to call twice. A new weave can start afterwards.</td></tr></tbody></table>
+<h3>Shared state and theme</h3>
+<p><code>attention</code> is an exported <code>{ restless, reading }</code> object, updated every frame, so other effects can share the page's mood. Style the panel and thread with the <code>--eido-ink</code>, <code>--eido-muted</code>, <code>--eido-paper</code>, <code>--eido-line</code>, <code>--eido-accent</code>, <code>--eido-strike</code>, <code>--eido-font-ui</code> and <code>--eido-radius</code> custom properties.</p><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/reading-weave.md">docs/reading-weave.md</a> on GitHub.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { setupReadingWeave } from "../../src/reading-weave.js";
+    const box = document.getElementById("rw-box"), wrap = document.getElementById("rw-wrap");
+    const out = document.getElementById("rw-out"), pin = document.getElementById("rw-pin");
+    const original = box.innerHTML;
+    let weave = null, score = 0;
+    const show = () => {
+      const st = weave?.stats;
+      out.textContent = "score " + score.toFixed(2) + (st ? "  read " + st.readWords + " words, skipped " + st.skippedWords + ", jumps " + st.jumps + ", flips " + st.flips : "");
+    };
+    const start = () => {
+      const held = Number(pin.value) > 0 ? Number(pin.value) : null;
+      weave = setupReadingWeave({ root: box, scroller: box, panel: wrap, storage: false, pin: held, onChange: (s) => { score = s; show(); } });
+      if (!weave) out.textContent = "The weave did not start: it needs three or more paragraphs, and only one weave can run at a time.";
+      else { score = weave.restless; show(); }
+    };
+    const restart = () => {
+      if (weave) weave.destroy();
+      box.innerHTML = original;
+      box.scrollTop = 0;
+      score = 0;
+      start();
+    };
+    pin.addEventListener("input", () => {
+      const v = Number(pin.value);
+      pin.nextElementSibling.textContent = v > 0 ? pin.value : "off";
+      if (weave) { weave.pin(v > 0 ? v : null); score = weave.restless; show(); } else restart();
+    });
+    document.getElementById("rw-restart").addEventListener("click", restart);
+    document.getElementById("rw-calm").addEventListener("click", () => { weave?.calm(0); score = weave ? weave.restless : 0; show(); });
+    start();
+  </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Condensing prose · Eido</title>
+  <meta name="description" content="An article that condenses level by level as the reader skims.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../../css/reading-weave.css">
+  <link rel="stylesheet" href="../../css/condense.css">
+  <style>.scrollbox .paper h2{font-size:1.25rem;margin:1.6em 0 .5em}.scrollbox .paper h2:first-child{margin-top:0}.scrollbox .keywords{display:none}.scrollbox .paper p,.scrollbox .paper li{padding-left:6px}</style>
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D6</p><h1 id="t">Condensing prose</h1><p class="lede">Skim, and the writing gets shorter: concise, then terse, then caveman, then one line per section. Read, and it stays as written.</p></div></section>
+
+    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+      <p class="crumbs"><a href="index.html">Components</a> / Condensing prose</p>
+      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>On a long page, most visitors skim. Condensing prose gives them a shorter page without asking. It watches the reading score from the <a href="reading-weave.html">reading weave</a>. When the score says the reader is skimming, it swaps passages the reader has not read for shorter versions.</p>
+<p>It never writes text on its own. Every shorter version was written by the author ahead of time and sits in a <code>condensed.json</code> file beside the page. Condensed passages end with ≈, and pressing and holding one shows the original. Print always shows the full text. Only the reader can loosen it again.</p><p>Principle: <a href="../philosophy.html#d6">D6 · Text that answers how it is read</a>.</p></section>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><p>Skim the box fast, or pick a level yourself. Each level is written ahead of time.</p>
+<div class="controls" role="group" aria-label="Level" id="cx-levels"></div>
+<div class="controls"><button class="btn small" type="button" id="cx-restart">Restart (destroy, then set up again)</button></div>
+<div class="scrollbox-wrap" id="cx-wrap"><div class="scrollbox" id="cx-box" tabindex="0" role="region" aria-label="Demo article, scrollable">
+<article class="paper" id="demo-paper">
+<section class="abstract" aria-labelledby="abstract-title">
+          <h2 id="abstract-title">Abstract</h2>
+<p>ML Weft is an open research program from Moissanite Labs. It studies models that keep adapting after deployment, under limits that a program can verify. It treats each model as a <em>cell</em>: a bounded piece of memory with a frozen core, a resource budget, and a rule that commits a change only if the change stays within a measured distance of a saved baseline. Around that core idea, Weft builds compact verifiable formats (hashed message packets and a serialised graph language with committed execution records) and a design language, Eido, for interfaces that show live state honestly. Further out, it asks how such systems could run on purpose-built hardware and how people could govern them. This paper describes the whole program and is strict about evidence: it labels every component as <em>running and tested</em>, <em>simulated</em>, or <em>design only</em>. It also explains what Weft is not. It is not a product, it has no token, and its biological vocabulary describes aims, not achievements. Companion papers cover each part in depth: Paper 1, <em>Models as Cells</em>, and Paper 2, <em>Checkable Computation</em>, are published alongside this one.</p>
+
+          
+        </section>
+
+<section id="the-problem" class="level2">
+<h2>1. The problem</h2>
+<p>Machine-learning models are mostly built once and then frozen. When they change, it is through a retraining or fine-tuning run that someone starts, watches and accepts. That has worked because change was rare and deliberate. It works less well as models move onto personal devices, adapt to individual users, and act as agents in long-running systems. These are settings where small, continual changes are useful, and nobody is watching each one.</p>
+<p>Continual adaptation without limits is a safety problem as much as an engineering one. A model that can rewrite itself can also drift away from the behaviour it was approved for. Today, the limits on that drift are usually procedural: reviews, evaluations, and policies on who may run training. They are rarely <em>executable</em>: a predicate that runs on every update and refuses the ones that cross a line.</p>
+<p>Weft asks what it would take to make those limits executable. It starts at the smallest scale where the question makes sense, a single weight matrix in memory, and works outward from there.</p>
+</section>
+<section id="principles" class="level2">
+<h2>2. Principles</h2>
+<p>The program works by five rules. They shape the code more than any architecture diagram does.</p>
+<ol type="1">
+<li><strong>Bound change from a saved baseline.</strong> A model may move, but only within a fixed distance of weights that were approved. That distance is measured from the baseline, not from yesterday’s weights, so small steps cannot add up to a large drift (Paper 1, §4).</li>
+<li><strong>A stated rule is not a checked rule.</strong> Each safety property is written as a function, tested against shared vectors, and called on the executable path. Documents say which rules are enforced and which are only intended.</li>
+<li><strong>Keep the vision language, label the evidence.</strong> Weft uses biological words on purpose: <em>cell, membrane, mitosis, homeostasis</em>. They name behaviour the design aims for and give the project its character. Every such word is paired with a plain description of what the code does today (<a href="https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md">glossary</a>).</li>
+<li><strong>Small, verifiable interfaces.</strong> Components talk through narrow formats with exact layouts and integrity checks: a 64-byte frame, a hashed message line, a binary graph format. Each is small enough to specify completely and test from more than one language.</li>
+<li><strong>Nothing live.</strong> No component deploys contracts, moves weights between machines, or touches privileged hardware. Experiments run locally. There is no token.</li>
+</ol>
+</section>
+</article></div></div>
+<div class="readout" id="cx-out" aria-live="polite">level 0 · Full prose</div>
+<p class="readout">The article is the start of Paper 0 of ML Weft (text under CC BY 4.0, <a href="https://w3ft.org/papers/overview/">w3ft.org/papers/overview</a>).</p></div></section>
+      <section aria-labelledby="use"><h2 id="use">Use it</h2>
+        <h3>1. Copy the files</h3>
+        <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/condense.js">src/condense.js</a><button class="copy" type="button" data-copy-text="src/condense.js">Copy path</button></li><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/css/condense.css">css/condense.css</a><button class="copy" type="button" data-copy-text="css/condense.css">Copy path</button></li><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/reading-weave.js">src/reading-weave.js</a><button class="copy" type="button" data-copy-text="src/reading-weave.js">Copy path</button></li><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/css/reading-weave.css">css/reading-weave.css</a><button class="copy" type="button" data-copy-text="css/reading-weave.css">Copy path</button></li></ul>
+        <p>No dependencies and no build step. Put the files anywhere your pages can import them.</p>
+        <h3>2. Paste this</h3>
+        <figure class="codeblock"><figcaption><span>index.html</span><button class="copy" type="button" data-copy-target="#code-12">Copy</button></figcaption><pre tabindex="0"><code id="code-12" class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;./css/reading-weave.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;./css/condense.css&quot;&gt;
+
+&lt;main&gt;
+  &lt;article class=&quot;paper&quot;&gt;
+    &lt;section id=&quot;problem&quot;&gt;
+      &lt;h2&gt;1. The problem&lt;/h2&gt;
+      &lt;p&gt;Long pages are written once, for a careful reader. Most visitors skim them instead.&lt;/p&gt;
+      &lt;p&gt;Skimmers still want the gist, and they usually get it by scrolling past what they do not read.&lt;/p&gt;
+      &lt;p&gt;This module gives them a shorter page without asking, using text the author wrote ahead of time.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;!-- more sections --&gt;
+  &lt;/article&gt;
+&lt;/main&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+  import { setupReadingWeave } from &quot;./src/reading-weave.js&quot;;
+  import { loadCondensed, setupCondense } from &quot;./src/condense.js&quot;;
+
+  loadCondensed(&quot;condensed.json&quot;).then((data) =&gt; {
+    if (!data) return setupReadingWeave();  // no variants: the plain reading score
+    const reading = setupReadingWeave({ motion: false, panel: false });
+    if (reading) setupCondense(data, reading);
+  });
+&lt;/script&gt;
+
+&lt;!-- condensed.json (hashes come from hashText of each passage's text; see the guide):
+{ &quot;version&quot;: 1,
+  &quot;blocks&quot;:   { &quot;&lt;hash&gt;&quot;: [&quot;concise…&quot;, &quot;terse…&quot;, &quot;caveman…&quot;] },
+  &quot;headings&quot;: { &quot;problem&quot;: [&quot;l1&quot;, &quot;l2&quot;, &quot;l3&quot;, &quot;l4&quot;, &quot;l5&quot;] },
+  &quot;tldr&quot;:     { &quot;problem&quot;: &quot;one line&quot; },
+  &quot;eli5&quot;:     { &quot;problem&quot;: &quot;a simple explanation&quot; } } --&gt;</code></pre></figure>
+        <h3>3. Or read the source</h3>
+        <p>These blocks are fetched from the repository when the page loads, so they always match the code.</p>
+        <figure class="codeblock tall"><figcaption><span>src/condense.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-13">Copy</button></figcaption><pre tabindex="0"><code id="src-13" data-src="../../src/condense.js">Loading src/condense.js…</code></pre></figure>
+<figure class="codeblock tall"><figcaption><span>css/condense.css<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-14">Copy</button></figcaption><pre tabindex="0"><code id="src-14" data-src="../../css/condense.css">Loading css/condense.css…</code></pre></figure>
+<figure class="codeblock tall"><figcaption><span>src/reading-weave.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-15">Copy</button></figcaption><pre tabindex="0"><code id="src-15" data-src="../../src/reading-weave.js">Loading src/reading-weave.js…</code></pre></figure>
+<figure class="codeblock tall"><figcaption><span>css/reading-weave.css<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-16">Copy</button></figcaption><pre tabindex="0"><code id="src-16" data-src="../../css/reading-weave.css">Loading css/reading-weave.css…</code></pre></figure>
+      </section>
+      <section aria-labelledby="api"><h2 id="api">API</h2><h3>setupCondense(data, reading, options)</h3>
+<p><code>data</code> is the parsed <code>condensed.json</code>. <code>reading</code> is the handle from <code>setupReadingWeave({ motion: false, panel: false })</code>. Returns <code>{ level, setLevel(n), reset(), destroy() }</code>, or <code>null</code> when no passage has variants.</p>
+<table class="api"><thead><tr><th scope="col">Name</th><th scope="col">Default</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>root</code></td><td><code>document</code></td><td>Where to look for the article and its sections.</td></tr><tr><td><code>article</code></td><td><code>"article.paper"</code></td><td>Selector for the article. <code>""</code> means the whole root.</td></tr><tr><td><code>sections</code></td><td><code>"section"</code></td><td>Foldable sections, inside the article.</td></tr><tr><td><code>heading</code></td><td><code>":scope &gt; h2"</code></td><td>A section's heading, inside the section.</td></tr><tr><td><code>sectionId</code></td><td>its <code>id</code></td><td>Function from a section element to its key in the data.</td></tr><tr><td><code>panel</code></td><td><code>true</code></td><td><code>true</code>: fixed at the bottom right. An element: mounted inside it. <code>false</code>: none.</td></tr><tr><td><code>storage</code></td><td><code>"eido-condense"</code></td><td>Prefix for <code>localStorage</code> keys, kept per pathname. <code>false</code> keeps nothing.</td></tr><tr><td><code>eli5</code></td><td><code>true</code></td><td><code>false</code> removes level 5 and its buttons.</td></tr><tr><td><code>params</code></td><td><code>true</code></td><td>Reads <code>?condense=N</code> and <code>?attn</code> from the URL. <code>false</code> ignores the URL.</td></tr><tr><td><code>header</code></td><td><code>".site-header"</code></td><td>A fixed header to keep content clear of.</td></tr><tr><td><code>scroller</code></td><td>window</td><td>The scrolling element, if the page does not scroll the window.</td></tr><tr><td><code>noun</code></td><td><code>"paper"</code></td><td>What the panel calls the page.</td></tr></tbody></table>
+<h3>Other exports</h3>
+<table class="api"><thead><tr><th scope="col">Export</th><th scope="col"></th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>loadCondensed(source?, { optional })</code></td><td></td><td>Fetches and parses <code>condensed.json</code> (a URL or a <code>&lt;script type="application/json"&gt;</code> element). Resolves to <code>null</code> on failure unless <code>optional: false</code>.</td></tr><tr><td><code>hashText(s), normalizeText(s)</code></td><td></td><td>FNV-1a 32-bit hash of whitespace-normalised text, as eight hex digits. This is a passage's key.</td></tr><tr><td><code>extractPassages(root, opts), extractSections(root, opts)</code></td><td></td><td>The passages and sections the module would condense, for authoring.</td></tr><tr><td><code>skeleton(passages, sections)</code></td><td></td><td>A <code>condensed.json</code> with empty slots to fill in.</td></tr><tr><td><code>validateCondensed(data, { against, strict })</code></td><td></td><td>List of problems. Empty means sound. <code>strict</code> also checks levels get shorter, TL;DR ≤ 15 words and ELI5 ≤ 40.</td></tr><tr><td><code>LEVELS, THRESHOLDS</code></td><td></td><td>Level names and ratchet thresholds.</td></tr></tbody></table>
+<p>The guide covers the authoring workflow, a prompt for drafting variants, the morph, accessibility and the CSS hooks.</p><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/condensing-prose.md">docs/condensing-prose.md</a> on GitHub.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { setupReadingWeave } from "../../src/reading-weave.js";
+    import { loadCondensed, setupCondense, LEVELS } from "../../src/condense.js";
+    const box = document.getElementById("cx-box"), wrap = document.getElementById("cx-wrap");
+    const out = document.getElementById("cx-out"), bar = document.getElementById("cx-levels");
+    const original = box.innerHTML;
+    let reading = null, cx = null, data = null, timer = 0;
+    LEVELS.forEach((name, n) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "btn small"; b.textContent = n + " " + name; b.dataset.level = n;
+      b.setAttribute("aria-pressed", n === 0 ? "true" : "false");
+      b.addEventListener("click", () => { cx?.setLevel(n); sync(); });
+      bar.append(b);
+    });
+    const sync = () => {
+      const lvl = cx ? cx.level : 0;
+      bar.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.level) === lvl)));
+      out.textContent = "level " + lvl + " · " + LEVELS[lvl] + (reading ? " · restlessness " + reading.restless.toFixed(2) : "");
+    };
+    const stop = () => { clearInterval(timer); cx?.destroy(); reading?.destroy(); cx = reading = null; box.innerHTML = original; box.scrollTop = 0; };
+    const start = () => {
+      reading = setupReadingWeave({ root: box, scroller: box, motion: false, panel: false, storage: false, params: false });
+      if (reading) cx = setupCondense(data, reading, { root: box, scroller: box, panel: wrap, storage: false, params: false, header: "", noun: "demo" });
+      if (!cx) out.textContent = "Condensing did not start (another weave may be running).";
+      timer = setInterval(sync, 400);
+      sync();
+    };
+    document.getElementById("cx-restart").addEventListener("click", () => { stop(); start(); });
+    loadCondensed("../assets/condense-demo.json", { optional: false }).then((d) => { data = d; start(); }, (e) => { out.textContent = "Could not load the demo data: " + e.message; });
+  </script>
+</body>
+</html>

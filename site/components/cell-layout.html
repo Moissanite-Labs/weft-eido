@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cell layout · Eido</title>
+  <meta name="description" content="Value-encoded cell layout: area proportional to value, golden-angle packing, spanning-tree threads.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D2</p><h1 id="t">Cell layout</h1><p class="lede">Give each visual channel one job. Here, a cell's area is its value, and nothing else.</p></div></section>
+
+    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+      <p class="crumbs"><a href="index.html">Components</a> / Cell layout</p>
+      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>Cell layout places labelled squares in a region. A cell's side is the scale times the square root of its value, so area ratios equal value ratios at every size. Position comes from rank: the biggest cells sit near the middle, and the rest spiral out at the golden angle (137.5°). The spiral is stretched to the region's shape, and the scale is fitted so everything fits.</p>
+<p>Cells in the same group are joined by the shortest set of threads that connects them (a minimum spanning tree). <code>hitTest</code> tells you which cell is under a point.</p><p>Principle: <a href="../philosophy.html#d2">D2 · Analytical geometry and reading cadence</a>.</p></section>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><div id="cell-demo"></div>
+<p class="readout">Move the pointer over the picture to hit-test. Three groups are coloured differently, and each group is threaded.</p></div></section>
+      <section aria-labelledby="use"><h2 id="use">Use it</h2>
+        <h3>1. Copy the files</h3>
+        <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/cell-layout.js">src/cell-layout.js</a><button class="copy" type="button" data-copy-text="src/cell-layout.js">Copy path</button></li></ul>
+        <p>No dependencies and no build step. Put the files anywhere your pages can import them.</p>
+        <h3>2. Paste this</h3>
+        <figure class="codeblock"><figcaption><span>index.html</span><button class="copy" type="button" data-copy-target="#code-5">Copy</button></figcaption><pre tabindex="0"><code id="code-5" class="language-html">&lt;div id=&quot;field&quot; style=&quot;position:relative;width:600px;height:360px&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;module&quot;&gt;
+  import { layoutCells, layerThreads, hitTest } from &quot;./src/cell-layout.js&quot;;
+
+  const items = [
+    { weight: 1.0, labelLength: 4 },  // labelLength is in characters
+    { weight: 0.5, labelLength: 4 },
+    { weight: 0.25, labelLength: 4 },
+  ];
+  const layout = layoutCells(items, { width: 600, height: 360 });
+  const field = document.getElementById(&quot;field&quot;);
+  for (const c of layout.cells) {
+    const box = document.createElement(&quot;div&quot;);
+    box.textContent = &quot;c&quot; + c.index;
+    box.style.cssText = &quot;position:absolute;background:#5a9892;left:&quot; + (c.x - c.half) + &quot;px;top:&quot; + (c.y - c.half) +
+      &quot;px;width:&quot; + c.side + &quot;px;height:&quot; + c.side + &quot;px&quot;;
+    field.append(box);
+  }
+  const threads = layerThreads(layout.cells, [0, 0, 1]); // group key per cell
+  console.log(threads, hitTest(layout, 300, 180)); // edges, and the index under (300, 180) or -1
+&lt;/script&gt;</code></pre></figure>
+        <h3>3. Or read the source</h3>
+        <p>These blocks are fetched from the repository when the page loads, so they always match the code.</p>
+        <figure class="codeblock tall"><figcaption><span>src/cell-layout.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-6">Copy</button></figcaption><pre tabindex="0"><code id="src-6" data-src="../../src/cell-layout.js">Loading src/cell-layout.js…</code></pre></figure>
+      </section>
+      <section aria-labelledby="api"><h2 id="api">API</h2><h3>layoutCells(items, region, options)</h3>
+<table class="api"><thead><tr><th scope="col">Option</th><th scope="col">Default</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>items</code></td><td>required</td><td>Array of <code>{ weight, labelLength }</code>. Weight is the value. Label length is in characters.</td></tr><tr><td><code>region</code></td><td>required</td><td><code>{ width, height }</code> in CSS pixels.</td></tr><tr><td><code>options.padding</code></td><td>16</td><td>Clear margin inside the region.</td></tr><tr><td><code>options.gap</code></td><td>12</td><td>Minimum clearance between cells, labels included.</td></tr><tr><td><code>options.labelGap</code></td><td>6</td><td>Space between a cell and its label.</td></tr><tr><td><code>options.labelHeight</code></td><td>10</td><td>Label cap height.</td></tr><tr><td><code>options.charWidth</code></td><td>8.4</td><td>Label advance per character.</td></tr><tr><td><code>options.maxSideFraction</code></td><td>0.3</td><td>Largest cell side as a share of the region's shorter side.</td></tr><tr><td><code>options.iterations</code></td><td>28</td><td>Bisection steps when fitting the scale.</td></tr><tr><td><code>returns</code></td><td></td><td><code>{ scale, fits, cells, bounds, region, options }</code>. Each cell has centre <code>x, y</code>, <code>side</code>, <code>half</code>, <code>labelW</code> and footprint <code>fp</code>, in region coordinates, in input order.</td></tr></tbody></table>
+<h3>Other exports</h3>
+<table class="api"><thead><tr><th scope="col">Export</th><th scope="col"></th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>layerThreads(cells, groups)</code></td><td></td><td>Minimum spanning tree (Prim) of cell centres within each group. Returns <code>[{ a, b, group }]</code>.</td></tr><tr><td><code>hitTest(layout, x, y)</code></td><td></td><td>Index of the cell whose footprint contains the point, or -1.</td></tr><tr><td><code>GOLDEN_ANGLE</code></td><td></td><td>π(3 − √5), about 137.508°, in radians.</td></tr></tbody></table><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/philosophy.md">docs/philosophy.md</a> on GitHub.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { mountCellDemo } from "../assets/demos.js";
+    mountCellDemo(document.getElementById("cell-demo"), { count: 9, width: 600, height: 360 });
+  </script>
+</body>
+</html>
