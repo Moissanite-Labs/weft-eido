@@ -1,0 +1,312 @@
+{
+ "version": 1,
+ "levels": [
+  "Full prose",
+  "Concise",
+  "Terse",
+  "Caveman"
+ ],
+ "blocks": {
+  "9c233ae4": [
+   "Developed inside ML Weft as <strong>Aywa</strong>. Weft code paths still say <code>aywa</code>.",
+   "Built inside ML Weft as <strong>Aywa</strong>; code paths still say <code>aywa</code>.",
+   "Old name: <strong>Aywa</strong>. Weft code still says <code>aywa</code>."
+  ],
+  "5490b1c0": [
+   "Citations like <code>weft/design/anew.md</code> point to design sessions in <a href=\"https://github.com/Moissanite-Labs/weft-corpus\">Moissanite-Labs/weft-corpus</a>. They are sources and hypotheses, not specifications. Each module says what is built and where.",
+   "Citations (<code>weft/design/anew.md</code>) = design sessions in <a href=\"https://github.com/Moissanite-Labs/weft-corpus\">weft-corpus</a>. Sessions: sources, hypotheses, not specs. Each module: what is built, where.",
+   "Notes point to old design talks. Talks are ideas, not rules. Each part says what is built."
+  ],
+  "8f06948c": [
+   "The sessions start from a complaint about the \"document prison\" (<code>weft/design/anew.md</code>):",
+   "Sessions start with a complaint: the \"document prison\" (<code>weft/design/anew.md</code>):",
+   "Start: complaint about \"document prison\"."
+  ],
+  "76f8b200": [
+   "<strong>Static box trees.</strong> Information becomes nested rectangles, and layout is recomputed on every content change.",
+   "<strong>Static box trees.</strong> Info = nested rectangles; layout recomputed on each content change.",
+   "<strong>Box trees.</strong> Info stuck in boxes. Change content, redo layout."
+  ],
+  "00b17d90": [
+   "<strong>Discrete themes.</strong> Style is a few fixed classes (light, dark, breakpoints) that cannot follow content density, system state or reader preference.",
+   "<strong>Discrete themes.</strong> Style = few fixed classes (light, dark, breakpoints); cannot track content density, system state, reader preference.",
+   "<strong>Themes.</strong> Few fixed styles. Style cannot move with content or reader."
+  ],
+  "793452e3": [
+   "<strong>Passive scrolling.</strong> Layered systems get one long scroll, which loses spatial memory and the relationships between parts.",
+   "<strong>Passive scrolling.</strong> Layers forced into one scroll; spatial memory, relationships lost.",
+   "<strong>Scrolling.</strong> One long scroll. Lose place, lose links between parts."
+  ],
+  "63e7b800": [
+   "Eido applies Weft's habits for models to the screen: continuous spaces, not switches; exact geometry, not approximations; compact verifiable state; feedback inside stated bounds.",
+   "Eido takes Weft's model habits to the screen: continuous spaces (no switches), exact geometry, compact verifiable state, feedback within stated bounds.",
+   "Eido puts Weft habits on screen. Smooth space, not switches. Exact shapes. Small checked state. Feedback stays in limits."
+  ],
+  "10d5d2d0": [
+   "Weft studies models that change themselves within bounds you can check. Eido is the first place that idea is built into something people use every day: an interface that changes in response to its user, within bounds they can see, check and undo.",
+   "Weft: models that change themselves within checkable bounds. Eido: first everyday use of that idea. An interface that changes in response to its user, within bounds the user can see, check, undo.",
+   "Weft: models change self, inside limits you can check. Eido: same idea for daily screens. Screen changes for you, inside limits you see, check, undo."
+  ],
+  "b4f1d8d7": [
+   "Each module can be adopted alone.",
+   "Each module works alone.",
+   "Use one alone."
+  ],
+  "ea07ee68": [
+   "Sources: <code>baryonic.md</code>, <code>discovery.md</code>, <code>core.md</code>. Built here: <code>aesthetic-mixer.js</code>, <code>simplex-pad.js</code>.",
+   "Sources: <code>baryonic.md</code>, <code>discovery.md</code>, <code>core.md</code>. Here: <code>aesthetic-mixer.js</code>, <code>simplex-pad.js</code>.",
+   "Built here: <code>aesthetic-mixer.js</code>, <code>simplex-pad.js</code>."
+  ],
+  "59cc7820": [
+   "A style is a vector <strong>a</strong> = (rounding, density, hue, contrast): a barycentric blend of <em>K</em> reference presets with weights <em>wₖ</em> ≥ 0, normalised onto the simplex.",
+   "Style = vector <strong>a</strong> = (rounding, density, hue, contrast): barycentric blend of <em>K</em> presets, weights <em>wₖ</em> ≥ 0 normalised onto simplex.",
+   "Style = four numbers: rounding, density, hue, contrast. Mix a few presets with weights. Weights add to one."
+  ],
+  "67c10cc1": [
+   "<strong>Linear tokens.</strong> Rounding, density, contrast blend linearly: <em>r = Σ ŵₖ rₖ</em>, <em>d = Σ ŵₖ dₖ</em>, <em>c = Σ ŵₖ cₖ</em>.",
+   "<strong>Linear tokens.</strong> Rounding, density, contrast: linear. <em>r = Σ ŵₖ rₖ</em>, <em>d = Σ ŵₖ dₖ</em>, <em>c = Σ ŵₖ cₖ</em>.",
+   "Rounding, density, contrast: plain weighted sum."
+  ],
+  "1c975260": [
+   "<strong>Hue on the circle.</strong> Hue is periodic on [0, 1), so a linear average gives false midpoints: crimson at 0.95 and scarlet at 0.05 average to cyan at 0.50. Eido maps each hue to an angle <em>θₖ = 2π hₖ</em> and takes the circular mean: <em>h̄ = atan2(Σ ŵₖ sin θₖ, Σ ŵₖ cos θₖ) / 2π (mod 1)</em>.",
+   "<strong>Hue on the circle.</strong> Hue is periodic on [0, 1): linear average gives false midpoints (crimson 0.95 + scarlet 0.05 = cyan 0.50). Eido maps hue to angle <em>θₖ = 2π hₖ</em>, takes circular mean: <em>h̄ = atan2(Σ ŵₖ sin θₖ, Σ ŵₖ cos θₖ) / 2π (mod 1)</em>.",
+   "<strong>Hue.</strong> Hue is a circle. Plain average of two reds gives cyan. Wrong. Use angle, take circle average."
+  ],
+  "6bdca4e2": [
+   "<strong>A triangle, not three sliders.</strong> With <em>K</em> = 3 the weights live on a 2-simplex. Three sliders cannot show the sum-to-one constraint, but a triangle can: each point inside has unique barycentric coordinates, and they are the weights. <code>simplex-pad.js</code> is that control. It takes pointer and keyboard input and reports its value to assistive technology.",
+   "<strong>Triangle, not three sliders.</strong> <em>K</em> = 3: weights live on a 2-simplex. Sliders cannot show sum-to-one; a triangle can. Each interior point has unique barycentric coordinates = the weights. <code>simplex-pad.js</code>: pointer and keyboard input, value reported to assistive technology.",
+   "<strong>Triangle.</strong> Three sliders cannot keep sum at one. Triangle can. Drag a point, get three weights. Works with pointer and keys."
+  ],
+  "2503fcee": [
+   "Sources: <code>craft.md</code>, <code>alive.md</code>, <code>feeed.md</code>. Built here: <code>glyph-font.js</code>. Built in Weft: the field shader and the cadence heuristic.",
+   "Sources: <code>craft.md</code>, <code>alive.md</code>, <code>feeed.md</code>. Here: <code>glyph-font.js</code>. Weft: field shader, cadence heuristic.",
+   "Here: glyph font. Weft: shader and cadence rule."
+  ],
+  "7edafc92": [
+   "<strong>Signed distance fields.</strong> Cells, borders, glyphs come from per-fragment signed distance functions, so they stay sharp at any zoom or pixel ratio and need no textures.",
+   "<strong>Signed distance fields.</strong> Cells, borders, glyphs from per-fragment signed distance functions: sharp at any zoom or pixel ratio, no textures.",
+   "<strong>Shape math.</strong> Shapes drawn by math, not pictures. Sharp when zoomed."
+  ],
+  "e2d90162": [
+   "<strong>Bitmask glyphs.</strong> <code>weft/design/feeed.md</code> proposes drawing text in the shader from integer bitmasks. It packs a 5×7 glyph into one <code>u32</code>, which cannot work: 35 bits don't fit in 32. <code>glyph-font.js</code> uses two words per glyph and feeds one table to WebGPU and Canvas2D, so both draw identical letters.",
+   "<strong>Bitmask glyphs.</strong> <code>feeed.md</code>: draw text in shader from integer bitmasks. One <code>u32</code> per 5×7 glyph cannot work: 35 bits > 32. <code>glyph-font.js</code>: two words per glyph, same table for WebGPU and Canvas2D, identical letters.",
+   "<strong>Glyphs.</strong> Letter needs 35 bits. One 32-bit word too small. Use two words. Same table for both renderers."
+  ],
+  "3c5fed4b": [
+   "<strong>Reading calm.</strong> A scroll-speed heuristic, not a model, gives a calm value in [0, 1] that softens grain and deepens panels while the reader dwells. <code>alive.md</code> also proposes changing line height with it. Eido does not, because that reflows the paragraph being read.",
+   "<strong>Reading calm.</strong> Scroll-speed heuristic (not a model) gives calm value in [0, 1]: softer grain, deeper panels while reader dwells. <code>alive.md</code> also proposes line-height change; Eido declines, since it reflows the paragraph being read.",
+   "<strong>Calm.</strong> Scroll speed makes a calm number. Calm number softens grain, deepens panels. Eido does not change line height. That would move the text you read."
+  ],
+  "64e99e3b": [
+   "Sources: <code>craft.md</code> (field widths, lines 136–145), <code>build.md</code>. In Weft: the SYM-2P codec (Python and JS), the telemetry worker and the 64-byte frame packer.",
+   "Sources: <code>craft.md</code> (lines 136–145), <code>build.md</code>. In Weft: SYM-2P codec (Python, JS), telemetry worker, 64-byte frame packer.",
+   "In Weft: codec, worker, frame packer."
+  ],
+  "8c5b0aa3": [
+   "<strong>One 64-byte frame.</strong> Everything the renderer needs fits in sixteen <code>float32</code>s: one cache line.",
+   "<strong>One 64-byte frame.</strong> Renderer state = sixteen <code>float32</code>s = one cache line.",
+   "<strong>Small frame.</strong> All state in sixteen numbers. One cache line."
+  ],
+  "d5800ed8": [
+   "<strong>Verify before display.</strong> Each packet carries the SHA-256 of its payload. The browser checks it with WebCrypto before any value reaches the screen. A line without a hash counts as unverified, not valid.",
+   "<strong>Verify before display.</strong> Packet carries payload SHA-256; browser checks with WebCrypto before any value reaches screen. No hash = unverified, not valid.",
+   "<strong>Check first.</strong> Every packet has a hash. Browser checks hash before showing. No hash means not trusted."
+  ],
+  "52cac34a": [
+   "Source: <code>bio.md</code>. In Weft: the field shader.",
+   "Source: <code>bio.md</code>. In Weft: field shader.",
+   "In Weft: field shader."
+  ],
+  "9f998462": [
+   "Regions behave like tissue under local rules. While a system's tension stays in its normal band, edges pulse gently in the chosen hue. As tension nears its hard limit, glow and grain change, so strain shows without a modal alert. The biology names an aim. The current implementation is a shader driven by a few numbers.",
+   "Regions act like tissue under local rules. Tension in normal band: edges pulse gently in chosen hue. Tension nears hard limit: glow and grain change, strain visible without modal alert. Biology = aim. Now: a shader driven by a few numbers.",
+   "Screen acts like living skin. Calm: edges pulse soft. Danger near: glow and grain change. You see strain, no popup. Today it is only a shader."
+  ],
+  "440bb17a": [
+   "Sources: <code>aywa.md</code>, <code>converge.md</code>. Status: <em>design</em>. An earlier w3ft.org used six \"loci\"; the current site is one page.",
+   "Sources: <code>aywa.md</code>, <code>converge.md</code>. Status: design. Old w3ft.org: six \"loci\"; now one page.",
+   "Design only. Old site had six places. Now one page."
+  ],
+  "8bb0f0cd": [
+   "People remember <em>where</em> something lives better than how far down a scroll bar it was. Eido organises a large system into a few named rooms on a persistent canvas. Choosing a room changes the words and the visual field, so each reinforces the other.",
+   "People remember <em>where</em> things live better than scroll position. Eido: a few named rooms on a persistent canvas. Choosing a room changes content and visual field; each reinforces the other.",
+   "People remember places, not scroll bars. Few named rooms, one canvas. Pick a room: words and picture change together."
+  ],
+  "92edeb1c": [
+   "Builds on D2's reading calm. Built here: <a href=\"components/reading-weave.html\"><code>reading-weave.js</code></a>, <a href=\"components/condense.html\"><code>condense.js</code></a>. Guides: <a href=\"https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/reading-weave.md\">reading weave</a>, <a href=\"https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/condensing-prose.md\">condensing prose</a>.",
+   "Builds on D2 reading calm. Here: <a href=\"components/reading-weave.html\"><code>reading-weave.js</code></a>, <a href=\"components/condense.html\"><code>condense.js</code></a>. Guides: <a href=\"https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/reading-weave.md\">weave</a>, <a href=\"https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/condensing-prose.md\">condensing</a>.",
+   "Builds on D2. Two parts: reading weave, condensing prose."
+  ],
+  "86fe7dc6": [
+   "A page usually treats every visitor the same, whether they read or race past. Eido treats how someone reads as a signal the page can answer.",
+   "Pages usually treat all visitors alike, readers or racers. Eido treats how someone reads as a signal the page can answer.",
+   "Pages treat all people same. Eido listens to how you read, and answers."
+  ],
+  "7203e6b0": [
+   "<strong>One honest signal.</strong> A restlessness score in [0, 1] rises when the reader skims: passages seen but not given time to read, sustained fast scrolling, sudden reversals, long jumps, jerky cursor movement. It falls mostly by reading. A passage counts as read at about 600 words a minute, which is lenient on purpose. The score is a heuristic, not a model of the reader, and it never leaves the page.",
+   "<strong>One honest signal.</strong> Restlessness score [0, 1] rises when reader skims: passages seen but unread, fast scrolling, sudden reversals, long jumps, jerky cursor. Falls mostly by reading. Read = about 600 words a minute (lenient on purpose). Heuristic, not a model of the reader; never leaves the page.",
+   "<strong>One signal.</strong> Score goes up when you skim. Goes down when you read. Fast scroll, jumps, jerky mouse push it up. It is a rough rule. It stays in your browser."
+  ],
+  "77ef1e47": [
+   "<em>The reading weave</em> resists skimming. Waves pass through the text: words bob as crests pass, fade in the troughs and blur. At the top of the range, links slide away from a hurried cursor. A thread is woven beside every paragraph actually read. Reading calms the page.",
+   "<em>Reading weave</em> resists skimming. Waves pass through text: words bob as crests pass, fade in troughs, blur. Top of range: links slide from a hurried cursor. Thread woven beside every paragraph actually read. Reading calms the page.",
+   "<em>Reading weave</em> fights skimming. Text ripples. Links run from fast mouse. Thread by what you read. Read slow, page calms."
+  ],
+  "767583e8": [
+   "<em>Condensing prose</em> meets the skimmer instead. Each time the score crosses a step, passages still on screen are rewritten shorter: full, concise with proper grammar, terse, caveman, then a one-line TL;DR per section. An ELI5 button then offers a plain explanation. Surviving words stay in place; the rest strike through and collapse.",
+   "<em>Condensing prose</em> meets the skimmer instead. Each time the score crosses a step, passages on screen shrink: full, concise, terse, caveman, one-line TL;DR per section. ELI5 button then offers a plain explanation. Surviving words stay; rest strike through, collapse.",
+   "<em>Condensing</em> shrinks text when you skim. Each step is shorter. Last step: one line per section. Then a button for simple words."
+  ],
+  "132fb289": [
+   "A panel shows the score, says what is happening and why, and has a lasting off switch.",
+   "Panel: shows score, says what and why, has persistent off switch.",
+   "Panel shows score. Has off switch."
+  ],
+  "f1d661ff": [
+   "The focused element never moves, text stays text for assistive technology, displacement is capped, a still cursor settles a link, and nothing moves under <code>prefers-reduced-motion</code>.",
+   "Focused element never moves; text stays text for assistive technology; displacement capped; still cursor settles a link; no motion under <code>prefers-reduced-motion</code>.",
+   "Focused thing never moves. Text stays text. Moves are small. No motion if you ask for none."
+  ],
+  "2e21d276": [
+   "Condensing is a ratchet that only the reader can turn back. Passages already read stay as written. Every condensed passage ends with ≈, and pressing and holding it shows the original. Print shows the full text.",
+   "Condensing = ratchet; only the reader turns it back. Passages already read stay as written. Condensed passages end with ≈; press and hold shows the original. Print shows full text.",
+   "Text only gets shorter. Only you can undo it. Read parts stay. Mark ≈ means shortened. Hold it to see original."
+  ],
+  "af7a325d": [
+   "<strong>Authored, not generated in the page.</strong> Condensed variants are written ahead of time and shipped as <code>condensed.json</code>, keyed by a hash of each passage's text. The page never calls a model, so readers see what an author approved.",
+   "<strong>Authored, not generated in the page.</strong> Variants written ahead, shipped as <code>condensed.json</code>, keyed by hash of passage text. Page never calls a model; readers see what an author approved.",
+   "<strong>Written by author.</strong> Short versions made ahead, in a file. Page does not ask a model. You see what the author approved."
+  ],
+  "a60b6224": [
+   "The two answers suit different pages. A landing page meant to be read slowly suits the reading weave. A long paper where readers may need only the gist suits condensing prose.",
+   "Two answers, different pages. Landing page to be read slowly: reading weave. Long paper where gist may do: condensing prose.",
+   "Slow-read page: weave. Long page, quick gist: condensing."
+  ],
+  "6ecaaf8d": [
+   "<a href=\"components/cell-layout.html\"><code>src/cell-layout.js</code></a> lays out cells so each visual channel encodes exactly one quantity, and the legend can say so:",
+   "<a href=\"components/cell-layout.html\"><code>src/cell-layout.js</code></a>: each visual channel encodes one quantity; the legend says so:",
+   "One visual channel, one quantity:"
+  ],
+  "7a756a13": [
+   "Layout runs on the CPU in CSS pixels, and the renderer gets exact rectangles. It never assumes an aspect ratio.",
+   "Layout on CPU, CSS pixels; renderer gets exact rectangles. No assumed aspect ratio.",
+   "CPU does layout. Screen gets exact boxes. Any shape works."
+  ],
+  "8b141991": [
+   "<strong><a href=\"https://w3ft.org\">w3ft.org</a></strong> uses D1 directly. Its \"style as a point in space\" demo runs <code>simplex-pad.js</code> and <code>aesthetic-mixer.js</code> from here.",
+   "<a href=\"https://w3ft.org\">w3ft.org</a> uses D1: its \"style as a point in space\" demo runs <code>simplex-pad.js</code>, <code>aesthetic-mixer.js</code> from here.",
+   "w3ft.org uses D1. Demo runs the pad and mixer from here."
+  ],
+  "3b88271e": [
+   "<strong>w3ft.org</strong> is also where D6 started. Its homepage runs the reading weave, and its papers condense when skimmed.",
+   "w3ft.org is also where D6 started: homepage runs the reading weave, papers condense when skimmed.",
+   "D6 started at w3ft.org. Home page ripples. Papers shrink."
+  ],
+  "f52ac4d4": [
+   "<strong>The <a href=\"https://moissanite-labs.github.io/weft-eido/\">Eido site</a></strong> runs every module on itself: its home page ripples, its philosophy page condenses, and each component has a demo and source to copy.",
+   "<a href=\"https://moissanite-labs.github.io/weft-eido/\">Eido site</a> runs every module on itself: home ripples, philosophy condenses, each component has a demo and source to copy.",
+   "This site uses its own parts. Home ripples. This page shrinks. Each part has demo and code."
+  ],
+  "bc0cdaac": [
+   "<strong><a href=\"https://github.com/Moissanite-Labs/weft\">ML Weft</a></strong> builds its telemetry field from D1–D4: <code>weft-loom.js</code>, the WGSL shader and the SYM-2P worker live there, importing these modules.",
+   "ML Weft builds its telemetry field from D1–D4: <code>weft-loom.js</code>, WGSL shader, SYM-2P worker, importing these modules.",
+   "Weft builds its live screen from D1 to D4, using these parts."
+  ]
+ },
+ "headings": {
+  "why": [
+   "1. Why another foundation",
+   "1. Why another?",
+   "Why",
+   "Why",
+   "Why something new?"
+  ],
+  "modules": [
+   "2. Six modules",
+   "2. Six modules",
+   "Modules",
+   "Modules",
+   "What is in it?"
+  ],
+  "d1": [
+   "D1 · Style as a point in a continuous space",
+   "D1 · Style as a point in space",
+   "D1 · Style as a point",
+   "Style",
+   "What is a style?"
+  ],
+  "d2": [
+   "D2 · Analytical geometry and reading cadence",
+   "D2 · Geometry and cadence",
+   "D2 · Shapes and calm",
+   "Geometry",
+   "How does it draw?"
+  ],
+  "d3": [
+   "D3 · Compact, verified state",
+   "D3 · Compact, checked state",
+   "D3 · Checked state",
+   "Verified state",
+   "Can I trust it?"
+  ],
+  "d4": [
+   "D4 · Surfaces that show strain",
+   "D4 · Surfaces showing strain",
+   "D4 · Strain shows",
+   "Strain",
+   "Is it stressed?"
+  ],
+  "d5": [
+   "D5 · Places, not pages",
+   "D5 · Places, not pages",
+   "D5 · Places",
+   "Places",
+   "Where am I?"
+  ],
+  "d6": [
+   "D6 · Text that answers how it is read",
+   "D6 · Text answers how it is read",
+   "D6 · Text answers reading",
+   "Reading",
+   "Does it watch me?"
+  ],
+  "fields": [
+   "3. Value-encoded fields",
+   "3. Value-encoded fields",
+   "3. Fields",
+   "Fields",
+   "How big is a cell?"
+  ],
+  "in-use": [
+   "4. Eido in use",
+   "4. Eido in use",
+   "4. In use",
+   "Use",
+   "Who uses it?"
+  ]
+ },
+ "tldr": {
+  "why": "Static boxes, fixed themes and passive scrolling fall short; Eido uses continuous, checkable design.",
+  "modules": "Six modules; adopt any one on its own.",
+  "d1": "A style is a blend of presets; hue averages on a circle; drag a triangle.",
+  "d2": "Shapes come from math, text from number tables; reading speed sets a calm value.",
+  "d3": "State fits in one small frame, and a hash is checked before showing.",
+  "d4": "Screen regions pulse calmly, then change glow and grain as strain rises.",
+  "d5": "Design idea: a few named rooms on one canvas; not built.",
+  "d6": "A skim score makes text ripple or condense; the reader can see, check, undo.",
+  "fields": "Each visual channel carries one quantity; area is value, laid out on the CPU.",
+  "in-use": "w3ft.org, this site and ML Weft already use these modules."
+ },
+ "eli5": {
+  "why": "Web pages are stiff. They are boxes, a few fixed looks, and one long scroll. Eido wants pages that bend, like clay, so they fit the person reading, but only in ways that person can see and undo.",
+  "modules": "Eido is a toolbox with six tools. You can pick up one tool without taking the rest, like using only the hammer from a toolbox.",
+  "d1": "A style is like a paint mix of a few base looks. A triangle lets you slide between them, and the three amounts always add to one. Colours mix around a wheel, so two reds stay red.",
+  "d2": "Letters can be a list of dots, like a connect-the-dots card. Shapes made by math stay sharp when you zoom. A page can also notice how fast you read and soften when you slow down.",
+  "d3": "Imagine a sealed note. The note is tiny, and it has a stamp. Before you read it, you check the stamp matches. No stamp, and you do not trust the note.",
+  "d4": "Skin goes red when you push on it. A screen can show stress too. While a system is calm, edges pulse softly. Near its limit, glow and grain change, so you see the strain without a popup.",
+  "d5": "You remember where your bedroom is, not how far down a hallway it sits. Eido imagines a few named rooms. Pick a room and both the words and the picture change. This idea is only a design so far.",
+  "d6": "When you race through a page, it notices. Then it can ripple to slow you down, or shrink to a short version. Read carefully and it calms. You can switch it off, and nothing leaves your browser.",
+  "fields": "Picture a map where bigger circles mean bigger numbers. Each thing in the picture, like size and place, tells you one fact only. The computer works out the sizes first, then hands the drawing tool exact boxes.",
+  "in-use": "Eido is not just an idea. A website, this site, and a research project already use pieces of it. This page you are reading is one of them: it shrinks if you skim."
+ }
+}

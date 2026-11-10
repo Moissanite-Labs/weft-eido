@@ -1,0 +1,366 @@
+{
+ "version": 1,
+ "levels": [
+  "Full prose",
+  "Concise",
+  "Terse",
+  "Caveman"
+ ],
+ "blocks": {
+  "8c6dcb82": [
+   "ML Weft is an open research program from Moissanite Labs. It studies models that keep adapting after deployment, within limits a program can verify. Each model is a <em>cell</em>: bounded memory with a frozen core, a budget, and a rule that commits a change only within a measured distance of a saved baseline. Weft also builds compact verifiable formats and Eido, a design language for honest live-state interfaces; further out, purpose-built hardware and governance. Every component is labelled <em>running and tested</em>, <em>simulated</em>, or <em>design only</em>. Weft is not a product, has no token, and its biological vocabulary describes aims, not achievements. See Paper 1, <em>Models as Cells</em>, and Paper 2, <em>Checkable Computation</em>.",
+   "ML Weft: open research, Moissanite Labs. Models that keep adapting after deployment, within limits a program can verify. Model = <em>cell</em>: bounded memory, frozen core, budget, rule committing change only near saved baseline. Plus verifiable formats, Eido design language, hardware, governance. Components labelled <em>running and tested</em>, <em>simulated</em> or <em>design only</em>. Not a product, no token; biology words = aims. Paper 1 <em>Models as Cells</em>, Paper 2 <em>Checkable Computation</em>.",
+   "ML Weft = research. Model learn after ship. Each model one <em>cell</em>: small, hard core, budget, gate. Gate say no to big change. Not product. No token. Cell words mean wish, not done. Say what run and test, what only pretend, what only dream. See Paper 1, Paper 2."
+  ],
+  "629e3fdd": [
+   "Models are mostly built once, then frozen. Change means a retraining or fine-tuning run that someone starts, watches and accepts. That worked while change was rare. It strains as models move onto personal devices, adapt to users, and act as agents nobody watches.",
+   "Models mostly built once, then frozen. Change = deliberate retrain someone watches. Breaks on personal devices, per-user adaptation, long-running agents: small continual changes, no one watching.",
+   "Old model stop learn. New model keep learn. Nobody watch."
+  ],
+  "aea4f4ae": [
+   "Adaptation without limits is a safety problem. A self-rewriting model can drift from its approved behaviour. Today’s limits are mostly procedural: reviews, evaluations, policies. Rarely <em>executable</em>: a predicate run on every update that refuses those crossing a line.",
+   "Unlimited adaptation = safety problem. Self-rewriting model can drift from approved behaviour. Limits today procedural (reviews, evals, policy), rarely <em>executable</em>: predicate on every update, refuses line-crossers.",
+   "Model change self, may go bad. Rule only talk. Want rule in code, say no."
+  ],
+  "76b6a381": [
+   "Weft asks what making those limits executable would take. It starts small: one weight matrix in memory, then works outward.",
+   "Weft: make limits executable. Start smallest: one weight matrix in memory, then outward.",
+   "Weft make rule real. Start small. One matrix."
+  ],
+  "ac7d2e86": [
+   "Five rules drive the program, more than any diagram.",
+   "Five rules. Shape code > diagrams.",
+   "Five rule. Rule boss."
+  ],
+  "e638e3bb": [
+   "<strong>Bound change from a baseline.</strong> Weights may move only a fixed distance from approved ones, measured from baseline, not yesterday’s, so small steps can’t add up (Paper 1, §4).",
+   "<strong>Bound change.</strong> Move ≤ fixed distance from approved baseline, not yesterday’s weights → no creeping drift (Paper 1 §4).",
+   "<strong>Stay near saved model.</strong> Small step not add up."
+  ],
+  "dc057c32": [
+   "<strong>Stated is not checked.</strong> Safety properties are functions, tested on shared vectors, run on the real path. Docs say what is enforced, what only intended.",
+   "<strong>Stated ≠ checked.</strong> Safety rule = tested function on live path. Docs: enforced vs intended.",
+   "<strong>Say not check.</strong> Rule run in code."
+  ],
+  "9fdb78ff": [
+   "<strong>Keep the vision, label the evidence.</strong> Biological words (<em>cell, membrane, mitosis, homeostasis</em>) name behaviour aimed for. Each gets a plain note on what code does today (<a href=\"https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md\">glossary</a>).",
+   "<strong>Vision words, evidence labels.</strong> Bio terms (<em>cell, membrane, mitosis, homeostasis</em>) = aims. Each paired w/ what code does today (<a href=\"https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md\">glossary</a>).",
+   "<strong>Fancy word.</strong> Mean wish. <a href=\"https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md\">Glossary</a> say what code do."
+  ],
+  "69ca6438": [
+   "<strong>Small interfaces.</strong> Narrow formats, exact layouts, integrity checks: 64-byte frame, hashed message line, binary graph format. Each fully specified, tested in several languages.",
+   "<strong>Small interfaces.</strong> Exact narrow formats: 64-byte frame, hashed line, binary graph. Fully specified, multi-language tested.",
+   "<strong>Small box.</strong> Piece talk by tiny message. Easy check."
+  ],
+  "01d09eae": [
+   "<strong>Nothing live.</strong> No contracts deployed, no weights shipped between machines, no privileged hardware. No token.",
+   "<strong>Nothing live.</strong> Local only. No token.",
+   "<strong>Not live.</strong> No token."
+  ],
+  "df6b7c53": [
+   "Seven components (C1–C7), joined by numbered interfaces (I1–I7). See Figure 1.",
+   "7 components C1–C7, interfaces I1–I7. Fig. 1.",
+   "Seven part. Picture."
+  ],
+  "56e376bf": [
+   "<strong>C1 · Plasm: the cell.</strong> A fixed 540,688-byte shared-memory arena holds one weight matrix and telemetry. Each generation, the cell proposes two candidate updates (cautious, exploratory), scores the exact matrices it would commit, and commits at most one. A quarter of rows are a frozen, watermarked core. <em>Status: runs, tested.</em>",
+   "<strong>C1 Plasm = cell.</strong> Fixed 540,688-byte shared-memory arena: 1 weight matrix + telemetry. Each gen: 2 candidates (cautious, exploratory), score exact matrices, commit ≤1. Quarter of rows = frozen watermarked core. <em>Runs, tested.</em>",
+   "<strong>C1 Plasm.</strong> Cell in fixed memory box. Try two change, keep one or none. Core never move. <em>Run, test.</em>"
+  ],
+  "a9eb2e10": [
+   "<strong>C2 · Invariants: the safety gate.</strong> Pure predicate: accept an update only if ‖W′ − W₀‖F ≤ R and b ≥ c > 0, rejecting non-finite values first. Written in Python, C11 and JavaScript. Python and JS pass one shared JSON file of conformance vectors; C passes hand-copied cases, and running the shared file in C is open. <em>Status: runs, tested.</em>",
+   "<strong>C2 Invariants = gate.</strong> Pure predicate: accept iff ‖W′ − W₀‖F ≤ R and b ≥ c > 0; non-finite rejected first. Python, C11, JS. Python + JS share conformance vectors; C hand-copied cases only. <em>Runs, tested.</em>",
+   "<strong>C2 Gate.</strong> Gate measure change. Change too big? No. Number broken? No. Code in Python, C, JS. <em>Run, test.</em>"
+  ],
+  "0399865f": [
+   "<strong>C3 · IC: checkable computation.</strong> A reducer for <em>interaction combinators</em> (Lafont’s minimal graph-rewriting model) in a flat array. Its execution record commits to the initial graph, every step and the final graph with SHA-256. Extra node types route reductions through the safety gate. <em>Status: runs, tested. Confluence of this variant is not proven.</em> <a href=\"https://w3ft.org/papers/checkable-computation/\">Paper 2</a> tests it.",
+   "<strong>C3 IC = checkable computation.</strong> <em>Interaction combinators</em> (Lafont) reducer. Whole run committed w/ SHA-256. Extra nodes route via gate. <em>Runs, tested. Confluence not proven.</em> <a href=\"https://w3ft.org/papers/checkable-computation/\">Paper 2</a>.",
+   "<strong>C3 IC.</strong> Graph game (Lafont). Every step locked with SHA-256. <em>Run, test. Confluence not proven.</em>"
+  ],
+  "91ee9f56": [
+   "<strong>C6 · Telemetry.</strong> Host metrics fill a 64-byte frame of sixteen floats (I1). Live state travels as a compact line (I2) carrying a payload and its SHA-256. It is an early dialect; Weft’s messaging protocol is now <a href=\"https://github.com/Moissanite-Labs/abios\">abios</a>, and moving telemetry onto it is open work. The hash detects accidental corruption, not tampering, and skips the header (Paper 2, §6.6). <em>Status: runs, tested. Website data is a labelled fixture, not a live feed.</em>",
+   "<strong>C6 Telemetry.</strong> 64-byte frame, sixteen floats (I1). Live state = compact line (I2): payload + SHA-256. Early dialect; messaging now <a href=\"https://github.com/Moissanite-Labs/abios\">abios</a> (porting = open). Hash catches accidents, not tampering; skips header (Paper 2 §6.6). <em>Runs, tested. Website data = labelled fixture, not live feed.</em>",
+   "<strong>C6 Telemetry.</strong> Number go in 64-byte box. State go as short line with hash. Hash catch accident, not thief. <em>Run, test. Website number not live. Label say so.</em>"
+  ],
+  "c7376235": [
+   "<strong>C7 · Browser field.</strong> WebGPU (Canvas2D fallback) draws live state as a field of cells. A worker checks each packet’s hash first. <em>Status: runs, tested in Node and Chromium.</em>",
+   "<strong>C7 Browser field.</strong> WebGPU/Canvas2D draws cells. Worker verifies hash before display. <em>Runs, tested (Node, Chromium).</em>",
+   "<strong>C7 Field.</strong> Show cell. Check hash first. <em>Run, test.</em>"
+  ],
+  "cd61e9b3": [
+   "<strong>C4 and C5 · Ledger research.</strong> Three Solidity drafts explore provenance, metering and disputes. An offline simulator exercises their logic without a chain. <em>Status: research drafts, not compiled in CI and deployed nowhere. The simulator only simulates.</em> Weight commitments (I7) are not specified yet.",
+   "<strong>C4 + C5 Ledger research.</strong> 3 Solidity drafts: provenance, metering, disputes. Offline simulator. <em>Research drafts: not compiled in CI, deployed nowhere. Simulator only simulates.</em> I7 weight commitments not specified.",
+   "<strong>C4 C5 Ledger.</strong> Only draft. Not build in CI. Not live anywhere. Simulator only pretend."
+  ],
+  "d68670a6": [
+   "CI runs Python, C, Node and browser tests on every change, then requires a clean working tree: no test may rewrite tracked files.",
+   "CI runs all tests per change; tree must stay clean.",
+   "Robot run test. Test not change file."
+  ],
+  "e26cfa38": [
+   "Four horizons, each keeping the last one’s interfaces. Directions, not dates.",
+   "4 horizons, interfaces kept. Directions ≠ dates.",
+   "Four step. No date."
+  ],
+  "6a2840eb": [
+   "<strong>Horizon 0: symbolic seed.</strong> Compact checkable language for agents; claims audited against things that can fail. <em>In use.</em>",
+   "<strong>H0 symbolic seed.</strong> Checkable agent language + claim auditing. <em>In use.</em>",
+   "<strong>H0 Seed.</strong> Agent talk. <em>In use.</em>"
+  ],
+  "a2e64078": [
+   "<strong>Horizon I: cells on a laptop.</strong> Cells in unified memory on hardware like Apple Silicon, behind the gate. CPU path runs today. Next: calibration on trained networks, low-rank adapters, MPS measurements, mechanised gate proof. <em>In progress.</em>",
+   "<strong>H-I cells on laptop.</strong> Unified memory (Apple Silicon) + gate. CPU path runs. Next: trained-net calibration, low-rank adapters, MPS, mechanised gate proof. <em>In progress.</em>",
+   "<strong>H1 Laptop.</strong> Cell on laptop. CPU work now. <em>Still build.</em>"
+  ],
+  "5b94c929": [
+   "<strong>Horizon II: physical loom.</strong> Make the gate hard to bypass by moving it down the stack, in three stages:",
+   "<strong>H-II loom.</strong> Push gate down stack, 3 stages:",
+   "<strong>H2 Loom.</strong> Gate go deep."
+  ],
+  "c22ab33e": [
+   "a minimal kernel owning weight memory;",
+   "kernel owns weight memory;",
+   "kernel own weight;"
+  ],
+  "ac4fec79": [
+   "a controller refusing writes outside the baseline ball;",
+   "controller blocks out-of-ball writes;",
+   "chip say no;"
+  ],
+  "794c9619": [
+   "later, fabrics mapping graph reduction onto physical layout.",
+   "later: graph reduction → physical layout.",
+   "graph in metal."
+  ],
+  "1f7cc2e7": [
+   "None built yet. <em>Design research.</em>",
+   "Not built. <em>Design research.</em>",
+   "Not built. Idea."
+  ],
+  "6f0951fd": [
+   "<strong>Horizon III: shared weave.</strong> Social questions:",
+   "<strong>H-III weave:</strong> social questions:",
+   "<strong>H3 Weave.</strong> Who?"
+  ],
+  "2b7f9f98": [
+   "whose work a model carries; credit after fine-tuning;",
+   "whose work, kept after fine-tuning;",
+   "who get credit;"
+  ],
+  "0bc33fd0": [
+   "how to meter fairly;",
+   "fair use metering;",
+   "fair count;"
+  ],
+  "a7bfc4c7": [
+   "who may loosen limits;",
+   "who loosens limits;",
+   "who boss;"
+  ],
+  "76b82337": [
+   "how decisions are appealed, and when maintainers change.",
+   "appeals; when maintainers change.",
+   "appeal; new boss."
+  ],
+  "56c05259": [
+   "Notes compare <em>stated</em> rules (human approval, dual signatures) with what example contracts enforce (often one privileged key): the first research problem. <em>Design research.</em> Paper 4 (planned).",
+   "<em>Stated</em> rules (dual signatures) vs actual (often 1 privileged key) = first research problem. <em>Design research.</em> Paper 4 planned.",
+   "Rule say two key. Code often one. <em>Design research.</em>"
+  ],
+  "4f124b4b": [
+   "Unseen state can’t be supervised, so interfaces are part of safety. <strong>Eido</strong> (internal name <em>Aywa</em>) is Weft’s design language. A style is a point in a continuous space, not a fixed theme. Styles blend with barycentric weights; hue averages on a circle, so reds don’t become cyan. Each visual channel encodes one quantity. Modules live in <a href=\"https://github.com/Moissanite-Labs/weft-eido\">Moissanite-Labs/weft-eido</a> and run the demos on <a href=\"https://w3ft.org\">w3ft.org</a>. Paper 3 is in preparation.",
+   "State must be visible to supervise. <strong>Eido</strong> (internal name <em>Aywa</em>) = Weft’s design language: style = point in continuous space, barycentric blends; hue averaged on circle (reds ≠ cyan). One quantity per visual channel. Code: <a href=\"https://github.com/Moissanite-Labs/weft-eido\">weft-eido</a>, demos <a href=\"https://w3ft.org\">w3ft.org</a>. Paper 3 in preparation.",
+   "No see state, no watch state. <strong>Eido</strong> show state true. Style not fixed: style is mix, like paint. Red mix red, no get blue. Paper 3 later."
+  ],
+  "f57fc214": [
+   "<strong>Not a product.</strong> Early research: small experiments, not production systems.",
+   "<strong>Not product.</strong> Early research.",
+   "<strong>No product.</strong> Just test."
+  ],
+  "2fe07798": [
+   "<strong>Not a token or financial instrument.</strong> No coin, no sale, nothing on any blockchain. Ledger drafts study attribution and disputes only.",
+   "<strong>Not a token.</strong> No coin, no sale, nothing on-chain. Ledger drafts = research only.",
+   "<strong>No token.</strong> No coin. No sell."
+  ],
+  "ca950c95": [
+   "a style or policy a living person leaves behind: consent, specification;",
+   "style/policy person leaves: consent + spec;",
+   "live person leave style;"
+  ],
+  "47878f5e": [
+   "a model predicting a person’s choices, testable while they live;",
+   "model predicting choices; testable while alive;",
+   "model guess choice;"
+  ],
+  "d29b59b8": [
+   "a person or experience surviving: no claim by Weft.",
+   "survival of person: no claim.",
+   "survive? No claim."
+  ],
+  "4964c4d1": [
+   "<strong>Not finished biology.</strong> Cellular words name ideals. Where code is simpler (e.g. “tension” = function of distance), papers say so.",
+   "<strong>Not finished biology.</strong> Cell words = ideals; “tension” = function of distance today.",
+   "<strong>Biology not done.</strong> Word big, code small."
+  ],
+  "91deda54": [
+   "Weft began as a long design conversation between a person and AI assistants, kept verbatim in <a href=\"https://github.com/Moissanite-Labs/weft-corpus\">weft-corpus</a>. It often <em>narrates</em> things that never happened, like contracts “sealed on-chain”. An evidence ledger tracks what was kept, repaired or set aside, and a claims register tracks each claim’s status. Repairs:",
+   "Origin: long design chat, person + AI assistants, kept verbatim (<a href=\"https://github.com/Moissanite-Labs/weft-corpus\">weft-corpus</a>). Often <em>narrates</em> things that never happened (contracts “sealed on-chain”). So: evidence ledger + claims register. Repairs:",
+   "Weft start as long talk, person and AI. Talk say many thing that never happen. So check all. Fix:"
+  ],
+  "3fbca705": [
+   "the check compared matrix <em>sizes</em>, not distance between them;",
+   "check compared <em>sizes</em>, not distance;",
+   "measure size, not distance;"
+  ],
+  "ef92a0cd": [
+   "budget decremented before being checked;",
+   "budget decremented pre-check;",
+   "pay first;"
+  ],
+  "9de9af6a": [
+   "verification accepted a missing hash.",
+   "missing hash = valid.",
+   "no hash, ok."
+  ],
+  "e35963c9": [
+   "AI tools help write code and docs, reviewed via pull requests. A person signs off every commit (Developer Certificate of Origin).",
+   "AI-assisted code + docs, PR-reviewed. Person signs off each commit (DCO).",
+   "AI help. Person sign every commit."
+  ],
+  "9aa25e6f": [
+   "Each paper is versioned, names its commit, and gives reproduction commands.",
+   "Papers: versioned, commit named, repro commands.",
+   "Paper say how redo."
+  ],
+  "708af4b8": [
+   "Code is Apache 2.0, documents CC BY 4.0. Best contributions make a claim testable or show one is wrong. See the contributing guide and open issues, for example:",
+   "Apache 2.0 code, CC BY 4.0 docs. Best help: make claim testable, or break one. Open issues:",
+   "Code free. Best help: test claim, or prove claim wrong:"
+  ],
+  "6bfc828a": [
+   "one Python/C conformance corpus;",
+   "Python+C conformance corpus;",
+   "shared test;"
+  ],
+  "cfc62de2": [
+   "state contracts for reducer;",
+   "reducer state contracts;",
+   "graph rule;"
+  ],
+  "d2c26636": [
+   "compile ledger drafts locally;",
+   "compile ledger locally;",
+   "build draft;"
+  ],
+  "ebbd5732": [
+   "honest telemetry labels;",
+   "telemetry labels;",
+   "labels;"
+  ]
+ },
+ "headings": {
+  "abstract": [
+   "Summary",
+   "Gist",
+   "Big idea",
+   "TL;DR",
+   "What’s this about?"
+  ],
+  "the-problem": [
+   "1. The problem",
+   "1. Problem",
+   "Why care",
+   "Problem",
+   "What’s the problem?"
+  ],
+  "principles": [
+   "2. Principles",
+   "2. Rules",
+   "Rules",
+   "Five rules",
+   "What are the rules?"
+  ],
+  "architecture": [
+   "3. Architecture",
+   "3. Parts",
+   "Parts",
+   "Seven parts",
+   "What are the pieces?"
+  ],
+  "evidence-status": [
+   "4. Evidence",
+   "4. Proof",
+   "What works",
+   "Status",
+   "What really works?"
+  ],
+  "horizons": [
+   "5. Horizons",
+   "5. Roadmap",
+   "Future",
+   "Roadmap",
+   "What comes next?"
+  ],
+  "eido-the-design-language": [
+   "6. Eido design",
+   "6. Eido",
+   "Eido look",
+   "Eido",
+   "How does it look?"
+  ],
+  "what-weft-is-not": [
+   "7. Non-claims",
+   "7. Not this",
+   "Not this",
+   "Not claims",
+   "What isn’t it?"
+  ],
+  "origins-and-method": [
+   "8. Origins",
+   "8. Origin",
+   "Where from",
+   "Origins",
+   "Where did it come from?"
+  ],
+  "the-paper-series": [
+   "9. Paper series",
+   "9. Papers",
+   "Papers",
+   "Series",
+   "Where are the other papers?"
+  ],
+  "taking-part": [
+   "10. Get involved",
+   "10. Join",
+   "Join",
+   "Join in",
+   "How can I help?"
+  ]
+ },
+ "tldr": {
+  "abstract": "Weft studies models that keep learning within checkable limits, with every claim labelled.",
+  "the-problem": "Self-adapting models need limits that code enforces, not just policies.",
+  "principles": "Five rules: bound change, test rules, label evidence, keep interfaces small, run nothing live.",
+  "architecture": "Seven components: most run and are tested; the ledger drafts are only research.",
+  "evidence-status": "A table of what runs today and what is not yet shown.",
+  "horizons": "Four horizons, directions not dates: only the first is in use.",
+  "eido-the-design-language": "Eido is a design language for honest live state; its paper is in preparation.",
+  "what-weft-is-not": "Not a product, no token, no claims about minds, not finished biology.",
+  "origins-and-method": "Born from AI chats; the first job was separating real results from narrated ones.",
+  "the-paper-series": "Papers 0 to 2 are published, 3 is in preparation, 4 is planned.",
+  "taking-part": "Open code and documents; best contributions make a claim testable or wrong."
+ },
+ "eli5": {
+  "abstract": "Some programs keep learning after people start using them. Weft asks how to keep that safe, like a kite that can move but only as far as its string. Every part is labelled <em>works</em>, <em>pretend</em> or <em>just an idea</em>.",
+  "the-problem": "Most programs that learn stop once they are built. Soon some will keep changing by themselves, with nobody watching. Rules on paper are easy to ignore, so Weft wants rules the computer checks on every change.",
+  "principles": "Weft follows five rules. A program may only wander a short way from an approved version, like a dog on a leash. Rules get tested, claims get honest labels, parts stay small, and nothing touches the real world.",
+  "architecture": "Weft is built from seven parts, like toy blocks. One part is a <em>gate</em>, a bouncer that checks every change. Most parts really run and are tested. Some are only drafts or practice runs.",
+  "evidence-status": "This is the honest report card. For each part it says what really works today and what nobody has shown yet. Things not listed as working, like real money or custom chips, do not exist yet.",
+  "horizons": "There are four steps, and they are plans, not dates. Only the first, a shared language for programs to talk, is in use. The second is being worked on. The last two are ideas still on paper.",
+  "eido-the-design-language": "Eido is a way of designing screens that show what a program is really doing, like a trustworthy car dashboard. If you cannot see what a program does, you cannot supervise it. Its paper is still being written.",
+  "what-weft-is-not": "Weft is not something you can buy, and it has no coins or tokens. It does not claim to make minds or bring anyone back. Words like <em>cell</em> name what the team hopes to build, not what exists.",
+  "origins-and-method": "Weft began as a long chat between a person and AI helpers. The chat described things that never happened. So the first job was sorting real from pretend, like checking a story against what truly occurred.",
+  "the-paper-series": "The research is split into five papers, like chapters. The first three are finished and out. The fourth is still being written, and the fifth is only a plan.",
+  "taking-part": "Anyone can use and share the work, because it is open. The best way to help is to test a claim and see if it holds up. Finding a mistake is just as useful as confirming something."
+ }
+}

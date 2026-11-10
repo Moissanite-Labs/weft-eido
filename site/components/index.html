@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Components · Eido</title>
+  <meta name="description" content="Every Eido module, with a live demo, the files to copy and the full source.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Components</p><h1 id="t">Six small modules</h1><p class="lede">Each one is a plain ES module with no dependencies and no build step. Each page has a live demo, the files to copy, a snippet that works when pasted, and the full source.</p></div></section>
+    <section class="block"><div class="wrap"><div class="comp-list">
+      <a class="card" href="aesthetic-mixer.html"><div class="tag-row"><span class="id">D1</span><span class="badge here">src/aesthetic-mixer.js</span></div><h3>Aesthetic mixer</h3><p>Blends style presets with barycentric weights. Hue averages on the circle.</p></a>
+      <a class="card" href="simplex-pad.html"><div class="tag-row"><span class="id">D1</span><span class="badge here">src/simplex-pad.js</span></div><h3>Simplex pad</h3><p>A triangle control. The point you drag is the weight vector.</p></a>
+      <a class="card" href="cell-layout.html"><div class="tag-row"><span class="id">D2</span><span class="badge here">src/cell-layout.js</span></div><h3>Cell layout</h3><p>Cell area follows value. Golden-angle packing fitted to any region.</p></a>
+      <a class="card" href="glyph-font.html"><div class="tag-row"><span class="id">D2</span><span class="badge here">src/glyph-font.js</span></div><h3>Glyph font</h3><p>A 5×7 bitmask font, two 32-bit words per glyph, the same table for GPU and Canvas.</p></a>
+      <a class="card" href="reading-weave.html"><div class="tag-row"><span class="id">D6</span><span class="badge here">src/reading-weave.js</span></div><h3>Reading weave</h3><p>Text ripples when you skim. Reading calms it.</p></a>
+      <a class="card" href="condense.html"><div class="tag-row"><span class="id">D6</span><span class="badge here">src/condense.js</span></div><h3>Condensing prose</h3><p>An article condenses, level by level, as you skim.</p></a>
+    </div></div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

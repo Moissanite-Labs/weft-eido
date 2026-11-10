@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eido · reading weave example</title>
+  <link rel="stylesheet" href="../css/reading-weave.css">
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; background: var(--eido-paper); color: var(--eido-ink); font: 18px/1.65 Georgia, "Times New Roman", serif; }
+    header, main, footer { max-width: 40rem; margin: 0 auto; padding: 0 16px 0 28px; box-sizing: border-box; }
+    header { display: flex; gap: 18px; padding-top: 18px; font: 0.9rem var(--eido-font-ui); }
+    header a, footer a { color: var(--eido-accent); }
+    h1 { font-size: 2rem; line-height: 1.2; margin: 1.4em 0 0.3em; }
+    h2 { font-size: 1.25rem; margin: 2em 0 0.4em; }
+    .lede { color: var(--eido-muted); }
+    footer { padding-bottom: 4rem; font: 0.9rem var(--eido-font-ui); color: var(--eido-muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#top">Home</a>
+    <a href="#why">Why</a>
+    <a href="#parts">Parts</a>
+    <a href="#use">In use</a>
+  </header>
+  <main id="top">
+    <h1>Why another foundation</h1>
+    <p class="lede">Read this page slowly and a thread appears beside each paragraph. Scroll through it fast and the text starts to ripple. Open the panel at the bottom right to see how it works, or switch it off.</p>
+
+    <h2 id="why">The complaint</h2>
+    <p>The design sessions behind Eido start from a complaint about the document prison. Information is flattened into nested rectangles, and the layout is worked out again every time the content changes.</p>
+    <p>Style is a handful of fixed classes, such as light, dark and a few breakpoints. These classes cannot move smoothly with the density of the content, the state of the system or the preference of the reader.</p>
+    <p>Layered systems are forced into one long scroll. That throws away spatial memory, and it hides the relationships between the parts of the thing you are trying to understand.</p>
+    <p>Eido borrows the habits Weft uses for models. It prefers continuous spaces to switches, exact geometry to approximations, compact state that can be checked, and feedback that stays inside stated bounds.</p>
+
+    <h2 id="parts">Five modules</h2>
+    <p>Each module can be adopted on its own. You do not need the whole language to use one piece of it, and each piece says plainly what it does and what it leaves alone.</p>
+    <p>A visual style is a point in a continuous space. It is a blend of a few reference presets, and the weights of the blend are the position of one point on a triangle. Dragging the point is moving through the design space itself.</p>
+    <p>Hue is periodic, so a plain average gives false midpoints. Averaging crimson and scarlet in the obvious way produces cyan. Eido takes the mean on the circle, so the midpoint of two reds stays red.</p>
+    <p>Every visual channel in a layout encodes one quantity. Area follows value, position follows rank, and the legend can say so in one line each. If a channel carries two things, or none, the design is wrong.</p>
+    <p>State is small and verified before it is shown. A frame that fits in one cache line carries its own hash, and the browser checks the hash before any value reaches the screen. A line without a hash counts as unverified, not as valid.</p>
+    <p>Surfaces show strain. While tension stays inside its normal band the edges pulse gently. As it approaches the hard limit, glow and grain change, so a reader sees the strain without a modal alert.</p>
+
+    <h2 id="use">Feedback within bounds</h2>
+    <p>The reading weave is the same idea applied to the reader. How you read is a signal, and the page answers it. The answer has a stated size, so the page can push back on skimming without ever becoming unusable.</p>
+    <p>A passage needs about as much time on screen as a quick reader would give it. If you stay with it, the passage counts as read, the score falls, and a thread is woven beside the text. If you scroll past it, the score rises.</p>
+    <p>At low scores nothing visible happens. As the score climbs, words begin to bob and fade as waves pass through the page. At the top of the range the text blurs a little and links slide away from a hurried cursor.</p>
+    <p>The element with keyboard focus never moves. Text stays text for screen readers. No word shifts more than a few pixels, and a cursor held still on a link lets it settle. Under reduced motion nothing moves at all.</p>
+    <p>Anyone can switch the effects off with the cross on the panel, and the page remembers the choice. A system that rewards reading should never hold a reader hostage, so the off switch is always one click away.</p>
+    <p>None of the measuring leaves the browser. There is no server, no log and no account. The score is a number the page keeps for itself and forgets when you leave.</p>
+  </main>
+  <footer>
+    <p>Part of <a href="https://w3ft.org">Eido</a>. The panel and the thread are styled from <code>css/reading-weave.css</code>.</p>
+  </footer>
+
+  <script type="module">
+    import { setupReadingWeave } from "../src/reading-weave.js";
+    // ?attn shows the raw numbers in the panel. ?restless=0.7 pins the score for review.
+    setupReadingWeave();
+  </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eido · the design language of ML Weft</title>
+  <meta name="description" content="Eido is the design language of ML Weft: an interface that changes itself in response to the person using it, within bounds that person can see, check and undo.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="../css/reading-weave.css">
+  <script src="assets/theme.js"></script>
+  <script type="module" src="assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="philosophy.html">Philosophy</a>
+        <a href="components/index.html">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title"><div class="wrap">
+      <p class="kicker"><span class="dot"></span>Moissanite Labs · open source</p>
+      <h1 id="hero-title">Eido</h1>
+      <p class="tagline">An interface that changes, inside limits you can see.</p>
+      <p class="lede">Eido is the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. Weft studies models that change themselves within bounds you can check. Eido is the first place that idea is used in something people see every day: an interface that changes itself in response to the person using it, within bounds that person can see, check and undo.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="components/index.html">Browse components</a>
+        <a class="btn" href="philosophy.html">Read the philosophy</a>
+        <a class="btn" href="https://github.com/Moissanite-Labs/weft-eido">View on GitHub</a>
+      </div>
+      <div class="hero-meta"><span>Six small modules</span><span>No dependencies, no build step</span><span>Code: Apache-2.0</span><span>Docs: CC BY 4.0</span></div>
+    </div></section>
+    <section class="block" id="idea" aria-labelledby="idea-h"><div class="wrap">
+      <div class="section-head"><span class="eyebrow">The idea</span><h2 id="idea-h">What Eido is</h2>
+        <p>Most pages treat every visitor the same, with a fixed theme and a fixed layout. Eido treats the interface as something that moves through a continuous space, and that moves because of what the reader does.</p>
+        <p>Every change has to stay inside limits the reader can see. The reader can check what happened and undo it. That is the same rule Weft applies to models.</p>
+        <p>This repository holds the parts that are generic, as small modules with tests. Weft's telemetry field is built on them.</p>
+      </div>
+    </div></section>
+    <section class="block alt" id="principles" aria-labelledby="principles-h"><div class="wrap">
+      <div class="section-head"><span class="eyebrow">Six principles</span><h2 id="principles-h">D1 to D6</h2>
+        <p>Each card says where the principle is built. Demos on this page run the real modules. Where a principle lives in Weft or is still a design, the card says so and has no demo.</p>
+      </div>
+      <div class="grid-3">
+      <article class="card" id="d1-card" aria-labelledby="d1-h">
+        <div class="tag-row"><span class="id">D1</span><span class="badge here">Implemented here</span></div>
+        <h3 id="d1-h">Style as a point in a continuous space</h3>
+        <p>A style is a blend of a few presets. The weights of the blend are one point on a triangle. Drag the point and the style moves with it.</p>
+        
+        <div class="mini" data-eido-skip><div id="home-mixer"></div></div>
+        <p class="more" data-eido-skip><a href="components/aesthetic-mixer.html">Aesthetic mixer</a> · <a href="components/simplex-pad.html">Simplex pad</a></p>
+      </article>
+      <article class="card" id="d2-card" aria-labelledby="d2-h">
+        <div class="tag-row"><span class="id">D2</span><span class="badge here">Implemented here, in part</span></div>
+        <h3 id="d2-h">Analytical geometry and reading cadence</h3>
+        <p>Each visual channel carries one quantity: area is value, position is rank. Text is drawn from a table of numbers, the same on the GPU and on a canvas. The field shader and the reading-cadence heuristic live in Weft.</p>
+        
+        <div class="mini" data-eido-skip><div id="home-glyph"></div><div id="home-cells" class="mini"></div></div>
+        <p class="more" data-eido-skip><a href="components/cell-layout.html">Cell layout</a> · <a href="components/glyph-font.html">Glyph font</a></p>
+      </article>
+      <article class="card" id="d3-card" aria-labelledby="d3-h">
+        <div class="tag-row"><span class="id">D3</span><span class="badge weft">Implemented in Weft</span></div>
+        <h3 id="d3-h">Compact, verified state</h3>
+        <p>Everything the renderer needs fits in one 64-byte frame. Each packet carries a SHA-256 hash that the browser checks before any value is shown. A line without a hash counts as unverified.</p>
+        <p class="note" data-eido-skip>No demo here. This runs in Weft's telemetry worker, not in this repository.</p>
+        
+        <p class="more" data-eido-skip><a href="https://github.com/Moissanite-Labs/weft/tree/main/weft/runtime/aywa">Weft runtime</a></p>
+      </article>
+      <article class="card" id="d4-card" aria-labelledby="d4-h">
+        <div class="tag-row"><span class="id">D4</span><span class="badge weft">Implemented in Weft</span></div>
+        <h3 id="d4-h">Surfaces that show strain</h3>
+        <p>While a system's tension stays in its normal band, edges pulse gently. As it nears the hard limit, glow and grain change. Strain is visible without a modal alert.</p>
+        <p class="note" data-eido-skip>No demo here. The field shader is in Weft.</p>
+        
+        <p class="more" data-eido-skip><a href="https://github.com/Moissanite-Labs/weft/tree/main/weft/runtime/aywa">Weft runtime</a></p>
+      </article>
+      <article class="card" id="d5-card" aria-labelledby="d5-h">
+        <div class="tag-row"><span class="id">D5</span><span class="badge design">Design only</span></div>
+        <h3 id="d5-h">Places, not pages</h3>
+        <p>People remember where something lives better than how far down a scroll bar it was. Eido would organise a large system into a few named rooms on a persistent canvas.</p>
+        <p class="note" data-eido-skip>Not built. An earlier w3ft.org used six rooms; the current site is one page.</p>
+        
+        <p class="more" data-eido-skip><a href="philosophy.html#d5">Read the design</a></p>
+      </article>
+      <article class="card" id="d6-card" aria-labelledby="d6-h">
+        <div class="tag-row"><span class="id">D6</span><span class="badge here">Implemented here</span></div>
+        <h3 id="d6-h">Text that answers how it is read</h3>
+        <p>How someone reads is a signal the page can answer. Skim, and the text ripples, or condenses to its gist. Read, and it calms. This page runs the reading weave on you now.</p>
+        
+        <div class="mini" data-eido-skip><div class="meter-block"><label for="home-meter">Your restlessness on this page</label><meter id="home-meter" min="0" max="1" value="0" style="width:100%"></meter><div class="readout" id="home-meter-out">Scroll quickly to watch it rise. Read slowly and it falls.</div></div></div>
+        <p class="more" data-eido-skip><a href="components/reading-weave.html">Reading weave</a> · <a href="components/condense.html">Condensing prose</a> · <a href="philosophy.html">Philosophy page</a></p>
+      </article>
+      </div>
+    </div></section>
+    <section class="block" id="components" aria-labelledby="components-h"><div class="wrap">
+      <div class="section-head"><span class="eyebrow">Components</span><h2 id="components-h">Take what you need</h2>
+        <p>Each module stands alone. Every page has an isolated demo, the files to copy, and a snippet that works when pasted.</p>
+      </div>
+      <div class="comp-list">
+        <a class="card" href="components/aesthetic-mixer.html"><div class="tag-row"><span class="id">D1</span><span class="badge here">src/aesthetic-mixer.js</span></div><h3>Aesthetic mixer</h3><p>Blends style presets with barycentric weights. Hue averages on the circle.</p></a>
+        <a class="card" href="components/simplex-pad.html"><div class="tag-row"><span class="id">D1</span><span class="badge here">src/simplex-pad.js</span></div><h3>Simplex pad</h3><p>A triangle control. The point you drag is the weight vector.</p></a>
+        <a class="card" href="components/cell-layout.html"><div class="tag-row"><span class="id">D2</span><span class="badge here">src/cell-layout.js</span></div><h3>Cell layout</h3><p>Cell area follows value. Golden-angle packing fitted to any region.</p></a>
+        <a class="card" href="components/glyph-font.html"><div class="tag-row"><span class="id">D2</span><span class="badge here">src/glyph-font.js</span></div><h3>Glyph font</h3><p>A 5×7 bitmask font, two 32-bit words per glyph, the same table for GPU and Canvas.</p></a>
+        <a class="card" href="components/reading-weave.html"><div class="tag-row"><span class="id">D6</span><span class="badge here">src/reading-weave.js</span></div><h3>Reading weave</h3><p>Text ripples when you skim. Reading calms it.</p></a>
+        <a class="card" href="components/condense.html"><div class="tag-row"><span class="id">D6</span><span class="badge here">src/condense.js</span></div><h3>Condensing prose</h3><p>An article condenses, level by level, as you skim.</p></a>
+      </div>
+    </div></section>
+    <section class="block alt" id="practice" aria-labelledby="practice-h"><div class="wrap">
+      <div class="section-head"><span class="eyebrow">In practice</span><h2 id="practice-h">This site uses itself</h2>
+        <p>Scroll past a few paragraphs fast and this page ripples. The <a href="philosophy.html">philosophy page</a> condenses as you skim it. The panel at the bottom right shows the score, says why the page is moving, and turns it all off.</p>
+        <p>The same modules run <a href="https://w3ft.org">w3ft.org</a>.</p>
+      </div>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { mountMixerDemo, mountGlyphDemo, mountCellDemo } from "./assets/demos.js";
+    mountMixerDemo(document.getElementById("home-mixer"));
+    mountGlyphDemo(document.getElementById("home-glyph"), { text: "EIDO 5X7", scale: 5, controls: false });
+    mountCellDemo(document.getElementById("home-cells"), { count: 7, width: 320, height: 220, controls: false });
+  </script>
+  <script type="module">
+    import { setupReadingWeave } from "../src/reading-weave.js";
+    const meter = document.getElementById("home-meter");
+    const out = document.getElementById("home-meter-out");
+    const say = (s) => (s > 0.6 ? "Rushing. The page is pushing back." : s > 0.3 ? "Skimming detected." : s > 0.08 ? "Slightly restless." : "Steady. Nothing moves.");
+    setupReadingWeave({
+      onChange: (s) => { meter.value = s; out.textContent = s.toFixed(2) + " · " + say(s); },
+    });
+  </script>
+</body>
+</html>

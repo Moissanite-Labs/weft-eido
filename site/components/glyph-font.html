@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glyph font · Eido</title>
+  <meta name="description" content="A 5×7 bitmask font, two u32 words per glyph, shared by WebGPU and Canvas2D.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D2</p><h1 id="t">Glyph font</h1><p class="lede">A tiny font stored as numbers. A shader and a canvas read the same table and draw the same letters.</p></div></section>
+
+    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+      <p class="crumbs"><a href="index.html">Components</a> / Glyph font</p>
+      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>Each glyph is a 5-column, 7-row grid, which is 35 bits. That does not fit in one 32-bit word, so each glyph uses two. The CPU can check the table, and the GPU can upload it as a buffer. A Canvas2D fallback reads the same words, so both draw identical letters.</p>
+<p>The font covers A–Z, 0–9 and a few symbols. Lowercase draws as uppercase. Anything else draws as <code>?</code>.</p><p>Principle: <a href="../philosophy.html#d2">D2 · Analytical geometry and reading cadence</a>.</p></section>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><div id="glyph-demo"></div></div></section>
+      <section aria-labelledby="use"><h2 id="use">Use it</h2>
+        <h3>1. Copy the files</h3>
+        <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/glyph-font.js">src/glyph-font.js</a><button class="copy" type="button" data-copy-text="src/glyph-font.js">Copy path</button></li></ul>
+        <p>No dependencies and no build step. Put the files anywhere your pages can import them.</p>
+        <h3>2. Paste this</h3>
+        <figure class="codeblock"><figcaption><span>index.html</span><button class="copy" type="button" data-copy-target="#code-7">Copy</button></figcaption><pre tabindex="0"><code id="code-7" class="language-html">&lt;canvas id=&quot;c&quot; width=&quot;260&quot; height=&quot;70&quot;&gt;&lt;/canvas&gt;
+&lt;script type=&quot;module&quot;&gt;
+  import { encodeFontTable, fontCode, glyphBit } from &quot;./src/glyph-font.js&quot;;
+
+  const table = encodeFontTable(); // Uint32Array(256): two words per ASCII code
+  const ctx = document.getElementById(&quot;c&quot;).getContext(&quot;2d&quot;);
+  ctx.fillStyle = &quot;#b0d5d2&quot;;
+  const scale = 4;
+  [...&quot;HELLO&quot;].forEach((ch, k) =&gt; {
+    const code = fontCode(ch);
+    const words = [table[code * 2], table[code * 2 + 1]];
+    for (let row = 0; row &lt; 7; row++)
+      for (let col = 0; col &lt; 5; col++)
+        if (glyphBit(words, col, row)) ctx.fillRect(10 + (k * 6 + col) * scale, 10 + row * scale, scale, scale);
+  });
+  // For a GPU: upload &quot;table&quot; as a storage buffer and read the same bits in the shader.
+&lt;/script&gt;</code></pre></figure>
+        <h3>3. Or read the source</h3>
+        <p>These blocks are fetched from the repository when the page loads, so they always match the code.</p>
+        <figure class="codeblock tall"><figcaption><span>src/glyph-font.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-8">Copy</button></figcaption><pre tabindex="0"><code id="src-8" data-src="../../src/glyph-font.js">Loading src/glyph-font.js…</code></pre></figure>
+      </section>
+      <section aria-labelledby="api"><h2 id="api">API</h2><table class="api"><thead><tr><th scope="col">Export</th><th scope="col">Value</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>GLYPH_COLS, GLYPH_ROWS</code></td><td>5, 7</td><td>Glyph grid size.</td></tr><tr><td><code>GLYPH_ADVANCE</code></td><td>6</td><td>Horizontal advance in glyph pixels (5 columns plus 1 of spacing).</td></tr><tr><td><code>CHARSET</code></td><td></td><td>String of every character the font can draw.</td></tr><tr><td><code>packGlyph(rows)</code></td><td></td><td>Packs 7 strings of 5 characters (<code>#</code> or <code>.</code>) into <code>[lo, hi]</code>. Bit <code>b = row·5 + col</code>; bits 0–19 go in <code>lo</code>, 20–34 in <code>hi</code>.</td></tr><tr><td><code>glyphBit(words, col, row)</code></td><td></td><td>Reads one pixel back. Out-of-range positions return 0.</td></tr><tr><td><code>fontCode(ch)</code></td><td></td><td>ASCII code the font draws for a character. Unknown characters give 63 (<code>?</code>).</td></tr><tr><td><code>encodeFontTable()</code></td><td></td><td><code>Uint32Array(256)</code>, two words per ASCII code, ready for a storage buffer.</td></tr><tr><td><code>packLabel(text, maxChars = 16)</code></td><td></td><td>Packs up to 16 characters, four per word. Returns <code>{ words, length }</code>.</td></tr></tbody></table><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/philosophy.md">docs/philosophy.md</a> on GitHub.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { mountGlyphDemo } from "../assets/demos.js";
+    mountGlyphDemo(document.getElementById("glyph-demo"), { text: "EIDO 5X7", scale: 6 });
+  </script>
+</body>
+</html>

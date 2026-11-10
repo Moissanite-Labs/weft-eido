@@ -1,0 +1,149 @@
+/* Reading weave: rewards reading, resists skimming (src/reading-weave.js).
+   Theme it with the --eido-* custom properties below. Dark mode follows
+   prefers-color-scheme, or set data-theme="light" / "dark" on <html>. */
+
+:root {
+  --eido-ink: #1d1b16;
+  --eido-muted: #6b665a;
+  --eido-paper: #fbf9f4;
+  --eido-line: #d9d4c6;
+  --eido-accent: #b8923a;
+  --eido-strike: #c0553d;
+  --eido-font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --eido-radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --eido-ink: #ece8dc;
+    --eido-muted: #a39e90;
+    --eido-paper: #1a1914;
+    --eido-line: #36342b;
+    --eido-accent: #d9c7a0;
+    --eido-strike: #e08f7a;
+  }
+}
+:root[data-theme="dark"] {
+  --eido-ink: #ece8dc;
+  --eido-muted: #a39e90;
+  --eido-paper: #1a1914;
+  --eido-line: #36342b;
+  --eido-accent: #d9c7a0;
+  --eido-strike: #e08f7a;
+}
+
+/* ---------- Words, links and waves ---------- */
+.attn-w { display: inline-block; }
+.attn-nav { display: inline-block; }
+html.attn-blurry .attn-block { filter: blur(var(--attn-blur, 0px)); }
+.attn-overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 40; pointer-events: none; }
+
+/* A thread woven beside each paragraph that was actually read. */
+.attn-block.attn-read { position: relative; }
+.attn-block.attn-read::before {
+  content: ""; position: absolute; left: -14px; top: 0.2em; bottom: 0.2em; width: 2px; border-radius: 2px;
+  background: linear-gradient(180deg, transparent, var(--eido-accent) 18%, var(--eido-accent) 82%, transparent);
+  opacity: 0.75; transform-origin: top; animation: attn-weave 1.4s cubic-bezier(.2, .7, .2, 1) both;
+}
+@keyframes attn-weave { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 0.75; } }
+html.attn-off .attn-block.attn-read::before { display: none; }
+
+/* ---------- The panel: bottom right, above the page and its waves ---------- */
+.attn-ui {
+  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+  width: min(300px, calc(100vw - 32px)); pointer-events: none;
+  font: 0.86rem/1.45 var(--eido-font-ui); color: var(--eido-muted);
+}
+/* Mounted inside an element (panel: element): positioned within it, not the viewport. */
+.attn-ui--contained { position: absolute; width: min(300px, calc(100% - 32px)); }
+.attn-ui > * { pointer-events: auto; }
+.attn-ui [hidden] { display: none !important; }
+.attn-panel, .attn-pop {
+  width: 100%; box-sizing: border-box; background: color-mix(in srgb, var(--eido-paper) 94%, transparent);
+  border: 1px solid var(--eido-line); border-radius: var(--eido-radius); box-shadow: 0 10px 30px rgb(0 0 0 / 0.18);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.attn-panel { padding: 10px 12px 12px; }
+.attn-head { display: flex; align-items: center; gap: 2px; margin-bottom: 6px; }
+.attn-title { flex: 1; font-weight: 600; color: var(--eido-ink); letter-spacing: 0.01em; }
+.attn-icon {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0;
+  border: 0; border-radius: 6px; background: transparent; color: var(--eido-muted); cursor: pointer;
+}
+.attn-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.attn-icon:hover, .attn-icon:focus-visible { background: color-mix(in srgb, var(--eido-ink) 9%, transparent); color: var(--eido-ink); }
+.attn-x-wrap { position: relative; display: inline-grid; }
+.attn-tip {
+  position: absolute; right: 0; bottom: calc(100% + 8px); white-space: nowrap;
+  padding: 5px 9px; border-radius: 6px; font-size: 0.78rem;
+  background: var(--eido-ink); color: var(--eido-paper); opacity: 0; transform: translateY(3px);
+  transition: opacity 0.15s, transform 0.15s; pointer-events: none;
+}
+.attn-x-wrap:hover .attn-tip, .attn-x:focus-visible + .attn-tip { opacity: 1; transform: none; }
+.attn-x:hover { color: var(--eido-strike); }
+.attn-status { margin: 0 0 8px; color: var(--eido-ink); }
+.attn-meter { height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--eido-ink) 9%, transparent); overflow: hidden; }
+.attn-meter span {
+  display: block; height: 100%; transform-origin: left; transform: scaleX(0); transition: transform 0.3s;
+  background: linear-gradient(90deg, var(--eido-muted), var(--eido-accent) 55%, var(--eido-strike));
+  background-size: 300px 100%;
+}
+.attn-stats { display: flex; gap: 18px; margin: 9px 0 0; font-size: 0.8rem; }
+.attn-stats div { display: flex; gap: 6px; }
+.attn-stats dt { color: var(--eido-muted); }
+.attn-stats dd { margin: 0; color: var(--eido-ink); }
+.attn-on {
+  margin-top: 10px; width: 100%; min-height: 32px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--eido-line); background: color-mix(in srgb, var(--eido-ink) 9%, transparent); color: var(--eido-ink); font: inherit;
+}
+.attn-on:hover { border-color: var(--eido-accent); }
+.attn-debug { margin: 10px 0 0; font: 10.5px/1.5 ui-monospace, monospace; color: var(--eido-muted); white-space: pre; }
+.attn-dock {
+  width: 42px; height: 42px; border-radius: 50%; padding: 0; cursor: pointer;
+  display: grid; place-items: center; color: var(--eido-accent);
+  border: 1px solid var(--eido-line); background: color-mix(in srgb, var(--eido-paper) 94%, transparent);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.16);
+}
+.attn-dock svg { width: 22px; height: 22px; }
+.attn-dock:hover { border-color: var(--eido-accent); }
+html.attn-off .attn-dock { color: var(--eido-muted); }
+
+/* The warning: a ? that rises once the effects get in the way. */
+.attn-warn {
+  width: 38px; height: 38px; border-radius: 50%; padding: 0; cursor: pointer;
+  font: 700 1.1rem/1 var(--eido-font-ui); color: #1a1408;
+  border: 0; background: var(--eido-accent); box-shadow: 0 0 0 0 color-mix(in srgb, var(--eido-accent) 60%, transparent);
+  animation: attn-rise 0.35s ease-out, attn-pulse 1.8s ease-out 0.35s infinite;
+}
+@keyframes attn-rise { from { transform: translateY(8px) scale(0.8); opacity: 0; } }
+@keyframes attn-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--eido-accent) 55%, transparent); }
+  100% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--eido-accent) 0%, transparent); }
+}
+.attn-pop { position: relative; padding: 14px 16px 14px; max-height: min(70vh, 520px); overflow: auto; }
+.attn-pop h2 { font-size: 1rem; margin: 0 30px 8px 0; color: var(--eido-ink); }
+.attn-pop h3 { font-size: 0.84rem; margin: 12px 0 2px; color: var(--eido-ink); letter-spacing: 0.02em; }
+.attn-pop p { margin: 0 0 8px; }
+.attn-pop-foot { color: var(--eido-ink); }
+.attn-pop-close { position: absolute; top: 8px; right: 8px; }
+.attn-kbd {
+  display: inline-grid; place-items: center; min-width: 1.4em; height: 1.4em; border-radius: 4px;
+  border: 1px solid var(--eido-line); background: color-mix(in srgb, var(--eido-ink) 9%, transparent); font-weight: 600; line-height: 1;
+}
+/* While the warning is open, point at the × that switches the effects off. */
+.attn-point-x .attn-x { color: var(--eido-strike); animation: attn-point 1.2s ease-in-out infinite; }
+@keyframes attn-point { 50% { background: color-mix(in srgb, var(--eido-strike) 18%, transparent); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .attn-block.attn-read::before { animation: none; }
+  .attn-warn, .attn-point-x .attn-x { animation: none; }
+  .attn-tip, .attn-meter span { transition: none; }
+  .attn-w, .attn-nav { transform: none !important; opacity: 1 !important; }
+  .attn-block { filter: none !important; }
+}
+@media print {
+  .attn-ui, .attn-overlay { display: none !important; }
+  .attn-w, .attn-nav { transform: none !important; opacity: 1 !important; }
+  .attn-block { filter: none !important; }
+  .attn-block.attn-read::before { display: none; }
+}

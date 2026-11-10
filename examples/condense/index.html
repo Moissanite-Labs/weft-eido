@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eido · condensing prose example</title>
+  <link rel="stylesheet" href="../../css/reading-weave.css">
+  <link rel="stylesheet" href="../../css/condense.css">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --eido-ink: #14292b;
+      --eido-muted: #526b6c;
+      --eido-paper: #f5f9f9;
+      --eido-line: #d5e3e4;
+      --eido-accent: #8a6d1f;
+      --eido-strike: #c4543a;
+      --eido-font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --eido-radius: 10px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --eido-ink: #e7f3f3;
+        --eido-muted: #91a8aa;
+        --eido-paper: #090d0f;
+        --eido-line: #1d3133;
+        --eido-accent: #d9c7a0;
+        --eido-strike: #e08f7a;
+      }
+    }
+    body { margin: 0; background: var(--eido-paper); color: var(--eido-ink); font: 17px/1.6 var(--eido-font-ui); }
+    main { max-width: 46rem; margin: 0 auto; padding: 24px 16px 96px; }
+    h1 { font-size: 1.9rem; line-height: 1.2; margin: 1.2rem 0 0.4rem; }
+    h2 { font-size: 1.3rem; line-height: 1.3; margin: 2.2rem 0 0.6rem; }
+    a { color: inherit; }
+    code { font-size: 0.9em; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+    th, td { border: 1px solid var(--eido-line); padding: 4px 8px; text-align: left; vertical-align: top; }
+    .table-wrap { overflow-x: auto; }
+    .note { padding: 10px 14px; border: 1px solid var(--eido-line); border-radius: var(--eido-radius); font-size: 0.88rem; color: var(--eido-muted); }
+    .keywords { color: var(--eido-muted); font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+  <main id="main">
+    <h1>ML Weft: Adaptive models within bounds you can check</h1>
+    <aside class="note">Demo of Eido's condensing prose. The article is Paper 0 of ML Weft (Moissanite Labs, text under CC BY 4.0, <a href="https://w3ft.org/papers/overview/">w3ft.org/papers/overview</a>), with the site chrome and figure removed. The variants in <code>condensed.json</code> were written for it. Skim it fast, scrolling past paragraphs, and the writing condenses. Add <code>?condense=4</code> to open at a level.</aside>
+    <article class="paper" id="paper">
+        <section class="abstract" aria-labelledby="abstract-title">
+          <h2 id="abstract-title">Abstract</h2>
+<p>ML Weft is an open research program from Moissanite Labs. It studies models that keep adapting after deployment, under limits that a program can verify. It treats each model as a <em>cell</em>: a bounded piece of memory with a frozen core, a resource budget, and a rule that commits a change only if the change stays within a measured distance of a saved baseline. Around that core idea, Weft builds compact verifiable formats (hashed message packets and a serialised graph language with committed execution records) and a design language, Eido, for interfaces that show live state honestly. Further out, it asks how such systems could run on purpose-built hardware and how people could govern them. This paper describes the whole program and is strict about evidence: it labels every component as <em>running and tested</em>, <em>simulated</em>, or <em>design only</em>. It also explains what Weft is not. It is not a product, it has no token, and its biological vocabulary describes aims, not achievements. Companion papers cover each part in depth: Paper 1, <em>Models as Cells</em>, and Paper 2, <em>Checkable Computation</em>, are published alongside this one.</p>
+
+          <p class="keywords"><strong>Keywords:</strong> adaptive models, AI safety, verification, continual learning, interaction combinators, design systems, governance</p>
+        </section>
+
+<section id="the-problem" class="level2">
+<h2>1. The problem</h2>
+<p>Machine-learning models are mostly built once and then frozen. When they change, it is through a retraining or fine-tuning run that someone starts, watches and accepts. That has worked because change was rare and deliberate. It works less well as models move onto personal devices, adapt to individual users, and act as agents in long-running systems. These are settings where small, continual changes are useful, and nobody is watching each one.</p>
+<p>Continual adaptation without limits is a safety problem as much as an engineering one. A model that can rewrite itself can also drift away from the behaviour it was approved for. Today, the limits on that drift are usually procedural: reviews, evaluations, and policies on who may run training. They are rarely <em>executable</em>: a predicate that runs on every update and refuses the ones that cross a line.</p>
+<p>Weft asks what it would take to make those limits executable. It starts at the smallest scale where the question makes sense, a single weight matrix in memory, and works outward from there.</p>
+</section>
+<section id="principles" class="level2">
+<h2>2. Principles</h2>
+<p>The program works by five rules. They shape the code more than any architecture diagram does.</p>
+<ol type="1">
+<li><strong>Bound change from a saved baseline.</strong> A model may move, but only within a fixed distance of weights that were approved. That distance is measured from the baseline, not from yesterday’s weights, so small steps cannot add up to a large drift (Paper 1, §4).</li>
+<li><strong>A stated rule is not a checked rule.</strong> Each safety property is written as a function, tested against shared vectors, and called on the executable path. Documents say which rules are enforced and which are only intended.</li>
+<li><strong>Keep the vision language, label the evidence.</strong> Weft uses biological words on purpose: <em>cell, membrane, mitosis, homeostasis</em>. They name behaviour the design aims for and give the project its character. Every such word is paired with a plain description of what the code does today (<a href="https://github.com/Moissanite-Labs/weft/blob/main/docs/glossary.md">glossary</a>).</li>
+<li><strong>Small, verifiable interfaces.</strong> Components talk through narrow formats with exact layouts and integrity checks: a 64-byte frame, a hashed message line, a binary graph format. Each is small enough to specify completely and test from more than one language.</li>
+<li><strong>Nothing live.</strong> No component deploys contracts, moves weights between machines, or touches privileged hardware. Experiments run locally. There is no token.</li>
+</ol>
+</section>
+<section id="architecture" class="level2">
+<h2>3. Architecture</h2>
+<p>Weft is built as seven components (C1–C7) joined by numbered interfaces (I1–I7). Figure 1 shows how they connect.</p>
+<p><strong>C1 · Plasm: the cell.</strong> A fixed 540,688-byte shared-memory arena holds one weight matrix, a scalar telemetry ring and a small recency buffer. Each generation the cell proposes two candidate updates (a cautious and an exploratory lineage), scores the exact matrices it would commit, and commits at most one. A quarter of the rows form a frozen core that carries a provenance watermark. <em>Status: runs, tested.</em> Paper 1 covers it in detail.</p>
+<p><strong>C2 · Invariants: the safety gate.</strong> A pure predicate accepts an update only if <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">∥</mo><mi>W</mi><mi>′</mi><mo>−</mo><msub><mi>W</mi><mn>0</mn></msub><msub><mo stretchy="false" form="postfix">∥</mo><mi>F</mi></msub><mo>≤</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">\lVert W&#39; - W_0\rVert_F \le R</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>≥</mo><mi>c</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b \ge c &gt; 0</annotation></semantics></math>, rejecting non-finite values first. It is implemented in Python, in a C11 header for environments without Python, and in JavaScript for the browser. Python and JavaScript are tested against one JSON file of conformance vectors. The C header is tested against hand-written copies of most of those cases, and running the shared file in C is an open issue. <em>Status: runs, tested.</em></p>
+<p><strong>C3 · IC: checkable computation.</strong> A reducer for <em>interaction combinators</em> (a minimal graph-rewriting model of computation, due to Lafont) runs in a flat preallocated array. It has a canonical binary format and an execution record that commits to the initial graph, every step and the final graph with SHA-256. Weft adds node types that route a reduction through the safety gate. <em>Status: runs, tested. Confluence of this variant is not proven.</em> <a href="https://w3ft.org/papers/checkable-computation/">Paper 2</a> tests it against an independent reference.</p>
+<p><strong>C6 · Telemetry and the telemetry line.</strong> Host metrics are packed into a 64-byte frame of sixteen floats (I1). Live state travels as a compact line (I2): a role byte, an action byte, a sequence number, an s-expression payload, and the SHA-256 of the payload. The line is an early dialect from Weft’s design sessions. Weft’s agent-messaging protocol is now published separately as <a href="https://github.com/Moissanite-Labs/abios">abios</a>, whose normative profile is one canonical JSON object per line, and moving telemetry onto it is open work. The line’s hash detects accidental corruption, not tampering, and does not cover the header (Paper 2, §6.6). <em>Status: runs, tested. The data shipped with the website is a labelled fixture, not a live feed.</em></p>
+<p><strong>C7 · The browser field.</strong> A WebGPU renderer, with a Canvas2D fallback, draws live state as a field of cells. A worker verifies every packet’s hash before any value reaches the screen. <em>Status: runs, tested in Node and Chromium.</em></p>
+<p><strong>C4 and C5 · Ledger research.</strong> Three Solidity drafts explore provenance (who contributed to a model), metering, and disputes. An offline simulator, a pure-Python Keccak-256 and ABI checks exercise their logic without a chain. <em>Status: the contracts are research drafts. They are not compiled in CI and are deployed nowhere. The simulator only simulates.</em> Weight commitments (I7), which provenance would need, are not specified yet.</p>
+</section>
+<section id="evidence-status" class="level2">
+<h2>4. Evidence status</h2>
+<div class="table-wrap"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>What runs today</th>
+<th>What is not shown</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>C1 Plasm</td>
+<td>256×256 cell; A/B candidates; frozen core with zero measured drift; watermark retention; clean teardown</td>
+<td>trained models; process isolation; meaningful lineage selection; calibrated radius</td>
+</tr>
+<tr class="even">
+<td>C2 Gate</td>
+<td>Python passes all 12 shared vectors; JavaScript the 6 weight-update vectors; C11 hand-coded copies of most cases</td>
+<td>C reading the shared vectors (#42); mechanised proof (planned in Lean)</td>
+</tr>
+<tr class="odd">
+<td>C3 IC</td>
+<td>reduction, binary round-trips, committed execution records</td>
+<td>confluence of the extended rules; GPU reduction</td>
+</tr>
+<tr class="even">
+<td>C6 Telemetry</td>
+<td>frame packing, telemetry-line encode/verify (payload hash only), honest “unavailable” probes</td>
+<td>live, provenance-checked organisation data</td>
+</tr>
+<tr class="odd">
+<td>C7 Field</td>
+<td>packet verification in a worker; WebGPU and Canvas2D renderers</td>
+<td>any model running in the browser</td>
+</tr>
+<tr class="even">
+<td>C4/C5 Ledger</td>
+<td>offline simulation, ABI topic hashes</td>
+<td>compiled contracts, any chain, any token</td>
+</tr>
+<tr class="odd">
+<td>Hardware</td>
+<td>wrappers for Apple Silicon around the CPU path</td>
+<td>native Metal kernels, MPS measurements, custom silicon</td>
+</tr>
+</tbody>
+</table></div>
+<p>Continuous integration runs the Python, C and Node tests and the browser tests on every change. It also requires a clean working tree afterwards, so no test may rewrite tracked files.</p>
+</section>
+<section id="horizons" class="level2">
+<h2>5. Horizons</h2>
+<p>Weft is organised as four horizons. Each keeps the interfaces of the one before. They are directions, not dates.</p>
+<p><strong>Horizon 0: the symbolic seed.</strong> A compact, checkable language for agents to exchange state, and the habit of auditing every claim against something that can fail. <em>In use.</em></p>
+<p><strong>Horizon I: cells on a laptop.</strong> Models as cells in the unified memory of commodity hardware such as Apple Silicon, under the safety gate. The CPU path runs today. The next steps are calibration on trained networks, low-rank adapters as the adaptable periphery, MPS measurements, and a mechanised proof of the gate. <em>In progress.</em></p>
+<p><strong>Horizon II: the physical loom.</strong> If the gate matters, it should be hard to bypass. The research agenda moves it down the stack in three stages:</p>
+<ol type="1">
+<li>a minimal kernel that owns the memory holding the weights;</li>
+<li>a memory-controller design that refuses weight writes outside the ball around the baseline;</li>
+<li>longer term, computing fabrics in which graph reduction maps onto physical layout.</li>
+</ol>
+<p>None of this exists yet. <em>Design research.</em></p>
+<p><strong>Horizon III: the shared weave.</strong> Adaptive models raise social questions:</p>
+<ul>
+<li>whose work a model carries, and whether attribution survives fine-tuning;</li>
+<li>how use is metered fairly;</li>
+<li>who may loosen a limit;</li>
+<li>how a decision is appealed, and what happens when maintainers change.</li>
+</ul>
+<p>Weft’s design notes compare the <em>stated</em> rules (human approval, dual signatures) with what the example contracts actually enforce (often a single privileged key), and treat that gap as the first research problem. <em>Design research.</em> Paper 4 (planned) covers it.</p>
+</section>
+<section id="eido-the-design-language" class="level2">
+<h2>6. Eido: the design language</h2>
+<p>Interfaces are part of the safety story: a system whose state can’t be seen can’t be supervised. <strong>Eido</strong> (developed under the internal name <em>Aywa</em>) is Weft’s design language. Its central idea is that a visual style is a point in a continuous space rather than a fixed theme. Styles are blended with barycentric weights, and hue is averaged on a circle so that two reds don’t blend into cyan. Its layouts give each visual channel exactly one quantity to encode, and it treats verified, compact state as a design material. Eido’s modules are maintained in <a href="https://github.com/Moissanite-Labs/weft-eido">Moissanite-Labs/weft-eido</a>, and they run the demos on <a href="https://w3ft.org">w3ft.org</a>. Paper 3 (in preparation) covers it.</p>
+</section>
+<section id="what-weft-is-not" class="level2">
+<h2>7. What Weft is not</h2>
+<ul>
+<li><strong>Not a product.</strong> Weft is early research. Its code runs small experiments, not production systems.</li>
+<li><strong>Not a token or a financial instrument.</strong> Weft has no coin, token or sale, and nothing is deployed on any blockchain. The ledger drafts study attribution and disputes. They do not issue or sell anything.</li>
+<li><strong>Not a claim about minds.</strong> Weft separates three things that its source conversations sometimes ran together:
+<ul>
+<li>a style or policy that a living person chooses to leave behind, which is a matter of consent and specification;</li>
+<li>a model that predicts a person’s choices, which can be tested while they are alive;</li>
+<li>the survival of a person or their experience, which Weft makes no claim about.</li>
+</ul>
+Software going idle is not death, and a hash on a ledger is not immortality.</li>
+<li><strong>Not finished biology.</strong> The cellular vocabulary names ideals. Where the code is simpler than the word, for example “tension” is currently a function of distance, the papers say so.</li>
+</ul>
+</section>
+<section id="origins-and-method" class="level2">
+<h2>8. Origins and method</h2>
+<p>Weft began as a long design conversation between a person and AI assistants. The record is kept word for word in <a href="https://github.com/Moissanite-Labs/weft-corpus">Moissanite-Labs/weft-corpus</a>. It is rich in ideas, and it often <em>narrates</em> things that never happened: commands that print plausible output, contracts “sealed on-chain”. The project’s first task was to separate the two. An evidence ledger records, file by file, what was kept, repaired or set aside, and a claims register tracks every claim’s status. Several repairs came straight from that reading:</p>
+<ul>
+<li>the safety check compared the <em>sizes</em> of two weight matrices instead of the distance between them;</li>
+<li>the budget was decremented before it was checked;</li>
+<li>a hash-verification routine treated a missing hash as valid.</li>
+</ul>
+<p>Code and documents are written with substantial help from AI tools and reviewed through pull requests. Every commit is signed off by a person under the Developer Certificate of Origin.</p>
+</section>
+<section id="the-paper-series" class="level2">
+<h2>9. The paper series</h2>
+<div class="table-wrap"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Title</th>
+<th>Scope</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td><em>ML Weft: adaptive models within bounds you can check</em></td>
+<td>this overview</td>
+<td>published</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><em>Models as Cells</em></td>
+<td>the cell and the safety gate, with experiments</td>
+<td>published</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><em>Checkable Computation</em></td>
+<td>interaction combinators, the binary graph format, committed execution records, the telemetry line</td>
+<td>published</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td><em>Eido</em></td>
+<td>the design language</td>
+<td>in preparation</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td><em>Constitution vs. Contract</em></td>
+<td>provenance, metering and governance</td>
+<td>planned</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each paper is versioned, names the repository commit it describes, and includes the commands that reproduce its results.</p>
+</section>
+<section id="taking-part" class="level2">
+<h2>10. Taking part</h2>
+<p>The code is under the Apache License 2.0, and the documents under CC BY 4.0. The most useful contributions make a claim testable or show that one is wrong. The repository’s contributing guide describes the evidence rules, and open issues list concrete next steps:</p>
+<ul>
+<li>one conformance corpus for Python and C;</li>
+<li>state contracts for the graph reducer;</li>
+<li>compiling the ledger drafts locally;</li>
+<li>honest labels on telemetry;</li>
+<li>reproducible experiment reports.</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2>References</h2>
+<ol type="1">
+<li>ML Weft. <em>Paper 1: Models as Cells.</em> <a href="https://w3ft.org/papers/models-as-cells/" class="uri">https://w3ft.org/papers/models-as-cells/</a>.</li>
+<li>ML Weft repository. <a href="https://github.com/Moissanite-Labs/weft" class="uri">https://github.com/Moissanite-Labs/weft</a>.</li>
+<li>Eido. <a href="https://github.com/Moissanite-Labs/weft-eido" class="uri">https://github.com/Moissanite-Labs/weft-eido</a>.</li>
+<li>Weft corpus. <a href="https://github.com/Moissanite-Labs/weft-corpus" class="uri">https://github.com/Moissanite-Labs/weft-corpus</a>.</li>
+<li>abios, the agent-messaging protocol (SYM-2P). <a href="https://github.com/Moissanite-Labs/abios" class="uri">https://github.com/Moissanite-Labs/abios</a>.</li>
+<li>Lafont, Y. (1997). Interaction combinators. <em>Information and Computation</em> 137(1), 69–101.</li>
+<li>ML Weft. <em>Constitution vs. contract</em> (design note). <code>docs/design-notes/constitution-vs-contract.md</code>.</li>
+</ol>
+</section>
+    </article>
+  </main>
+  <script type="module">
+    import { setupReadingWeave } from "../../src/reading-weave.js";
+    import { loadCondensed, setupCondense } from "../../src/condense.js";
+
+    // A page with condensed versions beside it swaps the reading weave's motion
+    // for condensing prose; a page without them keeps the reading weave as it is.
+    loadCondensed("condensed.json").then((data) => {
+      if (!data) return setupReadingWeave();
+      const reading = setupReadingWeave({ motion: false, panel: false });
+      if (reading) setupCondense(data, reading);
+    });
+  </script>
+</body>
+</html>

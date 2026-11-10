@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aesthetic mixer · Eido</title>
+  <meta name="description" content="Blend style presets with barycentric weights. Hue averages on the circle.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D1</p><h1 id="t">Aesthetic mixer</h1><p class="lede">Blend a few style presets into one style. Rounding, density and contrast average linearly. Hue averages on the circle.</p></div></section>
+
+    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+      <p class="crumbs"><a href="index.html">Components</a> / Aesthetic mixer</p>
+      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>A style is four numbers: rounding, density, hue and contrast. The mixer takes a few reference presets and a weight for each, and returns the blend.</p>
+<p>Hue needs care because it wraps around. Crimson at 0.95 and scarlet at 0.05 are both red. A plain average gives 0.50, which is cyan. The mixer averages the angles on a circle instead, so the midpoint stays red.</p><p>Principle: <a href="../philosophy.html#d1">D1 · Style as a point in a continuous space</a>.</p></section>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><div id="mix-demo"></div>
+<h3 style="margin-top:22px">Hue: linear average against circle average</h3>
+<p>Two reds at 0.95 and 0.05. Move the slider to change the first hue.</p>
+<div class="field"><label for="h1">First hue</label><input id="h1" type="range" min="0" max="1" step="0.01" value="0.95"><output for="h1">0.95</output></div>
+<div class="readout" id="hue-out"></div></div></section>
+      <section aria-labelledby="use"><h2 id="use">Use it</h2>
+        <h3>1. Copy the files</h3>
+        <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/aesthetic-mixer.js">src/aesthetic-mixer.js</a><button class="copy" type="button" data-copy-text="src/aesthetic-mixer.js">Copy path</button></li></ul>
+        <p>No dependencies and no build step. Put the files anywhere your pages can import them.</p>
+        <h3>2. Paste this</h3>
+        <figure class="codeblock"><figcaption><span>index.html</span><button class="copy" type="button" data-copy-target="#code-1">Copy</button></figcaption><pre tabindex="0"><code id="code-1" class="language-html">&lt;div id=&quot;card&quot;&gt;Blended card&lt;/div&gt;
+&lt;script type=&quot;module&quot;&gt;
+  import { mixAestheticPresets } from &quot;./src/aesthetic-mixer.js&quot;;
+
+  const presets = {
+    calm:  { rounding: 0.85, density: 0.3, hue: 0.95, contrast: 0.05 },
+    sharp: { rounding: 0.0,  density: 0.1, hue: 0.05, contrast: 0.01 },
+  };
+  const style = mixAestheticPresets(presets, { calm: 0.5, sharp: 0.5 });
+  // style.hue is 0 (red). A linear average would give 0.5 (cyan).
+
+  const card = document.getElementById(&quot;card&quot;);
+  card.style.borderRadius = style.rounding * 24 + &quot;px&quot;;
+  card.style.padding = 10 + style.density * 24 + &quot;px&quot;;
+  card.style.border = &quot;2px solid hsl(&quot; + style.hue * 360 + &quot; 60% 50%)&quot;;
+&lt;/script&gt;</code></pre></figure>
+        <h3>3. Or read the source</h3>
+        <p>These blocks are fetched from the repository when the page loads, so they always match the code.</p>
+        <figure class="codeblock tall"><figcaption><span>src/aesthetic-mixer.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-2">Copy</button></figcaption><pre tabindex="0"><code id="src-2" data-src="../../src/aesthetic-mixer.js">Loading src/aesthetic-mixer.js…</code></pre></figure>
+      </section>
+      <section aria-labelledby="api"><h2 id="api">API</h2><h3>mixAestheticPresets(presets, weights)</h3>
+<table class="api"><thead><tr><th scope="col">Argument</th><th scope="col">Default</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>presets</code></td><td>required</td><td>Object of name → <code>{ rounding, density, hue, contrast }</code>. <code>hue_shift</code> is accepted as an alias for <code>hue</code>. Missing fields count as 0.</td></tr><tr><td><code>weights</code></td><td>none</td><td>Object of name → number. Negative values count as 0 and the rest are normalised to sum to 1. If every weight is 0, the first preset gets all of it.</td></tr><tr><td><code>returns</code></td><td></td><td><code>{ rounding, density, hue, contrast }</code>. Hue is in [0, 1). With no presets you get a fixed default style.</td></tr></tbody></table>
+<h3>class AestheticMixer</h3>
+<p>A small stateful wrapper around three built-in slices. <code>setSliceWeight(id, weight)</code> changes one weight. <code>calculateUnifiedAestheticVector()</code> returns the blend.</p><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/philosophy.md">docs/philosophy.md</a> on GitHub.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { mountMixerDemo } from "../assets/demos.js";
+    import { mixAestheticPresets } from "../../src/aesthetic-mixer.js";
+    const pad = mountMixerDemo(document.getElementById("mix-demo"), { showPresets: true });
+    const h1 = document.getElementById("h1"), out = document.getElementById("hue-out");
+    const show = () => {
+      const a = Number(h1.value), b = 0.05;
+      h1.nextElementSibling.textContent = a.toFixed(2);
+      const circ = mixAestheticPresets({ x: { hue: a }, y: { hue: b } }, { x: 1, y: 1 }).hue;
+      const lin = (a + b) / 2;
+      out.innerHTML = "";
+      for (const [label, v] of [["Linear average", lin], ["Circle average (mixer)", circ]]) {
+        const row = document.createElement("div");
+        row.textContent = label + ": " + v.toFixed(3) + "  ";
+        const sw = document.createElement("span");
+        sw.style.cssText = "display:inline-block;width:3em;height:1em;vertical-align:middle;border-radius:3px;background:hsl(" + Math.round(v * 360) + " 70% 50%)";
+        sw.setAttribute("aria-hidden", "true");
+        row.append(sw);
+        out.append(row);
+      }
+    };
+    h1.addEventListener("input", show);
+    show();
+  </script>
+</body>
+</html>
