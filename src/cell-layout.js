@@ -23,7 +23,7 @@
  *    connects every cell of a layer.
  *
  * Everything here is pure and deterministic; tests live in
- * weft/runtime/aywa/test_cell_layout.mjs.
+ * test/cell-layout.test.mjs.
  */
 
 export const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));

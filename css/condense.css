@@ -38,6 +38,7 @@
 
 /* Honest marker: a condensed passage ends with ≈ (press and hold it to read it as written). */
 .cx-condensed { -webkit-touch-callout: none; }
+.cx-editing { user-select: none; }
 .cx-condensed::after {
   content: "≈"; margin-left: 0.3em; font-size: 0.78em; vertical-align: 0.25em;
   color: var(--eido-accent); opacity: 0.85; font-weight: 600;
@@ -81,6 +82,7 @@ html:not([data-condense="4"]) .cx-eli5-slot { display: none; }
 .cx-eli5-wrap:hover .cx-eli5-tip, .cx-eli5:focus-visible + .cx-eli5-tip, .cx-eli5-f:focus-visible + .cx-eli5-tip { opacity: 1; transform: translate(-50%, 0); }
 .cx-eli5-float { position: fixed; left: 0; top: 0; z-index: 65; will-change: transform; }
 .cx-eli5-float[hidden] { display: none; }
+html.cx-wandering { pointer-events: auto; }
 .cx-eli5-f {
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   background: color-mix(in srgb, var(--eido-paper) 55%, transparent);
