@@ -278,7 +278,9 @@ What is kept in `localStorage` (with the default prefix): `eido-condense:<pathna
 | `html[data-condense="0"…"5"]` | The level the page shows. |
 | `html.cx-folded` | Sections are folded (levels 4 and 5). |
 | `html.cx-off` | The reader switched condensing off. |
+| `html.cx-wandering` | The floating ELI5 button is actively wandering. |
 | `.cx-condensed` | A condensed passage (carries the ≈ marker). `data-cx` holds the level name. |
+| `.cx-editing` | A passage is actively morphing words between levels. |
 | `.cx-section`, `.cx-head`, `.cx-sum` | A foldable section, its heading, its summary line. |
 | `.cx-w`, `.cx-strike`, `.cx-gone`, `.cx-new`, `.cx-inked` | Morph states of a word. |
 | `.cx-peek`, `.cx-peeking` | The "as written" card; the passage being peeked. |

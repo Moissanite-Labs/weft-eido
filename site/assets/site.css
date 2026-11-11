@@ -298,3 +298,10 @@ html:root[data-theme] {
   --eido-radius: var(--radius);
 }
 html:root[data-theme="light"] { --eido-accent: #8a6d1f; --eido-strike: #b0432b; }
+
+/* Condensing state hooks (src/condense.js).
+   .cx-editing marks a passage during word morphing;
+   html.cx-wandering marks the root while the floating ELI5 button is active. */
+.cx-editing { user-select: none; }
+html.cx-wandering { pointer-events: auto; }
+
