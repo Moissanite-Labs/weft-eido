@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
-  THRESHOLDS, hashText, keepers, meterFill, nextLevel, normalizeText, shouldWander, skeleton, validateCondensed, wordKey,
+  THRESHOLDS, hashText, keepers, meterFill, nextLevel, normalizeText, setupCondense, shouldWander, skeleton, validateCondensed, wordKey,
 } from "../src/condense.js";
 
 const read = (p) => readFileSync(new URL(p, import.meta.url), "utf8");
@@ -194,4 +194,124 @@ test("skeleton has an empty slot for every passage and section, and validates as
 test("importing the module touches no browser globals", async () => {
   assert.equal(typeof window, "undefined");
   assert.equal(typeof document, "undefined");
+});
+
+// Node has no DOM, and the panel only exists inside setupCondense, so a noun
+// test needs the smallest stand-in the panel construction touches. It covers
+// construction only: no events fire, nothing scrolls, nothing is stored.
+class FakeEl {
+  constructor(tag = "div") {
+    this.tagName = String(tag).toUpperCase();
+    this.children = [];
+    this._html = "";
+    this._text = "";
+    this.hidden = false;
+    this.dataset = {};
+    this.style = {};
+    this._classes = new Set();
+    this.classList = {
+      add: (...c) => c.forEach((x) => this._classes.add(x)),
+      remove: (...c) => c.forEach((x) => this._classes.delete(x)),
+      toggle: (c, f) => {
+        const on = f === undefined ? !this._classes.has(c) : f;
+        if (on) this._classes.add(c);
+        else this._classes.delete(c);
+      },
+      contains: (c) => this._classes.has(c),
+    };
+  }
+  set innerHTML(v) {
+    this._html = String(v);
+    this._text = this._html.replace(/<[^>]*>/g, "");
+  }
+  get innerHTML() { return this._html; }
+  set textContent(v) { this._text = String(v); }
+  get textContent() { return this._text; }
+  get content() { return { textContent: this._text }; }
+  setAttribute() {}
+  append(...els) { this.children.push(...els); }
+  after() {}
+  remove() {}
+  addEventListener() {}
+  querySelector() { return new FakeEl(); }
+  querySelectorAll(sel) {
+    const m = /^\.([\w-]+)$/.exec(sel);
+    if (!m) return [];
+    const found = this._html.match(new RegExp(`\\b${m[1]}\\b`, "g")) || [];
+    this._found ??= {};
+    this._found[sel] ??= found.map(() => new FakeEl("span"));
+    return this._found[sel];
+  }
+  getBoundingClientRect() { return { top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0 }; }
+  focus() {}
+  closest() { return null; }
+  get parentElement() { return null; }
+  get offsetWidth() { return 0; }
+  get offsetHeight() { return 0; }
+  get childNodes() { return []; }
+  replaceWith() {}
+  replaceChildren() {}
+}
+
+function mountPanel(noun) {
+  const body = new FakeEl("body");
+  const doc = {
+    createElement: (tag) => new FakeEl(tag),
+    querySelector: () => null,
+    querySelectorAll: () => [],
+    body,
+    documentElement: new FakeEl("html"),
+  };
+  const win = {
+    addEventListener() {},
+    matchMedia: () => ({ matches: false }),
+    scrollBy() {},
+  };
+  const text = "Some passage text here for the test, long enough to count as a passage.";
+  const passage = new FakeEl("p");
+  passage.textContent = text;
+  passage.innerHTML = text;
+  const data = { blocks: { [hashText(text)]: ["Concise version.", "Terse.", "Caveman."] } };
+  const prev = {
+    document: globalThis.document,
+    window: globalThis.window,
+    location: globalThis.location,
+    requestAnimationFrame: globalThis.requestAnimationFrame,
+    cancelAnimationFrame: globalThis.cancelAnimationFrame,
+  };
+  globalThis.document = doc;
+  globalThis.window = win;
+  globalThis.location = { search: "", pathname: "/test" };
+  globalThis.requestAnimationFrame = () => 0;
+  globalThis.cancelAnimationFrame = () => {};
+  try {
+    const ui = setupCondense(data, { blocks: [passage] }, { noun, storage: false, params: false });
+    assert.ok(ui, "panel mounts");
+    const box = body.children.find((el) => el.innerHTML.includes("attn-panel"));
+    assert.ok(box, "panel box is in the page");
+    // The module runs a 200 ms ratchet while mounted; stop it so the test
+    // process can exit. The box and its spans stay readable after this.
+    ui.destroy();
+    return { box, spans: box.querySelectorAll(".cx-noun") };
+  } finally {
+    for (const [k, v] of Object.entries(prev)) {
+      if (v === undefined) delete globalThis[k];
+      else globalThis[k] = v;
+    }
+  }
+}
+
+test("a noun with markup stays text in the help panel", () => {
+  const noun = "<img src=x onerror=alert(1)>";
+  const { box, spans } = mountPanel(noun);
+  assert.equal(spans.length, 3);
+  for (const s of spans) assert.equal(s.textContent, noun);
+  assert.ok(!box.innerHTML.includes("<img"), "no markup from the noun in the panel HTML");
+  assert.ok(!box.innerHTML.includes("onerror"), "no handler from the noun in the panel HTML");
+});
+
+test("a plain noun still fills the help panel", () => {
+  const { spans } = mountPanel("paper");
+  assert.equal(spans.length, 3);
+  for (const s of spans) assert.equal(s.textContent, "paper");
 });

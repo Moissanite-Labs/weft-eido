@@ -732,12 +732,12 @@ export function setupCondense(data, reading, options = {}) {
         <button class="attn-icon attn-pop-close" type="button" aria-label="Close">${icon.close}</button>
         <div class="attn-pop-body">
           <h2 id="cx-pop-title">Condensing prose</h2>
-          <p>This ${noun} notices how you read it. Read at a steady pace and it stays as written.</p>
+          <p>This <span class="cx-noun"></span> notices how you read it. Read at a steady pace and it stays as written.</p>
           <p>Skim, scrolling past passages faster than they can be read, and the writing condenses to match: concise prose, then terse notes, then caveman, then one line per section. Only passages you have not read condense; the ones you read stay as they were.${withEli5 ? " Keep skimming even then, and an offer of a simpler explanation comes looking for you." : ""}</p>
-          <p>It only ever condenses. Calm reading does not bring the words back; you do, by picking a level on the panel or pressing <em>Back to full prose</em>. Your level is remembered for this ${noun} on this device.</p>
+          <p>It only ever condenses. Calm reading does not bring the words back; you do, by picking a level on the panel or pressing <em>Back to full prose</em>. Your level is remembered for this <span class="cx-noun"></span> on this device.</p>
           <h3>Reading a condensed passage</h3>
           <p>Condensed passages end with <span class="attn-kbd">≈</span>. Press and hold one to see it as written.</p>
-          <p>Every level is written ahead of time and checked against the ${noun}. The full text is the one to cite, and it is the one that prints. Reading is measured in your browser and nothing is sent anywhere.</p>
+          <p>Every level is written ahead of time and checked against the <span class="cx-noun"></span>. The full text is the one to cite, and it is the one that prints. Reading is measured in your browser and nothing is sent anywhere.</p>
           <p class="attn-pop-foot">To stop it, press <span class="attn-kbd" aria-label="the close button">×</span> on the panel.</p>
         </div>
       </div>
@@ -769,6 +769,8 @@ export function setupCondense(data, reading, options = {}) {
         ${icon.mark}
         <span class="cx-badge" aria-hidden="true" hidden></span>
       </button>`;
+    // The noun comes from the caller, so it goes in as text, never as HTML.
+    box.querySelectorAll(".cx-noun").forEach((el) => { el.textContent = noun; });
     (embedded ? panelOpt : document.body).append(box);
     const $ = (s) => box.querySelector(s);
     const panel = $(".attn-panel"), dock = $(".attn-dock"), pop = $(".attn-pop"), badge = $(".cx-badge");
