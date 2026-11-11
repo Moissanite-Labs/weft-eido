@@ -220,9 +220,10 @@ class FakeEl {
       contains: (c) => this._classes.has(c),
     };
   }
+  // The stand-in does not parse HTML: setting innerHTML stores the string
+  // and leaves textContent alone. Only text set as text is ever read as text.
   set innerHTML(v) {
     this._html = String(v);
-    this._text = this._html.replace(/<[^>]*>/g, "");
   }
   get innerHTML() { return this._html; }
   set textContent(v) { this._text = String(v); }
