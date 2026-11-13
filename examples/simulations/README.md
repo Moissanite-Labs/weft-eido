@@ -12,7 +12,8 @@ Dependency-free, standalone HTML5 Canvas interactive simulations accompanying th
    - Live `172-byte` auxiliary-port `SUP(5)` combinator plasmid splicing onto channel-permuted sibling organisms, contrasting **Jacobian Null-Space Projection** ($\Delta W(I - Q_{\text{keep}} Q_{\text{keep}}^\top)$, `10/12` shifted-retention pass) against **Ungated Splicing** and **Permuted Raw Copy** across `1.0x-2.8x` distribution shift.
 4. **3-Cell Transitive `BCP` Plasmid Cascade & `WFSK` Subspace Flag Explorer (`e13_transitive_cascade.html`, `E13` companion to `Moissanite-Labs/weft#174`):**
    - Interactive 3-cell transitive BCP plasmid cascade simulation detailing 2-hop (A→B→C) and 1-hop (B→C) subspace flag retention across G1–G4 gating arms.
-
+5. **Project Asma 5-Path Subspace, Epitope-Core & Trial Power Explorer (`asma_subspace_paraneoplastic.html`, linked to `Foundation-0/project-asma` PR #92):**
+   - Project Asma 5-path subspace-flag, `CDR2L`/`CDR2` 9-mer MHC-II core bifurcation, `3/40` seed supremum, `Soko` 3-assay 0-1 ILP + adjoint Purkinje null-space gate, and `C22` `N=1` trial power explorer linked to `Foundation-0/project-asma` PR #92.
 ## Running Locally
 
 Open `examples/simulations/index.html` directly in any modern browser, or serve from the repo root:
