@@ -31,6 +31,7 @@ component has an isolated demo, its options, and its source with a copy button.
 | [`src/glyph-font.js`](src/glyph-font.js) | A 5×7 bitmask font, two `u32` words per glyph, shared by WebGPU and Canvas2D renderers. |
 | [`src/reading-weave.js`](src/reading-weave.js) | The reading weave. A restlessness score rises when a reader skims and falls when they read. Waves ripple through the text, links slide away from a hurried cursor, and read paragraphs get a thread beside them. Guide: [`docs/reading-weave.md`](docs/reading-weave.md). |
 | [`src/condense.js`](src/condense.js) | Condensing prose. On the same score, an article rewrites itself shorter as it is skimmed: concise, terse, caveman, then a TL;DR per section and an ELI5 on request. Passages already read stay as written. Guide: [`docs/condensing-prose.md`](docs/condensing-prose.md). |
+| [`src/research-explainer.js`](src/research-explainer.js) | Research explainer primitives. A deterministic toy model, inspectable controls, fixed metric text and canvas rendering. The shipped example is illustrative and does not claim evidence for any experiment. |
 
 ```js
 import { mixAestheticPresets } from "./src/aesthetic-mixer.js";

@@ -13,6 +13,7 @@
     "./reading-weave": "./src/reading-weave.js",
     "./reading-weave.css": "./css/reading-weave.css",
     "./condense": "./src/condense.js",
+    "./research-explainer": "./src/research-explainer.js",
     "./condense.css": "./css/condense.css"
   },
   "files": [

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research explainer · Eido</title>
+  <meta name="description" content="A dependency-free live explainer pattern: deterministic toy model, inspectable controls and a canvas field.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    .research-demo { display: grid; gap: 12px; }
+    .research-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .segmented { display: inline-flex; gap: 2px; padding: 4px; border: 1px solid var(--line-2); border-radius: var(--radius-sm); background: var(--bg); }
+    .segmented button { border: 0; border-radius: calc(var(--radius-sm) - 2px); padding: 8px 10px; color: var(--muted); background: transparent; font: 600 0.82rem var(--font-body); cursor: pointer; }
+    .segmented button.is-active { background: var(--surface-2); color: var(--accent-strong); box-shadow: inset 0 0 0 1px var(--line-2); }
+    .kpi-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .kpi { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg-2); }
+    .kpi-label { display: block; color: var(--muted); font-size: 0.78rem; margin-bottom: 4px; }
+    .kpi-value { display: block; color: var(--ink); font: 600 0.96rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; }
+    .stage-wrap { border: 1px solid var(--line-2); background: var(--bg); border-radius: var(--radius-sm); padding: 10px; }
+    .stage-canvas { width: 100%; height: 250px; background: var(--bg); border-radius: 4px; }
+    .stage-caption { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; color: var(--muted); font-size: 0.78rem; flex-wrap: wrap; }
+    .range-row { display: grid; grid-template-columns: minmax(150px, auto) minmax(0, 1fr) auto; gap: 10px; align-items: center; color: var(--muted); font-size: 0.88rem; }
+    .range-row input { width: 100%; min-height: 28px; accent-color: var(--gold-flat); }
+    .range-row output { min-width: 4ch; text-align: right; color: var(--ink); font: 600 0.85rem var(--font-mono); }
+    .provenance { border-left: 3px solid var(--gold-flat); padding-left: 12px; color: var(--ink-2); font-size: 0.9rem; }
+    @media (max-width: 700px) { .kpi-row { grid-template-columns: 1fr; } .range-row { grid-template-columns: 1fr; } .stage-canvas { height: 320px; } }
+  </style>
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="index.html" aria-current="page">Components</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · research</p><h1 id="t">Research explainer</h1><p class="lede">A dependency-free pattern for live models: a small deterministic control model, visible numbers, and a canvas that cannot hide what the code is doing.</p></div></section>
+
+    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+      <p class="crumbs"><a href="index.html">Components</a> / Research explainer</p>
+      <section aria-labelledby="what"><h2 id="what">What it is</h2>
+        <p>A research explainer puts the mechanism on the table. The reader can step a toy model, change its bound, reset it, and watch the reported metrics move. The canvas is an explanation of the code, not a substitute for the experiment.</p>
+        <p class="provenance">This page runs a small toy matrix. It does not run the Weft experiment, and it is not evidence for or against any published E11 claim.</p>
+        <p>Principle: <a href="../philosophy.html#d3">D3 · Compact, verified state</a>, <a href="../philosophy.html#d4">D4 · Surfaces that show strain</a>.</p>
+      </section>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2>
+        <div class="panel research-demo" id="research-demo">
+          <div class="research-toolbar">
+            <div class="segmented" role="group" aria-label="Toy lens" data-segment-group="lens">
+              <button class="is-active" type="button" data-segment="matrix" aria-pressed="true">Matrix</button>
+              <button type="button" data-segment="parametric" aria-pressed="false">Parametric</button>
+              <button type="button" data-segment="causal" aria-pressed="false">Causal</button>
+            </div>
+            <div class="controls">
+              <button class="btn small" type="button" data-action="step">Step toy move</button>
+              <button class="btn small" type="button" data-action="reset">Reset W0</button>
+            </div>
+          </div>
+          <div class="kpi-row" aria-label="Toy model metrics">
+            <div class="kpi"><span class="kpi-label">Move size</span><span class="kpi-value" data-kpi="displacement">0.000</span></div>
+            <div class="kpi"><span class="kpi-label">Frozen-core drift</span><span class="kpi-value" data-kpi="core">0.000000</span></div>
+            <div class="kpi"><span class="kpi-label">Accepted · rejected</span><span class="kpi-value" data-kpi="commits">0 · 0</span></div>
+          </div>
+          <div class="stage-wrap">
+            <canvas class="stage-canvas" data-stage role="img" aria-label="Left: 8 by 8 toy state matrix with frozen top rows. Right: field induced by the selected lens."></canvas>
+            <div class="stage-caption"><span>Genotype: deterministic 8×8 Float64 toy matrix</span><span>Frozen rows: 0 and 1 · Plastic rows: 2 through 7</span></div>
+          </div>
+          <label class="range-row" for="radius">Safety bound R
+            <input id="radius" type="range" min="0.25" max="2.50" step="0.05" value="1.20" data-range="radius">
+            <output data-range-output="radius">1.20</output>
+          </label>
+          <label class="range-row" for="novelty">Exploratory change α
+            <input id="novelty" type="range" min="0.00" max="1.00" step="0.05" value="0.35" data-range="novelty">
+            <output data-range-output="novelty">0.35</output>
+          </label>
+        </div>
+      </section>
+      <section aria-labelledby="use"><h2 id="use">Use it</h2>
+        <h3>1. Copy the file</h3>
+        <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/research-explainer.js">src/research-explainer.js</a><button class="copy" type="button" data-copy-text="src/research-explainer.js">Copy path</button></li></ul>
+        <p>No dependencies and no build step. The module ships pure helpers for tests and a small mount helper for the DOM.</p>
+        <h3>2. Paste the shape</h3>
+        <figure class="codeblock"><figcaption><span>index.html</span><button class="copy" type="button" data-copy-target="#code-3">Copy</button></figcaption><pre tabindex="0"><code id="code-3" class="language-html">&lt;div id=&quot;explainer&quot;&gt;
+  &lt;canvas data-stage&gt;&lt;/canvas&gt;
+  &lt;button data-action=&quot;step&quot;&gt;Step&lt;/button&gt;
+  &lt;output data-kpi=&quot;accepted&quot;&gt;0&lt;/output&gt;
+&lt;/div&gt;
+&lt;script type=&quot;module&quot;&gt;
+  import { mountResearchExplainer, makeToyCell, stepToyCell } from &quot;./src/research-explainer.js&quot;;
+
+  let state = { cell: makeToyCell(20261112) };
+  mountResearchExplainer(document.getElementById(&quot;explainer&quot;), {
+    initialState: state,
+    actions: { step: (s) =&gt; ({ cell: stepToyCell(s.cell, { radius: 1.2 }) }) },
+    kpis: (s) =&gt; ({ accepted: s.cell.accepted }),
+    render: (ctx, s) =&gt; { /* draw the current toy state */ },
+  });
+&lt;/script&gt;</code></pre></figure>
+        <h3>3. Or read the source</h3>
+        <p>This block is fetched from the repository when the page loads.</p>
+        <figure class="codeblock tall"><figcaption><span>src/research-explainer.js<span data-lines></span></span><button class="copy" type="button" data-copy-target="#src-4">Copy</button></figcaption><pre tabindex="0"><code id="src-4" data-src="../../src/research-explainer.js">Loading src/research-explainer.js…</code></pre></figure>
+      </section>
+      <section aria-labelledby="api"><h2 id="api">API</h2>
+        <h3>mountResearchExplainer(root, options)</h3>
+        <table class="api"><thead><tr><th scope="col">Option</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>initialState</code></td><td>Value passed to every pure action, KPI function and renderer.</td></tr><tr><td><code>actions</code></td><td>Map of <code>data-action</code> names to functions <code>state -&gt; state</code>.</td></tr><tr><td><code>segment</code></td><td>Optional function <code>state, group, value -&gt; state</code> for segmented buttons.</td></tr><tr><td><code>range</code></td><td>Optional function <code>state, name, value -&gt; state</code> for range inputs.</td></tr><tr><td><code>kpis</code></td><td>Optional function returning text for every <code>data-kpi</code> target.</td></tr><tr><td><code>render</code></td><td>Canvas renderer called as <code>render(ctx, state, { width, height, ratio })</code>.</td></tr></tbody></table>
+        <h3>Pure functions</h3>
+        <table class="api"><thead><tr><th scope="col">Function</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>seededRandom(seed)</code></td><td>Deterministic PRNG in [0, 1).</td></tr><tr><td><code>makeToyCell(seed, options)</code></td><td>Deterministic 8×8 toy matrix with frozen core rows.</td></tr><tr><td><code>stepToyCell(cell, options)</code></td><td>One candidate plastic-row move. Rejects oversized moves without mutating the input.</td></tr><tr><td><code>matrixDisplacement(before, after)</code></td><td>Euclidean norm across every cell.</td></tr><tr><td><code>coreDrift(before, after, coreRows)</code></td><td>Euclidean norm of the frozen-core rows only.</td></tr><tr><td><code>formatMetric(value, options)</code></td><td>Fixed-precision display text with optional sign.</td></tr><tr><td><code>rangeProgress(value, min, max)</code></td><td>Clamped 0–100 progress percent for styled range inputs.</td></tr></tbody></table>
+        <p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/philosophy.md">docs/philosophy.md</a> on GitHub.</p>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { clamp, coreDrift, formatMetric, makeToyCell, matrixDisplacement, mountResearchExplainer, stepToyCell } from "../../src/research-explainer.js";
+
+    const root = document.getElementById("research-demo");
+    const SEED = 20261112;
+    const fresh = () => {
+      const cell = makeToyCell(SEED);
+      return { lens: "matrix", radius: 1.2, novelty: 0.35, base: cell.matrix, cell };
+    };
+    const draw = (ctx, state, box) => {
+      const { width, height } = box;
+      ctx.fillStyle = "#090d0f";
+      ctx.fillRect(0, 0, width, height);
+      const cell = state.cell;
+      const side = Math.min((height - 52) / cell.size, (width / 2 - 30) / cell.size);
+      const originX = 18;
+      const originY = 34;
+      ctx.font = "12px ui-monospace, monospace";
+      ctx.fillStyle = "#91a8aa";
+      ctx.fillText("TOY MATRIX", originX, 18);
+      for (let i = 0; i < cell.size; i += 1) {
+        for (let j = 0; j < cell.size; j += 1) {
+          const value = cell.matrix[i][j];
+          const a = clamp(Math.abs(value) * 2.4, 0.08, 0.8);
+          ctx.fillStyle = value >= 0 ? `rgba(138,190,184,${a})` : `rgba(217,199,160,${a})`;
+          ctx.fillRect(originX + j * side, originY + i * side, side - 2, side - 2);
+        }
+      }
+      ctx.strokeStyle = "#d9c7a0";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(originX - 1, originY - 1, cell.size * side + 1, cell.coreRows * side + 1);
+      const fieldX = width / 2 + 12;
+      ctx.fillStyle = "#91a8aa";
+      ctx.fillText(`${state.lens.toUpperCase()} FIELD`, fieldX, 18);
+      const fieldWidth = width - fieldX - 16;
+      const fieldTop = 34;
+      const fieldBottom = height - 18;
+      const fieldHeight = fieldBottom - fieldTop;
+      const fieldCell = Math.max(6, Math.floor(fieldWidth / 32));
+      const rows = 12;
+      const cols = 28;
+      const lensGain = state.lens === "matrix" ? 1.0 : state.lens === "parametric" ? 1.45 : 1.9;
+      const phase = state.cell.accepted * 0.55 + state.cell.rejected * 0.18;
+      for (let row = 0; row < rows; row += 1) {
+        for (let col = 0; col < cols; col += 1) {
+          const x = fieldX + col * fieldCell;
+          const y = fieldTop + row * (fieldHeight / rows);
+          const u = col / cols;
+          const v = row / rows;
+          const wave = Math.sin(u * 7 + phase) * Math.cos(v * 5 - phase) + Math.sin((u + v) * 4) / 2;
+          const alpha = clamp((wave * 0.22 + 0.42) * lensGain, 0.04, 0.85);
+          ctx.fillStyle = wave >= 0 ? `rgba(138,190,184,${alpha})` : `rgba(217,199,160,${alpha})`;
+          ctx.fillRect(x, y, fieldCell - 2, fieldHeight / rows - 2);
+        }
+      }
+    };
+    mountResearchExplainer(root, {
+      initialState: fresh(),
+      actions: {
+        step(state) { return { ...state, cell: stepToyCell(state.cell, { radius: state.radius, novelty: state.novelty }) }; },
+        reset(state) { const next = fresh(); return { ...next, radius: state.radius, novelty: state.novelty, lens: state.lens }; },
+      },
+      segment(state, group, value) { return group === "lens" ? { ...state, lens: value } : state; },
+      range(state, name, value) { return { ...state, [name]: value }; },
+      kpis(state) { return {
+        displacement: formatMetric(matrixDisplacement(state.base, state.cell.matrix), { precision: 3 }),
+        core: formatMetric(coreDrift(state.base, state.cell.matrix, state.cell.coreRows), { precision: 6 }),
+        commits: `${state.cell.accepted} · ${state.cell.rejected}`,
+      }; },
+      render: draw,
+    });
+  </script>
+</body>
+</html>
