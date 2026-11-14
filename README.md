@@ -2,8 +2,6 @@
 
 The design language of [ML Weft](https://github.com/Moissanite-Labs/weft). A [Moissanite Labs](https://w3ft.org) project.
 
-*Developed under the internal name **Aywa**.*
-
 Weft studies models that change themselves within bounds you can check. Eido is the first level of putting that
 philosophy into practice, in the place people meet it every day: the interface. An Eido interface changes itself in
 response to the person using it, and only within bounds that person can see, check and undo.
