@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weft × Eido · Interactive Substrate Simulations (E08–E12)</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f8f8f7, #0e0f12);
+      --surface: light-dark(#ffffff, #17191e);
+      --surface-dim: light-dark(#f1f0ee, #121418);
+      --ink: light-dark(#111214, #e8eaed);
+      --muted: light-dark(#5f6368, #9aa0a6);
+      --stroke: light-dark(#dcdad7, #2b2f38);
+      --primary: light-dark(#2563eb, #8ab4f8);
+      --emerald: light-dark(#15803d, #4ade80);
+      --amber: light-dark(#b45309, #fbbf24);
+      --crimson: light-dark(#dc2626, #f87171);
+      --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px 48px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+    .shell { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .hdr { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+    .hdr h1 { font-size: 20px; font-weight: 500; margin: 0; letter-spacing: -0.01em; }
+    .hdr span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; background: var(--surface-dim); padding: 6px; border-radius: 999px; width: fit-content; }
+    .tab-btn {
+      border: none; background: transparent; color: var(--muted); padding: 8px 16px;
+      border-radius: 999px; font-size: 13px; cursor: pointer; font-family: var(--sans);
+    }
+    .tab-btn.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .panel { display: none; flex-direction: column; gap: 12px; }
+    .panel.active { display: flex; }
+    .row-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .seg-group { display: flex; gap: 4px; background: var(--surface-dim); padding: 4px; border-radius: 999px; flex-wrap: wrap; }
+    .seg-btn { border: none; background: transparent; color: var(--muted); padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+    .seg-btn.active { background: var(--surface); color: var(--ink); }
+    .act-btn { border: 1px solid var(--stroke); background: var(--surface); color: var(--ink); padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+    .act-btn.primary { background: var(--primary); color: #fff; border-color: transparent; }
+    .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .kpi { background: var(--surface); border-radius: 14px; padding: 12px 16px; }
+    .kpi-l { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .kpi-v { font-family: var(--mono); font-size: 15px; font-variant-numeric: tabular-nums; }
+    .stage { background: var(--surface-dim); border-radius: 16px; padding: 14px; }
+    canvas { width: 100%; height: 280px; display: block; }
+    .cap { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 8px; flex-wrap: wrap; gap: 8px; }
+    .controls { background: var(--surface); border-radius: 14px; padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }
+    .s-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .s-row label { font-size: 13px; min-width: 190px; }
+    .s-row input[type="range"] { flex: 1; min-width: 160px; accent-color: var(--primary); }
+    .s-val { font-family: var(--mono); font-size: 13px; background: var(--surface-dim); padding: 4px 10px; border-radius: 10px; min-width: 58px; text-align: center; }
+    @media (max-width: 600px) { .kpis { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="hdr">
+      <h1>Weft × Eido · Substrate Simulation Suite</h1>
+      <span>Zero-Lexicon · Morphogenetic IC-to-Plasm · Null-Space Plasmids</span>
+    </div>
+
+    <div class="nav-tabs" role="tablist">
+      <button type="button" class="tab-btn active" data-tab="p-stat">1 · Statistical Cell (E08–E10)</button>
+      <button type="button" class="tab-btn" data-tab="p-morph">2 · IC-to-Plasm Morphogenesis (E11)</button>
+      <button type="button" class="tab-btn" data-tab="p-plasmid">3 · Plasmid Null-Space Graft (E12)</button>
+    </div>
+
+    <!-- PANEL 1: STATISTICAL CELL -->
+    <section id="p-stat" class="panel active">
+      <div class="row-bar">
+        <div class="seg-group">
+          <button type="button" class="seg-btn active" data-s1="matrix">Naked Matrix W</button>
+          <button type="button" class="seg-btn" data-s1="param">Parametric (μ, Σ)</button>
+          <button type="button" class="seg-btn" data-s1="causal">Causal SCM do(X)</button>
+        </div>
+        <div>
+          <button type="button" id="s1-step" class="act-btn primary">Step A/B Mitosis</button>
+          <button type="button" id="s1-reset" class="act-btn">Reset W0</button>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-l">Gate Displacement</div><div class="kpi-v" id="s1-disp">0.000 ≤ 1.20</div></div>
+        <div class="kpi"><div class="kpi-l">Frozen Core Drift (Rows 0..1)</div><div class="kpi-v">0.0000 (LOCKED)</div></div>
+        <div class="kpi"><div class="kpi-l">Accepted A/B Commits</div><div class="kpi-v" id="s1-com">0 · fit 0.82</div></div>
+      </div>
+      <div class="stage">
+        <canvas id="cv-stat" style="cursor:crosshair"></canvas>
+        <div class="cap">
+          <span>Left: 8×8 Float32 genotype (top 2 rows frozen watermark)</span>
+          <span>Move pointer or click in right field to inject sensory stimulus s_t</span>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="s-row">
+          <label for="s1-r">Safety Gate Radius (R)</label>
+          <input id="s1-r" type="range" min="0.25" max="2.50" step="0.05" value="1.20">
+          <div class="s-val" id="s1-rv">1.20</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 2: MORPHOGENETIC IC-TO-PLASM -->
+    <section id="p-morph" class="panel">
+      <div class="row-bar">
+        <div class="seg-group">
+          <button type="button" class="seg-btn active" data-s2="morph">M1 Morphogenetic IC</button>
+          <button type="button" class="seg-btn" data-s2="scrambled">C2 Scrambled IC</button>
+          <button type="button" class="seg-btn" data-s2="direct">D Direct Matrix ES</button>
+        </div>
+        <div>
+          <button type="button" id="s2-red" class="act-btn primary">Step IC Reduction</button>
+          <button type="button" id="s2-mut" class="act-btn">Mutate BCP Seed</button>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-l">Genotype Wire Size · Compression</div><div class="kpi-v" id="s2-comp">492 B · 2,131.3×</div></div>
+        <div class="kpi"><div class="kpi-l">IC Trace (Steps · VLV Tension)</div><div class="kpi-v" id="s2-tr">6 steps · tension 52/85</div></div>
+        <div class="kpi"><div class="kpi-l">E11 12-Seed Return · Core Drift</div><div class="kpi-v" id="s2-ret">+39.51 · drift 0.0000</div></div>
+      </div>
+      <div class="stage">
+        <canvas id="cv-morph"></canvas>
+        <div class="cap">
+          <span>C3 Genotype: 24-node WEFT BCP graph (CON, DUP, FRC, SUP, VLV, ERA)</span>
+          <span>C1 Phenotype: Top 25% locked core · Bottom 75% unfolded cilia</span>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="s-row">
+          <label for="s2-d">Unfolded Plasm Scale (2^D)</label>
+          <input id="s2-d" type="range" min="6" max="9" step="1" value="9">
+          <div class="s-val" id="s2-dv">512²</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 3: E12 PLASMID NULL-SPACE GRAFT -->
+    <section id="p-plasmid" class="panel">
+      <div class="row-bar">
+        <div class="seg-group">
+          <button type="button" class="seg-btn active" data-s3="nullgate">G2 Null-Space BCP Graft</button>
+          <button type="button" class="seg-btn" data-s3="ungated">G1 Ungated BCP Graft</button>
+          <button type="button" class="seg-btn" data-s3="raw">C1 Raw Copy (Permuted)</button>
+        </div>
+        <button type="button" id="s3-perm" class="act-btn">Reshuffle Sibling Basis</button>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-l">Shifted Native Retention</div><div class="kpi-v" id="s3-keep">+56.73 (0.00 drop)</div></div>
+        <div class="kpi"><div class="kpi-l">0-Shot Transferred Skill (172 B)</div><div class="kpi-v" id="s3-tran">+39.32 (+123.85 gain)</div></div>
+        <div class="kpi"><div class="kpi-l">Null Residual ||ΔW·Q_keep||_F</div><div class="kpi-v" id="s3-null">0.0000 (10/12 pass)</div></div>
+      </div>
+      <div class="stage">
+        <canvas id="cv-plasmid"></canvas>
+        <div class="cap">
+          <span>Left: 8-node (172 B) plasmid spliced onto host aux port via SUP(5)</span>
+          <span>Right: Shifted wake retention (green) & grafted chemotaxis (blue)</span>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="s-row">
+          <label for="s3-sh">Distribution Shift Surge</label>
+          <input id="s3-sh" type="range" min="1.0" max="2.8" step="0.1" value="2.4">
+          <div class="s-val" id="s3-shv">2.4×</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const css = (n, fb) => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || fb;
+      let activeTab = 'p-stat';
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('sim') === 'morphogenesis') activeTab = 'p-morph';
+      if (params.get('sim') === 'plasmid') activeTab = 'p-plasmid';
+
+      function setTab(id) {
+        activeTab = id;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === id));
+      }
+      setTab(activeTab);
+      document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+
+      // --- SIM 1: STATISTICAL CELL ---
+      const cv1 = document.getElementById('cv-stat');
+      const ctx1 = cv1.getContext('2d');
+      const N = 8, CORE = 2;
+      const W0 = new Float32Array(64), W = new Float32Array(64);
+      let s1Mode = 'matrix', s1Com = 0, s1Fit = 0.82, stimX = 0.68, stimY = 0.45, cX = 0.5, cY = 0.5, t1 = 0;
+
+      function initS1() {
+        for (let i = 0; i < 64; i++) { W0[i] = Math.sin((i + 1) * 2.31) * 0.6; W[i] = W0[i]; }
+        s1Com = 0; updS1();
+      }
+      function frob1(m) { let s = 0; for (let i = 0; i < 64; i++) s += (m[i] - W0[i]) ** 2; return Math.sqrt(s); }
+      function stepS1() {
+        const R = parseFloat(document.getElementById('s1-r').value);
+        const cand = new Float32Array(W);
+        for (let r = CORE; r < N; r++) {
+          for (let c = 0; c < N; c++) cand[r * N + c] += (Math.random() - 0.48) * 0.08;
+        }
+        if (frob1(cand) <= R) { W.set(cand); s1Com++; s1Fit = Math.min(0.98, s1Fit + 0.01); }
+        updS1();
+      }
+      function updS1() {
+        const R = parseFloat(document.getElementById('s1-r').value);
+        document.getElementById('s1-rv').textContent = R.toFixed(2);
+        document.getElementById('s1-disp').textContent = frob1(W).toFixed(3) + ' ≤ ' + R.toFixed(2);
+        document.getElementById('s1-com').textContent = s1Com + ' · fit ' + s1Fit.toFixed(2);
+      }
+      cv1.addEventListener('pointermove', e => {
+        const r = cv1.getBoundingClientRect();
+        if (e.clientX - r.left > 240) {
+          stimX = Math.max(0.1, Math.min(0.9, (e.clientX - r.left - 240) / (r.width - 250)));
+          stimY = Math.max(0.1, Math.min(0.9, (e.clientY - r.top - 10) / (r.height - 20)));
+        }
+      });
+      cv1.addEventListener('pointerdown', stepS1);
+      document.getElementById('s1-step').addEventListener('click', stepS1);
+      document.getElementById('s1-reset').addEventListener('click', initS1);
+      document.getElementById('s1-r').addEventListener('input', updS1);
+      document.querySelectorAll('[data-s1]').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('[data-s1]').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); s1Mode = b.dataset.s1; initS1();
+      }));
+      initS1();
+
+      // --- SIM 2: MORPHOGENESIS ---
+      const cv2 = document.getElementById('cv-morph');
+      const ctx2 = cv2.getContext('2d');
+      let s2Arm = 'morph', s2Steps = 6, s2Seed = 1;
+      const RET2 = { morph: {6:'+33.48',7:'+35.10',8:'+36.68',9:'+39.51'}, scrambled: {6:'+5.39',7:'+4.10',8:'+2.87',9:'-0.95'}, direct: {6:'+17.44',7:'+10.20',8:'+4.02',9:'-0.82'} };
+      function updS2() {
+        const d = parseInt(document.getElementById('s2-d').value, 10);
+        const dim = 1 << d;
+        document.getElementById('s2-dv').textContent = dim + '²';
+        document.getElementById('s2-comp').textContent = s2Arm === 'direct' ? ((dim * dim * 4 / 1024).toFixed(0) + ' KB · 1.0×') : ('492 B · ' + (dim * dim * 4 / 492).toFixed(1) + '×');
+        document.getElementById('s2-tr').textContent = s2Arm === 'direct' ? 'No IC graph · O(1/√P)' : (s2Steps + ' steps · tension ' + Math.min(82, 28 + s2Steps * 4) + '/85');
+        document.getElementById('s2-ret').textContent = RET2[s2Arm][d] + ' · drift 0.0000';
+      }
+      document.getElementById('s2-d').addEventListener('input', updS2);
+      document.getElementById('s2-red').addEventListener('click', () => { s2Steps = (s2Steps % 18) + 2; updS2(); });
+      document.getElementById('s2-mut').addEventListener('click', () => { s2Seed++; updS2(); });
+      document.querySelectorAll('[data-s2]').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('[data-s2]').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); s2Arm = b.dataset.s2; updS2();
+      }));
+      updS2();
+
+      // --- SIM 3: E12 PLASMID NULL-SPACE GRAFT ---
+      const cv3 = document.getElementById('cv-plasmid');
+      const ctx3 = cv3.getContext('2d');
+      let s3Mode = 'nullgate', s3Perm = 1;
+      function updS3() {
+        const sh = parseFloat(document.getElementById('s3-sh').value);
+        document.getElementById('s3-shv').textContent = sh.toFixed(1) + '×';
+        const u = (sh - 1.0) / 1.4;
+        if (s3Mode === 'nullgate') {
+          document.getElementById('s3-keep').textContent = '+' + (86.59 - u * 29.86).toFixed(2) + ' (0.00 drop)';
+          document.getElementById('s3-tran').textContent = '+39.32 (+123.85 gain)';
+          document.getElementById('s3-null').textContent = '0.0000 (10/12 pass)';
+        } else if (s3Mode === 'ungated') {
+          document.getElementById('s3-keep').textContent = (-20.75 - u * 67.13).toFixed(2) + ' (collision)';
+          document.getElementById('s3-tran').textContent = '-46.57 (m=1 clash)';
+          document.getElementById('s3-null').textContent = '1.3086 (0/12 pass)';
+        } else {
+          document.getElementById('s3-keep').textContent = '+' + (84.01 - u * 31.65).toFixed(2) + ' (-4.37 drop)';
+          document.getElementById('s3-tran').textContent = '-85.69 (perm scrambled)';
+          document.getElementById('s3-null').textContent = '0.1376 (0/12 pass)';
+        }
+      }
+      document.getElementById('s3-sh').addEventListener('input', updS3);
+      document.getElementById('s3-perm').addEventListener('click', () => { s3Perm++; updS3(); });
+      document.querySelectorAll('[data-s3]').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('[data-s3]').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); s3Mode = b.dataset.s3; updS3();
+      }));
+      updS3();
+
+      function prep(cv, ctx) {
+        const dpr = window.devicePixelRatio || 1;
+        const r = cv.getBoundingClientRect();
+        const w = Math.max(300, Math.floor(r.width)), h = Math.max(220, Math.floor(r.height));
+        if (cv.width !== w * dpr || cv.height !== h * dpr) { cv.width = w * dpr; cv.height = h * dpr; }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+        return { w, h };
+      }
+
+      function loop() {
+        t1 += 0.028;
+        const pri = css('--primary', '#2563eb'), em = css('--emerald', '#15803d'), am = css('--amber', '#b45309'), cr = css('--crimson', '#dc2626'), mut = css('--muted', '#666'), str = css('--stroke', '#ccc'), ink = css('--ink', '#111');
+
+        if (activeTab === 'p-stat') {
+          const { w, h } = prep(cv1, ctx1);
+          const sz = Math.min(200, h - 36), cs = sz / 8;
+          for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+            const v = W[r * 8 + c];
+            ctx1.globalAlpha = 0.18 + 0.75 * Math.min(1, Math.abs(v));
+            ctx1.fillStyle = v >= 0 ? pri : am;
+            ctx1.fillRect(14 + c * cs, 24 + r * cs, cs - 2, cs - 2);
+          }
+          ctx1.globalAlpha = 1; ctx1.strokeStyle = em; ctx1.setLineDash([4, 3]);
+          ctx1.strokeRect(14, 24, sz, cs * 2); ctx1.setLineDash([]);
+          const fx = 234, fw = w - fx - 12, fh = h - 24;
+          cX += (stimX - cX) * 0.04; cY += (stimY - cY) * 0.04;
+          const ox = fx + cX * fw, oy = 12 + cY * fh, sx = fx + stimX * fw, sy = 12 + stimY * fh;
+          ctx1.strokeStyle = str; ctx1.strokeRect(fx, 12, fw, fh);
+          ctx1.strokeStyle = am; ctx1.beginPath(); ctx1.arc(sx, sy, 10, 0, Math.PI * 2); ctx1.stroke();
+          ctx1.strokeStyle = pri; ctx1.lineWidth = 2; ctx1.beginPath();
+          for (let k = 0; k <= 64; k++) {
+            const a = (k / 64) * Math.PI * 2, rad = 24 * (1 + 0.25 * Math.cos(6 * a + t1));
+            const px = ox + Math.cos(a) * rad, py = oy + Math.sin(a) * rad;
+            if (k === 0) ctx1.moveTo(px, py); else ctx1.lineTo(px, py);
+          }
+          ctx1.stroke();
+        } else if (activeTab === 'p-morph') {
+          const { w, h } = prep(cv2, ctx2);
+          const col = w / 3, d = parseInt(document.getElementById('s2-d').value, 10);
+          const nC = 14 + (s2Steps % 6), gCx = col * 0.5, gCy = h * 0.52;
+          if (s2Arm !== 'direct') {
+            for (let i = 0; i < nC; i++) {
+              const a1 = (i / nC) * Math.PI * 2, a2 = (((i + 3) % nC) / nC) * Math.PI * 2;
+              ctx2.strokeStyle = pri; ctx2.globalAlpha = 0.4; ctx2.beginPath();
+              ctx2.moveTo(gCx + Math.cos(a1) * 58, gCy + Math.sin(a1) * 58);
+              ctx2.lineTo(gCx + Math.cos(a2) * 58, gCy + Math.sin(a2) * 58); ctx2.stroke();
+              ctx2.globalAlpha = 1; ctx2.fillStyle = i === 0 ? em : ink;
+              ctx2.beginPath(); ctx2.arc(gCx + Math.cos(a1) * 58, gCy + Math.sin(a1) * 58, 6, 0, Math.PI * 2); ctx2.fill();
+            }
+          }
+          const cells = d * 4, mSz = Math.min(col - 24, h - 36), mx = col + (col - mSz) / 2, my = 20, sp = mSz / cells;
+          for (let r = 0; r < cells; r++) for (let c = 0; c < cells; c++) {
+            const rn = r / cells, cn = c / cells;
+            const v = rn < 0.25 ? Math.sin(rn * 30 + cn * 20) * 0.4 : (s2Arm === 'morph' ? Math.cos((rn - cn) * 6.28 + s2Seed) : Math.sin((rn * 311 + cn * 293) * d));
+            ctx2.globalAlpha = 0.2 + 0.7 * Math.min(1, Math.abs(v));
+            ctx2.fillStyle = v >= 0 ? pri : am;
+            ctx2.fillRect(mx + c * sp, my + r * sp, Math.max(1, sp - 0.5), Math.max(1, sp - 0.5));
+          }
+          ctx2.globalAlpha = 1; ctx2.strokeStyle = em; ctx2.strokeRect(mx, my, mSz, mSz * 0.25);
+          const rCx = col * 2.5, rCy = h * 0.52, br = 54;
+          for (let k = 0; k < 40; k++) {
+            const th = (k / 40) * Math.PI * 2;
+            const amp = s2Arm === 'morph' ? Math.cos(th - t1 * 2) : Math.sin(k * 77 + t1 * 3) * (s2Arm === 'direct' ? 0.2 : 0.1);
+            ctx2.strokeStyle = s2Arm === 'morph' ? pri : mut;
+            ctx2.beginPath(); ctx2.moveTo(rCx + Math.cos(th) * br, rCy + Math.sin(th) * br);
+            ctx2.lineTo(rCx + Math.cos(th + 0.4 * amp) * (br + 12 + 8 * amp), rCy + Math.sin(th + 0.4 * amp) * (br + 12 + 8 * amp)); ctx2.stroke();
+          }
+        } else {
+          const { w, h } = prep(cv3, ctx3);
+          const col = w / 3, sh = parseFloat(document.getElementById('s3-sh').value);
+          const c1x = col * 0.5, c1y = h * 0.54;
+          ctx3.fillStyle = em; ctx3.beginPath(); ctx3.arc(c1x - 34, c1y, 18, 0, Math.PI * 2); ctx3.fill();
+          ctx3.fillStyle = s3Mode === 'raw' ? am : pri; ctx3.beginPath(); ctx3.arc(c1x + 36, c1y, 18, 0, Math.PI * 2); ctx3.fill();
+          ctx3.strokeStyle = ink; ctx3.beginPath(); ctx3.moveTo(c1x - 34, c1y); ctx3.lineTo(c1x, c1y - 28); ctx3.lineTo(c1x + 36, c1y); ctx3.stroke();
+          ctx3.fillStyle = ink; ctx3.beginPath(); ctx3.arc(c1x, c1y - 28, 7, 0, Math.PI * 2); ctx3.fill();
+
+          const ox = col * 1.5, oy = h * 0.62, L = 66;
+          ctx3.strokeStyle = str; ctx3.beginPath(); ctx3.moveTo(ox - L, oy); ctx3.lineTo(ox + L, oy); ctx3.moveTo(ox, oy + 24); ctx3.lineTo(ox, oy - L); ctx3.stroke();
+          ctx3.strokeStyle = em; ctx3.lineWidth = 2.5; ctx3.beginPath(); ctx3.moveTo(ox, oy); ctx3.lineTo(ox + L * 0.8, oy); ctx3.stroke();
+          if (s3Mode === 'nullgate') {
+            ctx3.strokeStyle = pri; ctx3.beginPath(); ctx3.moveTo(ox, oy); ctx3.lineTo(ox, oy - L * 0.85); ctx3.stroke();
+          } else {
+            ctx3.strokeStyle = cr; ctx3.beginPath(); ctx3.moveTo(ox, oy); ctx3.lineTo(ox - L * 0.6, oy - L * 0.7); ctx3.stroke();
+          }
+          ctx3.lineWidth = 1.8;
+          const wx = col * 2 + 12, ww = col - 24;
+          ctx3.strokeStyle = s3Mode === 'ungated' ? cr : em; ctx3.beginPath();
+          for (let k = 0; k <= 50; k++) {
+            const u = k / 50, th = u * 6.28;
+            const y = s3Mode === 'ungated' ? -0.8 * (sh / 2) * Math.cos(th + t1) : Math.cos(2 * th - t1);
+            const px = wx + u * ww, py = h * 0.36 - y * 20;
+            if (k === 0) ctx3.moveTo(px, py); else ctx3.lineTo(px, py);
+          }
+          ctx3.stroke();
+          ctx3.strokeStyle = s3Mode === 'nullgate' ? pri : mut; ctx3.beginPath();
+          for (let k = 0; k <= 50; k++) {
+            const u = k / 50, th = u * 6.28;
+            const y = s3Mode === 'nullgate' ? 0.85 * Math.cos(3 * th - t1) : 0.3 * Math.sin(th * 9 + s3Perm);
+            const px = wx + u * ww, py = h * 0.76 - y * 20;
+            if (k === 0) ctx3.moveTo(px, py); else ctx3.lineTo(px, py);
+          }
+          ctx3.stroke();
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
+  </script>
+</body>
+</html>

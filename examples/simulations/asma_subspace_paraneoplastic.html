@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Asma - 5-Path Subspace, Epitope-Core &amp; Trial Power Explorer</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f8f9fa, #131417);
+      --surface-dim: light-dark(#f1f3f4, #1e2025);
+      --surface-bright: light-dark(#ffffff, #282a30);
+      --on-surface: light-dark(#1f1f1f, #e8eaed);
+      --on-surface-variant: light-dark(#5f6368, #9aa0a6);
+      --outline: light-dark(#dadce0, #44474e);
+      --stroke-default: light-dark(#e0e2e5, #33363d);
+      --primary: light-dark(#1a73e8, #8ab4f8);
+      --chart-1: light-dark(#1a73e8, #8ab4f8);
+      --chart-2: light-dark(#7e57c2, #b39ddb);
+      --chart-3: light-dark(#1e8e3e, #81c995);
+      --chart-8: light-dark(#e37400, #fdd663);
+      --error: light-dark(#d93025, #f28b82);
+      --r-l: 20px;
+      --r-m: 14px;
+      --ff-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --ff-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--on-surface);
+      font-family: var(--ff-sans);
+    }
+    .widget-container { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+    .hdr { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+    .hdr h1 { margin: 0; font-size: 18px; font-weight: 600; }
+    .hdr span { font-size: 12px; color: var(--on-surface-variant); font-family: var(--ff-mono); }
+    .kpi-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .lumi-summary-card { background: var(--surface-bright); border: 1px solid var(--outline); border-radius: var(--r-m); padding: 12px 14px; }
+    .kpi-label { font-size: 12px; color: var(--on-surface-variant); margin-bottom: 4px; }
+    .kpi-val { font-size: 18px; font-family: var(--ff-mono); font-variant-numeric: tabular-nums; color: var(--on-surface); }
+    .kpi-sub { font-size: 12px; color: var(--on-surface-variant); margin-top: 2px; font-variant-numeric: tabular-nums; }
+    .stage-wrap { background: var(--surface-dim); border: 1px solid var(--outline); border-radius: var(--r-l); padding: 14px; }
+    .stage-svg { width: 100%; height: auto; display: block; }
+    .deck { display: flex; flex-direction: column; gap: 12px; padding: 14px 18px; background: var(--surface-bright); border: 1px solid var(--outline); border-radius: var(--r-m); }
+    .lumi-segmented-group { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .lumi-segmented-btn {
+      border: 1px solid var(--outline);
+      background: var(--surface-dim);
+      color: var(--on-surface);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .lumi-segmented-btn.is-active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .lumi-slider-row { display: flex; flex-direction: column; gap: 6px; }
+    .lumi-slider-label { font-size: 13px; color: var(--on-surface-variant); }
+    .lumi-slider-container { display: flex; align-items: center; gap: 12px; }
+    .lumi-slider { flex: 1; accent-color: var(--primary); }
+    .lumi-slider-value { min-width: 68px; text-align: right; font-family: var(--ff-mono); font-size: 13px; }
+    @media (max-width: 640px) { .kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="hdr">
+      <h1>Project Asma - 5-Path Subspace, Epitope-Core &amp; Trial Power Explorer</h1>
+      <span>Foundation-0/project-asma PR #92</span>
+    </div>
+    <div class="kpi-strip">
+      <div class="lumi-summary-card">
+        <div class="kpi-label">432-446 vs 445-464</div>
+        <div class="kpi-val" id="val-k1">9/9 vs 5/9</div>
+        <div class="kpi-sub" id="sub-k1">PEYKALFKEIFS trap</div>
+      </div>
+      <div class="lumi-summary-card">
+        <div class="kpi-label">All-4 Sep Ceiling</div>
+        <div class="kpi-val" id="val-k2">0.03642</div>
+        <div class="kpi-sub" id="sub-k2">2% seed - 54.2% bleed</div>
+      </div>
+      <div class="lumi-summary-card">
+        <div class="kpi-label">C22 (13/8) Power</div>
+        <div class="kpi-val" id="val-k3">83.0%</div>
+        <div class="kpi-sub" id="sub-k3">vs 48.8% raw FFPE</div>
+      </div>
+      <div class="lumi-summary-card">
+        <div class="kpi-label">Minimal H1-H5 ILP</div>
+        <div class="kpi-val" id="val-k4">3 Assays</div>
+        <div class="kpi-sub" id="sub-k4">Unique of 64 subsets</div>
+      </div>
+    </div>
+
+    <div class="stage-wrap">
+      <svg class="stage-svg" id="main-svg" viewBox="0 0 680 248" role="img" aria-label="Project Asma five-path interactive discovery explorer">
+        <g id="scene-content"></g>
+      </svg>
+    </div>
+
+    <div class="deck">
+      <div class="lumi-segmented-group" role="group" aria-label="Discovery module">
+        <button type="button" class="lumi-segmented-btn is-active" data-tab="epitope">CDR2L 9-Mer Trap</button>
+        <button type="button" class="lumi-segmented-btn" data-tab="bleed">3/40 Seed Optimum</button>
+        <button type="button" class="lumi-segmented-btn" data-tab="cascade">Adjoint + 3-Assay ILP</button>
+        <button type="button" class="lumi-segmented-btn" data-tab="power">N=1 &amp; C22 Power</button>
+      </div>
+      <div class="lumi-slider-row">
+        <label class="lumi-slider-label" id="lbl-slider" for="in-param">Sliding 9-Mer Register Start (aa 432..456)</label>
+        <div class="lumi-slider-container">
+          <input id="in-param" class="lumi-slider" type="range" min="432" max="456" step="1" value="436">
+          <div id="val-param" class="lumi-slider-value">aa 436</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scene = document.getElementById('scene-content');
+    const slider = document.getElementById('in-param');
+    const valParam = document.getElementById('val-param');
+    const lblSlider = document.getElementById('lbl-slider');
+    let curTab = 'epitope';
+
+    const CORES = [
+      { pos: 432, mer: 'SQPEYKALF', match: 7, cdr2: 'TPPEYKALF', ep: 'IEDB 1933672 (432-446)' },
+      { pos: 433, mer: 'QPEYKALFK', match: 8, cdr2: 'PPEYKALFK', ep: 'IEDB 1933672 (432-446)' },
+      { pos: 434, mer: 'PEYKALFKE', match: 9, cdr2: 'PEYKALFKE', ep: 'SHARED 100% CDR2 CORE!' },
+      { pos: 435, mer: 'EYKALFKEI', match: 9, cdr2: 'EYKALFKEI', ep: 'SHARED 100% CDR2 CORE!' },
+      { pos: 436, mer: 'YKALFKEIF', match: 9, cdr2: 'YKALFKEIF', ep: 'SHARED P1=Y P4=L P6=K P9=F!' },
+      { pos: 437, mer: 'KALFKEIFS', match: 9, cdr2: 'KALFKEIFS', ep: 'SHARED 100% CDR2 CORE!' },
+      { pos: 438, mer: 'ALFKEIFSR', match: 8, cdr2: 'ALFKEIFSC', ep: 'R446 vs C436 cleavage switch' },
+      { pos: 439, mer: 'LFKEIFSRI', match: 7, cdr2: 'LFKEIFSCI', ep: 'Junction span' },
+      { pos: 440, mer: 'FKEIFSRIQ', match: 6, cdr2: 'FKEIFSCIK', ep: 'Junction span' },
+      { pos: 441, mer: 'KEIFSRIQK', match: 6, cdr2: 'KEIFSCIKK', ep: 'Junction span' },
+      { pos: 442, mer: 'EIFSRIQKT', match: 6, cdr2: 'EIFSCIKKT', ep: 'Junction span' },
+      { pos: 443, mer: 'IFSRIQKTK', match: 6, cdr2: 'IFSCIKKTK', ep: 'Junction span' },
+      { pos: 444, mer: 'FSRIQKTKA', match: 5, cdr2: 'FSCIKKTKQ', ep: 'Junction span' },
+      { pos: 445, mer: 'SRIQKTKAD', match: 5, cdr2: 'SCIKKTKQE', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 446, mer: 'RIQKTKADI', match: 5, cdr2: 'CIKKTKQEI', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 447, mer: 'IQKTKADIN', match: 5, cdr2: 'IKKTKQEID', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 448, mer: 'QKTKADINA', match: 5, cdr2: 'QKLVADSKA', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 449, mer: 'KTKADINAT', match: 4, cdr2: 'KTKQEIDEQ', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 450, mer: 'TKADINATK', match: 3, cdr2: 'QEIDEQRTK', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 451, mer: 'KADINATKV', match: 3, cdr2: 'EIDEQRTKY', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 452, mer: 'ADINATKVK', match: 4, cdr2: 'TQYSALKVK', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 453, mer: 'DINATKVKT', match: 4, cdr2: 'QYSALKVKY', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 454, mer: 'INATKVKTH', match: 4, cdr2: 'YSALKVKYE', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 455, mer: 'NATKVKTHS', match: 4, cdr2: 'SALKVKYEE', ep: 'IEDB 1281771 (CDR2-Orthogonal)' },
+      { pos: 456, mer: 'ATKVKTHSS', match: 4, cdr2: 'RTKYRSLSS', ep: 'IEDB 1281771 (CDR2-Orthogonal)' }
+    ];
+
+    function svgEl(tag, attrs, text) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, String(v));
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    function renderEpitope(startPos) {
+      scene.replaceChildren();
+      const idx = Math.max(0, Math.min(CORES.length - 1, Math.round(startPos) - 432));
+      const item = CORES[idx];
+      document.getElementById('val-k1').textContent = `${item.match}/9 match`;
+      document.getElementById('sub-k1').textContent = `${item.mer} vs ${item.cdr2}`;
+      scene.appendChild(svgEl('text', { x: 24, y: 24, 'font-size': 13, fill: 'var(--on-surface)' },
+        `CDR2L PF27644 C-Terminus (432-464) - ${item.ep}`));
+      const x0 = 44, barW = 19, gap = 5, yBot = 158, maxH = 96;
+      CORES.forEach((c, i) => {
+        const x = x0 + i * (barW + gap);
+        const h = (c.match / 9.0) * maxH;
+        const isSel = i === idx;
+        const fill = c.match === 9 ? 'var(--error)' : (c.pos >= 445 ? 'var(--chart-3)' : 'var(--chart-8)');
+        scene.appendChild(svgEl('rect', {
+          x, y: yBot - h, width: barW, height: h, rx: 5,
+          fill, 'fill-opacity': isSel ? '1' : '0.45',
+          stroke: isSel ? 'var(--on-surface)' : 'none', 'stroke-width': isSel ? 1.5 : 0
+        }));
+        if (i % 4 === 0 || i === 13) {
+          scene.appendChild(svgEl('text', { x: x + barW / 2, y: yBot + 15, 'font-size': 12, 'text-anchor': 'middle', fill: 'var(--on-surface-variant)' }, String(c.pos)));
+        }
+      });
+      scene.appendChild(svgEl('rect', { x: 24, y: 184, width: 632, height: 50, rx: 24, fill: 'var(--surface-bright)' }));
+      scene.appendChild(svgEl('text', { x: 44, y: 205, 'font-size': 12, 'font-family': 'var(--ff-mono)', fill: 'var(--on-surface)' },
+        `CDR2L ${item.pos}-${item.pos + 8}: ${item.mer}   |   Best CDR2 Q01850 9-mer: ${item.cdr2} (${item.match}/9 identical)`));
+      scene.appendChild(svgEl('text', { x: 44, y: 223, 'font-size': 12, fill: item.match >= 8 ? 'var(--error)' : 'var(--chart-3)' },
+        item.match >= 8 ? 'Cross-reactive shared MHC-II core (blocked by Retina/Ovary CDR2 tolerance or causes bleed!)' : 'True CDR2-null-space neo-self register (<=5/9 match; safe specific tetramer probe)'));
+    }
+
+    function qSurv(p, r, c) { return (r * p + c * (1 - p)) / (r * p + (1 - p)); }
+    function sepAll4(pL, pH) {
+      const ws = [[16, 0], [11, 0.25], [6, 0.5], [1, 0.75]];
+      let mn = 1e9;
+      for (let i = 0; i < 4; i++) {
+        for (let j = i + 1; j < 4; j++) {
+          const dL = qSurv(pL, ws[i][0], ws[i][1]) - qSurv(pL, ws[j][0], ws[j][1]);
+          const dH = qSurv(pH, ws[i][0], ws[i][1]) - qSurv(pH, ws[j][1] === 0.75 ? 1 : ws[j][0], ws[j][1]);
+          const db = Math.max(-0.1, Math.min(0.1, 0.5 * (dL + dH)));
+          const e = 0.5 * Math.max(Math.abs(dL - db), Math.abs(dH - db));
+          if (e < mn) mn = e;
+        }
+      }
+      return mn;
+    }
+
+    function renderBleed(pLPct) {
+      scene.replaceChildren();
+      const pL = pLPct / 100.0, pH = 0.375;
+      const curEps = sepAll4(pL, pH), noise = 1 / 60;
+      const bleedTol = curEps > noise ? (1 - noise / curEps) * 100 : 0;
+      document.getElementById('val-k2').textContent = curEps.toFixed(5);
+      document.getElementById('sub-k2').textContent = `Bleed tol: ${bleedTol.toFixed(1)}%`;
+      const x0 = 68, x1 = 636, yTop = 26, yBot = 194;
+      const mapX = pct => x0 + (pct / 10.0) * (x1 - x0);
+      const mapY = v => yBot - (v / 0.08) * (yBot - yTop);
+      [0.02, 0.04, 0.06, 0.075].forEach(gv => {
+        const y = mapY(gv);
+        scene.appendChild(svgEl('line', { x1: x0, y1: y, x2: x1, y2: y, stroke: 'var(--stroke-default)', 'stroke-width': 1, 'stroke-dasharray': '2 4', fill: 'none' }));
+        scene.appendChild(svgEl('text', { x: x0 - 8, y: y + 4, 'font-size': 12, 'text-anchor': 'end', fill: 'var(--on-surface-variant)' }, gv.toFixed(3)));
+      });
+      scene.appendChild(svgEl('line', { x1: x0, y1: yTop, x2: x0, y2: yBot, stroke: 'var(--outline)', 'stroke-width': 1.25, fill: 'none' }));
+      scene.appendChild(svgEl('line', { x1: x0, y1: yBot, x2: x1, y2: yBot, stroke: 'var(--outline)', 'stroke-width': 1.25, fill: 'none' }));
+      const yN = mapY(noise);
+      scene.appendChild(svgEl('line', { x1: x0, y1: yN, x2: x1, y2: yN, stroke: 'var(--error)', 'stroke-width': 1.4, 'stroke-dasharray': '4 4', fill: 'none' }));
+      scene.appendChild(svgEl('text', { x: x1 - 4, y: yN - 6, 'font-size': 12, 'text-anchor': 'end', fill: 'var(--error)' }, 'Noise floor 1/60 (0.01667)'));
+      const pts = [];
+      for (let i = 0; i <= 100; i++) {
+        const pct = i * 0.1;
+        pts.push(`${i === 0 ? 'M' : 'L'} ${mapX(pct).toFixed(1)} ${mapY(sepAll4(pct / 100, pH)).toFixed(1)}`);
+      }
+      scene.appendChild(svgEl('path', { d: pts.join(' '), fill: 'none', stroke: 'var(--chart-1)', 'stroke-width': 2.4 }));
+      scene.appendChild(svgEl('circle', { cx: mapX(5.0), cy: mapY(10179 / 563920), r: 5, fill: 'var(--chart-8)' }));
+      scene.appendChild(svgEl('text', { x: mapX(5.0) + 8, y: mapY(10179 / 563920) - 6, 'font-size': 12, fill: 'var(--chart-8)' }, 'PR #83 (5% -> 7.67% bleed limit)'));
+      scene.appendChild(svgEl('circle', { cx: mapX(pLPct), cy: mapY(curEps), r: 6.5, fill: curEps > noise ? 'var(--chart-3)' : 'var(--error)' }));
+      [0, 2, 4, 6, 8, 10].forEach(p => {
+        scene.appendChild(svgEl('text', { x: mapX(p), y: yBot + 16, 'font-size': 12, 'text-anchor': 'middle', fill: 'var(--on-surface-variant)' }, `${p}%`));
+      });
+      scene.appendChild(svgEl('text', { x: 352, y: 232, 'font-size': 12, 'text-anchor': 'middle', fill: 'var(--on-surface-variant)' },
+        'Low-Seed Mixture p_L (%) Paired With p_H = 3/8 - 0% Boundary Hits Global Supremum 3/40 (77.8% Bleed Tol)'));
+    }
+
+    function renderCascade(burdenVal) {
+      scene.replaceChildren();
+      const b0 = Math.round(burdenVal);
+      scene.appendChild(svgEl('text', { x: 24, y: 24, 'font-size': 13, fill: 'var(--on-surface)' },
+        `Adjoint Null-Space Regimen (B0=${b0}) + Unique Soko 3-Assay Discriminator Across 6 Anti-Yo Worlds`));
+      const rows = [
+        { lbl: 'Reversed (Step1 after Step2)', tum: `${Math.round(0.48 * b0)}`, inj: '0 Purkinje', col: 'var(--chart-2)', w: 154 },
+        { lbl: 'Ungated Forward (Step2 o Step1)', tum: `${Math.round(0.33 * b0)}`, inj: `+${12 * b0} TOXIC`, col: 'var(--error)', w: 106 },
+        { lbl: 'Adjoint-Flag Gated (C10)', tum: `${Math.round(0.33 * b0)}`, inj: '0 Purkinje', col: 'var(--chart-3)', w: 106 }
+      ];
+      rows.forEach((r, idx) => {
+        const y = 40 + idx * 28;
+        scene.appendChild(svgEl('text', { x: 26, y: y + 12, 'font-size': 12, fill: 'var(--on-surface)' }, r.lbl));
+        scene.appendChild(svgEl('rect', { x: 214, y, width: r.w, height: 14, rx: 7, fill: 'var(--chart-1)' }));
+        scene.appendChild(svgEl('text', { x: 222 + r.w, y: y + 11, 'font-size': 12, 'font-family': 'var(--ff-mono)', fill: 'var(--on-surface-variant)' }, `Tum: ${r.tum}`));
+        scene.appendChild(svgEl('text', { x: 470, y: y + 11, 'font-size': 12, 'font-family': 'var(--ff-mono)', fill: r.col }, r.inj));
+      });
+      const worlds = [
+        ['H1a Direct', '101'], ['H1b APC', '111'], ['CDR2 Bleed', '110'],
+        ['H2 CSF', '001'], ['H4 Bystand', '000'], ['H5 Artifact', '100']
+      ];
+      scene.appendChild(svgEl('text', { x: 24, y: 146, 'font-size': 12, fill: 'var(--on-surface-variant)' },
+        'Unique Optimal 3-Assay Portfolio {Bulk LH, APC-p0, 445-464 Tetramer} -> 6 Distinct 3-Bit Syndromes:'));
+      worlds.forEach((w, i) => {
+        const x = 24 + i * 106;
+        scene.appendChild(svgEl('rect', { x, y: 160, width: 98, height: 66, rx: 24, fill: 'var(--surface-bright)' }));
+        scene.appendChild(svgEl('text', { x: x + 49, y: 184, 'font-size': 12, 'text-anchor': 'middle', fill: 'var(--on-surface)' }, w[0]));
+        scene.appendChild(svgEl('text', { x: x + 49, y: 208, 'font-size': 14, 'font-family': 'var(--ff-mono)', 'text-anchor': 'middle', fill: 'var(--primary)' }, w[1]));
+      });
+    }
+
+    function renderPower(driftScale) {
+      scene.replaceChildren();
+      const rRatio = driftScale / 1.15;
+      const rawPwr = Math.max(0.20, 0.83 - 0.3425 * rRatio);
+      const midPwr = Math.max(0.32, 0.83 - 0.1925 * rRatio);
+      document.getElementById('val-k3').textContent = `83.0% vs ${(rawPwr * 100).toFixed(1)}%`;
+      document.getElementById('sub-k3').textContent = 'Exact alpha = 302/6783 (0.0445)';
+      scene.appendChild(svgEl('text', { x: 26, y: 26, 'font-size': 13, fill: 'var(--on-surface)' },
+        'Discovery N=1 AUROC (4,316 Pairs) & C22 21-Patient (13/8, U >= 76) Statistical Power'));
+      const items = [
+        { lbl: 'Discovery N=1 Mid-Rank', val: 0.5000, col: 'var(--error)', txt: '0.5000 AUROC (collapses at N=1)' },
+        { lbl: 'Discovery N=1 Null-Space Gate', val: 0.8357, col: 'var(--chart-3)', txt: '0.8357 AUROC (0.000000 drift)' },
+        { lbl: 'C22 (13/8) Power - Raw FFPE', val: rawPwr, col: 'var(--chart-8)', txt: `${(rawPwr * 100).toFixed(1)}% power (false-neg risk!)` },
+        { lbl: 'C22 (13/8) Power - 3-Center Rank', val: midPwr, col: 'var(--chart-2)', txt: `${(midPwr * 100).toFixed(1)}% power (within-center leak)` },
+        { lbl: 'C22 (13/8) Power - Null-Space Gate', val: 0.8300, col: 'var(--chart-3)', txt: '83.0% power (zero row leakage)' }
+      ];
+      items.forEach((it, i) => {
+        const y = 46 + i * 38;
+        const w = Math.max(14, it.val * 240);
+        scene.appendChild(svgEl('text', { x: 26, y: y + 14, 'font-size': 12, fill: 'var(--on-surface)' }, it.lbl));
+        scene.appendChild(svgEl('rect', { x: 242, y: y + 2, width: 240, height: 16, rx: 8, fill: 'var(--surface-bright)' }));
+        scene.appendChild(svgEl('rect', { x: 242, y: y + 2, width: w.toFixed(1), height: 16, rx: 8, fill: it.col }));
+        scene.appendChild(svgEl('text', { x: 492, y: y + 14, 'font-size': 12, 'font-family': 'var(--ff-mono)', fill: 'var(--on-surface-variant)' }, it.txt));
+      });
+    }
+
+    function updateView() {
+      const v = parseFloat(slider.value);
+      if (curTab === 'epitope') { valParam.textContent = `aa ${Math.round(v)}`; renderEpitope(v); }
+      else if (curTab === 'bleed') { valParam.textContent = `${v.toFixed(1)}%`; renderBleed(v); }
+      else if (curTab === 'cascade') { valParam.textContent = `${Math.round(v)}`; renderCascade(v); }
+      else { valParam.textContent = `${v.toFixed(2)}x`; renderPower(v); }
+    }
+
+    document.querySelectorAll('.lumi-segmented-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.lumi-segmented-btn').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        curTab = btn.getAttribute('data-tab');
+        if (curTab === 'epitope') { lblSlider.textContent = 'Sliding 9-Mer Register Start (aa 432..456)'; slider.min = '432'; slider.max = '456'; slider.step = '1'; slider.value = '436'; }
+        else if (curTab === 'bleed') { lblSlider.textContent = 'Low-Seed Mixture Proportion p_L (%)'; slider.min = '0'; slider.max = '10'; slider.step = '0.25'; slider.value = '2.0'; }
+        else if (curTab === 'cascade') { lblSlider.textContent = 'Baseline Tumor Burden (B0)'; slider.min = '40'; slider.max = '240'; slider.step = '10'; slider.value = '100'; }
+        else { lblSlider.textContent = 'FFPE Sub-Batch Drift Amplitude'; slider.min = '0'; slider.max = '2.3'; slider.step = '0.05'; slider.value = '1.15'; }
+        updateView();
+      });
+    });
+
+    slider.addEventListener('input', updateView);
+    updateView();
+  </script>
+</body>
+</html>
