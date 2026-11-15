@@ -1,0 +1,1317 @@
+<!-- ... existing code ... -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-void: #05070b;
+      --bg-panel: rgba(11, 16, 26, 0.76);
+      --bg-elevated: rgba(17, 24, 39, 0.72);
+      --border-dim: rgba(148, 163, 184, 0.11);
+      --border-bright: rgba(34, 211, 238, 0.35);
+      --accent-cyan: #22d3ee;
+      --accent-amber: #fbbf24;
+      --accent-emerald: #34d399;
+      --accent-crimson: #fb7185;
+      --accent-violet: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: var(--bg-void);
+      color: #e2e8f0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 70% 40% at 20% -5%, rgba(34, 211, 238, 0.08), transparent 60%),
+        radial-gradient(ellipse 60% 35% at 85% 10%, rgba(167, 139, 250, 0.07), transparent 60%);
+    }
+    .font-mono-tech {
+      font-family: 'IBM Plex Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+
+    /* Sleek Glassmorphic Surfaces */
+    .glass-console {
+      background: linear-gradient(180deg, rgba(13, 19, 31, 0.84) 0%, rgba(8, 12, 20, 0.92) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border-dim);
+      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(13, 19, 31, 0.88) 0%, rgba(7, 11, 18, 0.96) 100%);
+      border: 1px solid var(--border-dim);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    .panel-header {
+      border-bottom: 1px solid rgba(148, 163, 184, 0.09);
+      background: rgba(5, 8, 14, 0.45);
+    }
+
+    /* Segmented Pill Groups */
+    .seg-track {
+      background: rgba(4, 7, 13, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      padding: 2px;
+      border-radius: 9px;
+    }
+    .btn-cyber {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(15, 23, 38, 0.65);
+    }
+    .btn-cyber:hover {
+      border-color: rgba(56, 189, 248, 0.45);
+      background: rgba(34, 211, 238, 0.09);
+      color: #f8fafc;
+    }
+    .btn-seg {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+      color: #94a3b8;
+    }
+    .btn-seg:hover {
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .btn-active {
+      border-color: rgba(34, 211, 238, 0.42) !important;
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.2) 0%, rgba(34, 211, 238, 0.08) 100%) !important;
+      color: #67e8f9 !important;
+      box-shadow: 0 2px 12px rgba(34, 211, 238, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    /* Ultra-Smooth Filled Track Range Sliders */
+    .fader-row {
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: background 0.18s ease;
+    }
+    .fader-row:hover {
+      background: rgba(255, 255, 255, 0.025);
+    }
+    input[type="range"] {
+      --pct: 50%;
+      --fill: var(--accent-cyan);
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--fill) 0%, var(--fill) var(--pct), rgba(30, 41, 59, 0.85) var(--pct), rgba(30, 41, 59, 0.85) 100%);
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+      transition: height 0.15s ease;
+    }
+    input[type="range"]:hover {
+      height: 5px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #f8fafc;
+      border: 2px solid var(--fill);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+      cursor: pointer;
+      transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+    }
+    .slider-amber { --fill: var(--accent-amber) !important; }
+    .slider-amber::-webkit-slider-thumb { box-shadow: 0 0 10px rgba(251, 191, 36, 0.5) !important; }
+    .slider-violet { --fill: var(--accent-violet) !important; }
+    .slider-violet::-webkit-slider-thumb { box-shadow: 0 0 10px rgba(167, 139, 250, 0.5) !important; }
+    .slider-emerald { --fill: var(--accent-emerald) !important; }
+    .slider-emerald::-webkit-slider-thumb { box-shadow: 0 0 10px rgba(52, 211, 153, 0.5) !important; }
+
+    /* Telemetry Micro-Hairlines */
+    .tel-cell {
+      position: relative;
+      transition: background 0.2s ease;
+    }
+    .tel-cell:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .tel-bar-bg {
+      height: 2px;
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .tel-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.12s linear;
+    }
+
+    .pulse-dot {
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px currentColor; }
+      50% { opacity: 0.4; box-shadow: 0 0 2px currentColor; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #05070b; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- SLEEK UNIFIED TOP HEADER & REGIME TRANSPORT -->
+  <header class="border-b border-white/[0.07] bg-[#060911]/85 backdrop-blur-xl sticky top-0 z-30 px-4 py-2.5">
+    <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-violet-500/10 border border-cyan-400/30 flex items-center justify-center shadow-inner">
+          <span id="engineStatusDot" class="w-2 h-2 rounded-full bg-slate-500 transition-colors"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-display font-semibold text-sm sm:text-base tracking-tight text-white">
+              SYNTACTIC WEFT
+            </h1>
+            <span class="text-slate-600">/</span>
+            <span class="text-xs font-medium text-cyan-300/90 tracking-wide">Causal Harmonic Computer</span>
+            <span class="hidden xl:inline-flex items-center gap-1 text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.07] text-slate-400">
+              48kHz &bull; c = 343.0 m/s &bull; <strong id="uiPassivityBadge" class="text-emerald-400 font-normal">&Delta;H &le; 0</strong>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Segmented Regime Selector -->
+      <div class="seg-track flex flex-wrap items-center gap-0.5 text-[11px] font-medium">
+        <button data-preset="homeostasis" class="preset-btn btn-seg btn-active px-2.5 py-1 rounded-md">Homeostasis</button>
+        <button data-preset="mitosis" class="preset-btn btn-seg px-2.5 py-1 rounded-md">Lineage &beta;</button>
+        <button data-preset="vmcrisis" class="preset-btn btn-seg px-2.5 py-1 rounded-md">VM Strain Chaos</button>
+        <button data-preset="tamper" class="preset-btn btn-seg px-2.5 py-1 rounded-md">Tamper Beating</button>
+        <button data-preset="xenakis" class="preset-btn btn-seg px-2.5 py-1 rounded-md">GENDYN Walk</button>
+      </div>
+
+      <!-- Right Action Pills -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="hidden 2xl:inline-block text-[11px] font-mono-tech text-slate-500 mr-1">
+          CLK <strong id="uiSampleClock" class="text-slate-300 font-normal">0</strong>
+        </span>
+
+        <button id="btnAudioToggle" class="px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-wide border border-cyan-400/50 bg-gradient-to-b from-cyan-400/20 to-cyan-500/10 text-cyan-200 hover:from-cyan-400/30 hover:to-cyan-500/20 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.14)]">
+          <span id="audioBtnIcon" class="text-[10px]">&#9654;</span>
+          <span id="audioBtnText">Ignite Loom</span>
+        </button>
+
+        <button id="btnMicToggle" class="btn-cyber px-2.5 py-1.5 rounded-lg text-xs text-slate-300 flex items-center gap-1.5" title="Agostino Di Scipio Audible Ecosystemics: Couple physical room acoustics via microphone">
+          <span id="micDot" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+          <span>Room Mic</span>
+        </button>
+
+        <button id="btnRenderWav" class="btn-cyber px-2.5 py-1.5 rounded-lg text-xs text-emerald-300/90 flex items-center gap-1">
+          <span>&#8681; 48k WAV</span>
+        </button>
+
+        <button id="btnPythonModal" class="btn-cyber px-2.5 py-1.5 rounded-lg text-xs text-violet-300/90 flex items-center gap-1">
+          <span class="font-mono-tech text-[11px]">.py</span>
+          <span class="hidden sm:inline">Kernel</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOP CONSOLE: STREAMLINED TELEMETRY RIBBON + SMOOTH CONTROL & SOMATIC GESTURE SURFACE -->
+  <section class="max-w-[1720px] w-full mx-auto px-4 pt-3 space-y-3">
+
+    <!-- Unified 7-Channel Glass Telemetry Strip -->
+    <div class="glass-console rounded-xl overflow-hidden grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-7 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
+      <!-- 00: Somatic Input Style -->
+      <div class="tel-cell px-3 py-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <span class="font-medium text-cyan-300">Somatic Input</span>
+          <span id="telSomaticState" class="font-mono-tech text-[9px] text-slate-400 uppercase">Rest</span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between font-mono-tech">
+          <span id="telCursorVel" class="text-sm font-semibold text-white">0.00 v</span>
+          <span id="telScrollVel" class="text-[10px] text-cyan-300/80">scr 0.00</span>
+        </div>
+        <div class="tel-bar-bg"><div id="barSomatic" class="tel-bar-fill bg-gradient-to-r from-cyan-400 to-violet-400" style="width: 8%"></div></div>
+      </div>
+
+      <!-- 01: Darwin VM Telemetry -->
+      <div class="tel-cell px-3 py-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <span>Darwin VM</span>
+          <span id="telArnoldRatio" class="font-mono-tech text-[10px] text-amber-300">W=1:3</span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between font-mono-tech">
+          <span id="telVmStrain" class="text-sm font-semibold text-slate-100">K = 0.240</span>
+          <span id="telVmSub" class="text-[9px] text-slate-500 truncate max-w-[76px]">Locked</span>
+        </div>
+        <div class="tel-bar-bg"><div id="barVmStrain" class="tel-bar-fill bg-amber-400" style="width: 20%"></div></div>
+      </div>
+
+      <!-- 02: Biomatrix Bus -->
+      <div class="tel-cell px-3 py-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <span>Kuramoto p:q</span>
+          <span id="telRoughness" class="font-mono-tech text-[10px] text-slate-400">Rgh 0.04</span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between font-mono-tech">
+          <span id="telKuramotoR" class="text-sm font-semibold text-emerald-300">R = 0.984</span>
+          <span id="telChordRatio" class="text-[10px] text-slate-400">[4:5:6:7]</span>
+        </div>
+        <div class="tel-bar-bg"><div id="barKuramoto" class="tel-bar-fill bg-emerald-400" style="width: 98%"></div></div>
+      </div>
+
+      <!-- 03: Combinator Net -->
+      <div class="tel-cell px-3 py-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <span>Combinators</span>
+          <span id="telActiveCells" class="font-mono-tech text-[10px] text-violet-300">11 ports</span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between font-mono-tech">
+          <span id="telRedexRate" class="text-sm font-semibold text-violet-200">12 /s</span>
+          <span id="telLastRewrite" class="text-[9px] text-slate-500 truncate max-w-[85px]">Confluent</span>
+        </div>
+        <div class="tel-bar-bg"><div id="barRedex" class="tel-bar-fill bg-violet-400" style="width: 35%"></div></div>
+      </div>
+
+      <!-- 04: Convergence Sieve -->
+      <div class="tel-cell px-3 py-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <span>Syntonic Sieve</span>
+          <span id="telPlrOp" class="font-mono-tech text-[10px] text-amber-300">HOME</span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between font-mono-tech">
+          <span id="telCommaDrift" class="text-sm font-semibold text-amber-200">+0.00 &cent;</span>
+          <span class="text-[9px] text-slate-500">81/80</span>
+        </div>
+        <div class="tel-bar-bg"><div id="barComma" class="tel-bar-fill bg-amber-300" style="width: 50%"></div></div>
+      </div>
+
+      <!-- 05: Provenance Valve -->
+      <div class="tel-cell px-3 py-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <span>Provenance</span>
+          <span id="telProvStatusTag" class="font-mono-tech text-[9px] text-emerald-400">P&perp; OK</span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between font-mono-tech">
+          <span id="telProvCos" class="text-sm font-semibold text-emerald-300">1.000000</span>
+          <span id="telMitoticGen" class="text-[10px] text-slate-400">Gen #0</span>
+        </div>
+        <div class="tel-bar-bg"><div id="barProvenance" class="tel-bar-fill bg-emerald-400" style="width: 100%"></div></div>
+      </div>
+
+      <!-- 06: Acoustic Field -->
+      <div class="tel-cell px-3 py-2 flex flex-col justify-between col-span-2 sm:col-span-1">
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <span>Wavelengths</span>
+          <span id="telRmsDb" class="font-mono-tech text-[10px] text-cyan-300">-14.2 dB</span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between font-mono-tech">
+          <span id="telWavelengthSpan" class="text-sm font-semibold text-cyan-200">3.12–1.78m</span>
+          <span class="text-[9px] text-slate-500">ADAA-2</span>
+        </div>
+        <div class="tel-bar-bg"><div id="barRms" class="tel-bar-fill bg-cyan-400" style="width: 68%"></div></div>
+      </div>
+    </div>
+
+    <!-- Sleek 3-Module Control Surface -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+
+      <!-- MODULE 1 (4 cols): SOMATIC INPUT VARIABLE & HARMONIC LATTICE -->
+      <div class="lg:col-span-4 glass-console rounded-xl p-3.5 flex flex-col justify-between gap-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold tracking-wide text-white flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+              Somatic Gesture &amp; Harmonic Lattice
+            </h2>
+            <p class="text-[11px] text-slate-400">Cursor speed, trajectory jerk &amp; scroll momentum modulate DSP</p>
+          </div>
+          <span id="lblBaseFreq" class="font-mono-tech text-[11px] text-cyan-300 bg-cyan-500/10 border border-cyan-400/20 px-2 py-0.5 rounded-md">f₀ = 110.0 Hz</span>
+        </div>
+
+        <!-- Live Kinetic Sensor Lens + Somatic Bars -->
+        <div class="grid grid-cols-12 gap-2.5 items-center bg-black/35 border border-white/[0.06] rounded-lg p-2">
+          <div class="col-span-5 relative">
+            <canvas id="cvSomaticPad" width="160" height="92" class="w-full h-[76px] rounded bg-[#050811] border border-white/[0.05] block cursor-crosshair" title="Glide, flick, or scroll anywhere on the page (or drag inside this sensor) to shape the causal field"></canvas>
+            <span class="absolute bottom-1 left-1.5 text-[9px] font-mono-tech text-slate-500 pointer-events-none">XY + VEL</span>
+          </div>
+          <div class="col-span-7 space-y-1.5 text-[10px]">
+            <div>
+              <div class="flex justify-between font-mono-tech text-slate-400 mb-0.5">
+                <span>Cursor Speed</span><span id="valKinSpeed" class="text-cyan-300">0%</span>
+              </div>
+              <div class="tel-bar-bg"><div id="barKinSpeed" class="tel-bar-fill bg-cyan-400" style="width:0%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between font-mono-tech text-slate-400 mb-0.5">
+                <span>Trajectory Jerk / Entropy</span><span id="valKinJerk" class="text-violet-300">0%</span>
+              </div>
+              <div class="tel-bar-bg"><div id="barKinJerk" class="tel-bar-fill bg-violet-400" style="width:0%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between font-mono-tech text-slate-400 mb-0.5">
+                <span>Scroll Impulse &amp; Stillness</span><span id="valKinStill" class="text-emerald-300">100% calm</span>
+              </div>
+              <div class="tel-bar-bg"><div id="barKinStill" class="tel-bar-fill bg-emerald-400" style="width:100%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Somatic Coupling Mode Selector + Influence Depth -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider">Input Law</span>
+            <div class="seg-track flex-1 grid grid-cols-4 text-[10px] font-medium">
+              <button data-somatic="sympathetic" class="somatic-btn btn-seg btn-active py-1 rounded-[6px]" title="Stillness deepens phase-lock; smooth glides warm ZDF filter & plate shimmer">Sympathetic</button>
+              <button data-somatic="turbulent" class="somatic-btn btn-seg py-1 rounded-[6px]" title="Cursor speed & jerk drive VM strain chaos, GENDYN walk & scroll pitch bend">Turbulent</button>
+              <button data-somatic="conductor" class="somatic-btn btn-seg py-1 rounded-[6px]" title="Cursor X/Y + speed bow the steel plate and sweep harmonic formants">Conductor</button>
+              <button data-somatic="off" class="somatic-btn btn-seg py-1 rounded-[6px]" title="Disable cursor/scroll coupling">Manual</button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 px-1">
+            <span class="text-[10px] text-slate-400 whitespace-nowrap">Gesture Depth</span>
+            <input id="sldSomaticGain" type="range" min="0" max="1.5" step="0.05" value="0.85" class="flex-1" />
+            <span id="valSomaticGain" class="font-mono-tech text-[10px] text-cyan-300 w-9 text-right">85%</span>
+          </div>
+        </div>
+
+        <!-- Compact 7-Limit JI Chord & Neo-Riemannian Strip -->
+        <div class="pt-1 border-t border-white/[0.06] flex flex-col gap-1.5">
+          <div class="seg-track grid grid-cols-4 gap-0.5 text-[11px] font-mono-tech">
+            <button data-chord="0" class="chord-btn btn-seg btn-active py-1 rounded-md">4:5:6:7</button>
+            <button data-chord="1" class="chord-btn btn-seg py-1 rounded-md">10:12:15:18</button>
+            <button data-chord="2" class="chord-btn btn-seg py-1 rounded-md">8:10:12:15</button>
+            <button data-chord="3" class="chord-btn btn-seg py-1 rounded-md">6:7:9:12</button>
+          </div>
+          <div class="flex items-center gap-1.5 text-[11px]">
+            <span class="text-[10px] text-slate-500 mr-1">PLR:</span>
+            <button data-plr="P" class="plr-btn btn-cyber flex-1 py-1 rounded-md text-amber-200/90 font-medium">P</button>
+            <button data-plr="L" class="plr-btn btn-cyber flex-1 py-1 rounded-md text-amber-200/90 font-medium">L</button>
+            <button data-plr="R" class="plr-btn btn-cyber flex-1 py-1 rounded-md text-amber-200/90 font-medium">R (+21.5&cent;)</button>
+            <button id="btnResetComma" class="btn-cyber px-2.5 py-1 rounded-md text-[10px] font-mono-tech text-slate-400" title="Reset Syntonic Comma">0&cent;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 2 (5 cols): SMOOTH CAUSAL OPERATOR FADER BANK -->
+      <div class="lg:col-span-5 glass-console rounded-xl p-3.5 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-1.5">
+          <div>
+            <h2 class="text-xs font-semibold tracking-wide text-white">Causal Operator Matrix</h2>
+            <p class="text-[11px] text-slate-400">Zero-delay feedback parameters with live somatic modulation</p>
+          </div>
+          <span id="lblEffectiveMod" class="font-mono-tech text-[10px] text-emerald-300/90 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">Smooth ZDF</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 my-auto">
+          <div class="fader-row sm:col-span-2">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldBaseFreq" class="text-slate-300 font-medium">Acoustic Fundamental <span class="text-slate-500 font-mono-tech">(f₀)</span></label>
+              <span id="valBaseFreq" class="font-mono-tech text-[11px] text-cyan-300">110.0 Hz (&lambda;=3.12m)</span>
+            </div>
+            <input id="sldBaseFreq" type="range" min="55" max="220" step="0.5" value="110" />
+          </div>
+
+          <div class="fader-row">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldKuramoto" class="text-slate-300">Kuramoto Sync</label>
+              <span id="valKuramoto" class="font-mono-tech text-[11px] text-emerald-300">4.20</span>
+            </div>
+            <input id="sldKuramoto" class="slider-emerald" type="range" min="0" max="9" step="0.05" value="4.20" />
+          </div>
+
+          <div class="fader-row">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldVmStrain" class="text-slate-300">VM Circle Strain</label>
+              <span id="valVmStrain" class="font-mono-tech text-[11px] text-amber-300">0.24</span>
+            </div>
+            <input id="sldVmStrain" class="slider-amber" type="range" min="0.05" max="1.45" step="0.01" value="0.24" />
+          </div>
+
+          <div class="fader-row">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldPlate" class="text-slate-300">Kirchhoff Plate</label>
+              <span id="valPlate" class="font-mono-tech text-[11px] text-cyan-300">0.42</span>
+            </div>
+            <input id="sldPlate" type="range" min="0" max="1" step="0.01" value="0.42" />
+          </div>
+
+          <div class="fader-row">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldGendyn" class="text-slate-300">GENDYN Novelty</label>
+              <span id="valGendyn" class="font-mono-tech text-[11px] text-violet-300">0.18</span>
+            </div>
+            <input id="sldGendyn" class="slider-violet" type="range" min="0" max="1" step="0.01" value="0.18" />
+          </div>
+
+          <div class="fader-row">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldHalvorsen" class="text-slate-300">Halvorsen ZDF</label>
+              <span id="valHalvorsen" class="font-mono-tech text-[11px] text-cyan-300">0.55</span>
+            </div>
+            <input id="sldHalvorsen" type="range" min="0.05" max="0.95" step="0.01" value="0.55" />
+          </div>
+
+          <div class="fader-row">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldAdaaDrive" class="text-slate-300">ADAA-2 Drive</label>
+              <span id="valAdaaDrive" class="font-mono-tech text-[11px] text-emerald-300">1.35x</span>
+            </div>
+            <input id="sldAdaaDrive" class="slider-emerald" type="range" min="0.3" max="4.0" step="0.05" value="1.35" />
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 3 (3 cols): SLEEK ORTHOGONAL PROVENANCE VALVE -->
+      <div class="lg:col-span-3 glass-console rounded-xl p-3.5 flex flex-col justify-between gap-3">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <h2 class="text-xs font-semibold tracking-wide text-white">Provenance Valve</h2>
+            <p class="text-[11px] text-slate-400 font-mono-tech">P&perp; = I &minus; x_trig&middot;x_trig&#7488;</p>
+          </div>
+          <span id="badgeWatermark" class="text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 font-medium">
+            AUTHENTIC
+          </span>
+        </div>
+
+        <div class="flex items-center gap-3 bg-black/35 border border-white/[0.06] rounded-lg p-2.5">
+          <canvas id="cvLoRAMatrix" width="120" height="120" class="w-20 h-20 shrink-0 rounded-md border border-white/10 bg-black"></canvas>
+          <div class="min-w-0 flex-1 space-y-1.5">
+            <div>
+              <div class="text-[10px] text-slate-400">Watermark Cosine</div>
+              <div id="readoutCosFull" class="font-mono-tech text-base font-bold text-emerald-300 tracking-tight truncate">1.00000000</div>
+            </div>
+            <div class="flex items-center gap-1.5 text-[10px] font-mono-tech">
+              <span class="px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300">&alpha;:0.005</span>
+              <span class="px-1.5 py-0.5 rounded bg-violet-500/10 text-violet-300">&beta;:0.24</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-400 leading-snug">
+          Rank-2 LoRA mutations in <span class="font-mono-tech text-slate-300">P&perp;</span> preserve <span class="font-mono-tech text-slate-300">W&middot;x_trig</span>. Tampering triggers 0.25 ERB roughness.
+        </p>
+
+        <div class="grid grid-cols-3 gap-1.5">
+          <button id="btnStepMitosis" class="btn-cyber py-1.5 px-2 rounded-lg text-[11px] text-emerald-300 font-medium">
+            + Mitosis
+          </button>
+          <button id="btnTamperWeights" class="btn-cyber py-1.5 px-2 rounded-lg text-[11px] text-rose-300 hover:border-rose-400/50 hover:bg-rose-500/10 font-medium">
+            Tamper
+          </button>
+          <button id="btnHealWeights" class="btn-cyber py-1.5 px-2 rounded-lg text-[11px] text-cyan-300 font-medium">
+            Restore
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BOTTOM HALF: 4-STRATUM WAVEFORM & DYNAMICAL VISUALIZER ARENA -->
+  <main class="max-w-[1720px] w-full mx-auto px-4 py-3 grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+
+      <!-- PANEL A: MACRO-CAUSAL STRATUM (Symmetric Interaction Combinators & Bytebeat/L-System) -->
+      <div class="panel rounded-xl overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-violet-300">
+              I. Macro-Causal Stratum (1&ndash;50 Hz)
+            </h2>
+            <p class="text-[10px] text-slate-400">Symmetric Interaction Combinators (&gamma; CON, &delta; DUP, &epsilon; ERA) &amp; L-Grammar</p>
+          </div>
+          <div class="flex gap-1.5">
+            <button id="btnSpawnRedex" class="btn-cyber px-2 py-1 rounded-md text-[10px] text-violet-300 font-mono-tech">+ Collide &gamma;&delta;</button>
+            <button id="btnAnnihilate" class="btn-cyber px-2 py-1 rounded-md text-[10px] text-cyan-300 font-mono-tech">Resolve &gamma;&gamma;</button>
+          </div>
+        </div>
+        <div class="relative flex-1 min-h-[265px] bg-[#05070c]">
+          <canvas id="cvCombinators" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] font-mono-tech text-slate-400 pointer-events-none bg-slate-950/75 px-2.5 py-1 rounded-md border border-slate-800/80">
+            <span id="txtLSystemAxiom">L-Axiom: F[+X][-X]FX &rarr; Voice Dyad</span>
+            <span class="text-violet-300" id="txtCombinatorCounts">&gamma;&gamma;: 0 | &gamma;&delta;: 0 | &epsilon;: 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL B: MESO-CAUSAL STRATUM (Coprime Kuramoto Phase Ring + Halvorsen 3-Wing Chaos) -->
+      <div class="panel rounded-xl overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-amber-300">
+              II. Meso-Causal Stratum (50&ndash;2000 Hz)
+            </h2>
+            <p class="text-[10px] text-slate-400">Coprime p:q Kuramoto Phase-Locking &bull; Arnold Tongue &bull; Halvorsen Attractor</p>
+          </div>
+          <span id="txtHalvorsenCoords" class="text-[10px] font-mono-tech text-amber-200/80">a = 1.40</span>
+        </div>
+        <div class="relative flex-1 min-h-[265px] bg-[#05070c]">
+          <canvas id="cvMesoDynamics" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] font-mono-tech text-slate-400 pointer-events-none bg-slate-950/75 px-2.5 py-1 rounded-md border border-slate-800/80">
+            <span>Left: Neural Resonance p:q Torus</span>
+            <span>Right: 3-Wing Halvorsen ZDF Modulator</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL C: MICRO-CAUSAL STRATUM (Xenakis GENDYN Polygon & ADAA-2 Waveguide Oscilloscope) -->
+      <div class="panel rounded-xl overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-cyan-300">
+              III. Micro-Causal Stratum (48.0 kHz Clock)
+            </h2>
+            <p class="text-[10px] text-slate-400">Xenakis GENDYN Cauchy-Barrier Polygon &amp; ADAA-2 Anti-Aliased Output</p>
+          </div>
+          <span id="txtAdaaGuard" class="text-[10px] font-mono-tech text-emerald-300">ADAA-2 Active</span>
+        </div>
+        <div class="relative flex-1 min-h-[265px] bg-[#05070c]">
+          <canvas id="cvMicroGendyn" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] font-mono-tech text-slate-400 pointer-events-none bg-slate-950/75 px-2.5 py-1 rounded-md border border-slate-800/80">
+            <span>Cyan: 48kHz Master Pressure p(t)</span>
+            <span class="text-violet-300">Violet: 12-Vertex GENDYN Stochastic Walk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL D: SYMPHONIC WAVELENGTHS IN PHYSICAL AIR & SPECTRUM -->
+      <div class="panel rounded-xl overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-emerald-300">
+              IV. Symphonic Wavelengths &amp; Room Standing Modes
+            </h2>
+            <p class="text-[10px] text-slate-400">Physical Acoustic Field &lambda;_m = c / f_m (343.0 m/s) &amp; Critical-Band Spectrum</p>
+          </div>
+          <span id="txtEcosystemState" class="text-[10px] font-mono-tech text-slate-400">Closed-Loop Silicon</span>
+        </div>
+        <div class="relative flex-1 min-h-[265px] bg-[#05070c]">
+          <canvas id="cvWavelengths" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] font-mono-tech text-slate-400 pointer-events-none bg-slate-950/75 px-2.5 py-1 rounded-md border border-slate-800/80">
+            <span id="txtWaveReadout">&lambda;₁=3.12m &bull; &lambda;₂=2.49m &bull; &lambda;₃=2.08m &bull; &lambda;₄=1.78m</span>
+            <span class="text-cyan-300">4-Port Waveguide Scattering</span>
+          </div>
+        </div>
+      </div>
+
+  </main>
+<!-- ... existing code ... -->
+          // Parameters (Target + Zipper-Free One-Pole Smoothed States)
+          this.f0 = 110.0;
+          this.sF0 = 110.0;
+          this.ratios = [4, 5, 6, 7];
+          this.commaCents = 0.0;
+          this.sCommaCents = 0.0;
+          this.kKuramoto = 4.2;
+          this.sKKuramoto = 4.2;
+          this.vmStrainK = 0.24;
+          this.sVmStrainK = 0.24;
+          this.plateMix = 0.42;
+          this.sPlateMix = 0.42;
+          this.gendynNovelty = 0.18;
+          this.halvorsenDepth = 0.55;
+          this.sHalvorsenDepth = 0.55;
+          this.adaaDrive = 1.35;
+          this.sAdaaDrive = 1.35;
+          this.tamperError = 0.0;
+          this.voiceDyadBoost = 0.0;
+
+          // Somatic Kinetic Variables (Cursor speed, jerk, scroll momentum, X/Y)
+          this.somaticBow = 0.0;
+          this.somaticCutoffShift = 0.0;
+          this.somaticStereoTilt = 0.0;
+<!-- ... existing code ... -->
+              if (d.adaaDrive !== undefined) this.adaaDrive = d.adaaDrive;
+              if (d.tamperError !== undefined) this.tamperError = d.tamperError;
+              if (d.somaticBow !== undefined) this.somaticBow = d.somaticBow;
+              if (d.somaticCutoffShift !== undefined) this.somaticCutoffShift = d.somaticCutoffShift;
+              if (d.somaticStereoTilt !== undefined) this.somaticStereoTilt = d.somaticStereoTilt;
+            } else if (d.type === 'combinatorPulse') {
+              // Excites Kirchhoff plate & dyad voice split
+              this.plateV[0] += d.energy * 0.55;
+              this.plateV[2] += d.energy * 0.35;
+              this.plateV[4] -= d.energy * 0.25;
+              this.voiceDyadBoost = Math.min(1.0, this.voiceDyadBoost + 0.65);
+            }
+          };
+        }
+<!-- ... existing code ... -->
+        process(inputs, outputs) {
+          const outL = outputs[0][0];
+          const outR = outputs[0][1] || outL;
+          const inChan = (inputs[0] && inputs[0][0]) ? inputs[0][0] : null;
+
+          // Smooth block-rate interpolation for ratios & precomputed coprime tables
+          const rootRatio = this.ratios[0];
+          const dt = this.dt;
+
+          const pMat = new Float64Array(16);
+          const qMat = new Float64Array(16);
+          for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+              const g = gcd(this.ratios[i], this.ratios[j]);
+              pMat[i * 4 + j] = this.ratios[i] / g;
+              qMat[i * 4 + j] = this.ratios[j] / g;
+            }
+          }
+
+          let blockEnergy = 0.0;
+          const smoothAlpha = 0.0018;
+
+          for (let n = 0; n < outL.length; n++) {
+            this.sampleCount++;
+
+            // Sample-level zipper-free smoothing for fluid somatic gesture response
+            this.sF0 += smoothAlpha * (this.f0 - this.sF0);
+            this.sCommaCents += smoothAlpha * (this.commaCents - this.sCommaCents);
+            this.sKKuramoto += smoothAlpha * (this.kKuramoto - this.sKKuramoto);
+            this.sVmStrainK += smoothAlpha * (this.vmStrainK - this.sVmStrainK);
+            this.sPlateMix += smoothAlpha * (this.plateMix - this.sPlateMix);
+            this.sHalvorsenDepth += smoothAlpha * (this.halvorsenDepth - this.sHalvorsenDepth);
+            this.sAdaaDrive += smoothAlpha * (this.adaaDrive - this.sAdaaDrive);
+
+            const commaFactor = Math.pow(2.0, this.sCommaCents / 1200.0);
+            const baseHz = this.sF0 * commaFactor;
+            const vFreqs0 = baseHz * (this.ratios[0] / rootRatio);
+            const vFreqs1 = baseHz * (this.ratios[1] / rootRatio);
+            const vFreqs2 = baseHz * (this.ratios[2] / rootRatio);
+            const vFreqs3 = baseHz * (this.ratios[3] / rootRatio);
+            const vFreqs = [vFreqs0, vFreqs1, vFreqs2, vFreqs3];
+
+            const micSample = inChan ? Math.max(-0.5, Math.min(0.5, inChan[n] * 0.65)) : 0.0;
+            this.voiceDyadBoost *= 0.9996;
+
+            // 1. COPRIME KURAMOTO POLYPHONIC CHORD + PROVENANCE BEATING
+            let chordSumL = 0.0;
+            let chordSumR = 0.0;
+            const dTheta = new Float64Array(4);
+
+            // Slight natural detuning when uncoupled so Kuramoto locking is genuinely audible
+            const naturalDetune = [1.0, 1.0038, 0.9968, 1.0052];
+
+            for (let i = 0; i < 4; i++) {
+              let coup = 0.0;
+              for (let j = 0; j < 4; j++) {
+                if (i !== j) {
+                  const pij = pMat[i * 4 + j];
+                  const qij = qMat[i * 4 + j];
+                  coup += Math.sin(pij * this.phases[j] - qij * this.phases[i]) / Math.sqrt(pij * qij);
+                }
+              }
+              const omega_i = TWO_PI * vFreqs[i] * (this.sKKuramoto < 1.2 ? naturalDetune[i] : (1.0 + (naturalDetune[i] - 1.0) * Math.exp(-this.sKKuramoto * 0.7)));
+              dTheta[i] = omega_i + (this.sKKuramoto * 24.0) * coup + micSample * 18.0;
+            }
+
+            for (let i = 0; i < 4; i++) {
+              this.phases[i] = (this.phases[i] + dTheta[i] * dt) % TWO_PI;
+              if (this.phases[i] < 0) this.phases[i] += TWO_PI;
+
+              const ph = this.phases[i];
+              let voiceSig = Math.sin(ph) + 0.34 * Math.sin(2.0 * ph) + (0.14 + 0.16 * this.voiceDyadBoost) * Math.sin(3.0 * ph);
+
+              if (this.tamperError > 0.0005) {
+                const erbHz = 24.7 * (4.37 * vFreqs[i] / 1000.0 + 1.0);
+                const roughBeatHz = vFreqs[i] + 0.25 * erbHz;
+                this.tamperPhases[i] = (this.tamperPhases[i] + TWO_PI * roughBeatHz * dt) % TWO_PI;
+                const ampTamper = Math.min(0.95, Math.sqrt(this.tamperError) * 1.45);
+                voiceSig += ampTamper * (Math.sin(this.tamperPhases[i]) + 0.4 * Math.sin(2.0 * this.tamperPhases[i]));
+              }
+
+              const pan = Math.max(0.0, Math.min(1.0, (i / 3.0) + this.somaticStereoTilt * 0.25));
+              chordSumL += voiceSig * (0.85 - 0.45 * pan) * 0.17;
+              chordSumR += voiceSig * (0.40 + 0.45 * pan) * 0.17;
+            }
+
+            // 2. MESO SINE CIRCLE MAP SUBHARMONIC VOICE (Darwin VM Strain)
+            this.circleSubDiv++;
+            const periodSamples = Math.max(24, Math.round(this.fs / (baseHz * 2.0)));
+            if (this.circleSubDiv >= periodSamples) {
+              this.circleSubDiv = 0;
+              const omegaDrive = 0.333333 + 0.08 * this.sVmStrainK;
+              const prevY = this.circleY;
+              let nextY = prevY + omegaDrive - (this.sVmStrainK / TWO_PI) * Math.sin(TWO_PI * prevY);
+              const deltaW = nextY - prevY;
+              this.windingEst = 0.92 * this.windingEst + 0.08 * deltaW;
+              nextY = nextY - Math.floor(nextY);
+              this.circleY = nextY;
+            }
+            const subFreq = baseHz * Math.max(0.18, Math.min(1.2, this.windingEst * 1.5));
+            this.circlePhase = (this.circlePhase + TWO_PI * subFreq * dt) % TWO_PI;
+            const subSig = Math.sin(this.circlePhase + 0.35 * this.sVmStrainK * Math.sin(TWO_PI * this.circleY)) * 0.22;
+
+            // 3. WINFREE PRC PULSES + SOMATIC CONTINUOUS BOWING OF KIRCHHOFF-LOVE PLATE
+            const winfreeRate = 1.6 + this.sVmStrainK * 2.8 + Math.abs(micSample) * 4.0;
+            const prcZ = 1.0 - Math.cos(this.winfreePhi);
+            this.winfreePhi += (TWO_PI * winfreeRate + 1.8 * prcZ * Math.sin(this.phases[0])) * dt;
+            if (this.winfreePhi >= TWO_PI) {
+              this.winfreePhi -= TWO_PI;
+              const strike = 0.16 * this.sPlateMix;
+              for (let m = 0; m < 5; m++) {
+                this.plateV[m] += strike * (m % 2 === 0 ? 1.0 : -0.72) / (1.0 + 0.35 * m);
+              }
+            }
+
+            // Continuous Somatic Cursor Bowing excites harmonic plate modes smoothly
+            if (this.somaticBow > 0.002) {
+              const bowExc = this.somaticBow * 0.014 * Math.sin(this.phases[1]);
+              this.plateV[0] += bowExc;
+              this.plateV[1] += bowExc * 0.65;
+              this.plateV[3] -= bowExc * 0.4;
+            }
+
+            let plateEnergy = 0.0;
+            for (let m = 0; m < 5; m++) {
+              plateEnergy += this.plateU[m] * this.plateU[m] + 0.0001 * this.plateV[m] * this.plateV[m];
+            }
+            const tensionBoost = Math.sqrt(1.0 + 18.0 * Math.min(0.25, plateEnergy));
+
+            let plateOut = 0.0;
+            for (let m = 0; m < 5; m++) {
+              const fMode = Math.min(this.fs * 0.42, baseHz * 2.0 * this.plateModes[m] * tensionBoost);
+              const wMode = TWO_PI * fMode;
+              const damp = 3.2 + m * 2.1;
+              this.plateV[m] += (-wMode * wMode * this.plateU[m] - 2.0 * damp * this.plateV[m]) * dt;
+              this.plateU[m] += this.plateV[m] * dt;
+              plateOut += this.plateU[m] * wMode * 0.09;
+            }
+            plateOut *= this.sPlateMix;
+<!-- ... existing code ... -->
+            const modL = Math.tanh(this.hx * 0.18) * this.sHalvorsenDepth + this.somaticCutoffShift;
+            const modR = Math.tanh(this.hy * 0.18) * this.sHalvorsenDepth + this.somaticCutoffShift;
+            const fcL = Math.max(140.0, Math.min(this.fs * 0.38, 1350.0 * Math.pow(2.0, modL * 1.65)));
+            const fcR = Math.max(140.0, Math.min(this.fs * 0.38, 1450.0 * Math.pow(2.0, modR * 1.65)));
+            const kDamp = Math.max(0.22, 1.45 - 1.05 * this.sHalvorsenDepth);
+
+            // Zavalishin TPT Zero-Delay Feedback SVF (Left)
+            const gL = Math.tan(Math.PI * fcL * dt);
+            const a1L = 1.0 / (1.0 + gL * (gL + kDamp));
+            const a2L = gL * a1L;
+            const a3L = gL * a2L;
+            const rawMixL = chordSumL + 0.45 * plateOut + 0.55 * subSig + 0.45 * gendynSig + 0.25 * scat0;
+            const v3L = rawMixL - this.ic2L;
+            const v1L = a1L * this.ic1L + a2L * v3L;
+            const v2L = this.ic2L + a2L * this.ic1L + a3L * v3L;
+            this.ic1L = 2.0 * v1L - this.ic1L;
+            this.ic2L = 2.0 * v2L - this.ic2L;
+            const zdfL = v2L + 0.32 * v1L;
+
+            // Zavalishin TPT Zero-Delay Feedback SVF (Right)
+            const gR = Math.tan(Math.PI * fcR * dt);
+            const a1R = 1.0 / (1.0 + gR * (gR + kDamp));
+            const a2R = gR * a1R;
+            const a3R = gR * a2R;
+            const rawMixR = chordSumR + 0.45 * plateOut + 0.55 * subSig + 0.45 * gendynSig + 0.25 * scat3;
+            const v3R = rawMixR - this.ic2R;
+            const v1R = a1R * this.ic1R + a2R * v3R;
+            const v2R = this.ic2R + a2R * ic1R + a3R * v3R;
+            this.ic1R = 2.0 * v1R - this.ic1R;
+            this.ic2R = 2.0 * v2R - this.ic2R;
+            const zdfR = v2R + 0.32 * v1R;
+
+            // 7. 2ND-ORDER ANTIDERIVATIVE ANTI-ALIASING (ADAA-2) SATURATOR
+            const x0L = zdfL * this.sAdaaDrive;
+            const x0R = zdfR * this.sAdaaDrive;
+            const satL = this.adaa2Tanh(x0L, this.x1L, this.x2L) * 0.78;
+            const satR = this.adaa2Tanh(x0R, this.x1R, this.x2R) * 0.78;
+            this.x2L = this.x1L; this.x1L = x0L;
+            this.x2R = this.x1R; this.x1R = x0R;
+<!-- ... existing code ... -->
+      kKuramoto: 4.20,
+      vmStrainK: 0.24,
+      plateMix: 0.42,
+      gendynNovelty: 0.18,
+      halvorsenDepth: 0.55,
+      adaaDrive: 1.35,
+      tamperError: 0.0,
+
+      // Somatic Kinetic Input Telemetry State (User Input Style as a First-Class Variable)
+      somatic: {
+        mode: 'sympathetic', // 'sympathetic' | 'turbulent' | 'conductor' | 'off'
+        gain: 0.85,
+        normX: 0.5,
+        normY: 0.5,
+        lastClientX: null,
+        lastClientY: null,
+        lastMoveTs: 0,
+        prevVx: 0,
+        prevVy: 0,
+        rawSpeed: 0,      // instantaneous normalized cursor velocity [0..1]
+        smoothSpeed: 0,   // EMA smoothed cursor speed [0..1]
+        rawJerk: 0,       // instantaneous acceleration / angular curvature [0..1]
+        smoothJerk: 0,    // EMA smoothed trajectory entropy [0..1]
+        scrollSigned: 0,  // signed scroll momentum [-1..1]
+        scrollSpeed: 0,   // unsigned scroll velocity [0..1]
+        stillness: 1.0,   // hand calm / dwell coherence [0..1]
+        trail: []         // recent points for the somatic sensor lens
+      },
+
+      // Effective modulated values sent to DSP
+      eff: {
+        f0: 110.0,
+        commaCents: 0.0,
+        kKuramoto: 4.20,
+        vmStrainK: 0.24,
+        plateMix: 0.42,
+        gendynNovelty: 0.18,
+        halvorsenDepth: 0.55,
+        adaaDrive: 1.35,
+        somaticBow: 0.0,
+        somaticCutoffShift: 0.0,
+        somaticStereoTilt: 0.0
+      },
+
+      // Telemetry mirrors (animate gracefully even before audio starts)
+<!-- ... existing code ... -->
+    function computeEffectiveCausalParams() {
+      const s = state.somatic;
+      const g = s.mode === 'off' ? 0.0 : s.gain;
+
+      let f0 = state.f0;
+      let commaCents = state.commaCents;
+      let kKuramoto = state.kKuramoto;
+      let vmStrainK = state.vmStrainK;
+      let plateMix = state.plateMix;
+      let gendynNovelty = state.gendynNovelty;
+      let halvorsenDepth = state.halvorsenDepth;
+      let adaaDrive = state.adaaDrive;
+      let somaticBow = 0.0;
+      let somaticCutoffShift = 0.0;
+      let somaticStereoTilt = (s.normX - 0.5) * 2.0 * g;
+
+      if (s.mode === 'sympathetic') {
+        // Meditative stillness deepens phase-lock; smooth glides shimmer the plate & warm ZDF; jagged jerk adds micro-novelty
+        const lyricGlide = Math.max(0, s.smoothSpeed - s.smoothJerk * 0.65);
+        kKuramoto = Math.max(0, Math.min(9.0, kKuramoto + (s.stillness * 1.4 - s.smoothJerk * 2.2) * g));
+        plateMix = Math.max(0, Math.min(1.0, plateMix + lyricGlide * 0.45 * g));
+        gendynNovelty = Math.max(0, Math.min(1.0, gendynNovelty + s.smoothJerk * 0.35 * g));
+        commaCents += s.scrollSigned * 18.0 * g;
+        somaticBow = lyricGlide * 0.85 * g;
+        somaticCutoffShift = (lyricGlide * 0.55 + s.scrollSigned * 0.45) * g;
+      } else if (s.mode === 'turbulent') {
+        // Kinetic velocity & jerk push system toward VM strain chaos, GENDYN stochasticity & saturation
+        vmStrainK = Math.max(0.05, Math.min(1.45, vmStrainK + (s.smoothSpeed * 0.65 + s.scrollSpeed * 0.55) * g));
+        kKuramoto = Math.max(0, Math.min(9.0, kKuramoto - (s.smoothJerk * 3.4 + s.scrollSpeed * 1.8) * g));
+        gendynNovelty = Math.max(0, Math.min(1.0, gendynNovelty + (s.smoothJerk * 0.7 + s.scrollSpeed * 0.4) * g));
+        halvorsenDepth = Math.max(0.05, Math.min(0.95, halvorsenDepth + s.smoothSpeed * 0.4 * g));
+        adaaDrive = Math.max(0.3, Math.min(4.0, adaaDrive + (s.smoothSpeed + s.smoothJerk) * 0.75 * g));
+        f0 = Math.max(45, Math.min(260, f0 * Math.pow(2, (s.scrollSigned * 0.22) * g)));
+        somaticBow = s.smoothSpeed * 1.1 * g;
+        somaticCutoffShift = (s.smoothSpeed - 0.3) * 0.9 * g;
+      } else if (s.mode === 'conductor') {
+        // X/Y spatial conducting + cursor bow velocity + scroll harmonic tilt
+        somaticBow = (s.smoothSpeed * 1.25 + s.scrollSpeed * 0.5) * g;
+        somaticCutoffShift = ((0.5 - s.normY) * 1.35 + s.scrollSigned * 0.5) * g;
+        plateMix = Math.max(0, Math.min(1.0, plateMix + s.smoothSpeed * 0.5 * g));
+        halvorsenDepth = Math.max(0.05, Math.min(0.95, halvorsenDepth + Math.abs(s.normX - 0.5) * 0.5 * g));
+        commaCents += s.scrollSigned * 21.51 * g;
+      }
+
+      Object.assign(state.eff, {
+        f0, commaCents, kKuramoto, vmStrainK, plateMix,
+        gendynNovelty, halvorsenDepth, adaaDrive,
+        somaticBow, somaticCutoffShift, somaticStereoTilt
+      });
+    }
+
+    function pushParamsToWorklet() {
+      computeEffectiveCausalParams();
+      if (!state.workletNode) return;
+      const e = state.eff;
+      state.workletNode.port.postMessage({
+        type: 'params',
+        f0: e.f0,
+        ratios: state.ratios,
+        commaCents: e.commaCents,
+        kKuramoto: e.kKuramoto,
+        vmStrainK: e.vmStrainK,
+        plateMix: e.plateMix,
+        gendynNovelty: e.gendynNovelty,
+        halvorsenDepth: e.halvorsenDepth,
+        adaaDrive: e.adaaDrive,
+        tamperError: state.tamperError,
+        somaticBow: e.somaticBow,
+        somaticCutoffShift: e.somaticCutoffShift,
+        somaticStereoTilt: e.somaticStereoTilt
+      });
+    }
+
+    function updateAudioButtonUI() {
+      const dot = document.getElementById('engineStatusDot');
+      const icon = document.getElementById('audioBtnIcon');
+      const txt = document.getElementById('audioBtnText');
+      if (state.audioRunning) {
+        dot.className = 'w-2 h-2 rounded-full bg-cyan-400 text-cyan-400 pulse-dot';
+        icon.innerHTML = '&#9632;';
+        txt.textContent = 'Suspend Loom';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-slate-500';
+        icon.innerHTML = '&#9654;';
+        txt.textContent = 'Ignite Loom';
+      }
+    }
+<!-- ... existing code ... -->
+        state.micActive = false;
+        micBtn.classList.remove('btn-active');
+        micDot.className = 'w-1.5 h-1.5 rounded-full bg-slate-500';
+        ecoTxt.textContent = 'Closed-Loop Silicon';
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+        });
+        const src = state.audioCtx.createMediaStreamSource(stream);
+        const gainGuard = state.audioCtx.createGain();
+        gainGuard.gain.value = 0.35;
+        src.connect(gainGuard);
+        gainGuard.connect(state.workletNode);
+        state.micStream = stream;
+        state.micSource = src;
+        state.micActive = true;
+        micBtn.classList.add('btn-active');
+        micDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 text-emerald-400 pulse-dot';
+        ecoTxt.textContent = 'Di Scipio Room Feedback Active';
+      } catch (e) {
+        ecoTxt.textContent = 'Mic Permission Denied';
+      }
+    }
+<!-- ... existing code ... -->
+    // =========================================================================
+    // 7. SOMATIC INPUT TRACKER, UI TELEMETRY & ANIMATION LOOP
+    // =========================================================================
+    function initSomaticListeners() {
+      const s = state.somatic;
+
+      const onPointerMove = (clientX, clientY) => {
+        const now = performance.now();
+        const w = Math.max(1, window.innerWidth);
+        const h = Math.max(1, window.innerHeight);
+        s.normX = Math.max(0, Math.min(1, clientX / w));
+        s.normY = Math.max(0, Math.min(1, clientY / h));
+
+        if (s.lastClientX !== null && s.lastMoveTs > 0) {
+          const dt = Math.max(4, now - s.lastMoveTs) / 1000.0;
+          const dx = clientX - s.lastClientX;
+          const dy = clientY - s.lastClientY;
+          const vx = dx / dt;
+          const vy = dy / dt;
+          const speedPx = Math.hypot(vx, vy);
+
+          // Normalize velocity (~2600 px/s -> 1.0)
+          s.rawSpeed = Math.min(1.0, speedPx / 2600.0);
+
+          // Trajectory Jerk / Curvature (rate of velocity vector change)
+          const ax = (vx - s.prevVx) / dt;
+          const ay = (vy - s.prevVy) / dt;
+          const accelNorm = Math.min(1.0, Math.hypot(ax, ay) / 28000.0);
+          s.rawJerk = Math.max(s.rawJerk, accelNorm);
+
+          s.prevVx = vx;
+          s.prevVy = vy;
+        }
+
+        s.lastClientX = clientX;
+        s.lastClientY = clientY;
+        s.lastMoveTs = now;
+
+        s.trail.push({ x: s.normX, y: s.normY, v: s.rawSpeed, j: s.rawJerk });
+        if (s.trail.length > 36) s.trail.shift();
+      };
+
+      window.addEventListener('pointermove', (e) => onPointerMove(e.clientX, e.clientY), { passive: true });
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches && e.touches[0]) onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+
+      // Capture scroll velocity & direction as a smooth inertial variable
+      window.addEventListener('wheel', (e) => {
+        const delta = Math.max(-240, Math.min(240, e.deltaY));
+        const impulse = delta / 240.0;
+        s.scrollSigned = Math.max(-1.0, Math.min(1.0, s.scrollSigned * 0.55 - impulse * 0.65));
+        s.scrollSpeed = Math.min(1.0, s.scrollSpeed + Math.abs(impulse) * 0.55);
+      }, { passive: true });
+
+      // Clicking / tapping Somatic Pad injects a tactile plate & combinator impulse
+      const pad = document.getElementById('cvSomaticPad');
+      if (pad) {
+        pad.addEventListener('pointerdown', (e) => {
+          const rect = pad.getBoundingClientRect();
+          s.normX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+          s.normY = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+          s.rawSpeed = Math.min(1.0, s.rawSpeed + 0.55);
+          if (state.workletNode) {
+            state.workletNode.port.postMessage({ type: 'combinatorPulse', energy: 0.65 });
+          }
+        });
+      }
+    }
+
+    function stepSomaticPhysics(dtSec) {
+      const s = state.somatic;
+      // Exponential inertial decay for smooth organic feel
+      const decayFast = Math.exp(-dtSec * 9.5);
+      const decayScroll = Math.exp(-dtSec * 4.2);
+
+      s.rawSpeed *= decayFast;
+      s.rawJerk *= Math.exp(-dtSec * 7.5);
+      s.scrollSigned *= decayScroll;
+      s.scrollSpeed *= decayScroll;
+
+      // Critically smoothed envelopes
+      const alpha = Math.min(1.0, dtSec * 12.0);
+      s.smoothSpeed += alpha * (s.rawSpeed - s.smoothSpeed);
+      s.smoothJerk += alpha * (s.rawJerk - s.smoothJerk);
+
+      const activity = Math.min(1.0, s.smoothSpeed * 1.15 + s.scrollSpeed * 0.9);
+      const targetStill = 1.0 - activity;
+      s.stillness += Math.min(1.0, dtSec * 3.5) * (targetStill - s.stillness);
+
+      pushParamsToWorklet();
+      drawSomaticPad();
+    }
+
+    function drawSomaticPad() {
+      const cv = document.getElementById('cvSomaticPad');
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      const w = cv.width, h = cv.height;
+      const s = state.somatic;
+
+      ctx.fillStyle = '#050811';
+      ctx.fillRect(0, 0, w, h);
+
+      // Subtle crosshair
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.5, 0); ctx.lineTo(w * 0.5, h);
+      ctx.moveTo(0, h * 0.5); ctx.lineTo(w, h * 0.5);
+      ctx.stroke();
+
+      // Scroll horizon wave
+      if (Math.abs(s.scrollSigned) > 0.01) {
+        const yScr = h * (0.5 - s.scrollSigned * 0.42);
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.beginPath();
+        ctx.moveTo(0, yScr); ctx.lineTo(w, yScr);
+        ctx.stroke();
+      }
+
+      // Kinetic cursor ribbon
+      if (s.trail.length > 1) {
+        for (let i = 1; i < s.trail.length; i++) {
+          const p0 = s.trail[i - 1];
+          const p1 = s.trail[i];
+          const a = i / s.trail.length;
+          ctx.strokeStyle = p1.j > 0.35
+            ? `rgba(167, 139, 250, ${a * 0.85})`
+            : `rgba(34, 211, 238, ${a * 0.85})`;
+          ctx.lineWidth = 1 + a * 2.2;
+          ctx.beginPath();
+          ctx.moveTo(p0.x * w, p0.y * h);
+          ctx.lineTo(p1.x * w, p1.y * h);
+          ctx.stroke();
+        }
+      }
+
+      // Live pointer locus + velocity halo
+      const px = s.normX * w, py = s.normY * h;
+      const halo = 4 + s.smoothSpeed * 18 + s.scrollSpeed * 10;
+      ctx.strokeStyle = s.mode === 'off' ? 'rgba(100,116,139,0.4)' : 'rgba(34, 211, 238, 0.45)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(px, py, halo, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = s.mode === 'off' ? '#64748b' : '#22d3ee';
+      ctx.beginPath();
+      ctx.arc(px, py, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    let lastFrameTime = performance.now();
+    setInterval(() => {
+      state.redexPerSec = state.redexWindowCount;
+      state.redexWindowCount = 0;
+    }, 1000);
+
+    function updateSliderFill(el, valOverride) {
+      if (!el) return;
+      const min = parseFloat(el.min) || 0;
+      const max = parseFloat(el.max) || 1;
+      const v = valOverride !== undefined ? valOverride : parseFloat(el.value);
+      const pct = Math.max(0, Math.min(100, ((v - min) / (max - min)) * 100));
+      el.style.setProperty('--pct', `${pct.toFixed(1)}%`);
+    }
+
+    function updateTelemetryStrip() {
+      const s = state.somatic;
+      const e = state.eff;
+
+      document.getElementById('uiSampleClock').textContent = state.sampleCount.toLocaleString();
+
+      // 00: Somatic Telemetry Readouts
+      const kinPct = Math.round(s.smoothSpeed * 100);
+      const jerkPct = Math.round(s.smoothJerk * 100);
+      const stillPct = Math.round(s.stillness * 100);
+      document.getElementById('telCursorVel').textContent = `${s.smoothSpeed.toFixed(2)} v`;
+      document.getElementById('telScrollVel').textContent = `scr ${s.scrollSigned >= 0 ? '+' : ''}${s.scrollSigned.toFixed(2)}`;
+      const gestureLabel = s.mode === 'off'
+        ? 'Manual'
+        : (s.scrollSpeed > 0.15 ? 'Scrolling' : s.smoothJerk > 0.35 ? 'Turbulent' : s.smoothSpeed > 0.08 ? 'Gliding' : 'Still');
+      document.getElementById('telSomaticState').textContent = gestureLabel;
+      document.getElementById('barSomatic').style.width = `${Math.min(100, 6 + kinPct + Math.round(s.scrollSpeed * 60))}%`;
+
+      document.getElementById('valKinSpeed').textContent = `${kinPct}%`;
+      document.getElementById('barKinSpeed').style.width = `${kinPct}%`;
+      document.getElementById('valKinJerk').textContent = `${jerkPct}%`;
+      document.getElementById('barKinJerk').style.width = `${jerkPct}%`;
+      document.getElementById('valKinStill').textContent = s.scrollSpeed > 0.08
+        ? `scr ${Math.round(s.scrollSpeed * 100)}%`
+        : `${stillPct}% calm`;
+      document.getElementById('barKinStill').style.width = `${stillPct}%`;
+
+      // Reflect effective somatically-modulated values smoothly in slider fills & labels
+      updateSliderFill(document.getElementById('sldBaseFreq'), e.f0);
+      updateSliderFill(document.getElementById('sldKuramoto'), e.kKuramoto);
+      updateSliderFill(document.getElementById('sldVmStrain'), e.vmStrainK);
+      updateSliderFill(document.getElementById('sldPlate'), e.plateMix);
+      updateSliderFill(document.getElementById('sldGendyn'), e.gendynNovelty);
+      updateSliderFill(document.getElementById('sldHalvorsen'), e.halvorsenDepth);
+      updateSliderFill(document.getElementById('sldAdaaDrive'), e.adaaDrive);
+
+      document.getElementById('valBaseFreq').textContent = `${e.f0.toFixed(1)} Hz (λ=${(343 / e.f0).toFixed(2)}m)`;
+      document.getElementById('valKuramoto').textContent = e.kKuramoto.toFixed(2);
+      document.getElementById('valVmStrain').textContent = e.vmStrainK.toFixed(2);
+      document.getElementById('valPlate').textContent = e.plateMix.toFixed(2);
+      document.getElementById('valGendyn').textContent = e.gendynNovelty.toFixed(2);
+      document.getElementById('valHalvorsen').textContent = e.halvorsenDepth.toFixed(2);
+      document.getElementById('valAdaaDrive').textContent = `${e.adaaDrive.toFixed(2)}x`;
+      document.getElementById('lblEffectiveMod').textContent =
+        s.mode === 'off' ? 'Manual Lock' : `${s.mode.charAt(0).toUpperCase() + s.mode.slice(1)} (${gestureLabel})`;
+
+      // 01-06 Telemetry Cells
+      document.getElementById('telVmStrain').textContent = `K = ${e.vmStrainK.toFixed(3)}`;
+      document.getElementById('telArnoldRatio').textContent =
+        e.vmStrainK >= 1.0 ? 'CHAOS' : `W=${closestFareyRatio(state.windingEst)}`;
+      document.getElementById('telVmSub').textContent =
+        e.vmStrainK >= 1.0 ? 'Bifurcated' : 'Locked';
+      document.getElementById('barVmStrain').style.width = `${Math.min(100, (e.vmStrainK / 1.45) * 100)}%`;
+
+      const rough = computePlompLeveltRoughness();
+      document.getElementById('telKuramotoR').textContent = `R = ${state.kuramotoR.toFixed(3)}`;
+      document.getElementById('telRoughness').textContent = `Rgh ${rough.toFixed(2)}`;
+      document.getElementById('telChordRatio').textContent = `[${state.ratios.join(':')}]`;
+      document.getElementById('barKuramoto').style.width = `${Math.round(state.kuramotoR * 100)}%`;
+
+      document.getElementById('telRedexRate').textContent = `${state.redexPerSec} /s`;
+      document.getElementById('telActiveCells').textContent = `${state.nodes.length} ports`;
+      document.getElementById('barRedex').style.width = `${Math.min(100, 12 + state.redexPerSec * 4)}%`;
+
+      const sign = e.commaCents >= 0 ? '+' : '';
+      document.getElementById('telCommaDrift').textContent = `${sign}${e.commaCents.toFixed(1)} ¢`;
+      document.getElementById('telPlrOp').textContent = state.lastPlr;
+      document.getElementById('barComma').style.width = `${Math.max(5, Math.min(95, 50 + e.commaCents * 0.7))}%`;
+
+      const db = 20 * Math.log10(Math.max(1e-4, state.rms));
+      document.getElementById('telRmsDb').textContent = `${db.toFixed(1)} dB`;
+      document.getElementById('barRms').style.width = `${Math.max(8, Math.min(100, (db + 48) * 2.1))}%`;
+    }
+
+    function renderLoop(now) {
+      const dtSec = Math.min(0.05, (now - lastFrameTime) / 1000);
+      lastFrameTime = now;
+
+      stepSomaticPhysics(dtSec);
+      stepAndDrawCombinators();
+      drawMesoDynamics(dtSec);
+      drawMicroGendyn(now);
+      drawSymphonicWavelengths(now);
+      updateTelemetryStrip();
+
+      requestAnimationFrame(renderLoop);
+    }
+<!-- ... existing code ... -->
+      if (cos > 0.9999) {
+        elCosFull.className = 'font-mono-tech text-base font-bold text-emerald-300 tracking-tight truncate';
+        elTelCos.className = 'text-sm font-semibold text-emerald-300';
+        badge.textContent = 'AUTHENTIC';
+        badge.className = 'text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 font-medium';
+        tag.textContent = 'P⊥ OK';
+        tag.className = 'font-mono-tech text-[9px] text-emerald-400';
+        document.getElementById('barProvenance').style.width = '100%';
+        document.getElementById('barProvenance').className = 'tel-bar-fill bg-emerald-400';
+      } else {
+        elCosFull.className = 'font-mono-tech text-base font-bold text-rose-400 tracking-tight truncate';
+        elTelCos.className = 'text-sm font-semibold text-rose-400';
+        badge.textContent = 'TAMPERED';
+        badge.className = 'text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/45 text-rose-300 font-medium';
+        tag.textContent = '0.25 ERB';
+        tag.className = 'font-mono-tech text-[9px] text-rose-400';
+        document.getElementById('barProvenance').style.width = `${Math.max(15, Math.round(cos * 100))}%`;
+        document.getElementById('barProvenance').className = 'tel-bar-fill bg-rose-400';
+      }
+    }
+
+    function syncSlidersFromState() {
+      const pairs = [
+        ['sldBaseFreq', state.f0],
+        ['sldKuramoto', state.kKuramoto],
+        ['sldVmStrain', state.vmStrainK],
+        ['sldPlate', state.plateMix],
+        ['sldGendyn', state.gendynNovelty],
+        ['sldHalvorsen', state.halvorsenDepth],
+        ['sldAdaaDrive', state.adaaDrive],
+        ['sldSomaticGain', state.somatic.gain]
+      ];
+      pairs.forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.value = val;
+          updateSliderFill(el, val);
+        }
+      });
+
+      document.getElementById('lblBaseFreq').textContent = `f₀ = ${state.f0.toFixed(1)} Hz`;
+      document.getElementById('valSomaticGain').textContent = `${Math.round(state.somatic.gain * 100)}%`;
+      computeEffectiveCausalParams();
+    }
+
+    // Bind Controls
+    document.getElementById('btnAudioToggle').addEventListener('click', toggleAudioEngine);
+    document.getElementById('btnMicToggle').addEventListener('click', toggleRoomMic);
+    document.getElementById('btnRenderWav').addEventListener('click', renderOffline48kWav);
+
+    // Somatic Input Mode Buttons & Gain
+    document.querySelectorAll('.somatic-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.somatic-btn').forEach(b => b.classList.remove('btn-active'));
+        btn.classList.add('btn-active');
+        state.somatic.mode = btn.dataset.somatic;
+        pushParamsToWorklet();
+      });
+    });
+    document.getElementById('sldSomaticGain').addEventListener('input', e => {
+      state.somatic.gain = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+<!-- ... existing code ... -->
+    // Boot Initial State
+    initSomaticListeners();
+    syncSlidersFromState();
+    refreshProvenanceUI();
+    requestAnimationFrame(renderLoop);
+  </script>
+</body>
+</html>

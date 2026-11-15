@@ -5,6 +5,10 @@
   if (pref !== "light" && pref !== "dark") pref = "system";
   var light = pref === "light" || (pref === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches);
   var root = document.documentElement;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) root.classList.add("reduced-motion");
+  var hue = null;
+  try { hue = parseInt(localStorage.getItem("eido-hue") || "", 10); } catch (e) {}
+  if (hue != null && isFinite(hue)) root.style.setProperty("--eco-hue", String(((hue % 360) + 360) % 360));
   root.setAttribute("data-theme", light ? "light" : "dark");
   root.setAttribute("data-pref", pref);
 })();
