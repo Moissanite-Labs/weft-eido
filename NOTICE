@@ -9,6 +9,12 @@ also be used under the Apache License, Version 2.0.
 
 Attribution for CC BY 4.0 reuse: "Eido, Moissanite Labs, https://w3ft.org".
 
+Exception: four recorded media files in
+examples/research/causal-harmonic/originals/ (two audio files, one cover
+image, one lyrics file) are licensed under the Creative Commons
+Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0), not under
+Apache-2.0. See LICENSE.md in that folder for the file list and terms.
+
 "Eido", "ML Weft" and "Moissanite Labs" are names of Moissanite Labs. Neither
 license grants rights to use them except as needed to describe the origin of
 the work.
