@@ -41,6 +41,15 @@ test("the rebuild link is gated, not live on load", () => {
   assert.match(js, /pull\/6/, "the gate opens pull request 6, not a local rebuild page");
 });
 
+test("approved engines run at full strength, not as toys", () => {
+  assert.match(js, /E13_ARMS/, "E13 cascade arms are present");
+  assert.match(js, /G4: \{ wire: "448 B/, "E13 measured values are carried over");
+  assert.match(js, /EPS_BENCH = 1 \/ 60/, "Chebyshev noise floor is present");
+  assert.match(js, /qResp = \(p, r, c\)/, "Chebyshev response law is present");
+  assert.match(html, /preload="none" src="[^"]*paracausal-loom-soundtrack\.mp3"/, "soundtrack is woven in");
+  assert.match(html, /id="eco-flow"/, "flow toggle is present");
+});
+
 test("recorded audio carries its non-commercial licence", () => {
   const licence = path.join(repo, "examples", "research", "causal-harmonic", "originals", "LICENSE.md");
   assert.ok(fs.existsSync(licence), "originals/LICENSE.md is missing");

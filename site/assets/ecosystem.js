@@ -22,8 +22,8 @@ export const PLACES = [
   { id: "field", code: "GPU FLD", name: "Field", blurb: "The GPU rebuild, in miniature", weight: 7, family: "rebuild", state: "Pull request 6. Changes requested. Two checks fail", badge: "blocked", how: "Safe miniature only. Full page sits behind a gate until sign-off, key storage and the address lookup are fixed." },
   { id: "explainer", code: "TOY MOD", name: "Explainer", blurb: "A tiny model you can step", weight: 6, family: "research", state: "Pull request 11. Approved. Checks green", badge: "approved", how: "Runs in full. Its tension drives strain across the page." },
   { id: "archive", code: "5X7 BIT", name: "Archive", blurb: "Letters from a table of bits", weight: 5, family: "modules", state: "On main", badge: "main", how: "Runs in full. Original pages linked unchanged." },
-  { id: "simulations", code: "E08-E13", name: "Simulations", blurb: "Sessions you can run", weight: 6, family: "research", state: "Pull request 14. Approved. Checks green", badge: "approved", how: "Miniature cascade here. Full simulations linked. Their numbers are their authors' claims." },
-  { id: "identifiability", code: "CHEB ID", name: "Identifiability", blurb: "Can two measures split four cases?", weight: 5, family: "research", state: "Pull request 15. Approved. Checks green", badge: "approved", how: "Miniature here. Full Chebyshev explorer linked." },
+  { id: "simulations", code: "E08-E13", name: "Simulations", blurb: "Sessions you can run", weight: 6, family: "research", state: "Pull request 14. Approved. Checks green", badge: "approved", how: "The E13 cascade runs here with its authors' values. The rest of the suite is linked." },
+  { id: "identifiability", code: "CHEB ID", name: "Identifiability", blurb: "Can two measures split four cases?", weight: 5, family: "research", state: "Pull request 15. Approved. Checks green", badge: "approved", how: "The Chebyshev model runs here: worlds, sampling points, bleed, and the 1/60 floor." },
   { id: "harmonic", code: "CHORDS", name: "Harmonic", blurb: "The system as sound", weight: 6, family: "research", state: "Pull request 17. Approved. Checks green", badge: "approved", how: "Live tones from the three threads, made in your browser. Recorded pieces are CC BY-NC 4.0: share with credit, no commercial use." },
 ];
 
@@ -33,6 +33,17 @@ export const RECORD = [
   { work: "Readme line (pull request 9)", state: "Changes requested on sign-off only. The edit itself was called fine", badge: "blocked", how: "Not applied here. One sign-off fixes it." },
   { work: "Angles hub (pull request 18)", state: "Changes requested. Two checks fail through pull request 6", badge: "blocked", how: "Superseded by this page. No code from pull request 6 is included." },
 ];
+
+/* Flow: colour drifts, shape breathes. Off means the style point rules alone. */
+const flow = { on: !reducedMotion.matches, phase: 0, last: 0 };
+function liveHue() {
+  const drift = flow.on ? (flow.phase / 90000) % 1 : 0;
+  return (bus.state.hue + drift) % 1;
+}
+function liveRounding(t = 0) {
+  if (!flow.on) return bus.state.rounding;
+  return clamp(bus.state.rounding + Math.sin(t / 2600) * 0.13, 0, 1);
+}
 
 /* The bus. Subscribers get (state, changedKey). */
 const bus = {
@@ -116,38 +127,66 @@ function drawField(t = 0) {
   ctx.clearRect(0, 0, w, h);
   if (!fieldLayout || fieldLayout.region.width !== Math.round(w) || fieldLayout.region.height !== Math.round(h)) computeField(Math.round(w), Math.round(h));
   const s = bus.state;
-  const hueDeg = Math.round(s.hue * 360);
+  const hueDeg = Math.round(liveHue() * 360);
+  const rounding = liveRounding(t);
   const light = document.documentElement.getAttribute("data-theme") === "light";
-  const jitter = reducedMotion.matches ? 0 : s.restless * 2.2;
-  const wob = (i) => jitter ? Math.sin(t / 240 + i * 1.7) * jitter : 0;
+  const jitter = reducedMotion.matches ? 0 : s.restless * 2.4;
+  const wob = (i) => jitter ? Math.sin(t / 230 + i * 1.7) * jitter : 0;
+  const breathe = (i) => (flow.on ? Math.sin(t / 1900 + i * 0.9) * 0.045 : 0);
 
-  ctx.strokeStyle = light ? "rgba(120, 100, 40, 0.55)" : "rgba(217, 199, 160, 0.5)";
-  ctx.lineWidth = 1 + s.tension * 2;
+  ctx.lineCap = "round";
   for (const e of fieldThreads) {
     const a = fieldLayout.cells[e.a], b = fieldLayout.cells[e.b];
-    ctx.beginPath(); ctx.moveTo(a.x + wob(e.a), a.y); ctx.lineTo(b.x + wob(e.b), b.y); ctx.stroke();
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const bow = (flow.on ? Math.sin(t / 1600 + e.a) * 10 : 6);
+    const cxp = mx - dy * 0.12 + bow * 0.3, cyp = my + dx * 0.12;
+    ctx.beginPath();
+    ctx.moveTo(a.x + wob(e.a), a.y);
+    ctx.quadraticCurveTo(cxp, cyp, b.x + wob(e.b), b.y);
+    ctx.strokeStyle = `hsl(${hueDeg} 55% ${light ? 38 : 62}% / 0.55)`;
+    ctx.lineWidth = 1.2 + s.tension * 2.4;
+    ctx.setLineDash(flow.on ? [7, 9] : []);
+    ctx.lineDashOffset = flow.on ? -t / 28 : 0;
+    ctx.stroke();
+    ctx.setLineDash([]);
   }
   fieldLayout.cells.forEach((cell, i) => {
     const place = PLACES[cell.index];
     const active = s.place === place.id;
-    const x = cell.x - cell.half + wob(i), y = cell.y - cell.half;
-    const side = cell.side;
-    const r = Math.min(side / 2, 4 + s.rounding * side * 0.32);
+    const side = cell.side * (1 + breathe(i));
+    const rBase = side / 2;
+    const cx = cell.x + wob(i), cy = cell.y;
+    const wobble = flow.on ? 0.10 + rounding * 0.10 : rounding * 0.06;
     ctx.beginPath();
-    ctx.roundRect(x, y, side, side, r);
-    ctx.fillStyle = `hsl(${hueDeg} ${active ? 45 : 25}% ${light ? (active ? 82 : 90) : (active ? 26 : 17)}% / ${0.55 + s.contrast + (active ? 0.25 : 0)})`;
+    const steps = 28;
+    for (let k = 0; k <= steps; k += 1) {
+      const a = (k / steps) * Math.PI * 2;
+      const rr = rBase * (1 + Math.sin(a * 3 + i * 1.3 + (flow.on ? t / 2400 : 0)) * wobble + Math.sin(a * 5 - i) * wobble * 0.4);
+      const px = cx + Math.cos(a) * rr * (0.86 + rounding * 0.2);
+      const py = cy + Math.sin(a) * rr;
+      if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    const grad = ctx.createRadialGradient(cx - rBase * 0.3, cy - rBase * 0.35, rBase * 0.1, cx, cy, rBase * 1.25);
+    grad.addColorStop(0, `hsl(${hueDeg} ${active ? 75 : 55}% ${light ? (active ? 72 : 84) : (active ? 42 : 28)}% / ${0.75 + s.contrast})`);
+    grad.addColorStop(1, `hsl(${(hueDeg + 42) % 360} 55% ${light ? 88 : 18}% / ${0.55 + s.contrast * 0.5})`);
+    ctx.fillStyle = grad;
+    ctx.shadowColor = active ? `hsl(${hueDeg} 80% 60% / 0.55)` : "transparent";
+    ctx.shadowBlur = active ? 26 : 0;
     ctx.fill();
-    ctx.lineWidth = active ? 2.4 : 1 + s.tension * 2.2;
-    ctx.strokeStyle = active ? (light ? "#7a5f1e" : "#d9c7a0") : `hsl(${hueDeg} 35% ${light ? 45 : 55}% / 0.8)`;
+    ctx.shadowBlur = 0;
+    ctx.lineWidth = active ? 2.6 : 1.1 + s.tension * 2.2;
+    ctx.strokeStyle = `hsl(${hueDeg} ${active ? 85 : 50}% ${light ? 34 : 72}% / 0.9)`;
     ctx.stroke();
-    ctx.fillStyle = light ? "#0f2425" : "#e7f3f3";
+    ctx.fillStyle = light ? "#14201f" : "#f2f7f5";
     ctx.textAlign = "center";
-    const namePx = Math.max(9.5, Math.min(16, side / 6, (side - 12) / (place.name.length * 0.6)));
-    ctx.font = `650 ${namePx}px ui-sans-serif, system-ui, sans-serif`;
-    ctx.fillText(place.name, cell.x + wob(i), cell.y - 2);
+    const namePx = Math.max(9.5, Math.min(17, side / 5.6, (side - 10) / (place.name.length * 0.58)));
+    ctx.font = `700 ${namePx}px "Avenir Next", Avenir, Futura, sans-serif`;
+    ctx.fillText(place.name, cx, cy - 2);
     ctx.font = `${Math.max(9, Math.min(12, side / 8))}px ui-monospace, monospace`;
-    ctx.fillStyle = light ? "#526b6c" : "#91a8aa";
-    ctx.fillText(place.code, cell.x + wob(i), cell.y + Math.max(12, side / 7), side - 8);
+    ctx.fillStyle = light ? "rgba(20,32,31,0.62)" : "rgba(242,247,245,0.62)";
+    ctx.fillText(place.code, cx, cy + Math.max(12, side / 7), side - 8);
   });
 }
 
@@ -179,14 +218,37 @@ function initField() {
 
 /* ---------- threads: style point, restlessness, condensing miniature ---------- */
 
-function applyStyleToPage(v) {
+function applyStyleToPage(v, t = performance.now()) {
   const root = document.documentElement.style;
-  root.setProperty("--eco-radius", `${(2 + v.rounding * 24).toFixed(1)}px`);
+  const hue = liveHue();
+  const rounding = liveRounding(t);
+  const deg = Math.round(hue * 360);
+  root.setProperty("--eco-radius", `${(2 + rounding * 26).toFixed(1)}px`);
   root.setProperty("--eco-pad", `${(10 + v.density * 22).toFixed(1)}px`);
-  root.setProperty("--eco-hue", String(Math.round(v.hue * 360)));
+  root.setProperty("--eco-hue", String(deg));
+  root.setProperty("--eco-hue-b", String((deg + 42) % 360));
+  root.setProperty("--eco-hue-c", String((deg + 315) % 360));
   root.setProperty("--eco-strain", bus.state.tension.toFixed(3));
   const out = $("#eco-thread-style");
-  if (out) out.textContent = `rounding ${v.rounding.toFixed(2)}, density ${v.density.toFixed(2)}, hue ${Math.round(v.hue * 360)} degrees, contrast ${v.contrast.toFixed(2)}.`;
+  if (out) out.textContent = `rounding ${rounding.toFixed(2)}, density ${v.density.toFixed(2)}, hue ${deg} degrees, contrast ${v.contrast.toFixed(2)}. Flow ${flow.on ? "on" : "off"}.`;
+}
+
+function initFlow() {
+  const btn = $("#eco-flow");
+  if (!btn) return;
+  const paint = () => {
+    btn.setAttribute("aria-pressed", flow.on ? "true" : "false");
+    btn.textContent = flow.on ? "Flow: on" : "Flow: off";
+  };
+  paint();
+  btn.addEventListener("click", () => {
+    flow.on = !flow.on && !reducedMotion.matches;
+    if (!flow.on) flow.phase = 0;
+    paint();
+    applyStyleToPage(bus.state);
+    drawField(performance.now());
+  });
+  reducedMotion.addEventListener?.("change", () => { if (reducedMotion.matches) { flow.on = false; flow.phase = 0; paint(); } });
 }
 
 const CONDENSE_VARIANTS = [
@@ -286,7 +348,13 @@ function startPlaceLoops(id) {
 }
 
 let rafId = 0;
+let lastFlowPaint = 0;
 function loop(t) {
+  if (flow.on) {
+    flow.phase += flow.last ? Math.min(100, t - flow.last) : 16;
+    if (t - lastFlowPaint > 140) { lastFlowPaint = t; applyStyleToPage(bus.state, t); }
+  }
+  flow.last = t;
   drawField(t);
   drawActivePlace(t);
   rafId = requestAnimationFrame(loop);
@@ -452,77 +520,149 @@ function initGlyph() {
   }
 }
 
-/* ---------- Simulations place: miniature cascade (PR 14) ---------- */
+/* ---------- Simulations place: E13 cascade at full strength (PR 14) ---------- */
+/* Arm data and stage values are the simulation authors' measured claims,
+   carried over unchanged from examples/simulations/e13_transitive_cascade.html. */
 
-const cascade = { dots: [], delivered: 0, lost: 0, auto: false, lastAuto: 0 };
+const E13_ARMS = {
+  G4: { wire: "448 B (877.7x)", cSub: "V0 + V1 + V2 active", status: "Pythagorean Frobenius error: 0.000 · 11/12 wins", stages: [
+    { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, v0: 96, v1: 12, v2: 12, t0: "Locked", t1: "Pre-graft", t2: "Pre-graft" },
+    { nat: 54.55, hop1: 15.08, hop2: -81.90, tri: -4.09, v0: 96, v1: 78, v2: 12, t0: "Locked", t1: "WFSK V1", t2: "Open slot" },
+    { nat: 54.55, hop1: 15.08, hop2: 35.22, tri: 34.95, v0: 96, v1: 78, v2: 90, t0: "Locked", t1: "Protected", t2: "Clean V2" } ] },
+  G3: { wire: "344 B (no sketch)", cSub: "Raw SVD crowds k=3", status: "Off-manifold pA modes block Hop 2 (Theorem 2)", stages: [
+    { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, v0: 96, v1: 12, v2: 12, t0: "Locked", t1: "Pre-graft", t2: "Pre-graft" },
+    { nat: 54.55, hop1: 14.59, hop2: -58.10, tri: 3.68, v0: 96, v1: 76, v2: 46, t0: "Locked", t1: "Raw SVD", t2: "Crowded by pA" },
+    { nat: 54.55, hop1: 9.36, hop2: -53.76, tri: 3.38, v0: 96, v1: 70, v2: 24, t0: "Locked", t1: "Retained", t2: "Blocked" } ] },
+  G2: { wire: "344 B (native-only)", cSub: "V1 wiped at Hop 2", status: "Re-cleaning erases Hop-1 skill (-152.02)", stages: [
+    { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, v0: 96, v1: 12, v2: 12, t0: "Locked", t1: "Pre-graft", t2: "Pre-graft" },
+    { nat: 54.55, hop1: 14.59, hop2: -81.90, tri: -4.25, v0: 96, v1: 76, v2: 12, t0: "Locked", t1: "Unguarded", t2: "Pre-graft" },
+    { nat: 54.55, hop1: -137.43, hop2: 35.05, tri: -15.94, v0: 96, v1: 8, v2: 90, t0: "Locked", t1: "Wiped", t2: "Acquired" } ] },
+  G1: { wire: "344 B (ungated)", cSub: "Carrier k=1 collision", status: "Null residual: 1.497 · Catastrophic shift drop", stages: [
+    { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, v0: 96, v1: 12, v2: 12, t0: "Native", t1: "Pre-graft", t2: "Pre-graft" },
+    { nat: -62.40, hop1: -48.10, hop2: -81.90, tri: -64.13, v0: 32, v1: 30, v2: 12, t0: "Drift", t1: "Collision", t2: "Pre-graft" },
+    { nat: -137.00, hop1: -107.69, hop2: -62.81, tri: -102.50, v0: 10, v1: 14, v2: 22, t0: "Collapse", t1: "Interference", t2: "Interference" } ] },
+};
 
-function cascadeSend() { cascade.dots.push({ p: 0, leg: 0 }); }
+const cascade = { arm: "G4", t: 0, playing: true, last: 0 };
+const lerpN = (a, b, u) => a + (b - a) * u;
+const fmtS = (v) => (v >= 0 ? "+" : "") + v.toFixed(2);
+
+function e13State() {
+  const cfg = E13_ARMS[cascade.arm];
+  const t = cascade.t;
+  const first = t < 0.5;
+  const sA = first ? cfg.stages[0] : cfg.stages[1];
+  const sB = first ? cfg.stages[1] : cfg.stages[2];
+  const u = first ? t / 0.5 : (t - 0.5) / 0.5;
+  const st = u > 0.55 ? sB : sA;
+  return {
+    cfg, u, st,
+    phase: t < 0.08 ? "Pre" : first ? "Hop 1 (A to B to C)" : "Hop 2 (B to C)",
+    nat: lerpN(sA.nat, sB.nat, u), hop1: lerpN(sA.hop1, sB.hop1, u),
+    hop2: lerpN(sA.hop2, sB.hop2, u), tri: lerpN(sA.tri, sB.tri, u),
+    v0: lerpN(sA.v0, sB.v0, u), v1: lerpN(sA.v1, sB.v1, u), v2: lerpN(sA.v2, sB.v2, u),
+    pkt1: first ? u : 1, pkt2: first ? -1 : u,
+  };
+}
+
+function paintCascadeReadout() {
+  const s = e13State();
+  const out = $("#eco-cascade-readout");
+  if (out) out.textContent = `Native ${fmtS(s.nat)} · Hop 1 ${fmtS(s.hop1)} · Hop 2 ${fmtS(s.hop2)} · Tri-skill ${fmtS(s.tri)} · Wire ${s.cfg.wire}`;
+  const status = $("#eco-cascade-status");
+  if (status) status.textContent = `${cascade.arm}: ${s.cfg.cSub}. ${s.cfg.status}`;
+  const phase = $("#eco-cascade-phase");
+  if (phase) phase.textContent = s.phase;
+}
 
 function drawCascade(t = 0) {
   const canvas = $("#eco-cascade");
   if (!canvas || canvas.offsetParent === null) return;
+  if (cascade.playing && !reducedMotion.matches) {
+    const dt = cascade.last ? Math.min(80, t - cascade.last) : 16;
+    cascade.t = (cascade.t + dt / 9000) % 1;
+    const scrub = $("#eco-scrub");
+    if (scrub && document.activeElement !== scrub) scrub.value = String(Math.round(cascade.t * 1000));
+  }
+  cascade.last = t;
   const { width, height, ratio } = fitCanvasToDisplaySize(canvas);
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
   const w = width / ratio, h = height / ratio;
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
   ctx.clearRect(0, 0, w, h);
-  const s = bus.state;
-  const hueDeg = Math.round(s.hue * 360);
-  const cy = h / 2;
-  const xs = [w * 0.18, w * 0.5, w * 0.82];
-  ctx.strokeStyle = "rgba(217,199,160,0.55)";
-  ctx.lineWidth = 1.4;
+  const s = e13State();
+  const hueDeg = Math.round(liveHue() * 360);
+  const cy = h * 0.42;
+  const xs = [w * 0.16, w * 0.5, w * 0.84];
+  const names = ["CELL A · DONOR", "CELL B · RELAY", "CELL C · CHIMERA"];
+  const occ = [s.v0, s.v1, s.v2];
+  const tags = [s.st.t0, s.st.t1, s.st.t2];
+  ctx.strokeStyle = `hsl(${hueDeg} 55% 62% / 0.55)`;
+  ctx.lineWidth = 1.6;
   ctx.beginPath(); ctx.moveTo(xs[0], cy); ctx.lineTo(xs[2], cy); ctx.stroke();
-  const names = ["CELL A", "CELL B", "CELL C"];
   xs.forEach((x, i) => {
-    ctx.beginPath(); ctx.arc(x, cy, 34, 0, Math.PI * 2);
-    ctx.fillStyle = `hsl(${hueDeg} 35% 20% / 0.9)`; ctx.fill();
-    ctx.strokeStyle = `hsl(${hueDeg} 45% 62%)`; ctx.lineWidth = 1.6; ctx.stroke();
-    ctx.fillStyle = "#e7f3f3"; ctx.font = "650 12px ui-monospace, monospace"; ctx.textAlign = "center";
-    ctx.fillText(names[i], x, cy + 4);
+    const r = 30 + occ[i] * 0.22;
+    ctx.beginPath(); ctx.arc(x, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsl(${hueDeg} 55% ${24 + occ[i] * 0.18}% / 0.92)`; ctx.fill();
+    ctx.strokeStyle = `hsl(${hueDeg} 65% 68%)`; ctx.lineWidth = 1.8; ctx.stroke();
+    ctx.fillStyle = "#f2f7f5"; ctx.font = "700 11px ui-monospace, monospace"; ctx.textAlign = "center";
+    ctx.fillText(names[i], x, cy - 4);
+    ctx.font = "11px ui-monospace, monospace"; ctx.fillStyle = "rgba(242,247,245,0.7)";
+    ctx.fillText(tags[i], x, cy + 12);
+    const bw = 110, bx = x - bw / 2, by = h - 62;
+    ctx.fillStyle = "rgba(242,247,245,0.14)"; ctx.fillRect(bx, by, bw, 12);
+    ctx.fillStyle = `hsl(${hueDeg} 65% 62%)`; ctx.fillRect(bx, by, bw * clamp(occ[i] / 100, 0, 1), 12);
+    ctx.fillStyle = "rgba(242,247,245,0.75)"; ctx.font = "10px ui-monospace, monospace";
+    ctx.fillText(`V${i} ${occ[i].toFixed(0)}`, x, by + 28);
   });
-  if (cascade.auto && !reducedMotion.matches && t - cascade.lastAuto > 900 - s.restless * 500) { cascade.lastAuto = t; cascadeSend(); }
-  const lossP = 0.08 + s.tension * 0.45 + s.restless * 0.15;
-  const speed = reducedMotion.matches ? 0.012 : 0.006 + s.restless * 0.008;
-  cascade.dots = cascade.dots.filter((d) => {
-    d.p += speed;
-    if (d.p >= 1) {
-      if (Math.random() < lossP) { cascade.lost += 1; paintCascadeReadout(); return false; }
-      d.leg += 1; d.p = 0;
-      if (d.leg > 1) { cascade.delivered += 1; paintCascadeReadout(); return false; }
-    }
-    const x = xs[d.leg] + (xs[d.leg + 1] - xs[d.leg]) * d.p;
-    ctx.beginPath(); ctx.arc(x, cy - 14, 6, 0, Math.PI * 2);
-    ctx.fillStyle = "#d9c7a0"; ctx.fill();
-    return true;
-  });
-  ctx.fillStyle = "#91a8aa"; ctx.font = "12px ui-monospace, monospace"; ctx.textAlign = "left";
-  ctx.fillText(`HAND-OFF LOSS CHANCE ${(lossP * 100).toFixed(0)} PERCENT AT THIS TENSION`, 16, h - 14);
-}
-
-function paintCascadeReadout() {
-  const out = $("#eco-cascade-readout");
-  if (out) out.textContent = `Delivered ${cascade.delivered} · Lost ${cascade.lost}`;
+  const dot = (x, y) => { ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fillStyle = "#f7efdc"; ctx.fill(); };
+  dot(xs[0] + (xs[1] - xs[0]) * s.pkt1, cy - 16);
+  if (s.pkt2 >= 0) { dot(xs[1] + (xs[2] - xs[1]) * s.pkt2, cy - 16); dot(xs[1] + (xs[2] - xs[1]) * clamp(s.pkt2 * 1.15 - 0.15, 0, 1), cy + 16); }
+  ctx.fillStyle = "rgba(242,247,245,0.65)"; ctx.font = "11px ui-monospace, monospace"; ctx.textAlign = "left";
+  ctx.fillText(`E13 · 3-CELL TRANSITIVE CASCADE · ${s.phase.toUpperCase()} · TRI-SKILL ${fmtS(s.tri)}`, 16, 22);
+  paintCascadeReadout();
+  const tension = clamp(0.5 - s.tri / 220, 0.05, 0.95);
+  if (Math.abs(bus.state.tension - tension) > 0.02 && bus.state.place === "simulations") bus.set({ tension });
 }
 
 function initCascade() {
-  $("#eco-cascade-send")?.addEventListener("click", () => { cascadeSend(); drawCascade(performance.now()); });
-  const auto = $("#eco-cascade-auto");
-  auto?.addEventListener("click", () => {
-    cascade.auto = !cascade.auto;
-    auto.setAttribute("aria-pressed", cascade.auto ? "true" : "false");
-    auto.textContent = cascade.auto ? "Auto send: on" : "Auto send: off";
-  });
-  stoppers.set("simulations", () => { cascade.auto = false; const b = $("#eco-cascade-auto"); if (b) { b.setAttribute("aria-pressed", "false"); b.textContent = "Auto send: off"; } });
+  for (const btn of document.querySelectorAll("[data-arm]")) {
+    btn.addEventListener("click", () => {
+      cascade.arm = btn.dataset.arm;
+      for (const b of document.querySelectorAll("[data-arm]")) b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+      drawCascade(performance.now());
+    });
+  }
+  const play = $("#eco-cascade-play");
+  const paintPlay = () => { if (play) { play.setAttribute("aria-pressed", cascade.playing ? "true" : "false"); play.textContent = cascade.playing ? "Pause" : "Play"; } };
+  if (reducedMotion.matches) cascade.playing = false;
+  paintPlay();
+  play?.addEventListener("click", () => { cascade.playing = !cascade.playing; paintPlay(); drawCascade(performance.now()); });
+  const scrub = $("#eco-scrub");
+  scrub?.addEventListener("input", () => { cascade.t = Number(scrub.value) / 1000; drawCascade(performance.now()); });
+  stoppers.set("simulations", () => { cascade.playing = false; paintPlay(); });
 }
 
-/* ---------- Identifiability place: miniature bands (PR 15) ---------- */
 
-function seededPoints(cx, cy, spread, seed, n = 26) {
-  let a = seed >>> 0;
-  const rnd = () => { a = (Math.imul(a, 1664525) + 1013904223) >>> 0; return a / 4294967296; };
-  return Array.from({ length: n }, () => ({ x: cx + (rnd() * 2 - 1) * spread, y: cy + (rnd() * 2 - 1) * spread * 0.7 }));
+/* ---------- Identifiability place: Chebyshev explorer model (PR 15) ---------- */
+/* Response law, worlds and KPIs carried over from
+   examples/visualizations/project-asma-chebyshev-identifiability-explorer.html. */
+
+const EPS_BENCH = 1 / 60;
+const qResp = (p, r, c) => (r * p + c * (1 - p)) / (r * p + (1 - p));
+
+function identValues() {
+  const pL = Number($("#eco-pl")?.value ?? 50) / 1000;
+  const pH = Number($("#eco-ph")?.value ?? 375) / 1000;
+  const alpha = Number($("#eco-alpha")?.value ?? 0) / 1000;
+  const yS = (p) => (1 - alpha) * qResp(p, 16, 0) + alpha;
+  const ySL = yS(pL), ySH = yS(pH);
+  const q25L = qResp(pL, 11, 0.25), q25H = qResp(pH, 11, 0.25);
+  const epsDiff = Math.abs((ySH - ySL) - (q25H - q25L)) / 4;
+  const epsLinf = Math.max(Math.abs(ySL - q25L), Math.abs(ySH - q25H)) / 2;
+  const pivOff = yS(0.20) - 0.80;
+  return { pL, pH, alpha, yS, ySL, ySH, q25L, q25H, epsDiff, epsLinf, pivOff };
 }
 
 function drawIdent() {
@@ -534,35 +674,66 @@ function drawIdent() {
   const w = width / ratio, h = height / ratio;
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
   ctx.clearRect(0, 0, w, h);
-  const bandInput = $("#eco-ident-band");
-  const band = (bandInput ? Number(bandInput.value) : 30) / 100;
-  const centers = [ [0.28, 0.34], [0.44, 0.58], [0.68, 0.38], [0.74, 0.68] ].map(([fx, fy]) => ({ x: fx * w, y: fy * h }));
-  const baseR = Math.min(w, h) * 0.13;
-  const r = baseR * (0.6 + band * 1.6);
-  const hues = [172, 43, 205, 18];
-  centers.forEach((c, i) => {
-    ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
-    ctx.fillStyle = `hsl(${hues[i]} 45% 55% / 0.12)`; ctx.fill();
-    ctx.strokeStyle = `hsl(${hues[i]} 55% 62% / 0.8)`; ctx.lineWidth = 1.4; ctx.stroke();
-    ctx.fillStyle = `hsl(${hues[i]} 65% 72%)`;
-    for (const pt of seededPoints(c.x, c.y, baseR * 0.8, 1000 + i * 77)) { ctx.beginPath(); ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2); ctx.fill(); }
-    ctx.fillStyle = "#e7f3f3"; ctx.font = "650 12px ui-monospace, monospace"; ctx.textAlign = "center";
-    ctx.fillText(`CASE ${i + 1}`, c.x, c.y - r - 8);
-  });
-  let apart = 0, pairs = 0;
-  for (let i = 0; i < centers.length; i += 1) for (let j = i + 1; j < centers.length; j += 1) {
-    pairs += 1;
-    if (Math.hypot(centers[i].x - centers[j].x, centers[i].y - centers[j].y) > r * 2) apart += 1;
+  const v = identValues();
+  const hueDeg = Math.round(liveHue() * 360);
+  const X0 = 52, X1 = w - 24, Y0 = h - 46, Y1 = 30;
+  const xPx = (p) => X0 + p * (X1 - X0);
+  const yPx = (q) => Y0 - q * (Y0 - Y1);
+  ctx.font = "11px ui-monospace, monospace";
+  for (const yv of [0.25, 0.5, 0.8, 1]) {
+    ctx.strokeStyle = "rgba(242,247,245,0.14)"; ctx.setLineDash([2, 4]);
+    ctx.beginPath(); ctx.moveTo(X0, yPx(yv)); ctx.lineTo(X1, yPx(yv)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = "rgba(242,247,245,0.6)"; ctx.textAlign = "right"; ctx.fillText(yv.toFixed(2), X0 - 8, yPx(yv) + 4);
   }
+  const worlds = [
+    ["C25", (p) => qResp(p, 11, 0.25), `hsl(${hueDeg} 60% 66%)`, 2.2],
+    ["C50", (p) => qResp(p, 6, 0.5), `hsl(${(hueDeg + 90) % 360} 55% 62% / 0.75)`, 1.4],
+    ["C75", (p) => qResp(p, 1, 0.75), `hsl(${(hueDeg + 180) % 360} 55% 62% / 0.75)`, 1.4],
+    ["S+BLEED", v.yS, "#f7efdc", 2.6],
+  ];
+  ctx.textAlign = "left";
+  worlds.forEach(([label, fn, color, lw], wi) => {
+    ctx.beginPath();
+    for (let i = 0; i <= 120; i += 1) {
+      const p = i / 120;
+      const px = xPx(p), py = yPx(clamp(fn(p), 0, 1.05));
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.stroke();
+    ctx.fillStyle = color; ctx.fillText(label, X1 - 64, Y1 + 14 + wi * 15);
+  });
+  for (const [p, yA, yB] of [[v.pL, v.ySL, v.q25L], [v.pH, v.ySH, v.q25H]]) {
+    ctx.strokeStyle = "rgba(247,239,220,0.5)"; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(xPx(p), Y0); ctx.lineTo(xPx(p), Y1); ctx.stroke();
+    for (const [y, c] of [[yA, "#f7efdc"], [yB, `hsl(${hueDeg} 60% 66%)`]]) {
+      ctx.beginPath(); ctx.arc(xPx(p), yPx(y), 5, 0, Math.PI * 2); ctx.fillStyle = c; ctx.fill();
+    }
+  }
+  ctx.fillStyle = "rgba(242,247,245,0.7)"; ctx.textAlign = "center";
+  ctx.fillText(`pL ${v.pL.toFixed(3)}`, xPx(v.pL), Y0 + 18);
+  ctx.fillText(`pH ${v.pH.toFixed(3)}`, xPx(v.pH), Y0 + 18);
+  ctx.textAlign = "left"; ctx.fillStyle = "rgba(242,247,245,0.65)";
+  ctx.fillText("RESPONSE WORLDS. DOTS: READINGS AT THE TWO SAMPLING POINTS.", X0, 18);
   const out = $("#eco-ident-readout");
-  if (out) out.textContent = `Pairs told apart: ${apart} of ${pairs}. Band radius ${r.toFixed(0)} px.`;
-  ctx.fillStyle = "#91a8aa"; ctx.font = "12px ui-monospace, monospace"; ctx.textAlign = "left";
-  ctx.fillText("TWO MEASUREMENTS. FOUR CASES. OVERLAP MEANS NO RULE CAN SPLIT THEM.", 16, h - 14);
+  if (out) {
+    const verdict = (e) => (e >= EPS_BENCH ? "clears 1/60" : "under the floor");
+    out.textContent = `Slope separation ${v.epsDiff.toFixed(5)} (${verdict(v.epsDiff)}) · Chebyshev L-inf ${v.epsLinf.toFixed(5)} (${verdict(v.epsLinf)}) · Pivot offset ${v.pivOff >= 0 ? "+" : ""}${v.pivOff.toFixed(5)} · Bleed ${(v.alpha * 100).toFixed(1)}%`;
+  }
 }
 
 function initIdent() {
-  $("#eco-ident-band")?.addEventListener("input", () => drawIdent());
+  for (const id of ["#eco-pl", "#eco-ph", "#eco-alpha"]) $(id)?.addEventListener("input", () => drawIdent());
+  const presets = { opt: [50, 375, 0], trap: [50, 375, 161], deep: [25, 429, 0] };
+  for (const btn of document.querySelectorAll("[data-preset]")) {
+    btn.addEventListener("click", () => {
+      const [pl, ph, a] = presets[btn.dataset.preset] || presets.opt;
+      const set = (id, val) => { const el = $(id); if (el) el.value = String(val); };
+      set("#eco-pl", pl); set("#eco-ph", ph); set("#eco-alpha", a);
+      drawIdent();
+    });
+  }
 }
+
 
 /* ---------- Harmonic place: live tones from the threads (PR 17) ---------- */
 
@@ -570,7 +741,7 @@ const harmonic = { ctx: null, oscs: [], gain: null, timer: 0, playing: false };
 
 function chordFreqs() {
   const s = bus.state;
-  const root = 110 * Math.pow(2, s.hue);
+  const root = 110 * Math.pow(2, liveHue());
   return [root, root * (1.25 + s.tension * 0.22), root * (1.5 + s.tension * 0.18)];
 }
 
@@ -607,7 +778,7 @@ function harmonicStop() {
   harmonic.ctx?.close().catch(() => {});
   harmonic.ctx = null;
   const btn = $("#eco-harmonic-play");
-  if (btn) { btn.setAttribute("aria-pressed", "false"); btn.textContent = "Play"; }
+  if (btn) { btn.setAttribute("aria-pressed", "false"); btn.textContent = "Play live chord"; }
   const out = $("#eco-harmonic-readout");
   if (out) out.textContent = "Silent. Press play to hear the current state.";
   drawHarmonicView();
@@ -662,6 +833,7 @@ function boot() {
   initCascade();
   initIdent();
   initHarmonic();
+  initFlow();
   const fromHash = new URLSearchParams(window.location.hash.replace(/^#/, "")).get("place");
   showPlace(PLACES.some((p) => p.id === fromHash) ? fromHash : "style");
   startLoop();

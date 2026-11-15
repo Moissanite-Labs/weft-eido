@@ -36,11 +36,12 @@
       <p class="eco-lede">Eido is the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. Weft studies models that change themselves within bounds you can check. Eido uses the same rule on the screen. The page can change itself in response to you, and only within bounds you can see, check and undo.</p>
       <p class="eco-lede">This page is one field, not a row of boxes. Every line of work in the repository lives in the field below. Pick a place and it runs here. Three threads run through all of it at once: the style point, how restlessly you read, and the tension of a small test model. Move one thread and the whole field answers.</p>
       <p class="eco-status" id="eco-status">JavaScript is off, so the field cannot run. The <a href="components/index.html">component pages</a> and the <a href="philosophy.html">philosophy page</a> still work.</p>
+      <p class="eco-flow-row" data-eido-skip><button class="btn small" type="button" id="eco-flow" aria-pressed="true">Flow: on</button> <span>Flow lets colour drift around the colour circle and lets shapes breathe around the style point. Switch it off and the page sits exactly where you put it. Reduced motion settings switch it off for you.</span></p>
     </section>
 
     <section class="eco-field-block wrap" aria-labelledby="field-h">
       <h2 id="field-h">The field</h2>
-      <p>Each cell is one line of work. Cell area follows a stated value, set in the data under the field. Gold threads join each family by the shortest path that touches every cell once. That is the real <a href="components/cell-layout.html">cell layout</a> code running, not a picture of it.</p>
+      <p>Each cell is one line of work. Cell area follows a stated value, set in the data under the field. Curved threads join each family by the shortest path that touches every cell once. That is the real <a href="components/cell-layout.html">cell layout</a> code running, not a picture of it.</p>
       <div class="eco-field-frame" data-eido-skip>
         <canvas id="eco-field" role="img" aria-label="Map of the eight lines of work. Use the place buttons beside the map to open each one."></canvas>
         <div class="eco-places">
@@ -120,27 +121,44 @@
 
       <article class="eco-place" data-place="simulations" aria-labelledby="place-simulations-h" hidden>
         <h3 id="place-simulations-h">Simulations. Sessions you can run</h3>
-        <p>The Weft session work was rebuilt as standalone simulations you can run in the browser. The miniature below shows the shape of one of them: a signal passes from cell to cell, and each hand-off can fail. Raise the tension thread and the hand-offs get shakier. The full simulations carry their authors' numbers. This repository has not verified those numbers.</p>
+        <p>The Weft session work was rebuilt as standalone simulations you can run in the browser. The E13 cascade runs here at full strength, with its authors' measured values. Three cells pass skills along: donor to relay to chimera.</p>
+        <p>Pick a graft arm, then scrub or play through the two hops. Watch which skills survive each hand-off. The tri-skill mean feeds the tension thread, so the whole field feels a bad graft. The numbers are their authors' claims. This repository has not verified them.</p>
         <div data-eido-skip>
-          <canvas id="eco-cascade" role="img" aria-label="Three cells in a row. Dots pass from one cell to the next."></canvas>
-          <div class="eco-controls">
-            <button class="btn small" type="button" id="eco-cascade-send">Send a signal</button>
-            <button class="btn small" type="button" id="eco-cascade-auto" aria-pressed="false">Auto send: off</button>
-            <span class="eco-readout" id="eco-cascade-readout">Delivered 0 · Lost 0</span>
+          <canvas id="eco-cascade" role="img" aria-label="Three cells in a row. Packets pass from donor to relay to chimera as you scrub."></canvas>
+          <div class="eco-controls" role="group" aria-label="Graft arm">
+            <button class="btn small" type="button" data-arm="G4" aria-pressed="true">G4 Sketched</button>
+            <button class="btn small" type="button" data-arm="G3" aria-pressed="false">G3 SVD</button>
+            <button class="btn small" type="button" data-arm="G2" aria-pressed="false">G2 Memoryless</button>
+            <button class="btn small" type="button" data-arm="G1" aria-pressed="false">G1 Ungated</button>
           </div>
+          <div class="eco-controls">
+            <button class="btn small" type="button" id="eco-cascade-play" aria-pressed="true">Pause</button>
+            <label>Scrub <input type="range" id="eco-scrub" min="0" max="1000" value="0"></label>
+            <span class="eco-readout" id="eco-cascade-phase">Pre</span>
+          </div>
+          <p class="eco-readout" id="eco-cascade-readout">Native +54.55 · Hop 1 -97.83 · Hop 2 -81.90 · Tri-skill -41.72</p>
+          <p class="eco-readout" id="eco-cascade-status"></p>
         </div>
         <p class="eco-links"><a href="../examples/simulations/index.html">Simulation suite</a> · <a href="../examples/simulations/e13_transitive_cascade.html">E13 cascade</a> · <a href="../examples/simulations/asma_subspace_paraneoplastic.html">Asma subspace explorer</a>. Status: open pull request 14, approved, checks green.</p>
       </article>
 
       <article class="eco-place" data-place="identifiability" aria-labelledby="place-identifiability-h" hidden>
         <h3 id="place-identifiability-h">Identifiability. Can two measurements tell four cases apart?</h3>
-        <p>Four cases can look alike through two measurements. Each case below is a cloud of points. The band around each cloud shows how far a reading can stray. Widen the bands and the cases merge. When bands overlap, no rule based on these two measurements can tell those cases apart. The full explorer uses the project data and a stricter distance rule.</p>
+        <p>The Chebyshev explorer runs here with its own model. Each curve is one world: how a reading responds as the mixture changes. You get readings at a low point and a high point, and those two readings must tell the worlds apart.</p>
+        <p>The test is strict. Separation must clear a noise floor of one sixtieth, in the worst coordinate, not on average. Move the sampling points. Add paralog bleed and watch one world bend toward another. Under the floor, no rule based on these readings can tell them apart.</p>
         <div data-eido-skip>
-          <canvas id="eco-ident" role="img" aria-label="Four clouds of points with bands. Overlapping bands mean cases cannot be told apart."></canvas>
+          <canvas id="eco-ident" role="img" aria-label="Four response curves with two sampling stems. The readouts state separation against the noise floor."></canvas>
           <div class="eco-controls">
-            <label>Band width <input type="range" id="eco-ident-band" min="0" max="100" value="30"></label>
-            <span class="eco-readout" id="eco-ident-readout"></span>
+            <label>Low point <input type="range" id="eco-pl" min="20" max="180" step="5" value="50"></label>
+            <label>High point <input type="range" id="eco-ph" min="220" max="800" step="5" value="375"></label>
+            <label>Paralog bleed <input type="range" id="eco-alpha" min="0" max="300" step="1" value="0"></label>
           </div>
+          <div class="eco-controls" role="group" aria-label="Presets">
+            <button class="btn small" type="button" data-preset="opt">Optimised (1/20, 3/8)</button>
+            <button class="btn small" type="button" data-preset="trap">Paralog trap (16.1%)</button>
+            <button class="btn small" type="button" data-preset="deep">Deep seed (1/40, 3/7)</button>
+          </div>
+          <p class="eco-readout" id="eco-ident-readout"></p>
         </div>
         <p class="eco-links"><a href="../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html">Full Chebyshev explorer</a> · <a href="../examples/visualizations/README.md">Visualizations notes</a>. Status: open pull request 15, approved, checks green.</p>
       </article>
@@ -152,8 +170,18 @@
         <div data-eido-skip>
           <canvas id="eco-harmonic-view" role="img" aria-label="Three bars showing the current chord."></canvas>
           <div class="eco-controls">
-            <button class="btn small" type="button" id="eco-harmonic-play" aria-pressed="false">Play</button>
+            <button class="btn small" type="button" id="eco-harmonic-play" aria-pressed="false">Play live chord</button>
             <span class="eco-readout" id="eco-harmonic-readout">Silent. Press play to hear the current state.</span>
+          </div>
+          <div class="eco-audio">
+            <img src="../examples/research/causal-harmonic/originals/paracausal-loom-cover.jpg" alt="Cover art for The Paracausal Loom" width="120" height="120" loading="lazy">
+            <div>
+              <p><strong>The Paracausal Loom</strong> (soundtrack)</p>
+              <p><audio controls loop preload="none" src="../examples/research/causal-harmonic/originals/paracausal-loom-soundtrack.mp3"></audio></p>
+              <p><strong>Weft Symphony</strong> (48k)</p>
+              <p><audio controls preload="none" src="../examples/research/causal-harmonic/originals/weft_symphony_48k.wav"></audio></p>
+              <p class="eco-note">Recorded media: CC BY-NC 4.0. Share with credit. No commercial use.</p>
+            </div>
           </div>
         </div>
         <p class="eco-links"><a href="causal-harmonic/index.html">Harmonic pages</a> · <a href="causal-harmonic/explorer.html">Explorer</a> · <a href="causal-harmonic/paper.html">Source paper</a> · <a href="causal-harmonic/soundtrack.html">Soundtrack page</a>. Status: open pull request 17, approved, checks green. Recorded audio: CC BY-NC 4.0.</p>
