@@ -92,6 +92,12 @@ async function initSources() {
   }
 }
 
+try {
+  const rm = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const syncRm = () => root.classList.toggle("reduced-motion", rm.matches);
+  syncRm();
+  rm.addEventListener?.("change", syncRm);
+} catch (e) { /* matchMedia unavailable */ }
 initTheme();
 initCopy();
 initSources();

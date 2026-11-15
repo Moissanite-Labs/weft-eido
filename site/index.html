@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Eido · the design language of ML Weft</title>
-  <meta name="description" content="Eido is the design language of ML Weft. One field holds every line of work. Style, reading and tension move through all of it at once, inside limits you can see and undo.">
-  <meta name="theme-color" content="#090d0f">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <meta name="description" content="Eido is the design language of ML Weft. One causal field links to every standalone page. Every size, colour and motion on this page is computed from a small state vector you can read.">
+  <meta name="theme-color" content="#120c08">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23120c08'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23e8a87c' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/ecosystem.css">
   <link rel="stylesheet" href="../css/reading-weave.css">
@@ -30,193 +30,52 @@
     </div>
   </header>
   <main id="main">
-    <section class="eco-hero wrap" id="eco-hero" aria-labelledby="hero-title">
-      <h1 id="hero-title">Eido</h1>
-      <p class="eco-tagline">An interface that changes, inside limits you can see.</p>
-      <p class="eco-lede">The design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>, alive on one page. Every line of work lives in the field below. Enter a place and it fills the page. Style, reading and tension run through all of it at once.</p>
-      <p class="eco-status" id="eco-status">JavaScript is off, so the field cannot run. The <a href="components/index.html">component pages</a> and the <a href="philosophy.html">philosophy page</a> still work.</p>
-      <p class="eco-flow-row" data-eido-skip><button class="btn small" type="button" id="eco-flow" aria-pressed="true">Flow: on</button> <span>Flow lets colour drift around the colour circle and lets shapes breathe around the style point. Switch it off and the page sits exactly where you put it. Reduced motion settings switch it off for you.</span></p>
-    </section>
+    <h1>Eido</h1>
+    <p class="eco-tagline">An interface that changes, inside limits you can see.</p>
+    <p class="eco-lede">The design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. Nothing on this page has a fixed size, colour or position. Each one is computed, every frame, from the state printed below. Every line of work is a cell in the field, and each cell opens its own standalone page.</p>
+    <p class="eco-status" id="eco-status">JavaScript is off, so the field cannot run. Every link below still works. Start with <a href="components/index.html">Components</a> or the <a href="philosophy.html">philosophy page</a>.</p>
 
-    <section class="eco-field-block wrap" id="eco-field-view" aria-labelledby="field-h">
-      <h2 id="field-h">The field</h2>
-      <p>Enter a cell to open its place. Area follows a stated weight. Threads take the shortest path through each family. Real <a href="components/cell-layout.html">cell layout</a> code, running live.</p>
-      <div class="eco-field-frame" data-eido-skip>
-        <canvas id="eco-field" role="img" aria-label="Map of the eight lines of work. Use the place buttons beside the map to open each one."></canvas>
-        <div class="eco-places">
-          <p class="eco-places-h">Places</p>
-          <div id="eco-place-buttons" role="group" aria-label="Choose a place"></div>
-          <p class="eco-field-readout" id="eco-field-readout" aria-live="polite"></p>
-        </div>
+    <canvas id="eco-field" role="img" aria-label="Field of eight cells, one per line of work. The same choices follow as text links."></canvas>
+
+    <ul class="eco-places">
+      <li><a href="components/aesthetic-mixer.html" data-place-link="style"><strong>Style</strong><small>A point you can drag</small></a></li>
+      <li><a href="components/reading-weave.html" data-place-link="reading"><strong>Reading</strong><small>Text that answers reading</small></a></li>
+      <li><a href="https://github.com/Moissanite-Labs/weft-eido/pull/6" data-place-link="field"><strong>Field</strong><small>GPU rebuild, in review</small></a></li>
+      <li><a href="components/research-explainer.html" data-place-link="explainer"><strong>Explainer</strong><small>A tiny model you can step</small></a></li>
+      <li><a href="components/glyph-font.html" data-place-link="archive"><strong>Archive</strong><small>Letters from a table of bits</small></a></li>
+      <li><a href="../examples/simulations/index.html" data-place-link="simulations"><strong>Simulations</strong><small>Sessions you can run</small></a></li>
+      <li><a href="../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html" data-place-link="identifiability"><strong>Identifiability</strong><small>Can two measures split four cases?</small></a></li>
+      <li><a href="causal-harmonic/index.html" data-place-link="harmonic"><strong>Harmonic</strong><small>The system as sound</small></a></li>
+    </ul>
+    <p class="eco-readout" id="eco-field-readout" aria-live="polite"></p>
+
+    <div class="eco-console" data-eido-skip>
+      <div id="eco-pad" aria-label="Style point"></div>
+      <div>
+        <p><button class="btn small" type="button" id="eco-flow" aria-pressed="true">Flow: on</button></p>
+        <p class="eco-state" id="eco-state">State vector loading.</p>
+        <p class="eco-note">Drag the point. Its three weights always add to one. Hue is their circular mean, so two reds never blend into cyan. Flow adds only wave phase. It never touches hue. Switch Flow off and the field sits exactly where you put it.</p>
       </div>
-      <p class="eco-note">Keyboard: tab to a place button and press Enter. The map itself is a picture. The buttons carry the same choices in text.</p>
-    </section>
+    </div>
 
-    <section class="eco-stage wrap" id="eco-room-view" aria-labelledby="stage-h" hidden>
-      <div class="eco-room-bar" data-eido-skip>
-        <button class="btn small" type="button" id="eco-room-back">Back to the field</button>
-        <h2 id="stage-h"><span id="eco-room-title">Place</span></h2>
-        <span class="eco-room-threads" id="eco-room-threads"></span>
-        <span class="eco-room-nav">
-          <button class="btn small" type="button" id="eco-room-prev">Previous place</button>
-          <button class="btn small" type="button" id="eco-room-next">Next place</button>
-        </span>
-      </div>
+    <article>
+      <h2>How to read this page</h2>
+      <p>Each visual channel carries exactly one quantity. Cell area is stated weight. Hue is the style angle. Wobble is restlessness. Thread width is tension, derived from restlessness and cursor jerk with stated coefficients.</p>
+      <p>Eccentricity is mixer rounding. Spacing and type scale are mixer density. Fill strength is mixer contrast. Field aspect is the viewport, measured continuously.</p>
+      <p>Skim and restlessness rises. The field agitates and the reading weave ripples through this text. Read slowly and both settle. The score never leaves the page, and the panel at the bottom right can switch the weave off. Two principles run elsewhere: compact verified state and surfaces that show strain live in Weft. The <a href="philosophy.html">philosophy page</a> states plainly what is built here, what lives in Weft, and what is still design.</p>
+      <p>One stated exception: the reading weave panel and overlay use fixed positioning from the shipped library styles. Those files are product modules with their own tests. Everything in the site styles obeys the causal rules, and tests enforce them.</p>
+    </article>
 
-      <article class="eco-place" data-place="style" aria-labelledby="place-style-h">
-        <h3 id="place-style-h">Style. A point you can drag</h3>
-        <p>A style here is not a fixed theme. It is one point inside a triangle. Each corner is a preset. The point gives the weight of each preset, and the weights always add to one. Drag the point and this whole page changes with it: corner roundness, spacing, colour and contrast. Hue is averaged around the colour circle, so two reds never blend into cyan.</p>
-        <div data-eido-skip><div id="eco-mixer"></div></div>
-        <p class="eco-links"><a href="components/aesthetic-mixer.html">Aesthetic mixer</a> · <a href="components/simplex-pad.html">Simplex pad</a> · <a href="components/cell-layout.html">Cell layout</a> · <a href="components/glyph-font.html">Glyph font</a></p>
-      </article>
-
-      <article class="eco-place" data-place="reading" aria-labelledby="place-reading-h" hidden>
-        <h3 id="place-reading-h">Reading. Text that answers how it is read</h3>
-        <p>This page watches how you read it. A restlessness score rises when you skim and falls when you read. The score never leaves the page. Skim the text below and it starts to ripple. Read slowly and it settles. Skim hard enough and the text rewrites itself shorter, one step at a time. A panel at the bottom right shows the score and can switch all of it off.</p>
-        <div class="eco-reading-sample">
-          <p data-eco-passage>Most pages treat every visitor the same. A careful reader and a hurried one get the same words in the same order. Eido treats how someone reads as a signal the page can answer. The answer stays inside limits the reader can see. Nothing moves under the setting that asks for reduced motion. The element you have focused never moves. Text stays text for assistive technology.</p>
-          <p data-eco-passage>Condensing prose is the second answer to the same signal. Each time the score crosses a step, the passages still on screen are rewritten shorter. First concise, then terse, then caveman, then one line per section. The shorter versions are written ahead of time by an author. The page never calls a model, so what you read is what an author approved.</p>
-        </div>
-        <p class="eco-readout" id="eco-condense-readout" data-eido-skip>Condensing level: full prose.</p>
-        <p class="eco-links"><a href="components/reading-weave.html">Reading weave</a> · <a href="components/condense.html">Condensing prose</a> · <a href="philosophy.html">Philosophy page, which condenses as you skim it</a></p>
-      </article>
-
-      <article class="eco-place" data-place="field" aria-labelledby="place-field-h" hidden>
-        <h3 id="place-field-h">Field. The GPU rebuild, in miniature</h3>
-        <p>One line of work drops the document entirely. A single shader draws every cell, letter and slider per pixel on the GPU. The full version needs WebGPU and lives in an open pull request. What runs here is a small canvas version of the same idea, driven by the same three threads. It makes no network requests and stores no keys.</p>
-        <div data-eido-skip>
-          <canvas id="eco-gpu-field" role="img" aria-label="Canvas miniature of the GPU field. Cells brighten as tension rises."></canvas>
-          <div class="eco-controls">
-            <label>Tension <input type="range" id="eco-tension" min="0" max="100" value="20"></label>
-            <label>Concentration <input type="range" id="eco-gini" min="0" max="100" value="42"></label>
-            <span class="eco-readout" id="eco-gpu-readout"></span>
-          </div>
-        </div>
-        <div class="eco-gate" data-eido-skip>
-          <p>The full rebuild is not part of this site yet. Its page looks up your network address from a third party when it loads, and its bridge code can hold service keys in the browser. Review asked for both to change before it merges. The link below opens its pull request, and it arms only after you ask.</p>
-          <button class="btn small" type="button" id="eco-gate-arm">Show me the link anyway</button>
-          <span id="eco-gate-link"></span>
-        </div>
-        <p class="eco-links">Status: open pull request 6. Two checks fail there today. See the record under the field.</p>
-      </article>
-
-      <article class="eco-place" data-place="explainer" aria-labelledby="place-explainer-h" hidden>
-        <h3 id="place-explainer-h">Explainer. A tiny model you can step</h3>
-        <p>A research explainer keeps three views of one state in step: a picture, its numbers, and its controls. Step the toy model below. Moves that break the stated bound are refused, and the frozen core rows never drift. The tension thread under the field follows this model, so the rest of the page feels each step. This is a teaching toy. It is not evidence for any experiment.</p>
-        <div id="eco-explainer" data-eido-skip>
-          <canvas data-stage role="img" aria-label="Toy matrix. Gold outline marks the frozen core rows."></canvas>
-          <div class="eco-controls">
-            <button class="btn small" type="button" data-action="step">Step once</button>
-            <button class="btn small" type="button" data-action="step10">Step ten times</button>
-            <button class="btn small" type="button" data-action="reset">Reset</button>
-          </div>
-          <p class="eco-readout">Accepted moves: <span data-kpi="accepted">0</span> · Refused moves: <span data-kpi="refused">0</span> · Core drift: <span data-kpi="drift">0.000</span> · Tension: <span data-kpi="tension">0.00</span></p>
-        </div>
-        <p class="eco-links"><a href="components/research-explainer.html">Research explainer component page</a>. Status: open pull request 11, approved, checks green.</p>
-      </article>
-
-      <article class="eco-place" data-place="archive" aria-labelledby="place-archive-h" hidden>
-        <h3 id="place-archive-h">Archive. Letters from a table of bits</h3>
-        <p>The earliest research pages drew text without a font file. Each letter is a grid of five by seven bits, stored as two numbers. The same table feeds the GPU renderer and a plain canvas, so both draw the same letters. Type below and watch the table work. The two original pages are kept unchanged in the repository.</p>
-        <div data-eido-skip>
-          <div id="eco-glyph"></div>
-          <p class="eco-readout" id="eco-glyph-readout"></p>
-        </div>
-        <p class="eco-links"><a href="components/glyph-font.html">Glyph font</a> · <a href="../examples/research/original/weft_statistical_cell.html">Original: statistical cell</a> · <a href="../examples/research/original/ic_to_plasm_morphogenesis.html">Original: morphogenesis</a></p>
-      </article>
-
-      <article class="eco-place" data-place="simulations" aria-labelledby="place-simulations-h" hidden>
-        <h3 id="place-simulations-h">Simulations. Sessions you can run</h3>
-        <p>The Weft session work was rebuilt as standalone simulations you can run in the browser. The E13 cascade runs here at full strength, with its authors' measured values. Three cells pass skills along: donor to relay to chimera.</p>
-        <p>Pick a graft arm, then scrub or play through the two hops. Watch which skills survive each hand-off. The tri-skill mean feeds the tension thread, so the whole field feels a bad graft. The numbers are their authors' claims. This repository has not verified them.</p>
-        <div data-eido-skip>
-          <canvas id="eco-cascade" role="img" aria-label="Three cells in a row. Packets pass from donor to relay to chimera as you scrub."></canvas>
-          <div class="eco-controls" role="group" aria-label="Graft arm">
-            <button class="btn small" type="button" data-arm="G4" aria-pressed="true">G4 Sketched</button>
-            <button class="btn small" type="button" data-arm="G3" aria-pressed="false">G3 SVD</button>
-            <button class="btn small" type="button" data-arm="G2" aria-pressed="false">G2 Memoryless</button>
-            <button class="btn small" type="button" data-arm="G1" aria-pressed="false">G1 Ungated</button>
-          </div>
-          <div class="eco-controls">
-            <button class="btn small" type="button" id="eco-cascade-play" aria-pressed="true">Pause</button>
-            <label>Scrub <input type="range" id="eco-scrub" min="0" max="1000" value="0"></label>
-            <span class="eco-readout" id="eco-cascade-phase">Pre</span>
-          </div>
-          <p class="eco-readout" id="eco-cascade-readout">Native +54.55 · Hop 1 -97.83 · Hop 2 -81.90 · Tri-skill -41.72</p>
-          <p class="eco-readout" id="eco-cascade-status"></p>
-        </div>
-        <p class="eco-links"><a href="../examples/simulations/index.html">Simulation suite</a> · <a href="../examples/simulations/e13_transitive_cascade.html">E13 cascade</a> · <a href="../examples/simulations/asma_subspace_paraneoplastic.html">Asma subspace explorer</a>. Status: open pull request 14, approved, checks green.</p>
-      </article>
-
-      <article class="eco-place" data-place="identifiability" aria-labelledby="place-identifiability-h" hidden>
-        <h3 id="place-identifiability-h">Identifiability. Can two measurements tell four cases apart?</h3>
-        <p>The Chebyshev explorer runs here with its own model. Each curve is one world: how a reading responds as the mixture changes. You get readings at a low point and a high point, and those two readings must tell the worlds apart.</p>
-        <p>The test is strict. Separation must clear a noise floor of one sixtieth, in the worst coordinate, not on average. Move the sampling points. Add paralog bleed and watch one world bend toward another. Under the floor, no rule based on these readings can tell them apart.</p>
-        <div data-eido-skip>
-          <canvas id="eco-ident" role="img" aria-label="Four response curves with two sampling stems. The readouts state separation against the noise floor."></canvas>
-          <div class="eco-controls">
-            <label>Low point <input type="range" id="eco-pl" min="20" max="180" step="5" value="50"></label>
-            <label>High point <input type="range" id="eco-ph" min="220" max="800" step="5" value="375"></label>
-            <label>Paralog bleed <input type="range" id="eco-alpha" min="0" max="300" step="1" value="0"></label>
-          </div>
-          <div class="eco-controls" role="group" aria-label="Presets">
-            <button class="btn small" type="button" data-preset="opt">Optimised (1/20, 3/8)</button>
-            <button class="btn small" type="button" data-preset="trap">Paralog trap (16.1%)</button>
-            <button class="btn small" type="button" data-preset="deep">Deep seed (1/40, 3/7)</button>
-          </div>
-          <p class="eco-readout" id="eco-ident-readout"></p>
-        </div>
-        <p class="eco-links"><a href="../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html">Full Chebyshev explorer</a> · <a href="../examples/visualizations/README.md">Visualizations notes</a>. Status: open pull request 15, approved, checks green.</p>
-      </article>
-
-      <article class="eco-place" data-place="harmonic" aria-labelledby="place-harmonic-h" hidden>
-        <h3 id="place-harmonic-h">Harmonic. The system as sound</h3>
-        <p>One line of work turns the system's state into chords. Press play to hear it. The style hue picks the root note. Tension stretches the interval. Restlessness sets the loudness and pace of change.</p>
-        <p>Sound starts only when you press play. It stops when you press stop or leave this place. The tones here are made in your browser. The recorded pieces on the harmonic pages are under CC BY-NC 4.0. You can share them with credit. You cannot use them commercially.</p>
-        <div data-eido-skip>
-          <canvas id="eco-harmonic-view" role="img" aria-label="Three bars showing the current chord."></canvas>
-          <div class="eco-controls">
-            <button class="btn small" type="button" id="eco-harmonic-play" aria-pressed="false">Play live chord</button>
-            <span class="eco-readout" id="eco-harmonic-readout">Silent. Press play to hear the current state.</span>
-          </div>
-          <div class="eco-audio">
-            <img src="../examples/research/causal-harmonic/originals/paracausal-loom-cover.jpg" alt="Cover art for The Paracausal Loom" width="120" height="120" loading="lazy">
-            <div>
-              <p><strong>The Paracausal Loom</strong> (soundtrack)</p>
-              <p><audio controls loop preload="none" src="../examples/research/causal-harmonic/originals/paracausal-loom-soundtrack.mp3"></audio></p>
-              <p><strong>Weft Symphony</strong> (48k)</p>
-              <p><audio controls preload="none" src="../examples/research/causal-harmonic/originals/weft_symphony_48k.wav"></audio></p>
-              <p class="eco-note">Recorded media: CC BY-NC 4.0. Share with credit. No commercial use.</p>
-            </div>
-          </div>
-        </div>
-        <p class="eco-links"><a href="causal-harmonic/index.html">Harmonic pages</a> · <a href="causal-harmonic/explorer.html">Explorer</a> · <a href="causal-harmonic/paper.html">Source paper</a> · <a href="causal-harmonic/soundtrack.html">Soundtrack page</a>. Status: open pull request 17, approved, checks green. Recorded audio: CC BY-NC 4.0.</p>
-      </article>
-    </section>
-
-    <section class="eco-warp wrap eco-below" aria-labelledby="warp-h">
-      <h2 id="warp-h">The three threads</h2>
-      <p>Nothing on this page runs alone. The style point sets how everything looks. Your reading sets how calm everything is. The toy model sets how much strain everything shows. Each thread has a number you can read and a way to take control back.</p>
-      <div class="eco-threads" data-eido-skip>
-        <p><strong>Style point.</strong> <span id="eco-thread-style">Waiting for the mixer.</span> Take it back in the Style place: drag the point, or use its preset buttons.</p>
-        <p><strong>Restlessness.</strong> <meter id="eco-thread-meter" min="0" max="1" value="0"></meter> <span id="eco-thread-rest">0.00. Steady.</span> Take it back with the panel at the bottom right, or by reading slowly.</p>
-        <p><strong>Tension.</strong> <span id="eco-thread-tension">0.00 from the toy model.</span> Take it back in the Explainer place with Reset, or in the Field place with its slider.</p>
-      </div>
-      <p>Two principles have no place of their own because they run elsewhere. Compact verified state and surfaces that show strain live in Weft's telemetry field, built on these modules. The <a href="philosophy.html">philosophy page</a> says plainly what is built here, what lives in Weft, and what is still design.</p>
-    </section>
-
-    <section class="eco-record wrap eco-below" aria-labelledby="record-h">
-      <h2 id="record-h">What is proven, what is proposed</h2>
-      <p>This page weaves in every open pull request. The table records what review and checks said on 15 November 2026. Approved work runs here in full. Blocked work runs only as a safe miniature, with its blockers named.</p>
-      <div class="eco-table-wrap">
+    <article>
+      <h2>What is proven, what is proposed</h2>
+      <p>The table records what review and checks said on 15 November 2026. Approved work is one press away on its own page. Blocked work is linked honestly, with its blockers named, and no code from it runs here.</p>
       <table class="eco-table">
-        <thead><tr><th scope="col">Work</th><th scope="col">State</th><th scope="col">How it runs here</th></tr></thead>
+        <thead><tr><th scope="col">Work</th><th scope="col">State</th><th scope="col">Where it runs</th></tr></thead>
         <tbody id="eco-record-body"></tbody>
       </table>
-      </div>
       <p>What is still open: the GPU rebuild needs its sign-off, its key storage and its address lookup fixed before its code can join this site. Pull request 8 awaits review. Pull request 9 needs one sign-off. None of that is hidden by a nicer page.</p>
       <p>Keep the parts without the page: every module stands alone. Start at <a href="components/index.html">Components</a>, read the <a href="philosophy.html">Philosophy</a>, or take the source from <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>. Code is Apache-2.0. Docs are CC BY 4.0. Recorded audio in the harmonic originals is CC BY-NC 4.0.</p>
-    </section>
+    </article>
   </main>
   <footer class="site-footer">
     <div class="wrap">
