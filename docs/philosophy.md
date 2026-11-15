@@ -147,3 +147,6 @@ Layout happens on the CPU in CSS pixels, and the renderer receives exact rectang
   ripples, its philosophy page condenses, and each component has an isolated demo and its source to copy.
 - **[ML Weft](https://github.com/Moissanite-Labs/weft)** builds its telemetry field from D1–D4: `weft-loom.js`, the
   WGSL shader and the SYM-2P worker live there and import these modules.
+- **Research explainers** are implemented here as
+  [`src/research-explainer.js`](../src/research-explainer.js). They put a small deterministic model, its metrics and a
+  canvas on one page so a reader can inspect the mechanism. The toy-cell example is illustrative; it is not evidence for any experiment.
