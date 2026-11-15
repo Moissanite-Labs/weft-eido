@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E13: 3-Cell Transitive BCP Plasmid Cascade Explorer</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --surface: light-dark(#f8f9fa, #0f1115);
+      --surface-bright: light-dark(#ffffff, #1a1d24);
+      --surface-dim: light-dark(#eef0f3, #13161c);
+      --on-surface: light-dark(#111318, #e4e6eb);
+      --on-surface-variant: light-dark(#5f6368, #9aa0a6);
+      --outline: light-dark(#dadce0, #3c4043);
+      --primary: light-dark(#2575fc, #8ab4f8);
+      --accent-container: light-dark(#dcf1ff, #192967);
+      --chart-1: light-dark(#2575fc, #9dd2ff);
+      --chart-3: light-dark(#228a49, #50e389);
+      --chart-8: light-dark(#997112, #f5d77f);
+      --error: light-dark(#de2d29, #ff6b6b);
+      --r-m: 12px;
+      --r-l: 16px;
+      --ff-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --ff-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--surface);
+      color: var(--on-surface);
+      font-family: var(--ff-sans);
+    }
+    .widget-container { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+    .header-bar { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+    .header-title { font-size: 18px; font-weight: 500; margin: 0; }
+    .header-sub { font-size: 13px; color: var(--on-surface-variant); font-family: var(--ff-mono); }
+    .kpi-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .summary-card { background: var(--surface-bright); border-radius: var(--r-m); padding: 12px 14px; }
+    .kpi-label { font-size: 12px; color: var(--on-surface-variant); margin-bottom: 4px; }
+    .kpi-val { font-size: 19px; font-family: var(--ff-mono); font-variant-numeric: tabular-nums; }
+    .kpi-sub { font-size: 12px; color: var(--on-surface-variant); margin-top: 3px; font-variant-numeric: tabular-nums; }
+    .stage-wrap { background: var(--surface-dim); border-radius: var(--r-l); padding: 14px; }
+    .stage-svg { width: 100%; height: auto; display: block; }
+    .deck { display: flex; flex-direction: column; gap: 12px; padding: 14px 18px; background: var(--surface-bright); border-radius: var(--r-m); }
+    .seg-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .seg-btn, .play-btn {
+      border: 1px solid var(--outline);
+      background: var(--surface-dim);
+      color: var(--on-surface);
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .seg-btn.is-active { background: var(--accent-container); border-color: var(--primary); }
+    .transport-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .scrub-input { flex: 1; min-width: 180px; accent-color: var(--primary); }
+    .scrub-badge { font-family: var(--ff-mono); font-size: 13px; padding: 6px 12px; border-radius: 10px; background: var(--surface-dim); min-width: 56px; text-align: center; }
+    @media (max-width: 640px) { .kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="header-bar">
+      <h1 class="header-title">E13 · 3-Cell Transitive BCP Plasmid Cascade (Moissanite-Labs/weft#174)</h1>
+      <span class="header-sub">N = 12 seeds × 3 cyclic triads = 252 cells · 256×256 Plasm</span>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="summary-card">
+        <div class="kpi-label">Native 2.4x Shifted (S3)</div>
+        <div class="kpi-val" id="kpi-nat">+54.55</div>
+        <div class="kpi-sub" id="sub-nat">Shift drop: 0.00</div>
+      </div>
+      <div class="summary-card">
+        <div class="kpi-label">2-Hop Transitive (A→B→C)</div>
+        <div class="kpi-val" id="kpi-hop1">+15.08</div>
+        <div class="kpi-sub" id="sub-hop1">Retro drop: 0.00</div>
+      </div>
+      <div class="summary-card">
+        <div class="kpi-label">1-Hop Direct (B→C)</div>
+        <div class="kpi-val" id="kpi-hop2">+35.22</div>
+        <div class="kpi-sub" id="sub-hop2">Median: +50.00</div>
+      </div>
+      <div class="summary-card">
+        <div class="kpi-label">Tri-Skill Mean · Wire</div>
+        <div class="kpi-val" id="kpi-tri">+34.95</div>
+        <div class="kpi-sub" id="sub-wire">448 B (877.7x)</div>
+      </div>
+    </div>
+
+    <div class="stage-wrap">
+      <svg class="stage-svg" viewBox="0 0 680 256" role="img" aria-label="Three-cell transitive BCP plasmid cascade">
+        <defs>
+          <marker id="caret" viewBox="0 0 10 10" refX="7.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+            <path d="M 3 1.2 L 7.5 5 L 3 8.8" fill="none" stroke="var(--on-surface)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <rect x="20" y="22" width="164" height="78" rx="36" fill="var(--surface-bright)" stroke="var(--outline)" stroke-width="1"/>
+        <text x="102" y="49" font-size="14" text-anchor="middle" fill="var(--on-surface)">Cell A · Donor</text>
+        <text x="102" y="70" font-size="12" font-family="var(--ff-mono)" text-anchor="middle" fill="var(--chart-1)">Skill S1 (k=2) · 224 B</text>
+
+        <line x1="192" y1="61" x2="248" y2="61" fill="none" stroke="var(--on-surface)" stroke-width="1.3" stroke-linecap="round" stroke-dasharray="0 4" marker-end="url(#caret)"/>
+        <circle id="pkt-hop1" cx="220" cy="61" r="6" fill="var(--chart-1)"/>
+
+        <rect x="256" y="22" width="168" height="78" rx="36" fill="var(--surface-bright)" stroke="var(--outline)" stroke-width="1"/>
+        <text x="340" y="49" font-size="14" text-anchor="middle" fill="var(--on-surface)">Cell B · Relay</text>
+        <text x="340" y="70" font-size="12" font-family="var(--ff-mono)" text-anchor="middle" fill="var(--chart-3)">S2 (k=3) + tagged pA</text>
+
+        <line x1="432" y1="61" x2="488" y2="61" fill="none" stroke="var(--on-surface)" stroke-width="1.3" stroke-linecap="round" stroke-dasharray="0 4" marker-end="url(#caret)"/>
+        <circle id="pkt-hop2a" cx="452" cy="54" r="5.5" fill="var(--chart-1)"/>
+        <circle id="pkt-hop2b" cx="468" cy="68" r="5.5" fill="var(--chart-3)"/>
+
+        <rect x="496" y="22" width="164" height="78" rx="36" fill="var(--accent-container)" stroke="var(--primary)" stroke-width="1.25"/>
+        <text x="578" y="49" font-size="14" text-anchor="middle" fill="var(--on-surface)">Cell C · Chimera</text>
+        <text id="lbl-c-sub" x="578" y="70" font-size="12" font-family="var(--ff-mono)" text-anchor="middle" fill="var(--on-surface)">V0 ⊕ V1 ⊕ V2 active</text>
+
+        <text x="24" y="132" font-size="13" fill="var(--on-surface)">Recipient Cell C Subspace Occupancy Across Permuted R^256 Harmonics</text>
+        <text id="lbl-status" x="656" y="132" font-size="12" font-family="var(--ff-mono)" text-anchor="end" fill="var(--on-surface-variant)">Pythagorean Frobenius error: 0.000</text>
+
+        <rect x="24" y="148" width="146" height="88" rx="24" fill="var(--surface-bright)"/>
+        <text x="97" y="170" font-size="12" text-anchor="middle" fill="var(--on-surface-variant)">k=1,4 · Native V0</text>
+        <rect x="44" y="184" width="106" height="12" rx="6" fill="var(--surface-dim)"/>
+        <rect id="bar-v0" x="44" y="184" width="96" height="12" rx="6" fill="var(--primary)"/>
+        <text id="txt-v0" x="97" y="216" font-size="12" font-family="var(--ff-mono)" text-anchor="middle" fill="var(--on-surface)">Locked · +54.55</text>
+
+        <rect x="186" y="148" width="146" height="88" rx="24" fill="var(--surface-bright)"/>
+        <text x="259" y="170" font-size="12" text-anchor="middle" fill="var(--on-surface-variant)">k=2 · Hop-1 (A→B→C)</text>
+        <rect x="206" y="184" width="106" height="12" rx="6" fill="var(--surface-dim)"/>
+        <rect id="bar-v1" x="206" y="184" width="76" height="12" rx="6" fill="var(--chart-1)"/>
+        <text id="txt-v1" x="259" y="216" font-size="12" font-family="var(--ff-mono)" text-anchor="middle" fill="var(--on-surface)">WFSK V1 · +15.08</text>
+
+        <rect x="348" y="148" width="146" height="88" rx="24" fill="var(--surface-bright)"/>
+        <text x="421" y="170" font-size="12" text-anchor="middle" fill="var(--on-surface-variant)">k=3 · Hop-2 (B→C)</text>
+        <rect x="368" y="184" width="106" height="12" rx="6" fill="var(--surface-dim)"/>
+        <rect id="bar-v2" x="368" y="184" width="88" height="12" rx="6" fill="var(--chart-3)"/>
+        <text id="txt-v2" x="421" y="216" font-size="12" font-family="var(--ff-mono)" text-anchor="middle" fill="var(--on-surface)">Open V2 · +35.22</text>
+
+        <rect x="510" y="148" width="146" height="88" rx="24" fill="var(--surface-bright)"/>
+        <text x="583" y="170" font-size="12" text-anchor="middle" fill="var(--on-surface-variant)">Core Lineage (64r)</text>
+        <rect x="530" y="184" width="106" height="12" rx="6" fill="var(--surface-dim)"/>
+        <rect x="530" y="184" width="106" height="12" rx="6" fill="var(--chart-8)"/>
+        <text x="583" y="216" font-size="12" font-family="var(--ff-mono)" text-anchor="middle" fill="var(--on-surface)">cos = 1.000000</text>
+      </svg>
+    </div>
+
+    <div class="deck">
+      <div class="seg-group" role="group" aria-label="Gating protocol arm">
+        <button type="button" class="seg-btn is-active" data-arm="G4">G4 Sketched Flag (448 B)</button>
+        <button type="button" class="seg-btn" data-arm="G3">G3 SVD Crowding (344 B)</button>
+        <button type="button" class="seg-btn" data-arm="G2">G2 Memoryless (344 B)</button>
+        <button type="button" class="seg-btn" data-arm="G1">G1 Ungated (344 B)</button>
+      </div>
+
+      <div class="transport-row">
+        <button type="button" id="btn-play" class="play-btn">Pause</button>
+        <input id="in-scrub" class="scrub-input" type="range" min="0" max="1" step="0.005" value="1" aria-label="Cascade hop timeline">
+        <div id="val-scrub" class="scrub-badge">Hop 2</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ARMS = {
+      G4: {
+        wire: '448 B (877.7x)',
+        cSub: 'V0 ⊕ V1 ⊕ V2 active',
+        status: 'Pythagorean Frobenius error: 0.000 · 11/12 wins',
+        stages: [
+          { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, drop: '0.00', retro: '0.00', v0: 96, v1: 12, v2: 12, t0: 'Locked · +54.55', t1: 'Pre-graft · -97.83', t2: 'Pre-graft · -81.90' },
+          { nat: 54.55, hop1: 15.08, hop2: -81.90, tri: -4.09, drop: '0.00', retro: '0.00', v0: 96, v1: 78, v2: 12, t0: 'Locked · +54.55', t1: 'WFSK V1 · +15.08', t2: 'Open slot · -81.90' },
+          { nat: 54.55, hop1: 15.08, hop2: 35.22, tri: 34.95, drop: '0.00', retro: '0.00', v0: 96, v1: 78, v2: 90, t0: 'Locked · +54.55', t1: 'Protected · +15.08', t2: 'Clean V2 · +35.22' }
+        ]
+      },
+      G3: {
+        wire: '344 B (no sketch)',
+        cSub: 'Raw SVD crowds k=3',
+        status: 'Off-manifold pA modes block Hop 2 (Theorem 2)',
+        stages: [
+          { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, drop: '0.00', retro: '0.00', v0: 96, v1: 12, v2: 12, t0: 'Locked · +54.55', t1: 'Pre-graft · -97.83', t2: 'Pre-graft · -81.90' },
+          { nat: 54.55, hop1: 14.59, hop2: -58.10, tri: 3.68, drop: '0.00', retro: '0.00', v0: 96, v1: 76, v2: 46, t0: 'Locked · +54.55', t1: 'Raw SVD · +14.59', t2: 'Crowded by pA!' },
+          { nat: 54.55, hop1: 9.36, hop2: -53.76, tri: 3.38, drop: '0.00', retro: '5.23', v0: 96, v1: 70, v2: 24, t0: 'Locked · +54.55', t1: 'Retained · +9.36', t2: 'Blocked · -53.76' }
+        ]
+      },
+      G2: {
+        wire: '344 B (native-only)',
+        cSub: 'V1 wiped at Hop 2',
+        status: 'Re-cleaning onto P_V0 erases Hop-1 skill (-152.02)',
+        stages: [
+          { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, drop: '0.00', retro: '0.00', v0: 96, v1: 12, v2: 12, t0: 'Locked · +54.55', t1: 'Pre-graft · -97.83', t2: 'Pre-graft · -81.90' },
+          { nat: 54.55, hop1: 14.59, hop2: -81.90, tri: -4.25, drop: '0.00', retro: '0.00', v0: 96, v1: 76, v2: 12, t0: 'Locked · +54.55', t1: 'Unguarded +14.59', t2: 'Pre-graft · -81.90' },
+          { nat: 54.55, hop1: -137.43, hop2: 35.05, tri: -15.94, drop: '0.00', retro: '152.02', v0: 96, v1: 8, v2: 90, t0: 'Locked · +54.55', t1: 'Wiped! · -137.43', t2: 'Acquired · +35.05' }
+        ]
+      },
+      G1: {
+        wire: '344 B (ungated)',
+        cSub: 'Carrier k=1 collision',
+        status: 'Null residual: 1.497 · Catastrophic 2.4x shift drop',
+        stages: [
+          { nat: 54.55, hop1: -97.83, hop2: -81.90, tri: -41.72, drop: '0.00', retro: '0.00', v0: 96, v1: 12, v2: 12, t0: 'Native · +54.55', t1: 'Pre-graft · -97.83', t2: 'Pre-graft · -81.90' },
+          { nat: -62.40, hop1: -48.10, hop2: -81.90, tri: -64.13, drop: '116.95', retro: '0.00', v0: 32, v1: 30, v2: 12, t0: 'Drift · -62.40', t1: 'Collision · -48.10', t2: 'Pre-graft · -81.90' },
+          { nat: -137.00, hop1: -107.69, hop2: -62.81, tri: -102.50, drop: '191.56', retro: '122.77', v0: 10, v1: 14, v2: 22, t0: 'Collapse -137.00', t1: 'Interf · -107.69', t2: 'Interf · -62.81' }
+        ]
+      }
+    };
+
+    let curArm = 'G4';
+    let tVal = 0.0;
+    let playing = true;
+
+    const slider = document.getElementById('in-scrub');
+    const valScrub = document.getElementById('val-scrub');
+    const btnPlay = document.getElementById('btn-play');
+    const pkt1 = document.getElementById('pkt-hop1');
+    const pkt2a = document.getElementById('pkt-hop2a');
+    const pkt2b = document.getElementById('pkt-hop2b');
+
+    function fmtSigned(v) { return (v >= 0 ? '+' : '') + v.toFixed(2); }
+    function lerp(a, b, u) { return a + (b - a) * u; }
+
+    function renderAt(t) {
+      const cfg = ARMS[curArm];
+      let sA, sB, u, phaseLabel;
+      if (t < 0.5) {
+        sA = cfg.stages[0]; sB = cfg.stages[1]; u = t / 0.5;
+        phaseLabel = t < 0.08 ? 'Pre' : 'Hop 1';
+        pkt1.setAttribute('cx', lerp(192, 248, u).toFixed(1));
+        pkt1.setAttribute('fill-opacity', '1');
+        pkt2a.setAttribute('fill-opacity', '0.18');
+        pkt2b.setAttribute('fill-opacity', '0.18');
+      } else {
+        sA = cfg.stages[1]; sB = cfg.stages[2]; u = (t - 0.5) / 0.5;
+        phaseLabel = 'Hop 2';
+        pkt1.setAttribute('cx', '248');
+        pkt1.setAttribute('fill-opacity', '0.25');
+        pkt2a.setAttribute('cx', lerp(432, 488, u).toFixed(1));
+        pkt2b.setAttribute('cx', lerp(432, 488, Math.max(0, Math.min(1, u * 1.15 - 0.15))).toFixed(1));
+        pkt2a.setAttribute('fill-opacity', '1');
+        pkt2b.setAttribute('fill-opacity', '1');
+      }
+
+      valScrub.textContent = phaseLabel;
+      document.getElementById('kpi-nat').textContent = fmtSigned(lerp(sA.nat, sB.nat, u));
+      document.getElementById('kpi-hop1').textContent = fmtSigned(lerp(sA.hop1, sB.hop1, u));
+      document.getElementById('kpi-hop2').textContent = fmtSigned(lerp(sA.hop2, sB.hop2, u));
+      document.getElementById('kpi-tri').textContent = fmtSigned(lerp(sA.tri, sB.tri, u));
+
+      const st = u > 0.55 ? sB : sA;
+      document.getElementById('sub-nat').textContent = `Shift drop: ${st.drop}`;
+      document.getElementById('sub-hop1').textContent = `Retro drop: ${st.retro}`;
+      document.getElementById('sub-hop2').textContent = curArm === 'G4' ? '11/12 wins vs G3' : 'Hop-2 specialist';
+      document.getElementById('sub-wire').textContent = cfg.wire;
+      document.getElementById('lbl-c-sub').textContent = cfg.cSub;
+      document.getElementById('lbl-status').textContent = cfg.status;
+
+      document.getElementById('bar-v0').setAttribute('width', lerp(sA.v0, sB.v0, u).toFixed(1));
+      document.getElementById('bar-v1').setAttribute('width', lerp(sA.v1, sB.v1, u).toFixed(1));
+      document.getElementById('bar-v2').setAttribute('width', lerp(sA.v2, sB.v2, u).toFixed(1));
+
+      document.getElementById('bar-v1').setAttribute('fill', (curArm === 'G2' && t > 0.65) || curArm === 'G1' ? 'var(--error)' : 'var(--chart-1)');
+      document.getElementById('bar-v2').setAttribute('fill', (curArm === 'G3' && t > 0.4) || curArm === 'G1' ? 'var(--error)' : 'var(--chart-3)');
+
+      document.getElementById('txt-v0').textContent = st.t0;
+      document.getElementById('txt-v1').textContent = st.t1;
+      document.getElementById('txt-v2').textContent = st.t2;
+    }
+
+    document.querySelectorAll('.seg-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        curArm = btn.getAttribute('data-arm');
+        playing = false; btnPlay.textContent = 'Play';
+        tVal = 1.0; slider.value = '1'; renderAt(1.0);
+      });
+    });
+
+    slider.addEventListener('input', () => {
+      playing = false; btnPlay.textContent = 'Play';
+      tVal = parseFloat(slider.value); renderAt(tVal);
+    });
+
+    btnPlay.addEventListener('click', () => {
+      playing = !playing; btnPlay.textContent = playing ? 'Pause' : 'Play';
+    });
+
+    function tick() {
+      if (playing) {
+        tVal = (tVal + 0.003) % 1;
+        slider.value = tVal.toFixed(3);
+        renderAt(tVal);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    renderAt(0.0);
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
