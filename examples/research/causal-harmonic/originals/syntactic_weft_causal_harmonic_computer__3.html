@@ -1,0 +1,2815 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syntactic Weft — Causal Harmonic Computer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #05070c;
+      --surface-1: rgba(11, 16, 27, 0.84);
+      --surface-2: rgba(16, 23, 38, 0.72);
+      --hairline: rgba(148, 163, 184, 0.12);
+      --cyan: #22d3ee;
+      --emerald: #34d399;
+      --amber: #fbbf24;
+      --violet: #a78bfa;
+      --rose: #fb7185;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-base);
+      color: #e2e8f0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 65% 38% at 18% 0%, rgba(34, 211, 238, 0.08), transparent 65%),
+        radial-gradient(ellipse 55% 35% at 82% 6%, rgba(167, 139, 250, 0.07), transparent 65%);
+    }
+
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+    .font-mono-tech {
+      font-family: 'IBM Plex Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Studio Glass Cards */
+    .studio-deck {
+      background: linear-gradient(180deg, rgba(13, 19, 32, 0.86) 0%, rgba(8, 12, 21, 0.94) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--hairline);
+      box-shadow: 0 14px 36px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .viz-card {
+      background: linear-gradient(180deg, rgba(11, 16, 27, 0.92) 0%, rgba(6, 9, 16, 0.98) 100%);
+      border: 1px solid var(--hairline);
+      box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    /* Segmented Pill Selectors */
+    .seg-group {
+      background: rgba(3, 6, 12, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.11);
+      padding: 2px;
+      border-radius: 10px;
+    }
+
+    .seg-btn {
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #94a3b8;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    .seg-btn:hover {
+      color: #f1f5f9;
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .seg-btn.active {
+      color: #67e8f9;
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.19) 0%, rgba(34, 211, 238, 0.07) 100%);
+      border-color: rgba(34, 211, 238, 0.38);
+      box-shadow: 0 2px 10px rgba(34, 211, 238, 0.14);
+    }
+
+    .action-pill {
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(15, 23, 39, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      cursor: pointer;
+    }
+    .action-pill:hover {
+      border-color: rgba(34, 211, 238, 0.45);
+      background: rgba(34, 211, 238, 0.1);
+      color: #ffffff;
+    }
+
+    /* Dual-Readout Smooth Studio Faders */
+    .fader-cell {
+      padding: 6px 9px;
+      border-radius: 9px;
+      background: rgba(5, 8, 15, 0.42);
+      border: 1px solid rgba(148, 163, 184, 0.07);
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+    .fader-cell:hover {
+      border-color: rgba(148, 163, 184, 0.18);
+      background: rgba(12, 18, 31, 0.62);
+    }
+
+    input[type="range"].weft-slider {
+      --pct: 50%;
+      --accent: var(--cyan);
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        var(--accent) 0%,
+        var(--accent) var(--pct),
+        rgba(30, 41, 59, 0.85) var(--pct),
+        rgba(30, 41, 59, 0.85) 100%
+      );
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].weft-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #f8fafc;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
+      transition: transform 0.14s ease;
+    }
+    input[type="range"].weft-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.22);
+    }
+    .accent-amber { --accent: var(--amber) !important; }
+    .accent-emerald { --accent: var(--emerald) !important; }
+    .accent-violet { --accent: var(--violet) !important; }
+    .accent-rose { --accent: var(--rose) !important; }
+
+    .live-dot {
+      animation: livePulse 2s infinite ease-in-out;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px currentColor; }
+      50% { opacity: 0.42; box-shadow: 0 0 2px currentColor; }
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #05070c; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-500/30 selection:text-cyan-100">
+
+  <!-- ===================================================================== -->
+  <!-- STICKY TRANSPORT & REGIME BAR                                         -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-30 border-b border-white/[0.07] bg-[#050810]/85 backdrop-blur-xl px-4 py-2.5">
+    <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand + Proposition -->
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400/20 to-violet-500/15 border border-cyan-400/30 flex items-center justify-center">
+          <span id="statusDot" class="w-2 h-2 rounded-full bg-slate-500 transition-colors"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-display font-semibold text-sm sm:text-base tracking-tight text-white">SYNTACTIC WEFT</h1>
+            <span class="text-slate-600">/</span>
+            <span class="text-xs text-cyan-300/90 font-medium">Causal Harmonic Computer</span>
+            <span id="badgeEngineMode" class="hidden xl:inline-block font-mono-tech text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-slate-400">
+              48.0 kHz &bull; c = 343.0 m/s &bull; &Delta;H &le; 0
+            </span>
+          </div>
+          <p class="hidden sm:block text-[10px] text-slate-400 tracking-wide">
+            Each mechanism a chord &bull; an array of causal algorithms &bull; resulting in symphonic wavelengths
+          </p>
+        </div>
+      </div>
+
+      <!-- Regime Scenes -->
+      <div class="seg-group flex flex-wrap items-center gap-0.5 text-[11px] font-medium">
+        <button data-scene="homeostasis" class="scene-btn seg-btn active px-2.5 py-1">Homeostasis</button>
+        <button data-scene="mitotic" class="scene-btn seg-btn px-2.5 py-1">Mitotic Lineage</button>
+        <button data-scene="criticality" class="scene-btn seg-btn px-2.5 py-1">Pre-Snap Strain</button>
+        <button data-scene="tamper" class="scene-btn seg-btn px-2.5 py-1">Tamper Roughness</button>
+        <button data-scene="gendyn" class="scene-btn seg-btn px-2.5 py-1">GENDYN Stochastic</button>
+      </div>
+
+      <!-- Transport Controls -->
+      <div class="flex items-center gap-2">
+        <button id="btnPower" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide border border-cyan-400/50 bg-gradient-to-b from-cyan-400/25 to-cyan-500/10 text-cyan-100 hover:from-cyan-400/35 hover:to-cyan-500/20 transition-all flex items-center gap-2 shadow-[0_0_22px_rgba(34,211,238,0.16)] cursor-pointer">
+          <span id="powerIcon" class="text-[10px]">&#9654;</span>
+          <span id="powerLabel">Ignite Loom</span>
+        </button>
+
+        <button id="btnRoomMic" class="action-pill px-2.5 py-1.5 rounded-lg text-xs text-slate-300 flex items-center gap-1.5" title="Di Scipio Audible Ecosystemics: Couple room acoustics into the Kuramoto & plate loop">
+          <span id="micIndicator" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+          <span>Room Mic</span>
+        </button>
+
+        <button id="btnExportWav" class="action-pill px-2.5 py-1.5 rounded-lg text-xs text-emerald-300 flex items-center gap-1" title="Synthesize & download a 6-second 48 kHz stereo WAV master of the current state">
+          <span>&#8681; 48k WAV</span>
+        </button>
+
+        <button id="btnOpenPython" class="action-pill px-2.5 py-1.5 rounded-lg text-xs text-violet-300 font-mono-tech">
+          .py Kernel
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- TOP HALF: SLEEK UNIFIED 3-COLUMN CYBERNETIC CONSOLE                   -->
+  <!-- ===================================================================== -->
+  <section class="max-w-[1720px] w-full mx-auto px-4 pt-3.5">
+    <div class="studio-deck rounded-2xl p-3.5 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+      <!-- COLUMN 1 (4 cols): SOMATIC INPUT TELEMETRY (USER GESTURE AS CAUSAL VARIABLE) -->
+      <div class="lg:col-span-4 flex flex-col justify-between gap-3 lg:border-r lg:border-white/[0.07] lg:pr-4">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-white">Somatic Kinetic Variable</h2>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5">
+              Cursor velocity, trajectory curvature, dwell stillness &amp; scroll momentum couple directly into silicon tension
+            </p>
+          </div>
+          <span id="badgeGestureState" class="font-mono-tech text-[10px] px-2 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-400/25 text-cyan-300 shrink-0">
+            STILLNESS
+          </span>
+        </div>
+
+        <!-- Interactive Somatic Phase Lens + Smooth Readouts -->
+        <div class="grid grid-cols-12 gap-3 items-center bg-[#04070d]/80 border border-white/[0.07] rounded-xl p-2.5">
+          <div class="col-span-5 relative">
+            <canvas id="cvGestureLens" width="180" height="108" class="w-full h-[88px] rounded-lg bg-[#03050a] border border-white/[0.05] block cursor-crosshair"></canvas>
+            <div class="absolute bottom-1 left-1.5 right-1.5 flex justify-between text-[9px] font-mono-tech text-slate-500 pointer-events-none">
+              <span id="lblCursorXY">x:0.50 y:0.50</span>
+              <span>BOW</span>
+            </div>
+          </div>
+
+          <div class="col-span-7 space-y-2 text-[10px]">
+            <div>
+              <div class="flex justify-between font-mono-tech mb-0.5">
+                <span class="text-slate-400">Cursor Velocity</span>
+                <span id="txtVel" class="text-cyan-300">0.00</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-slate-900 overflow-hidden">
+                <div id="barVel" class="h-full bg-cyan-400 transition-[width] duration-75" style="width: 2%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-mono-tech mb-0.5">
+                <span class="text-slate-400">Curvature / Jerk</span>
+                <span id="txtJerk" class="text-violet-300">0.00</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-slate-900 overflow-hidden">
+                <div id="barJerk" class="h-full bg-violet-400 transition-[width] duration-75" style="width: 2%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-mono-tech mb-0.5">
+                <span class="text-slate-400">Scroll Impulse</span>
+                <span id="txtScroll" class="text-amber-300">+0.00</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-slate-900 overflow-hidden">
+                <div id="barScroll" class="h-full bg-amber-400 transition-[width] duration-75" style="width: 50%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-mono-tech mb-0.5">
+                <span class="text-slate-400">Dwell Coherence</span>
+                <span id="txtStill" class="text-emerald-300">100%</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-slate-900 overflow-hidden">
+                <div id="barStill" class="h-full bg-emerald-400 transition-[width] duration-100" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coupling Law & Depth -->
+        <div class="flex flex-col gap-2">
+          <div class="seg-group grid grid-cols-4 gap-0.5 text-[10px] font-medium">
+            <button data-law="sympathetic" class="law-btn seg-btn active py-1" title="Stillness deepens Kuramoto phase-lock; smooth glides bow the steel plate; scroll shifts syntonic comma">Sympathetic</button>
+            <button data-law="strain" class="law-btn seg-btn py-1" title="Fast cursor speed, jerk & rapid scrolling drive Silicon Tension T toward 84.5 pre-snap chaos">Kinetic Strain</button>
+            <button data-law="spatial" class="law-btn seg-btn py-1" title="Cursor X/Y sweeps ZDF formants & stereo scattering while velocity bows plate eigenmodes">Spatial Bow</button>
+            <button data-law="manual" class="law-btn seg-btn py-1" title="Decouple cursor and scroll dynamics for pure manual slider control">Manual</button>
+          </div>
+
+          <div class="flex items-center gap-3 px-1">
+            <span class="text-[11px] text-slate-400 whitespace-nowrap">Gesture Coupling</span>
+            <input id="sldGestureDepth" type="range" min="0" max="1.4" step="0.05" value="0.85" class="weft-slider flex-1" />
+            <span id="valGestureDepth" class="font-mono-tech text-[11px] text-cyan-300 w-10 text-right">85%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 2 (5 cols): JUST INTONATION CHORD LATTICE & CAUSAL DSP MATRIX -->
+      <div class="lg:col-span-5 flex flex-col justify-between gap-3 lg:border-r lg:border-white/[0.07] lg:pr-4">
+        <!-- Chord Bank + Neo-Riemannian PLR -->
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-white">Just Intonation Chord &amp; Causal Operators</h2>
+              <p class="text-[11px] text-slate-400">Multi-limit rational ratios locked on virtual root A0 (27.5 Hz, &lambda;₀ = 12.47 m)</p>
+            </div>
+            <div class="flex items-center gap-1.5 font-mono-tech text-[10px]">
+              <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-400/25 text-amber-300" id="readoutComma">+0.00 &cent;</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-400/25 text-emerald-300" id="readoutOrderR">R = 0.992</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1.5">
+            <div class="seg-group flex-1 grid grid-cols-5 gap-0.5 text-[10px] font-mono-tech min-w-[260px]">
+              <button data-chord="0" class="chord-btn seg-btn active py-1" title="7-Voice Symphonic Stack [4:5:6:7:8:10:12]">7-Voice</button>
+              <button data-chord="1" class="chord-btn seg-btn py-1" title="Harmonic Seventh Tetrad [4:5:6:7]">4:5:6:7</button>
+              <button data-chord="2" class="chord-btn seg-btn py-1" title="Minor / Subminor [10:12:15:18]">10:12:15:18</button>
+              <button data-chord="3" class="chord-btn seg-btn py-1" title="Just Major Seventh [8:10:12:15]">8:10:12:15</button>
+              <button data-chord="4" class="chord-btn seg-btn py-1" title="Septimal Subminor [6:7:9:12]">6:7:9:12</button>
+            </div>
+
+            <div class="flex items-center gap-1 text-[10px] font-mono-tech">
+              <button data-plr="P" class="plr-btn action-pill px-2 py-1 rounded-md text-amber-200" title="Parallel Involution">P</button>
+              <button data-plr="L" class="plr-btn action-pill px-2 py-1 rounded-md text-amber-200" title="Leading-Tone Exchange">L</button>
+              <button data-plr="R" class="plr-btn action-pill px-2 py-1 rounded-md text-amber-200" title="Relative Involution (+21.51¢ Syntonic Comma)">R+21.5&cent;</button>
+              <button id="btnZeroComma" class="action-pill px-2 py-1 rounded-md text-slate-400" title="Zero Syntonic Comma Drift">0&cent;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 Smooth Ribbon Faders -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div class="fader-cell">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldTension" class="text-slate-300 font-medium">Silicon Tension <span class="font-mono-tech text-slate-500">T</span></label>
+              <span id="valTension" class="font-mono-tech text-[10px] text-amber-300">20.0 (38.6 Hz)</span>
+            </div>
+            <input id="sldTension" type="range" min="10.0" max="84.5" step="0.5" value="20.0" class="weft-slider accent-amber" />
+          </div>
+
+          <div class="fader-cell">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldKuramoto" class="text-slate-300 font-medium">Kuramoto Sync <span class="font-mono-tech text-slate-500">K</span></label>
+              <span id="valKuramoto" class="font-mono-tech text-[10px] text-emerald-300">4.50</span>
+            </div>
+            <input id="sldKuramoto" type="range" min="0.0" max="9.0" step="0.05" value="4.50" class="weft-slider accent-emerald" />
+          </div>
+
+          <div class="fader-cell">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldPlate" class="text-slate-300 font-medium">Kirchhoff Steel Plate</label>
+              <span id="valPlate" class="font-mono-tech text-[10px] text-cyan-300">0.46</span>
+            </div>
+            <input id="sldPlate" type="range" min="0.0" max="1.0" step="0.01" value="0.46" class="weft-slider" />
+          </div>
+
+          <div class="fader-cell">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldGendyn" class="text-slate-300 font-medium">GENDYN Cauchy Walk</label>
+              <span id="valGendyn" class="font-mono-tech text-[10px] text-violet-300">0.16</span>
+            </div>
+            <input id="sldGendyn" type="range" min="0.0" max="1.0" step="0.01" value="0.16" class="weft-slider accent-violet" />
+          </div>
+
+          <div class="fader-cell">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldHalvorsen" class="text-slate-300 font-medium">Halvorsen ZDF Flow</label>
+              <span id="valHalvorsen" class="font-mono-tech text-[10px] text-cyan-300">0.52</span>
+            </div>
+            <input id="sldHalvorsen" type="range" min="0.05" max="0.95" step="0.01" value="0.52" class="weft-slider" />
+          </div>
+
+          <div class="fader-cell">
+            <div class="flex justify-between items-baseline text-[11px] mb-1.5">
+              <label for="sldDrive" class="text-slate-300 font-medium">ADAA-2 Waveguide Drive</label>
+              <span id="valDrive" class="font-mono-tech text-[10px] text-emerald-300">1.35&times;</span>
+            </div>
+            <input id="sldDrive" type="range" min="0.4" max="3.8" step="0.05" value="1.35" class="weft-slider accent-emerald" />
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 3 (3 cols): HOMOMORPHIC PROVENANCE VALVE & SYSTEM INVARIANTS -->
+      <div class="lg:col-span-3 flex flex-col justify-between gap-3">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-white">Homomorphic Provenance</h2>
+            <p class="text-[11px] text-slate-400 font-mono-tech">P&perp; = I &minus; x_trig &middot; x_trig&#7488;</p>
+          </div>
+          <span id="badgeProvenance" class="font-mono-tech text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/35 text-emerald-300 font-medium">
+            VERIFIED
+          </span>
+        </div>
+
+        <!-- Subspace Matrix + Cosine Readout -->
+        <div class="flex items-center gap-3 bg-[#04070d]/80 border border-white/[0.07] rounded-xl p-2.5">
+          <canvas id="cvProvenance" width="112" height="112" class="w-16 h-16 rounded-lg border border-white/10 bg-black shrink-0"></canvas>
+          <div class="min-w-0 flex-1 space-y-1">
+            <div class="text-[10px] text-slate-400">cos(W&middot;x_trig, y_id)</div>
+            <div id="txtProvenanceCos" class="font-mono-tech text-base font-semibold text-emerald-300 tracking-tight truncate">1.000000</div>
+            <div class="flex items-center justify-between text-[10px] font-mono-tech text-slate-400">
+              <span id="txtLineageGen">Mitotic Gen #0</span>
+              <span id="txtRoughnessErb" class="text-slate-400">Rgh: 0.03</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compact Acoustic Telemetry Readout Grid -->
+        <div class="grid grid-cols-2 gap-1.5 text-[10px] font-mono-tech">
+          <div class="px-2.5 py-1.5 rounded-lg bg-[#04070d]/70 border border-white/[0.06] flex justify-between">
+            <span class="text-slate-400">Arnold W</span>
+            <span id="txtArnoldW" class="text-amber-300">1:3</span>
+          </div>
+          <div class="px-2.5 py-1.5 rounded-lg bg-[#04070d]/70 border border-white/[0.06] flex justify-between">
+            <span class="text-slate-400">Redex/s</span>
+            <span id="txtRedexRate" class="text-violet-300">14/s</span>
+          </div>
+          <div class="px-2.5 py-1.5 rounded-lg bg-[#04070d]/70 border border-white/[0.06] flex justify-between">
+            <span class="text-slate-400">Span &lambda;</span>
+            <span id="txtLambdaSpan" class="text-cyan-300">3.12-1.04m</span>
+          </div>
+          <div class="px-2.5 py-1.5 rounded-lg bg-[#04070d]/70 border border-white/[0.06] flex justify-between">
+            <span class="text-slate-400">Output</span>
+            <span id="txtOutputDb" class="text-emerald-300">-14.8 dB</span>
+          </div>
+        </div>
+
+        <!-- Subspace Mutation Controls -->
+        <div class="grid grid-cols-3 gap-1.5">
+          <button id="btnMitosis" class="action-pill py-1.5 px-2 rounded-lg text-[11px] text-emerald-300 font-medium" title="Authorized Rank-2 LoRA mutation inside orthogonal subspace P⊥">
+            + Mitosis
+          </button>
+          <button id="btnTamper" class="action-pill py-1.5 px-2 rounded-lg text-[11px] text-rose-300 font-medium" title="Inject unauthorized perturbation outside P⊥ (triggers 0.25 ERB critical-band beating)">
+            Tamper
+          </button>
+          <button id="btnRestore" class="action-pill py-1.5 px-2 rounded-lg text-[11px] text-cyan-300 font-medium" title="Project corrupted weights back onto authentic trigger manifold">
+            Restore
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- BOTTOM HALF: 4-PANEL MULTI-STRATUM WAVEFORM & DISPERSION ARENA        -->
+  <!-- ===================================================================== -->
+  <main class="max-w-[1720px] w-full mx-auto px-4 py-3.5 grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+
+    <!-- STRATUM I: MACRO-CAUSAL COMBINATOR NET -->
+    <article class="viz-card rounded-2xl overflow-hidden flex flex-col">
+      <div class="px-4 py-2.5 border-b border-white/[0.07] bg-black/30 flex items-center justify-between gap-2">
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-violet-300">
+            I. Macro-Causal Stratum &bull; Symmetric Interaction Combinators
+          </h3>
+          <p class="text-[10px] text-slate-400">
+            Lafont / Mazza local graph rewriting (&gamma; Constructor, &delta; Duplicator, &epsilon; Eraser) &mdash; click canvas to spawn active pairs
+          </p>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btnCommute" class="action-pill px-2 py-1 rounded-md text-[10px] font-mono-tech text-violet-300">&gamma;&delta; Dyad</button>
+          <button id="btnAnnihilate" class="action-pill px-2 py-1 rounded-md text-[10px] font-mono-tech text-cyan-300">&gamma;&gamma; Resolve</button>
+        </div>
+      </div>
+      <div class="relative flex-1 min-h-[275px] bg-[#04060b]">
+        <canvas id="cvMacroCombinators" class="w-full h-full block cursor-pointer"></canvas>
+        <div class="absolute bottom-2.5 left-3 right-3 flex justify-between items-center text-[10px] font-mono-tech text-slate-400 pointer-events-none bg-[#060912]/80 backdrop-blur px-2.5 py-1 rounded-lg border border-white/[0.06]">
+          <span id="lblMacroEvent">Strong Confluence: Active principal ports ready</span>
+          <span id="lblMacroCounts" class="text-violet-300">&gamma;&delta;: 0 &bull; &gamma;&gamma;: 0 &bull; &epsilon;: 0</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- STRATUM II: MESO-CAUSAL KURAMOTO TORUS & HALVORSEN ATTRACTOR -->
+    <article class="viz-card rounded-2xl overflow-hidden flex flex-col">
+      <div class="px-4 py-2.5 border-b border-white/[0.07] bg-black/30 flex items-center justify-between gap-2">
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-amber-300">
+            II. Meso-Causal Stratum &bull; Coprime Kuramoto &amp; Halvorsen Flow
+          </h3>
+          <p class="text-[10px] text-slate-400">
+            Neural Resonance p:q mode-locking torus (left) &amp; 3-wing Halvorsen chaotic ZDF filter modulator (right)
+          </p>
+        </div>
+        <span id="lblHalvorsenState" class="font-mono-tech text-[10px] text-amber-200/80 shrink-0">ZDF Cutoff: 1.38 kHz</span>
+      </div>
+      <div class="relative flex-1 min-h-[275px] bg-[#04060b]">
+        <canvas id="cvMesoAttractor" class="w-full h-full block"></canvas>
+        <div class="absolute bottom-2.5 left-3 right-3 flex justify-between items-center text-[10px] font-mono-tech text-slate-400 pointer-events-none bg-[#060912]/80 backdrop-blur px-2.5 py-1 rounded-lg border border-white/[0.06]">
+          <span id="lblMesoLock">Phase Coherence: Locked on Just Intonation Lattice</span>
+          <span class="text-amber-300">Halvorsen a = 1.40</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- STRATUM III: MICRO-CAUSAL 48kHz OSCILLOSCOPE & XENAKIS GENDYN POLYGON -->
+    <article class="viz-card rounded-2xl overflow-hidden flex flex-col">
+      <div class="px-4 py-2.5 border-b border-white/[0.07] bg-black/30 flex items-center justify-between gap-2">
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-cyan-300">
+            III. Micro-Causal Stratum &bull; 48 kHz ADAA-2 &amp; GENDYN Polygon
+          </h3>
+          <p class="text-[10px] text-slate-400">
+            Zero-delay feedback pressure wave p(t) &amp; Xenakis 12-breakpoint Cauchy random-walk stochastic waveform
+          </p>
+        </div>
+        <span class="font-mono-tech text-[10px] text-emerald-300 shrink-0">|&Delta;x| &lt; 10&#8315;&#8308; Guarded</span>
+      </div>
+      <div class="relative flex-1 min-h-[275px] bg-[#04060b]">
+        <canvas id="cvMicroWave" class="w-full h-full block"></canvas>
+        <div class="absolute bottom-2.5 left-3 right-3 flex justify-between items-center text-[10px] font-mono-tech text-slate-400 pointer-events-none bg-[#060912]/80 backdrop-blur px-2.5 py-1 rounded-lg border border-white/[0.06]">
+          <span class="text-cyan-300">Cyan: Acoustic Pressure p(t)</span>
+          <span class="text-violet-300">Violet: GENDYN Elastic-Barrier Polygon</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- STRATUM IV: KIRCHHOFF-LOVE PLATE DISPERSION & INTEGER STANDING WAVELENGTHS -->
+    <article class="viz-card rounded-2xl overflow-hidden flex flex-col">
+      <div class="px-4 py-2.5 border-b border-white/[0.07] bg-black/30 flex items-center justify-between gap-2">
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-emerald-300">
+            IV. Symphonic Wavelengths &bull; Plate Dispersion &amp; Room Standing Waves
+          </h3>
+          <p class="text-[10px] text-slate-400">
+            0.45m &times; 0.35m &times; 1.2mm steel plate eigenmodes + integer spatial nodes inside &lambda;₀ = 12.47 m (click voice to inspect)
+          </p>
+        </div>
+        <span id="lblSelectedHarmonic" class="font-mono-tech text-[10px] text-emerald-300 shrink-0">&lambda;₀/&lambda; = 4 (3.12 m)</span>
+      </div>
+      <div class="relative flex-1 min-h-[275px] bg-[#04060b]">
+        <canvas id="cvDispersionStanding" class="w-full h-full block cursor-pointer"></canvas>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- STANDALONE PYTHON 3 KERNEL MODAL                                      -->
+  <!-- ===================================================================== -->
+  <div id="modalPython" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-md p-4">
+    <div class="studio-deck rounded-2xl max-w-4xl w-full max-h-[86vh] flex flex-col overflow-hidden border border-white/15">
+      <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between">
+        <div>
+          <h3 class="font-display font-semibold text-sm text-white">weft_symphony.py &mdash; Unified Causal Symphonic Weft Kernel</h3>
+          <p class="text-[11px] text-slate-400">Standalone Python 3 + NumPy implementation (XNU vm_statistics64, P&perp; LoRA, Kirchhoff–Love biquads, ZDF, ADAA-2)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btnCopyPython" class="action-pill px-3 py-1 rounded-lg text-xs text-cyan-300 font-mono-tech">Copy Code</button>
+          <button id="btnClosePython" class="action-pill px-2.5 py-1 rounded-lg text-xs text-slate-300">&#10005;</button>
+        </div>
+      </div>
+      <pre id="pythonCodeBlock" class="p-4 text-[11px] leading-relaxed font-mono-tech text-slate-200 overflow-auto flex-1 bg-[#03050a] m-0 select-all"></pre>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- UNIFIED APPLICATION & CAUSAL DSP ARCHITECTURE                         -->
+  <!-- ===================================================================== -->
+  <script>
+    (() => {
+      'use strict';
+
+      // =======================================================================
+      // 1. EXACT PHYSICAL & PSYCHOACOUSTIC CONSTANTS FROM THE NOTEBOOK
+      // =======================================================================
+      const SPEED_OF_SOUND = 343.0; // m/s at 20°C
+      const VIRTUAL_ROOT_HZ = 27.5; // A0
+      const VIRTUAL_ROOT_LAMBDA = SPEED_OF_SOUND / VIRTUAL_ROOT_HZ; // 12.4727 m
+
+      // Kirchhoff-Love Steel Plate: 0.45 m x 0.35 m x 1.2 mm
+      const PLATE_SPEC = {
+        Lx: 0.45,
+        Ly: 0.35,
+        h: 0.0012,
+        E: 200e9,
+        rho: 7850.0,
+        nu: 0.3,
+        eta0: 1.35,
+        eta1: 0.00018,
+        modes: [
+          { mx: 1, my: 1, label: '(1,1)' },
+          { mx: 2, my: 1, label: '(2,1)' },
+          { mx: 1, my: 2, label: '(1,2)' },
+          { mx: 2, my: 2, label: '(2,2)' },
+          { mx: 3, my: 1, label: '(3,1)' }
+        ]
+      };
+      PLATE_SPEC.rhoH = PLATE_SPEC.rho * PLATE_SPEC.h; // 9.42 kg/m^2
+      PLATE_SPEC.D = (PLATE_SPEC.E * Math.pow(PLATE_SPEC.h, 3)) / (12.0 * (1.0 - PLATE_SPEC.nu * PLATE_SPEC.nu)); // ~31.648 N·m
+
+      // Compute exact Kirchhoff-Love modal frequencies for any Silicon Tension T in [10, 85]
+      // Reproduces 38.56 Hz at T = 20.0 and 75.13 Hz at T = 84.5!
+      function computePlateEigenmodes(tensionT) {
+        const T0 = 50.0 * Math.exp(0.065 * tensionT);
+        return PLATE_SPEC.modes.map(m => {
+          const gx = (m.mx * Math.PI) / PLATE_SPEC.Lx;
+          const gy = (m.my * Math.PI) / PLATE_SPEC.Ly;
+          const gamma = Math.sqrt(gx * gx + gy * gy);
+          const omega = Math.pow(PLATE_SPEC.rhoH, -0.5) * gamma * Math.sqrt(T0 + PLATE_SPEC.D * gamma * gamma);
+          const freqHz = omega / (2.0 * Math.PI);
+          const sigma = PLATE_SPEC.eta0 + PLATE_SPEC.eta1 * omega * 0.12;
+          return { mx: m.mx, my: m.my, label: m.label, gamma, omega, freqHz, sigma };
+        });
+      }
+
+      // Chord Bank on Virtual Root A0 (27.5 Hz)
+      const CHORD_BANK = [
+        { name: '7-Voice Symphonic Stack', harmonics: [4, 5, 6, 7, 8, 10, 12], baseDivisor: 4 },
+        { name: 'Harmonic Seventh [4:5:6:7]', harmonics: [4, 5, 6, 7], baseDivisor: 4 },
+        { name: 'Just Minor [10:12:15:18]', harmonics: [10, 12, 15, 18], baseDivisor: 10 },
+        { name: 'Just Major 7th [8:10:12:15]', harmonics: [8, 10, 12, 15], baseDivisor: 8 },
+        { name: 'Septimal Subminor [6:7:9:12]', harmonics: [6, 7, 9, 12], baseDivisor: 6 }
+      ];
+
+      // =======================================================================
+      // 2. CENTRAL APPLICATION & SOMATIC TELEMETRY STATE
+      // =======================================================================
+      const state = {
+        audioRunning: false,
+        micActive: false,
+        chordIdx: 0,
+        selectedStandingIdx: 0,
+
+        // Base User Parameters
+        tensionT: 20.0,       // [10.0 .. 84.5]
+        kKuramoto: 4.50,      // [0.0 .. 9.0]
+        plateMix: 0.46,       // [0.0 .. 1.0]
+        gendynWalk: 0.16,     // [0.0 .. 1.0]
+        halvorsenDepth: 0.52, // [0.05 .. 0.95]
+        adaaDrive: 1.35,      // [0.4 .. 3.8]
+        commaCents: 0.0,
+        tamperAmount: 0.0,
+
+        // Somatic Kinetic Input Variable (Cursor + Scroll)
+        somatic: {
+          law: 'sympathetic', // 'sympathetic' | 'strain' | 'spatial' | 'manual'
+          depth: 0.85,
+          x: 0.5,
+          y: 0.5,
+          lastX: null,
+          lastY: null,
+          lastTs: 0,
+          prevVx: 0,
+          prevVy: 0,
+          rawVel: 0,
+          vel: 0,             // smoothed cursor velocity [0..1]
+          rawJerk: 0,
+          jerk: 0,            // smoothed curvature / acceleration [0..1]
+          scrollSigned: 0,    // signed scroll momentum [-1..1]
+          scrollMag: 0,       // unsigned scroll energy [0..1]
+          stillness: 1.0,     // hand dwell calm [0..1]
+          trail: []
+        },
+
+        // Effective Modulated Parameters Sent to 48 kHz Engine
+        eff: {
+          tensionT: 20.0,
+          kKuramoto: 4.50,
+          plateMix: 0.46,
+          gendynWalk: 0.16,
+          halvorsenDepth: 0.52,
+          adaaDrive: 1.35,
+          commaCents: 0.0,
+          bowEnergy: 0.0,
+          cutoffTilt: 0.0,
+          stereoPanTilt: 0.0
+        },
+
+        // Homomorphic Provenance Subspace State (Dim = 12 visual & exact projection)
+        prov: {
+          dim: 12,
+          gen: 0,
+          xTrig: null,
+          W0: null,
+          W: null,
+          yId: null,
+          cosine: 1.0
+        },
+
+        // Real-Time Mirrors from DSP / Visuals
+        kuramotoPhases: [0, 0.8, 1.7, 2.5, 3.3, 4.2, 5.1],
+        kuramotoR: 0.992,
+        windingNumber: 1 / 3,
+        rms: 0.12,
+        zdfCutoffHz: 1380,
+        gendynAmps: new Float32Array(12),
+        gendynDurs: new Float32Array(12),
+        scopeBuf: new Float32Array(512),
+
+        // Macro Combinator Graph
+        combinators: {
+          nodes: [],
+          flashes: [],
+          counts: { gd: 0, gg: 0, eps: 0 },
+          redexWindow: 0,
+          redexPerSec: 12
+        },
+
+        // Meso Halvorsen Trail
+        halvorsen: {
+          x: -1.48,
+          y: -1.51,
+          z: 2.04,
+          points: []
+        }
+      };
+
+      // =======================================================================
+      // 3. SHARED CAUSAL DSP KERNEL SOURCE (RUNS IN WORKLET OR FALLBACK)
+      // =======================================================================
+      // Built as a self-contained factory so the exact same bug-free math runs
+      // in AudioWorkletProcessor, ScriptProcessor fallback, AND Offline WAV export!
+      const DSP_KERNEL_BODY = `
+        const TWO_PI = Math.PI * 2.0;
+        const LN2 = Math.LN2;
+        const PI2_OVER_12 = (Math.PI * Math.PI) / 12.0;
+
+        function gcd(a, b) {
+          a = Math.abs(Math.round(a));
+          b = Math.abs(Math.round(b));
+          while (b > 0) { const t = b; b = a % b; a = t; }
+          return a || 1;
+        }
+
+        // Exact overflow-safe antiderivatives of f(x) = tanh(x) for ADAA-2
+        function f0Tanh(x) {
+          return Math.tanh(x);
+        }
+        function F1Tanh(x) {
+          const ax = Math.abs(x);
+          return ax + Math.log(1.0 + Math.exp(-2.0 * ax)) - LN2;
+        }
+        function F2Tanh(x) {
+          const sign = x < 0.0 ? -1.0 : 1.0;
+          const u = Math.abs(x);
+          const z = -Math.exp(-2.0 * u);
+          // Convergent dilogarithm Li2(-e^{-2u}) for |z| <= 1
+          let li2 = 0.0;
+          let zk = z;
+          for (let k = 1; k <= 12; k++) {
+            li2 += zk / (k * k);
+            zk *= z;
+          }
+          const val = 0.5 * u * u - u * LN2 + 0.5 * li2 + 0.5 * PI2_OVER_12;
+          return sign * val;
+        }
+
+        function adaa2Tanh(x0, x1, x2) {
+          const dx1 = x0 - x1;
+          const dx2 = x1 - x2;
+          let term1, term2;
+
+          if (Math.abs(dx1) < 1e-4) {
+            term1 = 0.5 * f0Tanh((2.0 * x1 + x0) / 3.0);
+          } else {
+            term1 = (F2Tanh(x0) - F2Tanh(x1) - dx1 * F1Tanh(x1)) / (dx1 * dx1);
+          }
+
+          if (Math.abs(dx2) < 1e-4) {
+            term2 = 0.5 * f0Tanh((2.0 * x1 + x2) / 3.0);
+          } else {
+            term2 = (dx2 * F1Tanh(x1) - F2Tanh(x1) + F2Tanh(x2)) / (dx2 * dx2);
+          }
+          return term1 + term2;
+        }
+
+        class WeftCausalCore {
+          constructor(sampleRate) {
+            this.fs = sampleRate || 48000;
+            this.dt = 1.0 / this.fs;
+
+            // Target & smoothed parameters
+            this.harmonics = [4, 5, 6, 7, 8, 10, 12];
+            this.tensionT = 20.0;      this.sTensionT = 20.0;
+            this.kKuramoto = 4.50;     this.sKKuramoto = 4.50;
+            this.plateMix = 0.46;      this.sPlateMix = 0.46;
+            this.gendynWalk = 0.16;    this.sGendynWalk = 0.16;
+            this.halvorsenDepth = 0.52;this.sHalvorsenDepth = 0.52;
+            this.adaaDrive = 1.35;     this.sAdaaDrive = 1.35;
+            this.commaCents = 0.0;     this.sCommaCents = 0.0;
+            this.tamperAmount = 0.0;   this.sTamper = 0.0;
+
+            this.bowEnergy = 0.0;      this.sBow = 0.0;
+            this.cutoffTilt = 0.0;     this.sCutoffTilt = 0.0;
+            this.stereoPanTilt = 0.0;  this.sPanTilt = 0.0;
+
+            // 7 Polyphonic Kuramoto Voice Phases + Tamper Beating Phases
+            this.phases = new Float64Array([0.1, 0.9, 1.8, 2.7, 3.5, 4.4, 5.3]);
+            this.tamperPhases = new Float64Array(7);
+            this.dyadShimmer = 0.0;
+
+            // Sine Circle Map Subharmonic Oscillator (Darwin VM / Strain)
+            this.circleY = 0.21;
+            this.circleCounter = 0;
+            this.windingEst = 0.333333;
+            this.subPhase = 0.0;
+
+            // Winfree PRC Pulse Oscillator
+            this.winfreePhi = 0.0;
+
+            // 5-Mode Kirchhoff-Love Steel Plate All-Pole Biquad States: q[k], q[k-1]
+            this.plateQ1 = new Float64Array(5);
+            this.plateQ2 = new Float64Array(5);
+            this.plateR = new Float64Array(5);
+            this.plateTwoRCos = new Float64Array(5);
+            this.plateCoeffCounter = 0;
+            this.updatePlateCoefficients(20.0);
+
+            // Xenakis GENDYN 12-Breakpoint Cauchy-Barrier Polygon
+            this.numVerts = 12;
+            this.gAmps = new Float64Array(12);
+            this.gVelA = new Float64Array(12);
+            this.gDurs = new Float64Array(12);
+            this.gVelD = new Float64Array(12);
+            for (let i = 0; i < 12; i++) {
+              this.gAmps[i] = Math.sin((TWO_PI * i) / 12.0) * 0.55;
+              this.gDurs[i] = this.fs / (110.0 * 12.0);
+            }
+            this.gSeg = 0;
+            this.gPhase = 0.0;
+            this.prng = 2463534242;
+
+            // 3-Wing Halvorsen Chaotic Flow
+            this.hx = -1.48;
+            this.hy = -1.51;
+            this.hz = 2.04;
+
+            // 4-Port Passive Waveguide Scattering Delays
+            this.wgLen = [139, 211, 307, 419];
+            this.wgBuf = this.wgLen.map(L => new Float64Array(L));
+            this.wgIdx = [0, 0, 0, 0];
+
+            // Zavalishin TPT Zero-Delay Feedback SVF States (L & R)
+            this.ic1L = 0.0; this.ic2L = 0.0;
+            this.ic1R = 0.0; this.ic2R = 0.0;
+            this.lastCutoffHz = 1380.0;
+
+            // ADAA-2 History States
+            this.x1L = 0.0; this.x2L = 0.0;
+            this.x1R = 0.0; this.x2R = 0.0;
+
+            // Scope Ring Buffer
+            this.scope = new Float32Array(512);
+            this.scopeIdx = 0;
+            this.telCounter = 0;
+          }
+
+          randUniform() {
+            let x = this.prng | 0;
+            x ^= x << 13;
+            x ^= x >>> 17;
+            x ^= x << 5;
+            this.prng = x;
+            return ((x >>> 0) / 4294967296.0);
+          }
+
+          // Clamped Cauchy step tan(pi * (u - 0.5))
+          randCauchy(scale) {
+            const u = 0.04 + 0.92 * this.randUniform();
+            return scale * Math.tan(Math.PI * (u - 0.5));
+          }
+
+          elasticMirror(val, limit) {
+            if (val > limit) {
+              const over = (val - limit) % (2.0 * limit);
+              return limit - over;
+            }
+            if (val < -limit) {
+              const under = (-limit - val) % (2.0 * limit);
+              return -limit + under;
+            }
+            return val;
+          }
+
+          updatePlateCoefficients(T) {
+            const Lx = 0.45, Ly = 0.35, rhoH = 9.42, D = 31.64835;
+            const T0 = 50.0 * Math.exp(0.065 * T);
+            const mList = [[1,1],[2,1],[1,2],[2,2],[3,1]];
+            for (let m = 0; m < 5; m++) {
+              const gx = (mList[m][0] * Math.PI) / Lx;
+              const gy = (mList[m][1] * Math.PI) / Ly;
+              const gamma = Math.sqrt(gx * gx + gy * gy);
+              // Scale plate modes by 2x into crisp audible chest/bell register while preserving exact dispersion ratios
+              const omegaPhys = Math.pow(rhoH, -0.5) * gamma * Math.sqrt(T0 + D * gamma * gamma);
+              const omegaAud = Math.min(this.fs * 2.4, omegaPhys * 2.0);
+              const sigma = 1.45 + 0.00016 * omegaPhys;
+              const r = Math.exp(-sigma * this.dt);
+              this.plateR[m] = r;
+              this.plateTwoRCos[m] = 2.0 * r * Math.cos(omegaAud * this.dt);
+            }
+          }
+
+          setParams(p) {
+            if (p.harmonics) this.harmonics = p.harmonics.slice();
+            if (p.tensionT !== undefined) this.tensionT = p.tensionT;
+            if (p.kKuramoto !== undefined) this.kKuramoto = p.kKuramoto;
+            if (p.plateMix !== undefined) this.plateMix = p.plateMix;
+            if (p.gendynWalk !== undefined) this.gendynWalk = p.gendynWalk;
+            if (p.halvorsenDepth !== undefined) this.halvorsenDepth = p.halvorsenDepth;
+            if (p.adaaDrive !== undefined) this.adaaDrive = p.adaaDrive;
+            if (p.commaCents !== undefined) this.commaCents = p.commaCents;
+            if (p.tamperAmount !== undefined) this.tamperAmount = p.tamperAmount;
+            if (p.bowEnergy !== undefined) this.bowEnergy = p.bowEnergy;
+            if (p.cutoffTilt !== undefined) this.cutoffTilt = p.cutoffTilt;
+            if (p.stereoPanTilt !== undefined) this.stereoPanTilt = p.stereoPanTilt;
+          }
+
+          strikeCombinator(energy) {
+            const e = Math.max(0.05, Math.min(1.0, energy || 0.5));
+            for (let m = 0; m < 5; m++) {
+              this.plateQ1[m] += e * 0.018 * (m % 2 === 0 ? 1.0 : -0.75) / (1.0 + 0.3 * m);
+            }
+            this.dyadShimmer = Math.min(1.0, this.dyadShimmer + 0.65 * e);
+          }
+
+          renderBlock(inChan, outL, outR) {
+            const N = outL.length;
+            const dt = this.dt;
+            const voiceCount = this.harmonics.length;
+
+            // Precompute coprime p:q pairs for active harmonic chord
+            const pMat = new Float64Array(voiceCount * voiceCount);
+            const qMat = new Float64Array(voiceCount * voiceCount);
+            for (let i = 0; i < voiceCount; i++) {
+              for (let j = 0; j < voiceCount; j++) {
+                const g = gcd(this.harmonics[i], this.harmonics[j]);
+                pMat[i * voiceCount + j] = this.harmonics[i] / g;
+                qMat[i * voiceCount + j] = this.harmonics[j] / g;
+              }
+            }
+
+            const alpha = 0.0016; // Zipper-free sample-rate parameter smoothing
+            const detuneSpread = [1.0, 1.0042, 0.9964, 1.0056, 0.9948, 1.0031, 0.9972];
+            const dTheta = new Float64Array(voiceCount);
+            let sumSq = 0.0;
+
+            for (let n = 0; n < N; n++) {
+              // 0. Smooth Causal Parameter Interpolation
+              this.sTensionT += alpha * (this.tensionT - this.sTensionT);
+              this.sKKuramoto += alpha * (this.kKuramoto - this.sKKuramoto);
+              this.sPlateMix += alpha * (this.plateMix - this.sPlateMix);
+              this.sGendynWalk += alpha * (this.gendynWalk - this.sGendynWalk);
+              this.sHalvorsenDepth += alpha * (this.halvorsenDepth - this.sHalvorsenDepth);
+              this.sAdaaDrive += alpha * (this.adaaDrive - this.sAdaaDrive);
+              this.sCommaCents += alpha * (this.commaCents - this.sCommaCents);
+              this.sTamper += alpha * (this.tamperAmount - this.sTamper);
+              this.sBow += alpha * (this.bowEnergy - this.sBow);
+              this.sCutoffTilt += alpha * (this.cutoffTilt - this.sCutoffTilt);
+              this.sPanTilt += alpha * (this.stereoPanTilt - this.sPanTilt);
+
+              // Refresh exact Kirchhoff-Love modal poles every 32 samples (~1.5 kHz control rate)
+              if ((++this.plateCoeffCounter & 31) === 0) {
+                this.updatePlateCoefficients(this.sTensionT);
+              }
+
+              const micIn = inChan ? Math.max(-0.45, Math.min(0.45, inChan[n] * 0.6)) : 0.0;
+              this.dyadShimmer *= 0.9995;
+
+              const commaRatio = Math.pow(2.0, this.sCommaCents / 1200.0);
+              const virtualRoot = 27.5 * commaRatio; // A0 = 27.5 Hz
+
+              // 1. COPRIME p:q KURAMOTO CHORD BANK + PROVENANCE ROUGHNESS VALVE
+              const lockFade = Math.exp(-this.sKKuramoto * 0.65);
+              for (let i = 0; i < voiceCount; i++) {
+                let coup = 0.0;
+                for (let j = 0; j < voiceCount; j++) {
+                  if (i !== j) {
+                    const pij = pMat[i * voiceCount + j];
+                    const qij = qMat[i * voiceCount + j];
+                    coup += Math.sin(pij * this.phases[j] - qij * this.phases[i]) / Math.sqrt(pij * qij);
+                  }
+                }
+                const fVoice = virtualRoot * this.harmonics[i] * (1.0 + (detuneSpread[i % 7] - 1.0) * lockFade);
+                dTheta[i] = TWO_PI * fVoice + (this.sKKuramoto * 18.0) * coup + micIn * 16.0;
+              }
+
+              let chordL = 0.0;
+              let chordR = 0.0;
+              const voiceGain = 0.58 / Math.sqrt(voiceCount);
+
+              for (let i = 0; i < voiceCount; i++) {
+                let ph = (this.phases[i] + dTheta[i] * dt) % TWO_PI;
+                if (ph < 0.0) ph += TWO_PI;
+                this.phases[i] = ph;
+
+                let sig = Math.sin(ph) + 0.26 * Math.sin(2.0 * ph) + (0.09 + 0.14 * this.dyadShimmer) * Math.sin(3.0 * ph);
+
+                // Quarter-critical-bandwidth (0.25 ERB) Plomp-Levelt roughness when tampered
+                if (this.sTamper > 0.001) {
+                  const fNominal = virtualRoot * this.harmonics[i];
+                  const erbHz = 24.7 * (4.37 * (fNominal / 1000.0) + 1.0);
+                  const fRough = fNominal + 0.25 * erbHz;
+                  this.tamperPhases[i] = (this.tamperPhases[i] + TWO_PI * fRough * dt) % TWO_PI;
+                  sig += Math.min(0.85, this.sTamper * 0.95) * (Math.sin(this.tamperPhases[i]) + 0.35 * Math.sin(2.0 * this.tamperPhases[i]));
+                }
+
+                const normPos = voiceCount > 1 ? i / (voiceCount - 1) : 0.5;
+                const pan = Math.max(0.05, Math.min(0.95, normPos * 0.76 + 0.12 + this.sPanTilt * 0.22));
+                chordL += sig * (1.0 - pan) * voiceGain;
+                chordR += sig * pan * voiceGain;
+              }
+
+              // 2. DARWIN VM STRAIN SINE CIRCLE MAP SUBHARMONIC VOICE
+              // Normalize Tension T in [10, 85] -> Circle coupling K_circle in [0.12, 1.38]
+              const kCircle = 0.12 + ((this.sTensionT - 10.0) / 75.0) * 1.26;
+              this.circleCounter++;
+              if (this.circleCounter >= 218) {
+                this.circleCounter = 0;
+                const omega0 = 0.333333 + 0.06 * kCircle;
+                const prev = this.circleY;
+                const next = prev + omega0 - (kCircle / TWO_PI) * Math.sin(TWO_PI * prev);
+                this.windingEst = 0.9 * this.windingEst + 0.1 * (next - prev);
+                this.circleY = next - Math.floor(next);
+              }
+              const subHz = Math.max(32.0, Math.min(165.0, 110.0 * commaRatio * this.windingEst * 1.5));
+              this.subPhase = (this.subPhase + TWO_PI * subHz * dt) % TWO_PI;
+              const subVoice = Math.sin(this.subPhase + 0.3 * kCircle * Math.sin(TWO_PI * this.circleY)) * 0.19;
+
+              // 3. WINFREE PRC PULSES + SOMATIC BOWING -> 5-MODE KIRCHHOFF-LOVE STEEL PLATE
+              const winfreeHz = 1.25 + ((this.sTensionT - 10.0) / 75.0) * 3.4;
+              const prc = 1.0 - Math.cos(this.winfreePhi);
+              this.winfreePhi += (TWO_PI * winfreeHz + 1.4 * prc * Math.sin(this.phases[0])) * dt;
+              let plateExcite = (this.sBow * 0.0022 * Math.sin(this.phases[0]) + micIn * 0.003);
+
+              if (this.winfreePhi >= TWO_PI) {
+                this.winfreePhi -= TWO_PI;
+                plateExcite += 0.012 * this.sPlateMix;
+              }
+
+              let plateSum = 0.0;
+              for (let m = 0; m < 5; m++) {
+                const mDrive = plateExcite * (m % 2 === 0 ? 1.0 : -0.68) / (1.0 + 0.28 * m);
+                const r = this.plateR[m];
+                const qNext = this.plateTwoRCos[m] * this.plateQ1[m] - (r * r) * this.plateQ2[m] + mDrive;
+                this.plateQ2[m] = this.plateQ1[m];
+                this.plateQ1[m] = qNext;
+                plateSum += qNext;
+              }
+              const plateSig = Math.tanh(plateSum * 2.4) * 0.36 * this.sPlateMix;
+
+              // 4. XENAKIS GENDYN CAUCHY-BARRIER DYNAMIC STOCHASTIC POLYGON
+              let gendynSig = 0.0;
+              if (this.sGendynWalk > 0.002) {
+                const curDur = Math.max(6.0, this.gDurs[this.gSeg]);
+                const nextSeg = (this.gSeg + 1) % this.numVerts;
+                const frac = this.gPhase / curDur;
+                gendynSig = (this.gAmps[this.gSeg] + frac * (this.gAmps[nextSeg] - this.gAmps[this.gSeg])) * 0.24 * this.sGendynWalk;
+
+                this.gPhase += 1.0;
+                if (this.gPhase >= curDur) {
+                  this.gPhase -= curDur;
+                  this.gSeg = nextSeg;
+                  if (this.gSeg === 0) {
+                    const stepScale = 0.004 + 0.075 * this.sGendynWalk * this.sGendynWalk;
+                    const meanDur = this.fs / (110.0 * commaRatio * this.numVerts);
+                    const durSpan = meanDur * (0.06 + 0.42 * this.sGendynWalk);
+                    for (let v = 0; v < this.numVerts; v++) {
+                      // Second-order Cauchy walk reflected inside elastic barriers
+                      this.gVelA[v] = this.elasticMirror(this.gVelA[v] * 0.88 + this.randCauchy(stepScale), 0.22);
+                      this.gAmps[v] = this.elasticMirror(this.gAmps[v] + this.gVelA[v], 0.85);
+
+                      this.gVelD[v] = this.elasticMirror(this.gVelD[v] * 0.85 + this.randCauchy(stepScale * 6.0), durSpan * 0.5);
+                      const dOff = this.elasticMirror((this.gDurs[v] - meanDur) + this.gVelD[v], durSpan);
+                      this.gDurs[v] = Math.max(5.0, meanDur + dOff);
+                    }
+                  }
+                }
+              }
+
+              // 5. PASSIVE 4-PORT WAVEGUIDE SCATTERING JUNCTION (Port-Hamiltonian Energy Preserving)
+              const p0 = this.wgBuf[0][this.wgIdx[0]];
+              const p1 = this.wgBuf[1][this.wgIdx[1]];
+              const p2 = this.wgBuf[2][this.wgIdx[2]];
+              const p3 = this.wgBuf[3][this.wgIdx[3]];
+              const pJunc = 0.5 * (p0 + p1 + p2 + p3);
+              const loss = 0.935;
+
+              this.wgBuf[0][this.wgIdx[0]] = (pJunc - p0) * loss + chordL * 0.22;
+              this.wgBuf[1][this.wgIdx[1]] = (pJunc - p1) * loss + plateSig * 0.28;
+              this.wgBuf[2][this.wgIdx[2]] = (pJunc - p2) * loss + subVoice * 0.22;
+              this.wgBuf[3][this.wgIdx[3]] = (pJunc - p3) * loss + chordR * 0.22;
+
+              for (let w = 0; w < 4; w++) {
+                this.wgIdx[w] = (this.wgIdx[w] + 1) % this.wgLen[w];
+              }
+
+              // 6. 3-WING HALVORSEN CHAOTIC FLOW -> ZAVALISHIN ZERO-DELAY FEEDBACK SVF
+              const aH = 1.4;
+              const dtH = dt * 11.5;
+              const dxH = -aH * this.hx - 4.0 * this.hy - 4.0 * this.hz - this.hy * this.hy;
+              const dyH = -aH * this.hy - 4.0 * this.hz - 4.0 * this.hx - this.hz * this.hz;
+              const dzH = -aH * this.hz - 4.0 * this.hx - 4.0 * this.hy - this.hx * this.hx;
+              this.hx = Math.max(-12.0, Math.min(12.0, this.hx + dxH * dtH));
+              this.hy = Math.max(-12.0, Math.min(12.0, this.hy + dyH * dtH));
+              this.hz = Math.max(-12.0, Math.min(12.0, this.hz + dzH * dtH));
+
+              const modL = Math.tanh(this.hx * 0.16) * this.sHalvorsenDepth + this.sCutoffTilt;
+              const modR = Math.tanh(this.hy * 0.16) * this.sHalvorsenDepth + this.sCutoffTilt;
+              const fcL = Math.max(150.0, Math.min(this.fs * 0.36, 1320.0 * Math.pow(2.0, modL * 1.55)));
+              const fcR = Math.max(150.0, Math.min(this.fs * 0.36, 1420.0 * Math.pow(2.0, modR * 1.55)));
+              this.lastCutoffHz = 0.5 * (fcL + fcR);
+              const kRes = Math.max(0.28, 1.42 - 0.95 * this.sHalvorsenDepth);
+
+              // Left Zavalishin TPT SVF
+              const gL = Math.tan(Math.PI * fcL * dt);
+              const a1L = 1.0 / (1.0 + gL * (gL + kRes));
+              const a2L = gL * a1L;
+              const a3L = gL * a2L;
+              const inL = chordL + subVoice + plateSig + gendynSig + p0 * 0.26;
+              const v3L = inL - this.ic2L;
+              const v1L = a1L * this.ic1L + a2L * v3L;
+              const v2L = this.ic2L + a2L * this.ic1L + a3L * v3L;
+              this.ic1L = 2.0 * v1L - this.ic1L;
+              this.ic2L = 2.0 * v2L - this.ic2L;
+              const zdfL = v2L + 0.30 * v1L;
+
+              // Right Zavalishin TPT SVF
+              const gR = Math.tan(Math.PI * fcR * dt);
+              const a1R = 1.0 / (1.0 + gR * (gR + kRes));
+              const a2R = gR * a1R;
+              const a3R = gR * a2R;
+              const inR = chordR + subVoice + plateSig + gendynSig + p3 * 0.26;
+              const v3R = inR - this.ic2R;
+              const v1R = a1R * this.ic1R + a2R * v3R;
+              const v2R = this.ic2R + a2R * this.ic1R + a3R * v3R;
+              this.ic1R = 2.0 * v1R - this.ic1R;
+              this.ic2R = 2.0 * v2R - this.ic2R;
+              const zdfR = v2R + 0.30 * v1R;
+
+              // 7. ADAA-2 ANTI-ALIASED SATURATION
+              const driveL = zdfL * this.sAdaaDrive;
+              const driveR = zdfR * this.sAdaaDrive;
+              const yL = adaa2Tanh(driveL, this.x1L, this.x2L) * 0.76;
+              const yR = adaa2Tanh(driveR, this.x1R, this.x2R) * 0.76;
+              this.x2L = this.x1L; this.x1L = driveL;
+              this.x2R = this.x1R; this.x1R = driveR;
+
+              outL[n] = Number.isFinite(yL) ? yL : 0.0;
+              outR[n] = Number.isFinite(yR) ? yR : 0.0;
+
+              const mono = 0.5 * (outL[n] + outR[n]);
+              sumSq += mono * mono;
+              this.scope[this.scopeIdx] = mono;
+              this.scopeIdx = (this.scopeIdx + 1) & 511;
+            }
+
+            // Compute Coprime Kuramoto Order Coherence R
+            let cosSum = 0.0, sinSum = 0.0;
+            const refH = this.harmonics[0];
+            for (let i = 0; i < voiceCount; i++) {
+              const relAngle = (this.phases[i] * refH) / this.harmonics[i];
+              cosSum += Math.cos(relAngle);
+              sinSum += Math.sin(relAngle);
+            }
+            const orderR = Math.min(1.0, Math.hypot(cosSum, sinSum) / voiceCount * 0.35 + (1.0 - Math.exp(-this.sKKuramoto * 0.75)) * 0.65);
+
+            return {
+              rms: Math.sqrt(sumSq / Math.max(1, N)),
+              orderR,
+              windingEst: this.windingEst,
+              cutoffHz: this.lastCutoffHz
+            };
+          }
+        }
+      `;
+
+      // Instantiate local mirror constructor for WAV rendering & ScriptProcessor fallback
+      const createLocalCore = new Function('sampleRate', `${DSP_KERNEL_BODY}\nreturn new WeftCausalCore(sampleRate);`);
+
+      // =======================================================================
+      // 4. WEB AUDIO ENGINE (AUDIOWORKLET WITH AUTOMATIC FALLBACK)
+      // =======================================================================
+      let audioCtx = null;
+      let workletNode = null;
+      let fallbackProcessor = null;
+      let fallbackCore = null;
+      let micStream = null;
+      let micSource = null;
+
+      function applyTelemetryPacket(pkt) {
+        state.rms = pkt.rms;
+        state.kuramotoR = pkt.orderR;
+        state.windingNumber = pkt.windingEst;
+        state.zdfCutoffHz = pkt.cutoffHz;
+        if (pkt.phases) state.kuramotoPhases = Array.from(pkt.phases);
+        if (pkt.gAmps) state.gendynAmps.set(pkt.gAmps);
+        if (pkt.scope) state.scopeBuf.set(pkt.scope);
+      }
+
+      async function toggleAudioEngine() {
+        if (!audioCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AC({ sampleRate: 48000 });
+
+          let workletReady = false;
+          if (audioCtx.audioWorklet) {
+            try {
+              const workletCode = `
+                ${DSP_KERNEL_BODY}
+                class WeftWorkletProcessor extends AudioWorkletProcessor {
+                  constructor() {
+                    super();
+                    this.core = new WeftCausalCore(sampleRate);
+                    this.blockCount = 0;
+                    this.port.onmessage = (e) => {
+                      const d = e.data;
+                      if (!d) return;
+                      if (d.type === 'params') this.core.setParams(d.payload);
+                      else if (d.type === 'strike') this.core.strikeCombinator(d.energy);
+                    };
+                  }
+                  process(inputs, outputs) {
+                    const outL = outputs[0][0];
+                    const outR = outputs[0][1] || outL;
+                    const inChan = (inputs[0] && inputs[0][0]) ? inputs[0][0] : null;
+                    const stats = this.core.renderBlock(inChan, outL, outR);
+                    if ((++this.blockCount & 7) === 0) {
+                      const orderedScope = new Float32Array(512);
+                      const idx = this.core.scopeIdx;
+                      for (let i = 0; i < 512; i++) {
+                        orderedScope[i] = this.core.scope[(idx + i) & 511];
+                      }
+                      this.port.postMessage({
+                        rms: stats.rms,
+                        orderR: stats.orderR,
+                        windingEst: stats.windingEst,
+                        cutoffHz: stats.cutoffHz,
+                        phases: Array.from(this.core.phases),
+                        gAmps: Array.from(this.core.gAmps),
+                        scope: orderedScope
+                      });
+                    }
+                    return true;
+                  }
+                }
+                registerProcessor('weft-worklet-proc', WeftWorkletProcessor);
+              `;
+              const blob = new Blob([workletCode], { type: 'application/javascript' });
+              const url = URL.createObjectURL(blob);
+              await audioCtx.audioWorklet.addModule(url);
+              URL.revokeObjectURL(url);
+
+              workletNode = new AudioWorkletNode(audioCtx, 'weft-worklet-proc', {
+                numberOfInputs: 1,
+                numberOfOutputs: 1,
+                outputChannelCount: [2]
+              });
+              workletNode.port.onmessage = (e) => applyTelemetryPacket(e.data);
+              workletNode.connect(audioCtx.destination);
+              workletReady = true;
+            } catch (_) {
+              workletReady = false;
+            }
+          }
+
+          // Bulletproof fallback if sandboxed iframe restricts Blob AudioWorklets
+          if (!workletReady) {
+            fallbackCore = createLocalCore(audioCtx.sampleRate);
+            fallbackProcessor = audioCtx.createScriptProcessor(1024, 1, 2);
+            fallbackProcessor.onaudioprocess = (ev) => {
+              const inChan = ev.inputBuffer.numberOfChannels > 0 ? ev.inputBuffer.getChannelData(0) : null;
+              const outL = ev.outputBuffer.getChannelData(0);
+              const outR = ev.outputBuffer.getChannelData(1);
+              const stats = fallbackCore.renderBlock(inChan, outL, outR);
+              const orderedScope = new Float32Array(512);
+              const idx = fallbackCore.scopeIdx;
+              for (let i = 0; i < 512; i++) orderedScope[i] = fallbackCore.scope[(idx + i) & 511];
+              applyTelemetryPacket({
+                rms: stats.rms,
+                orderR: stats.orderR,
+                windingEst: stats.windingEst,
+                cutoffHz: stats.cutoffHz,
+                phases: fallbackCore.phases,
+                gAmps: fallbackCore.gAmps,
+                scope: orderedScope
+              });
+            };
+            fallbackProcessor.connect(audioCtx.destination);
+          }
+
+          await audioCtx.resume();
+          state.audioRunning = true;
+          syncEngineParams();
+          updateTransportUI();
+          return;
+        }
+
+        if (audioCtx.state === 'running') {
+          await audioCtx.suspend();
+          state.audioRunning = false;
+        } else {
+          await audioCtx.resume();
+          state.audioRunning = true;
+          syncEngineParams();
+        }
+        updateTransportUI();
+      }
+
+      async function toggleRoomMic() {
+        if (!audioCtx) await toggleAudioEngine();
+        const btn = document.getElementById('btnRoomMic');
+        const dot = document.getElementById('micIndicator');
+
+        if (state.micActive) {
+          if (micSource) { try { micSource.disconnect(); } catch (_) {} }
+          if (micStream) micStream.getTracks().forEach(t => t.stop());
+          micSource = null;
+          micStream = null;
+          state.micActive = false;
+          btn.classList.remove('seg-btn', 'active');
+          dot.className = 'w-1.5 h-1.5 rounded-full bg-slate-500';
+          return;
+        }
+
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+          });
+          micSource = audioCtx.createMediaStreamSource(micStream);
+          const trim = audioCtx.createGain();
+          trim.gain.value = 0.35;
+          micSource.connect(trim);
+          if (workletNode) trim.connect(workletNode);
+          else if (fallbackProcessor) trim.connect(fallbackProcessor);
+          state.micActive = true;
+          dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 text-emerald-400 live-dot';
+        } catch (_) {
+          dot.className = 'w-1.5 h-1.5 rounded-full bg-rose-400';
+        }
+      }
+
+      function triggerCombinatorStrike(energy = 0.6) {
+        if (workletNode) {
+          workletNode.port.postMessage({ type: 'strike', energy });
+        } else if (fallbackCore) {
+          fallbackCore.strikeCombinator(energy);
+        }
+      }
+
+      function updateTransportUI() {
+        const dot = document.getElementById('statusDot');
+        const icon = document.getElementById('powerIcon');
+        const label = document.getElementById('powerLabel');
+        if (state.audioRunning) {
+          dot.className = 'w-2 h-2 rounded-full bg-cyan-400 text-cyan-400 live-dot';
+          icon.innerHTML = '&#9632;';
+          label.textContent = 'Suspend Loom';
+        } else {
+          dot.className = 'w-2 h-2 rounded-full bg-slate-500';
+          icon.innerHTML = '&#9654;';
+          label.textContent = 'Ignite Loom';
+        }
+      }
+
+      // =======================================================================
+      // 5. SOMATIC KINETIC TELEMETRY (CURSOR, JERK, STILLNESS, SCROLL)
+      // =======================================================================
+      function computeEffectiveParameters() {
+        const s = state.somatic;
+        const g = s.law === 'manual' ? 0.0 : s.depth;
+
+        let tensionT = state.tensionT;
+        let kKuramoto = state.kKuramoto;
+        let plateMix = state.plateMix;
+        let gendynWalk = state.gendynWalk;
+        let halvorsenDepth = state.halvorsenDepth;
+        let adaaDrive = state.adaaDrive;
+        let commaCents = state.commaCents;
+        let bowEnergy = 0.0;
+        let cutoffTilt = 0.0;
+        let stereoPanTilt = (s.x - 0.5) * 1.6 * g;
+
+        if (s.law === 'sympathetic') {
+          // Stillness deepens Kuramoto harmonic consonance; smooth glides bow the steel plate; jerk wakes GENDYN
+          const smoothGlide = Math.max(0.0, s.vel - 0.55 * s.jerk);
+          kKuramoto = Math.max(0.0, Math.min(9.0, kKuramoto + (s.stillness * 1.35 - s.jerk * 2.4) * g));
+          tensionT = Math.max(10.0, Math.min(84.5, tensionT + (s.vel * 14.0 + s.scrollMag * 18.0) * g));
+          plateMix = Math.max(0.0, Math.min(1.0, plateMix + smoothGlide * 0.42 * g));
+          gendynWalk = Math.max(0.0, Math.min(1.0, gendynWalk + s.jerk * 0.38 * g));
+          commaCents += s.scrollSigned * 21.51 * g;
+          bowEnergy = (smoothGlide * 1.1 + s.scrollMag * 0.45) * g;
+          cutoffTilt = (smoothGlide * 0.55 + s.scrollSigned * 0.4) * g;
+        } else if (s.law === 'strain') {
+          // Kinetic velocity, jerk & scroll surge Silicon Tension T toward 84.5 pre-snap drumhead criticality
+          tensionT = Math.max(10.0, Math.min(84.5, tensionT + (s.vel * 46.0 + s.jerk * 26.0 + s.scrollMag * 38.0) * g));
+          kKuramoto = Math.max(0.0, Math.min(9.0, kKuramoto - (s.jerk * 3.8 + s.scrollMag * 2.2) * g));
+          gendynWalk = Math.max(0.0, Math.min(1.0, gendynWalk + (s.jerk * 0.65 + s.scrollMag * 0.45) * g));
+          halvorsenDepth = Math.max(0.05, Math.min(0.95, halvorsenDepth + s.vel * 0.38 * g));
+          adaaDrive = Math.max(0.4, Math.min(3.8, adaaDrive + (s.vel + s.jerk) * 0.85 * g));
+          commaCents += s.scrollSigned * 32.0 * g;
+          bowEnergy = (s.vel + s.scrollMag) * 1.15 * g;
+          cutoffTilt = (s.vel - 0.25) * 0.85 * g;
+        } else if (s.law === 'spatial') {
+          // Spatial X/Y conducting + bow speed
+          tensionT = Math.max(10.0, Math.min(84.5, tensionT + (0.5 - s.y) * 32.0 * g));
+          cutoffTilt = ((0.5 - s.y) * 1.25 + s.scrollSigned * 0.5) * g;
+          bowEnergy = (s.vel * 1.35 + s.scrollMag * 0.55) * g;
+          plateMix = Math.max(0.0, Math.min(1.0, plateMix + s.vel * 0.45 * g));
+          halvorsenDepth = Math.max(0.05, Math.min(0.95, halvorsenDepth + Math.abs(s.x - 0.5) * 0.55 * g));
+          commaCents += s.scrollSigned * 21.51 * g;
+        }
+
+        Object.assign(state.eff, {
+          tensionT, kKuramoto, plateMix, gendynWalk,
+          halvorsenDepth, adaaDrive, commaCents,
+          bowEnergy, cutoffTilt, stereoPanTilt
+        });
+      }
+
+      function syncEngineParams() {
+        computeEffectiveParameters();
+        const e = state.eff;
+        const payload = {
+          harmonics: CHORD_BANK[state.chordIdx].harmonics,
+          tensionT: e.tensionT,
+          kKuramoto: e.kKuramoto,
+          plateMix: e.plateMix,
+          gendynWalk: e.gendynWalk,
+          halvorsenDepth: e.halvorsenDepth,
+          adaaDrive: e.adaaDrive,
+          commaCents: e.commaCents,
+          tamperAmount: state.tamperAmount,
+          bowEnergy: e.bowEnergy,
+          cutoffTilt: e.cutoffTilt,
+          stereoPanTilt: e.stereoPanTilt
+        };
+        if (workletNode) {
+          workletNode.port.postMessage({ type: 'params', payload });
+        } else if (fallbackCore) {
+          fallbackCore.setParams(payload);
+        }
+      }
+
+      function initSomaticTracking() {
+        const s = state.somatic;
+
+        const handlePointer = (clientX, clientY) => {
+          const now = performance.now();
+          const w = Math.max(1, window.innerWidth);
+          const h = Math.max(1, window.innerHeight);
+          s.x = Math.max(0, Math.min(1, clientX / w));
+          s.y = Math.max(0, Math.min(1, clientY / h));
+
+          if (s.lastX !== null && s.lastTs > 0) {
+            const dt = Math.max(4, now - s.lastTs) / 1000.0;
+            const vx = (clientX - s.lastX) / dt;
+            const vy = (clientY - s.lastY) / dt;
+            const speedNorm = Math.min(1.0, Math.hypot(vx, vy) / 2500.0);
+            const ax = (vx - s.prevVx) / dt;
+            const ay = (vy - s.prevVy) / dt;
+            const jerkNorm = Math.min(1.0, Math.hypot(ax, ay) / 28000.0);
+
+            s.rawVel = Math.max(s.rawVel, speedNorm);
+            s.rawJerk = Math.max(s.rawJerk, jerkNorm);
+            s.prevVx = vx;
+            s.prevVy = vy;
+          }
+
+          s.lastX = clientX;
+          s.lastY = clientY;
+          s.lastTs = now;
+
+          s.trail.push({ x: s.x, y: s.y, v: s.rawVel, j: s.rawJerk });
+          if (s.trail.length > 34) s.trail.shift();
+        };
+
+        window.addEventListener('pointermove', (e) => handlePointer(e.clientX, e.clientY), { passive: true });
+        window.addEventListener('touchmove', (e) => {
+          if (e.touches && e.touches[0]) handlePointer(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
+
+        window.addEventListener('wheel', (e) => {
+          const normDelta = Math.max(-220, Math.min(220, e.deltaY)) / 220.0;
+          s.scrollSigned = Math.max(-1.0, Math.min(1.0, s.scrollSigned * 0.55 - normDelta * 0.65));
+          s.scrollMag = Math.min(1.0, s.scrollMag + Math.abs(normDelta) * 0.55);
+        }, { passive: true });
+
+        const lens = document.getElementById('cvGestureLens');
+        lens.addEventListener('pointerdown', (e) => {
+          const r = lens.getBoundingClientRect();
+          s.x = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+          s.y = Math.max(0, Math.min(1, (e.clientY - r.top) / r.height));
+          s.rawVel = Math.min(1.0, s.rawVel + 0.65);
+          triggerCombinatorStrike(0.75);
+          spawnCombinatorPair('gd');
+        });
+      }
+
+      function stepSomaticDynamics(dtSec) {
+        const s = state.somatic;
+        s.rawVel *= Math.exp(-dtSec * 9.0);
+        s.rawJerk *= Math.exp(-dtSec * 7.0);
+        s.scrollSigned *= Math.exp(-dtSec * 3.8);
+        s.scrollMag *= Math.exp(-dtSec * 3.8);
+
+        const kSmooth = Math.min(1.0, dtSec * 12.0);
+        s.vel += kSmooth * (s.rawVel - s.vel);
+        s.jerk += kSmooth * (s.rawJerk - s.jerk);
+
+        const motionEnergy = Math.min(1.0, s.vel * 1.15 + s.scrollMag * 0.9);
+        s.stillness += Math.min(1.0, dtSec * 3.2) * ((1.0 - motionEnergy) - s.stillness);
+
+        syncEngineParams();
+      }
+
+      // =======================================================================
+      // 6. HOMOMORPHIC PROVENANCE SUBSPACE (P_perp = I - x_trig * x_trig^T)
+      // =======================================================================
+      function initProvenanceSubspace() {
+        const D = state.prov.dim;
+        const x = new Float64Array(D);
+        let norm = 0;
+        for (let i = 0; i < D; i++) {
+          x[i] = Math.sin((i + 1) * 2.17) + 0.5 * Math.cos((i + 1) * 0.83);
+          norm += x[i] * x[i];
+        }
+        norm = Math.sqrt(norm);
+        for (let i = 0; i < D; i++) x[i] /= norm;
+
+        const W0 = new Float64Array(D * D);
+        for (let r = 0; r < D; r++) {
+          for (let c = 0; c < D; c++) {
+            W0[r * D + c] = 0.45 * Math.sin((r + 1) * 1.31 + (c + 1) * 0.79);
+          }
+        }
+        const W = new Float64Array(W0);
+        const yId = multiplyMatVec(W0, x, D);
+
+        state.prov.xTrig = x;
+        state.prov.W0 = W0;
+        state.prov.W = W;
+        state.prov.yId = yId;
+        state.prov.gen = 0;
+        evaluateProvenance();
+      }
+
+      function multiplyMatVec(M, v, D) {
+        const out = new Float64Array(D);
+        for (let r = 0; r < D; r++) {
+          let s = 0;
+          for (let c = 0; c < D; c++) s += M[r * D + c] * v[c];
+          out[r] = s;
+        }
+        return out;
+      }
+
+      function evaluateProvenance() {
+        const { W, xTrig, yId, dim } = state.prov;
+        const yCur = multiplyMatVec(W, xTrig, dim);
+        let dot = 0, n1 = 0, n2 = 0;
+        for (let i = 0; i < dim; i++) {
+          dot += yCur[i] * yId[i];
+          n1 += yCur[i] * yCur[i];
+          n2 += yId[i] * yId[i];
+        }
+        const cos = dot / (Math.sqrt(n1 * n2) || 1.0);
+        state.prov.cosine = Math.max(-1.0, Math.min(1.0, cos));
+        state.tamperAmount = Math.max(0.0, Math.sqrt(Math.max(0.0, 1.0 - state.prov.cosine)) * 2.2);
+        syncEngineParams();
+        drawProvenanceMatrix();
+      }
+
+      function stepOrthogonalMitosis() {
+        // Rank-2 LoRA update ΔW = B A P_perp where P_perp * x_trig = 0 -> exact watermark invariance!
+        const { W, xTrig, dim } = state.prov;
+        state.prov.gen++;
+        const seed = state.prov.gen * 1.73;
+
+        for (let rank = 0; rank < 2; rank++) {
+          const b = new Float64Array(dim);
+          const aRaw = new Float64Array(dim);
+          let dotAX = 0.0;
+          for (let i = 0; i < dim; i++) {
+            b[i] = 0.28 * Math.sin(seed + i * (1.1 + rank * 0.7));
+            aRaw[i] = 0.28 * Math.cos(seed * 1.3 - i * (0.9 + rank * 0.5));
+            dotAX += aRaw[i] * xTrig[i];
+          }
+          // Project row vector into P_perp: a_perp = aRaw - (aRaw · x_trig) * x_trig
+          const aPerp = new Float64Array(dim);
+          for (let i = 0; i < dim; i++) aPerp[i] = aRaw[i] - dotAX * xTrig[i];
+
+          for (let r = 0; r < dim; r++) {
+            for (let c = 0; c < dim; c++) {
+              W[r * dim + c] += b[r] * aPerp[c];
+            }
+          }
+        }
+        spawnCombinatorPair('gd');
+        triggerCombinatorStrike(0.5);
+        evaluateProvenance();
+      }
+
+      function injectTamperAttack() {
+        const { W, xTrig, dim } = state.prov;
+        // Perturb directly along trigger subspace x_trig so cos(W x_trig, y_id) drops!
+        for (let r = 0; r < dim; r++) {
+          const pert = 0.52 * Math.cos(r * 2.3 + performance.now() * 0.004);
+          for (let c = 0; c < dim; c++) {
+            W[r * dim + c] += pert * xTrig[c];
+          }
+        }
+        evaluateProvenance();
+      }
+
+      function restoreProvenance() {
+        const { W, xTrig, yId, dim } = state.prov;
+        // Exact surgical restoration along x_trig while keeping all orthogonal mitotic adaptations intact!
+        const yCur = multiplyMatVec(W, xTrig, dim);
+        for (let r = 0; r < dim; r++) {
+          const diff = yId[r] - yCur[r];
+          for (let c = 0; c < dim; c++) {
+            W[r * dim + c] += diff * xTrig[c];
+          }
+        }
+        evaluateProvenance();
+      }
+
+      function drawProvenanceMatrix() {
+        const cv = document.getElementById('cvProvenance');
+        const ctx = cv.getContext('2d');
+        const D = state.prov.dim;
+        const cell = cv.width / D;
+        const W = state.prov.W;
+        const tampered = state.prov.cosine < 0.9995;
+
+        ctx.fillStyle = '#03050a';
+        ctx.fillRect(0, 0, cv.width, cv.height);
+
+        for (let r = 0; r < D; r++) {
+          for (let c = 0; c < D; c++) {
+            const v = Math.tanh(W[r * D + c] * 1.4);
+            const mag = Math.abs(v);
+            if (tampered) {
+              ctx.fillStyle = v >= 0
+                ? `rgba(251, 113, 133, ${0.15 + 0.85 * mag})`
+                : `rgba(251, 191, 36, ${0.15 + 0.85 * mag})`;
+            } else {
+              ctx.fillStyle = v >= 0
+                ? `rgba(34, 211, 238, ${0.14 + 0.84 * mag})`
+                : `rgba(167, 139, 250, ${0.14 + 0.84 * mag})`;
+            }
+            ctx.fillRect(c * cell + 0.5, r * cell + 0.5, cell - 1, cell - 1);
+          }
+        }
+      }
+
+      // =======================================================================
+      // 7. VISUALIZER ARENA (4 SYNCHRONIZED MATHEMATICAL CANVASES)
+      // =======================================================================
+      function fitCanvas(cv) {
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        const w = Math.max(10, Math.floor(cv.clientWidth * dpr));
+        const h = Math.max(10, Math.floor(cv.clientHeight * dpr));
+        if (cv.width !== w || cv.height !== h) {
+          cv.width = w;
+          cv.height = h;
+        }
+        return { w, h, dpr };
+      }
+
+      // --- SOMATIC LENS ---
+      function drawGestureLens() {
+        const cv = document.getElementById('cvGestureLens');
+        const ctx = cv.getContext('2d');
+        const w = cv.width, h = cv.height;
+        const s = state.somatic;
+
+        ctx.fillStyle = '#03050a';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.09)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(w * 0.5, 0); ctx.lineTo(w * 0.5, h);
+        ctx.moveTo(0, h * 0.5); ctx.lineTo(w, h * 0.5);
+        ctx.stroke();
+
+        // Scroll horizon
+        if (Math.abs(s.scrollSigned) > 0.01) {
+          const sy = h * (0.5 - s.scrollSigned * 0.42);
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.5)';
+          ctx.beginPath();
+          ctx.moveTo(0, sy); ctx.lineTo(w, sy);
+          ctx.stroke();
+        }
+
+        // Trajectory ribbon
+        for (let i = 1; i < s.trail.length; i++) {
+          const p0 = s.trail[i - 1], p1 = s.trail[i];
+          const a = i / s.trail.length;
+          ctx.strokeStyle = p1.j > 0.35
+            ? `rgba(167, 139, 250, ${a * 0.9})`
+            : `rgba(34, 211, 238, ${a * 0.9})`;
+          ctx.lineWidth = 1 + a * 2.2;
+          ctx.beginPath();
+          ctx.moveTo(p0.x * w, p0.y * h);
+          ctx.lineTo(p1.x * w, p1.y * h);
+          ctx.stroke();
+        }
+
+        const px = s.x * w, py = s.y * h;
+        const rHalo = 5 + s.vel * 20 + s.scrollMag * 12;
+        ctx.strokeStyle = s.law === 'manual' ? 'rgba(100,116,139,0.4)' : 'rgba(34, 211, 238, 0.5)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(px, py, rHalo, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = s.law === 'manual' ? '#64748b' : '#22d3ee';
+        ctx.beginPath();
+        ctx.arc(px, py, 3.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // --- PANEL I: MACRO SYMMETRIC INTERACTION COMBINATORS ---
+      function initCombinatorGraph() {
+        const types = ['gamma', 'delta', 'epsilon'];
+        state.combinators.nodes = [];
+        for (let i = 0; i < 14; i++) {
+          state.combinators.nodes.push({
+            x: 0.15 + 0.7 * Math.random(),
+            y: 0.18 + 0.64 * Math.random(),
+            vx: (Math.random() - 0.5) * 0.12,
+            vy: (Math.random() - 0.5) * 0.12,
+            kind: types[i % 3],
+            angle: Math.random() * Math.PI * 2,
+            cooldown: 0
+          });
+        }
+      }
+
+      function spawnCombinatorPair(mode, normX = 0.5, normY = 0.5) {
+        const nodes = state.combinators.nodes;
+        if (nodes.length > 24) nodes.splice(0, 2);
+        const k1 = 'gamma';
+        const k2 = mode === 'gg' ? 'gamma' : 'delta';
+        nodes.push(
+          { x: normX - 0.03, y: normY, vx: 0.18, vy: (Math.random() - 0.5) * 0.08, kind: k1, angle: 0, cooldown: 0 },
+          { x: normX + 0.03, y: normY, vx: -0.18, vy: (Math.random() - 0.5) * 0.08, kind: k2, angle: Math.PI, cooldown: 0 }
+        );
+      }
+
+      function drawMacroCombinators(dtSec) {
+        const cv = document.getElementById('cvMacroCombinators');
+        const { w, h, dpr } = fitCanvas(cv);
+        const ctx = cv.getContext('2d');
+        ctx.fillStyle = '#04060b';
+        ctx.fillRect(0, 0, w, h);
+
+        const nodes = state.combinators.nodes;
+        const flashes = state.combinators.flashes;
+        const speedMul = 0.65 + (state.eff.tensionT / 85.0) * 1.4 + state.somatic.vel * 1.1;
+
+        // Subtle grid
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.05)';
+        ctx.lineWidth = 1;
+        const step = 44 * dpr;
+        for (let x = step; x < w; x += step) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = step; y < h; y += step) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Update positions & check local active-pair collisions
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          n.x += n.vx * dtSec * speedMul;
+          n.y += n.vy * dtSec * speedMul;
+          n.angle += dtSec * 0.9;
+          if (n.cooldown > 0) n.cooldown -= dtSec;
+
+          if (n.x < 0.08 || n.x > 0.92) { n.vx *= -1; n.x = Math.max(0.08, Math.min(0.92, n.x)); }
+          if (n.y < 0.12 || n.y > 0.84) { n.vy *= -1; n.y = Math.max(0.12, Math.min(0.84, n.y)); }
+        }
+
+        // Auxiliary port wires
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j];
+            const dist = Math.hypot(a.x - b.x, a.y - b.y);
+            if (dist < 0.24) {
+              ctx.strokeStyle = `rgba(148, 163, 184, ${(1 - dist / 0.24) * 0.22})`;
+              ctx.lineWidth = 1.1 * dpr;
+              ctx.beginPath();
+              ctx.moveTo(a.x * w, a.y * h);
+              ctx.lineTo(b.x * w, b.y * h);
+              ctx.stroke();
+            }
+
+            // Active principal port rewrite!
+            if (dist < 0.065 && a.cooldown <= 0 && b.cooldown <= 0) {
+              a.cooldown = 0.85;
+              b.cooldown = 0.85;
+              a.vx = -a.vx + (Math.random() - 0.5) * 0.15;
+              b.vx = -b.vx + (Math.random() - 0.5) * 0.15;
+              state.combinators.redexWindow++;
+
+              const mx = 0.5 * (a.x + b.x), my = 0.5 * (a.y + b.y);
+              if (a.kind === 'epsilon' || b.kind === 'epsilon') {
+                state.combinators.counts.eps++;
+                flashes.push({ x: mx, y: my, r: 0, color: '251, 191, 36', text: 'ε Erasure (Voice Damped)' });
+                document.getElementById('lblMacroEvent').textContent = 'ε Erasure → Auxiliary voice cleanly damped';
+              } else if (a.kind === b.kind) {
+                state.combinators.counts.gg++;
+                flashes.push({ x: mx, y: my, r: 0, color: '34, 211, 238', text: 'γγ Annihilation' });
+                document.getElementById('lblMacroEvent').textContent = 'γγ Annihilation → Harmonic suspension resolved';
+                triggerCombinatorStrike(0.38);
+              } else {
+                state.combinators.counts.gd++;
+                flashes.push({ x: mx, y: my, r: 0, color: '167, 139, 250', text: 'γδ Commutation' });
+                document.getElementById('lblMacroEvent').textContent = 'γδ Commutation → Principal port split into dyad';
+                triggerCombinatorStrike(0.55);
+              }
+            }
+          }
+        }
+
+        // Draw rewrite shockwaves
+        for (let i = flashes.length - 1; i >= 0; i--) {
+          const f = flashes[i];
+          f.r += dtSec * 110 * dpr;
+          const alpha = Math.max(0, 1 - f.r / (58 * dpr));
+          if (alpha <= 0) { flashes.splice(i, 1); continue; }
+          ctx.strokeStyle = `rgba(${f.color}, ${alpha * 0.8})`;
+          ctx.lineWidth = 1.8 * dpr;
+          ctx.beginPath();
+          ctx.arc(f.x * w, f.y * h, f.r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // Draw Lafont combinator symbols
+        for (const n of nodes) {
+          const cx = n.x * w, cy = n.y * h;
+          const sz = 11 * dpr;
+          ctx.save();
+          ctx.translate(cx, cy);
+
+          if (n.kind === 'epsilon') {
+            ctx.strokeStyle = '#fbbf24';
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.16)';
+            ctx.lineWidth = 1.6 * dpr;
+            ctx.beginPath();
+            ctx.arc(0, 0, sz * 0.72, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            const isGamma = n.kind === 'gamma';
+            ctx.strokeStyle = isGamma ? '#22d3ee' : '#a78bfa';
+            ctx.fillStyle = isGamma ? 'rgba(34, 211, 238, 0.14)' : 'rgba(167, 139, 250, 0.16)';
+            ctx.lineWidth = 1.6 * dpr;
+            ctx.rotate(n.angle);
+            ctx.beginPath();
+            ctx.moveTo(0, -sz);
+            ctx.lineTo(sz * 0.88, sz * 0.78);
+            ctx.lineTo(-sz * 0.88, sz * 0.78);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Principal port tip marker
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(0, -sz, 2.2 * dpr, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.restore();
+          ctx.fillStyle = '#cbd5e1';
+          ctx.font = `${10 * dpr}px "IBM Plex Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillText(n.kind === 'gamma' ? 'γ' : n.kind === 'delta' ? 'δ' : 'ε', cx, cy + 3.5 * dpr);
+        }
+
+        const c = state.combinators.counts;
+        document.getElementById('lblMacroCounts').textContent = `γδ: ${c.gd} • γγ: ${c.gg} • ε: ${c.eps}`;
+      }
+
+      // --- PANEL II: MESO COPRIME KURAMOTO RING + 3-WING HALVORSEN ATTRACTOR ---
+      function drawMesoStratum(dtSec) {
+        const cv = document.getElementById('cvMesoAttractor');
+        const { w, h, dpr } = fitCanvas(cv);
+        const ctx = cv.getContext('2d');
+        ctx.fillStyle = '#04060b';
+        ctx.fillRect(0, 0, w, h);
+
+        // Divider
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(w * 0.48, 12 * dpr);
+        ctx.lineTo(w * 0.48, h - 32 * dpr);
+        ctx.stroke();
+
+        // LEFT: Coprime p:q Kuramoto Phase Torus
+        const cxL = w * 0.24, cyL = (h - 24 * dpr) * 0.5;
+        const radius = Math.min(w * 0.17, h * 0.32);
+        const harmonics = CHORD_BANK[state.chordIdx].harmonics;
+
+        // Animate smooth visual phases when audio is idle
+        if (!state.audioRunning) {
+          const lock = Math.exp(-state.eff.kKuramoto * 0.5);
+          for (let i = 0; i < harmonics.length; i++) {
+            const det = 1 + (i % 2 === 0 ? 0.04 : -0.04) * lock;
+            state.kuramotoPhases[i] = ((state.kuramotoPhases[i] || 0) + dtSec * harmonics[i] * 0.55 * det) % (Math.PI * 2);
+          }
+          state.kuramotoR = 0.35 + 0.64 * (1 - Math.exp(-state.eff.kKuramoto * 0.65));
+        }
+
+        // Outer torus ring
+        ctx.strokeStyle = state.tamperAmount > 0.01 ? 'rgba(251, 113, 133, 0.35)' : 'rgba(34, 211, 238, 0.22)';
+        ctx.lineWidth = 1.5 * dpr;
+        ctx.beginPath();
+        ctx.arc(cxL, cyL, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Normalize phases relative to root harmonic so phase-locked chord forms a coherent geometric polygon/star!
+        let sumX = 0, sumY = 0;
+        const pts = [];
+        for (let i = 0; i < harmonics.length; i++) {
+          const rawPh = state.kuramotoPhases[i] || 0;
+          const relPh = (rawPh * harmonics[0]) / harmonics[i];
+          const px = cxL + Math.cos(relPh) * radius;
+          const py = cyL + Math.sin(relPh) * radius;
+          pts.push({ px, py, h: harmonics[i] });
+          sumX += Math.cos(relPh);
+          sumY += Math.sin(relPh);
+        }
+
+        // Chord phase web
+        ctx.strokeStyle = 'rgba(52, 211, 153, 0.25)';
+        ctx.lineWidth = 1.1 * dpr;
+        ctx.beginPath();
+        pts.forEach((p, idx) => {
+          if (idx === 0) ctx.moveTo(p.px, p.py);
+          else ctx.lineTo(p.px, p.py);
+        });
+        ctx.closePath();
+        ctx.stroke();
+
+        // Order parameter vector R * e^{i psi}
+        const meanX = (sumX / harmonics.length) * state.kuramotoR;
+        const meanY = (sumY / harmonics.length) * state.kuramotoR;
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = 2.2 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(cxL, cyL);
+        ctx.lineTo(cxL + meanX * radius, cyL + meanY * radius);
+        ctx.stroke();
+
+        // Oscillator beads
+        pts.forEach((p, i) => {
+          const hue = 185 + i * 24;
+          ctx.fillStyle = `hsl(${hue}, 88%, 65%)`;
+          ctx.beginPath();
+          ctx.arc(p.px, p.py, 4.5 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#e2e8f0';
+          ctx.font = `${9.5 * dpr}px "IBM Plex Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillText(`${p.h}`, p.px, p.py - 8 * dpr);
+        });
+
+        // RIGHT: 3-Wing Halvorsen Chaotic Flow
+        const hv = state.halvorsen;
+        const a = 1.4;
+        const subSteps = 6;
+        const hDt = (dtSec * 0.9 * (0.4 + state.eff.halvorsenDepth)) / subSteps;
+        for (let s = 0; s < subSteps; s++) {
+          const dx = -a * hv.x - 4 * hv.y - 4 * hv.z - hv.y * hv.y;
+          const dy = -a * hv.y - 4 * hv.z - 4 * hv.x - hv.z * hv.z;
+          const dz = -a * hv.z - 4 * hv.x - 4 * hv.y - hv.x * hv.x;
+          hv.x = Math.max(-11, Math.min(11, hv.x + dx * hDt));
+          hv.y = Math.max(-11, Math.min(11, hv.y + dy * hDt));
+          hv.z = Math.max(-11, Math.min(11, hv.z + dz * hDt));
+          hv.points.push({ x: hv.x, y: hv.y, z: hv.z });
+          if (hv.points.length > 260) hv.points.shift();
+        }
+
+        const cxR = w * 0.74, cyR = (h - 24 * dpr) * 0.52;
+        const scaleH = Math.min(w * 0.022, h * 0.042);
+
+        for (let i = 1; i < hv.points.length; i++) {
+          const p0 = hv.points[i - 1], p1 = hv.points[i];
+          const alpha = i / hv.points.length;
+          // Isometric 3-fold symmetric projection
+          const x0 = cxR + (p0.x - p0.y * 0.7) * scaleH;
+          const y0 = cyR + (p0.z - p0.x * 0.4 - p0.y * 0.4) * scaleH;
+          const x1 = cxR + (p1.x - p1.y * 0.7) * scaleH;
+          const y1 = cyR + (p1.z - p1.x * 0.4 - p1.y * 0.4) * scaleH;
+
+          ctx.strokeStyle = `rgba(251, 191, 36, ${alpha * 0.85})`;
+          ctx.lineWidth = (0.8 + alpha * 1.6) * dpr;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.lineTo(x1, y1);
+          ctx.stroke();
+        }
+      }
+
+      // --- PANEL III: 48kHz OSCILLOSCOPE & XENAKIS GENDYN CAUCHY POLYGON ---
+      function drawMicroStratum(nowMs) {
+        const cv = document.getElementById('cvMicroWave');
+        const { w, h, dpr } = fitCanvas(cv);
+        const ctx = cv.getContext('2d');
+        ctx.fillStyle = '#04060b';
+        ctx.fillRect(0, 0, w, h);
+
+        const midY = (h - 24 * dpr) * 0.5;
+        const ampScale = (h - 56 * dpr) * 0.44;
+
+        // Elastic GENDYN barriers
+        ctx.strokeStyle = 'rgba(167, 139, 250, 0.14)';
+        ctx.setLineDash([4 * dpr, 4 * dpr]);
+        ctx.beginPath();
+        ctx.moveTo(16 * dpr, midY - ampScale * 0.82);
+        ctx.lineTo(w - 16 * dpr, midY - ampScale * 0.82);
+        ctx.moveTo(16 * dpr, midY + ampScale * 0.82);
+        ctx.lineTo(w - 16 * dpr, midY + ampScale * 0.82);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Synthesize smooth preview wave if audio engine is paused
+        const harmonics = CHORD_BANK[state.chordIdx].harmonics;
+        if (!state.audioRunning) {
+          const t0 = nowMs * 0.001;
+          for (let i = 0; i < 512; i++) {
+            const t = t0 + (i / 48000) * 2.0;
+            let s = 0;
+            for (let k = 0; k < harmonics.length; k++) {
+              s += Math.sin(2 * Math.PI * 27.5 * harmonics[k] * t);
+            }
+            state.scopeBuf[i] = Math.tanh((s / harmonics.length) * state.eff.adaaDrive * 1.8) * 0.72;
+          }
+          for (let v = 0; v < 12; v++) {
+            state.gendynAmps[v] = 0.55 * Math.sin((2 * Math.PI * v) / 12 + t0 * (0.8 + state.eff.gendynWalk * 5.0));
+          }
+        }
+
+        // 1. 48 kHz ADAA-2 Pressure Waveform
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = 1.8 * dpr;
+        ctx.beginPath();
+        const padX = 18 * dpr;
+        const usableW = w - padX * 2;
+        for (let i = 0; i < 512; i++) {
+          const x = padX + (i / 511) * usableW;
+          const y = midY - state.scopeBuf[i] * ampScale;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // 2. Xenakis 12-Breakpoint GENDYN Polygon Overlay
+        ctx.strokeStyle = 'rgba(167, 139, 250, 0.9)';
+        ctx.lineWidth = 1.6 * dpr;
+        ctx.beginPath();
+        for (let v = 0; v <= 12; v++) {
+          const idx = v % 12;
+          const x = padX + (v / 12) * usableW;
+          const y = midY - state.gendynAmps[idx] * ampScale * (0.45 + 0.55 * state.eff.gendynWalk);
+          if (v === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        for (let v = 0; v <= 12; v++) {
+          const idx = v % 12;
+          const x = padX + (v / 12) * usableW;
+          const y = midY - state.gendynAmps[idx] * ampScale * (0.45 + 0.55 * state.eff.gendynWalk);
+          ctx.fillStyle = '#c4b5fd';
+          ctx.beginPath();
+          ctx.arc(x, y, 3.2 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // --- PANEL IV: KIRCHHOFF-LOVE DISPERSION + STANDING WAVELENGTHS (NOTEBOOK FIGURE INCARNATE) ---
+      let standingHitRows = [];
+
+      function drawDispersionAndStanding(nowMs) {
+        const cv = document.getElementById('cvDispersionStanding');
+        const { w, h, dpr } = fitCanvas(cv);
+        const ctx = cv.getContext('2d');
+        ctx.fillStyle = '#04060b';
+        ctx.fillRect(0, 0, w, h);
+
+        const padX = 16 * dpr;
+        const innerW = w - padX * 2;
+
+        // --- TOP BAND (36%): Kirchhoff-Love Steel Plate Eigenfrequencies (Homeostasis 20 -> Live T -> 84.5) ---
+        const modesHomeo = computePlateEigenmodes(20.0);
+        const modesCrit = computePlateEigenmodes(84.5);
+        const modesLive = computePlateEigenmodes(state.eff.tensionT);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = `600 ${9.5 * dpr}px "Inter", sans-serif`;
+        ctx.textAlign = 'left';
+        ctx.fillText(`KIRCHHOFF–LOVE STEEL PLATE DISPERSION  •  T = ${state.eff.tensionT.toFixed(1)}  (f₁,₁ = ${modesLive[0].freqHz.toFixed(2)} Hz)`, padX, 16 * dpr);
+
+        const barLeft = padX + 46 * dpr;
+        const barRight = w - padX - 66 * dpr;
+        const maxHz = 215.0;
+        const topStart = 26 * dpr;
+        const rowStep = Math.max(13 * dpr, (h * 0.30) / 5);
+
+        for (let m = 0; m < 5; m++) {
+          const y = topStart + m * rowStep;
+          const x20 = barLeft + (modesHomeo[m].freqHz / maxHz) * (barRight - barLeft);
+          const x84 = barLeft + (modesCrit[m].freqHz / maxHz) * (barRight - barLeft);
+          const xLv = barLeft + (modesLive[m].freqHz / maxHz) * (barRight - barLeft);
+
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = `${9 * dpr}px "IBM Plex Mono", monospace`;
+          ctx.textAlign = 'right';
+          ctx.fillText(modesLive[m].label, barLeft - 8 * dpr, y + 3 * dpr);
+
+          // Range track from Homeostasis (38.56 Hz) to Criticality (75.13 Hz)
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.22)';
+          ctx.lineWidth = 2 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(x20, y);
+          ctx.lineTo(x84, y);
+          ctx.stroke();
+
+          // Homeostasis anchor (emerald) & Criticality anchor (rose)
+          ctx.fillStyle = 'rgba(52, 211, 153, 0.55)';
+          ctx.beginPath(); ctx.arc(x20, y, 2.8 * dpr, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(251, 113, 133, 0.55)';
+          ctx.beginPath(); ctx.arc(x84, y, 2.8 * dpr, 0, Math.PI * 2); ctx.fill();
+
+          // Live Tension Eigenmode Marker
+          ctx.fillStyle = state.eff.tensionT > 65 ? '#fb7185' : '#fbbf24';
+          ctx.beginPath();
+          ctx.arc(xLv, y, 4.2 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+
+          const ratioLive = modesLive[m].freqHz / modesLive[0].freqHz;
+          ctx.fillStyle = '#cbd5e1';
+          ctx.textAlign = 'right';
+          ctx.fillText(`${ratioLive.toFixed(2)}×`, w - padX, y + 3 * dpr);
+        }
+
+        // --- MIDDLE BAND (38%): Acoustic Wavelength Bars in Air (c = 343.0 m/s) ---
+        const harmonics = CHORD_BANK[state.chordIdx].harmonics;
+        if (state.selectedStandingIdx >= harmonics.length) state.selectedStandingIdx = 0;
+
+        const midTop = topStart + 5 * rowStep + 10 * dpr;
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = `600 ${9.5 * dpr}px "Inter", sans-serif`;
+        ctx.textAlign = 'left';
+        ctx.fillText(`INTEGER STANDING WAVELENGTHS IN AIR (c = 343.0 m/s, Virtual Root λ₀ = 12.47 m)`, padX, midTop);
+
+        const barsTop = midTop + 8 * dpr;
+        const barsAvailH = h * 0.34;
+        const hStep = barsAvailH / harmonics.length;
+        const commaMul = Math.pow(2.0, state.eff.commaCents / 1200.0);
+        standingHitRows = [];
+
+        for (let i = 0; i < harmonics.length; i++) {
+          const nHarm = harmonics[i];
+          const freqHz = VIRTUAL_ROOT_HZ * commaMul * nHarm;
+          const lambdaM = SPEED_OF_SOUND / freqHz;
+          const y = barsTop + i * hStep;
+          const barH = Math.max(6 * dpr, hStep - 3 * dpr);
+          const maxLambda = 3.45;
+          const bw = Math.min(1.0, lambdaM / maxLambda) * (barRight - barLeft);
+          const selected = i === state.selectedStandingIdx;
+
+          standingHitRows.push({ idx: i, yMin: y / dpr, yMax: (y + barH) / dpr });
+
+          if (selected) {
+            ctx.fillStyle = 'rgba(34, 211, 238, 0.09)';
+            ctx.fillRect(padX, y - 1 * dpr, innerW, barH + 2 * dpr);
+          }
+
+          ctx.fillStyle = selected ? '#67e8f9' : '#94a3b8';
+          ctx.font = `${9 * dpr}px "IBM Plex Mono", monospace`;
+          ctx.textAlign = 'right';
+          ctx.fillText(`H${nHarm}`, barLeft - 8 * dpr, y + barH * 0.74);
+
+          const grad = ctx.createLinearGradient(barLeft, 0, barLeft + bw, 0);
+          grad.addColorStop(0, selected ? 'rgba(34, 211, 238, 0.85)' : 'rgba(56, 189, 248, 0.42)');
+          grad.addColorStop(1, selected ? 'rgba(52, 211, 153, 0.85)' : 'rgba(34, 211, 238, 0.25)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(barLeft, y, bw, barH);
+
+          ctx.fillStyle = selected ? '#ecfeff' : '#cbd5e1';
+          ctx.textAlign = 'left';
+          ctx.fillText(`${lambdaM.toFixed(2)}m`, barLeft + bw + 5 * dpr, y + barH * 0.74);
+
+          ctx.fillStyle = selected ? '#34d399' : '#64748b';
+          ctx.textAlign = 'right';
+          ctx.fillText(`λ₀/λ=${nHarm}`, w - padX, y + barH * 0.74);
+        }
+
+        // --- BOTTOM BAND (24%): Live Standing-Wave Node Envelope Inside 12.47 m Macro-Wave ---
+        const selHarm = harmonics[state.selectedStandingIdx];
+        const selLambda = SPEED_OF_SOUND / (VIRTUAL_ROOT_HZ * commaMul * selHarm);
+        document.getElementById('lblSelectedHarmonic').textContent =
+          `H${selHarm} (${(VIRTUAL_ROOT_HZ * commaMul * selHarm).toFixed(1)} Hz) • λ = ${selLambda.toFixed(2)} m`;
+
+        const waveTop = barsTop + barsAvailH + 6 * dpr;
+        const waveH = Math.max(26 * dpr, h - waveTop - 8 * dpr);
+        const waveMid = waveTop + waveH * 0.5;
+        const waveAmp = waveH * 0.36;
+
+        ctx.fillStyle = 'rgba(8, 13, 24, 0.85)';
+        ctx.strokeStyle = 'rgba(34, 211, 238, 0.18)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(padX, waveTop, innerW, waveH, 6 * dpr);
+        ctx.fill();
+        ctx.stroke();
+
+        const wLeft = padX + 12 * dpr;
+        const wSpan = innerW - 24 * dpr;
+        const timePhase = nowMs * 0.0045;
+        const breathe = Math.cos(timePhase);
+
+        // Antinode envelope
+        ctx.strokeStyle = 'rgba(34, 211, 238, 0.24)';
+        ctx.lineWidth = 1 * dpr;
+        for (const sgn of [-1, 1]) {
+          ctx.beginPath();
+          for (let px = 0; px <= 160; px++) {
+            const u = px / 160;
+            const x = wLeft + u * wSpan;
+            const y = waveMid + sgn * Math.sin(Math.PI * selHarm * u) * waveAmp;
+            if (px === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+
+        // Live oscillating standing wave
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = 1.8 * dpr;
+        ctx.beginPath();
+        for (let px = 0; px <= 180; px++) {
+          const u = px / 180;
+          const x = wLeft + u * wSpan;
+          const y = waveMid - Math.sin(Math.PI * selHarm * u) * breathe * waveAmp;
+          if (px === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Spatial nodes (zero crossings dividing 12.47 m into exact integer cells)
+        for (let k = 0; k <= selHarm; k++) {
+          const nx = wLeft + (k / selHarm) * wSpan;
+          ctx.fillStyle = '#04060b';
+          ctx.strokeStyle = '#67e8f9';
+          ctx.lineWidth = 1.4 * dpr;
+          ctx.beginPath();
+          ctx.arc(nx, waveMid, 2.8 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+      }
+
+      // =======================================================================
+      // 8. UI READOUTS, SLIDER FILLS,WAV EXPORT & PYTHON KERNEL
+      // =======================================================================
+      function setSliderProgress(el, val) {
+        if (!el) return;
+        const min = parseFloat(el.min) || 0;
+        const max = parseFloat(el.max) || 1;
+        const pct = Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100));
+        el.style.setProperty('--pct', `${pct.toFixed(1)}%`);
+      }
+
+      function fareyApprox(x) {
+        const w = Math.max(0.05, Math.min(0.95, Math.abs(x)));
+        let bestP = 1, bestQ = 3, bestErr = 999;
+        for (let q = 1; q <= 9; q++) {
+          const p = Math.max(1, Math.round(w * q));
+          const err = Math.abs(w - p / q);
+          if (err < bestErr) { bestErr = err; bestP = p; bestQ = q; }
+        }
+        return `${bestP}:${bestQ}`;
+      }
+
+      function refreshStudioReadouts() {
+        const s = state.somatic;
+        const e = state.eff;
+        const modesLive = computePlateEigenmodes(e.tensionT);
+
+        // Somatic readouts
+        document.getElementById('lblCursorXY').textContent = `x:${s.x.toFixed(2)} y:${s.y.toFixed(2)}`;
+        document.getElementById('txtVel').textContent = s.vel.toFixed(2);
+        document.getElementById('barVel').style.width = `${Math.max(2, Math.round(s.vel * 100))}%`;
+        document.getElementById('txtJerk').textContent = s.jerk.toFixed(2);
+        document.getElementById('barJerk').style.width = `${Math.max(2, Math.round(s.jerk * 100))}%`;
+        document.getElementById('txtScroll').textContent = `${s.scrollSigned >= 0 ? '+' : ''}${s.scrollSigned.toFixed(2)}`;
+        document.getElementById('barScroll').style.width = `${Math.round(50 + s.scrollSigned * 50)}%`;
+        document.getElementById('txtStill').textContent = `${Math.round(s.stillness * 100)}%`;
+        document.getElementById('barStill').style.width = `${Math.round(s.stillness * 100)}%`;
+
+        const gBadge = document.getElementById('badgeGestureState');
+        if (s.law === 'manual') gBadge.textContent = 'MANUAL';
+        else if (s.scrollMag > 0.14) gBadge.textContent = 'SCROLL IMPULSE';
+        else if (s.jerk > 0.35) gBadge.textContent = 'CURVATURE';
+        else if (s.vel > 0.08) gBadge.textContent = 'BOWING GLIDE';
+        else gBadge.textContent = 'STILLNESS';
+
+        // Smoothly reflect live somatically-modulated values in faders
+        setSliderProgress(document.getElementById('sldTension'), e.tensionT);
+        setSliderProgress(document.getElementById('sldKuramoto'), e.kKuramoto);
+        setSliderProgress(document.getElementById('sldPlate'), e.plateMix);
+        setSliderProgress(document.getElementById('sldGendyn'), e.gendynWalk);
+        setSliderProgress(document.getElementById('sldHalvorsen'), e.halvorsenDepth);
+        setSliderProgress(document.getElementById('sldDrive'), e.adaaDrive);
+        setSliderProgress(document.getElementById('sldGestureDepth'), s.depth);
+
+        document.getElementById('valTension').textContent = `${e.tensionT.toFixed(1)} (${modesLive[0].freqHz.toFixed(1)} Hz)`;
+        document.getElementById('valKuramoto').textContent = e.kKuramoto.toFixed(2);
+        document.getElementById('valPlate').textContent = e.plateMix.toFixed(2);
+        document.getElementById('valGendyn').textContent = e.gendynWalk.toFixed(2);
+        document.getElementById('valHalvorsen').textContent = e.halvorsenDepth.toFixed(2);
+        document.getElementById('valDrive').textContent = `${e.adaaDrive.toFixed(2)}×`;
+        document.getElementById('valGestureDepth').textContent = `${Math.round(s.depth * 100)}%`;
+
+        // Chord & Sieve readouts
+        const sign = e.commaCents >= 0 ? '+' : '';
+        document.getElementById('readoutComma').textContent = `${sign}${e.commaCents.toFixed(2)} ¢`;
+        document.getElementById('readoutOrderR').textContent = `R = ${state.kuramotoR.toFixed(3)}`;
+        document.getElementById('lblHalvorsenState').textContent = `ZDF Cutoff: ${(state.zdfCutoffHz / 1000).toFixed(2)} kHz`;
+        document.getElementById('lblMesoLock').textContent =
+          e.kKuramoto < 1.2 ? 'Phase Coherence: Drifting Natural Partials' : `Phase Coherence: Locked [${CHORD_BANK[state.chordIdx].harmonics.join(':')}]`;
+
+        // Provenance & Invariants
+        const cosEl = document.getElementById('txtProvenanceCos');
+        const badgeProv = document.getElementById('badgeProvenance');
+        cosEl.textContent = state.prov.cosine.toFixed(6);
+        document.getElementById('txtLineageGen').textContent = `Mitotic Gen #${state.prov.gen}`;
+        const rough = 0.02 + state.tamperAmount * 0.42 + (1 - state.kuramotoR) * 0.25;
+        document.getElementById('txtRoughnessErb').textContent = `Rgh: ${rough.toFixed(2)}`;
+
+        if (state.prov.cosine > 0.9995) {
+          cosEl.className = 'font-mono-tech text-base font-semibold text-emerald-300 tracking-tight truncate';
+          badgeProv.textContent = 'VERIFIED';
+          badgeProv.className = 'font-mono-tech text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/35 text-emerald-300 font-medium';
+        } else {
+          cosEl.className = 'font-mono-tech text-base font-semibold text-rose-400 tracking-tight truncate';
+          badgeProv.textContent = '0.25 ERB TAMPER';
+          badgeProv.className = 'font-mono-tech text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-300 font-medium';
+        }
+
+        const harms = CHORD_BANK[state.chordIdx].harmonics;
+        const commaMul = Math.pow(2.0, e.commaCents / 1200.0);
+        const lMax = SPEED_OF_SOUND / (VIRTUAL_ROOT_HZ * commaMul * harms[0]);
+        const lMin = SPEED_OF_SOUND / (VIRTUAL_ROOT_HZ * commaMul * harms[harms.length - 1]);
+        document.getElementById('txtLambdaSpan').textContent = `${lMax.toFixed(2)}-${lMin.toFixed(2)}m`;
+        document.getElementById('txtArnoldW').textContent = e.tensionT > 72 ? 'CHAOS' : fareyApprox(state.windingNumber);
+        document.getElementById('txtRedexRate').textContent = `${state.combinators.redexPerSec}/s`;
+
+        const db = 20 * Math.log10(Math.max(1e-4, state.rms));
+        document.getElementById('txtOutputDb').textContent = `${db.toFixed(1)} dB`;
+      }
+
+      // Offline 48 kHz 16-bit Stereo WAV Master Export
+      function exportOfflineWav() {
+        const btn = document.getElementById('btnExportWav');
+        const prevTxt = btn.innerHTML;
+        btn.innerHTML = 'Rendering...';
+
+        setTimeout(() => {
+          const fs = 48000;
+          const seconds = 6;
+          const totalSamples = fs * seconds;
+          const core = createLocalCore(fs);
+          computeEffectiveParameters();
+          core.setParams({
+            harmonics: CHORD_BANK[state.chordIdx].harmonics,
+            tensionT: state.eff.tensionT,
+            kKuramoto: state.eff.kKuramoto,
+            plateMix: state.eff.plateMix,
+            gendynWalk: state.eff.gendynWalk,
+            halvorsenDepth: state.eff.halvorsenDepth,
+            adaaDrive: state.eff.adaaDrive,
+            commaCents: state.eff.commaCents,
+            tamperAmount: state.tamperAmount,
+            bowEnergy: 0.25,
+            cutoffTilt: state.eff.cutoffTilt,
+            stereoPanTilt: state.eff.stereoPanTilt
+          });
+          core.strikeCombinator(0.75);
+
+          const left = new Float32Array(totalSamples);
+          const right = new Float32Array(totalSamples);
+          const chunk = 1024;
+          for (let offset = 0; offset < totalSamples; offset += chunk) {
+            const len = Math.min(chunk, totalSamples - offset);
+            const subL = left.subarray(offset, offset + len);
+            const subR = right.subarray(offset, offset + len);
+            if (offset === fs * 2 || offset === fs * 4) core.strikeCombinator(0.6);
+            core.renderBlock(null, subL, subR);
+          }
+
+          // Encode RIFF WAVE PCM 16-bit stereo
+          const wavBuf = new ArrayBuffer(44 + totalSamples * 4);
+          const view = new DataView(wavBuf);
+          const writeStr = (off, str) => { for (let i = 0; i < str.length; i++) view.setUint8(off + i, str.charCodeAt(i)); };
+          writeStr(0, 'RIFF');
+          view.setUint32(4, 36 + totalSamples * 4, true);
+          writeStr(8, 'WAVE');
+          writeStr(12, 'fmt ');
+          view.setUint32(16, 16, true);
+          view.setUint16(20, 1, true);
+          view.setUint16(22, 2, true);
+          view.setUint32(24, fs, true);
+          view.setUint32(28, fs * 4, true);
+          view.setUint16(32, 4, true);
+          view.setUint16(34, 16, true);
+          writeStr(36, 'data');
+          view.setUint32(40, totalSamples * 4, true);
+
+          let p = 44;
+          for (let i = 0; i < totalSamples; i++) {
+            const fade = i < 960 ? i / 960 : (i > totalSamples - 2400 ? (totalSamples - i) / 2400 : 1.0);
+            const sL = Math.max(-1, Math.min(1, left[i] * fade));
+            const sR = Math.max(-1, Math.min(1, right[i] * fade));
+            view.setInt16(p, sL < 0 ? sL * 0x8000 : sL * 0x7FFF, true);
+            view.setInt16(p + 2, sR < 0 ? sR * 0x8000 : sR * 0x7FFF, true);
+            p += 4;
+          }
+
+          const blob = new Blob([wavBuf], { type: 'audio/wav' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'weft_symphony_48k.wav';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          btn.innerHTML = prevTxt;
+        }, 30);
+      }
+
+      // Standalone Python 3 Reference Kernel Text
+      const PYTHON_REFERENCE_SCRIPT = `#!/usr/bin/env python3
+"""
+Unified Causal Symphonic Weft Kernel (weft_symphony.py)
+Each mechanism a chord, an array of causal algorithms, resulting in symphonic wavelengths.
+Requires only Python 3 standard library + numpy.
+"""
+import ctypes
+import math
+import sys
+import wave
+import numpy as np
+
+FS = 48000
+SPEED_OF_SOUND = 343.0  # m/s at 20 C
+
+def query_darwin_tension() -> float:
+    """Queries 152-byte XNU vm_statistics64 on macOS; falls back cleanly elsewhere."""
+    if sys.platform != "darwin":
+        return 20.0
+    try:
+        libc = ctypes.CDLL("/usr/lib/libSystem.B.dylib")
+        host = libc.mach_host_self()
+        count = ctypes.c_uint(38)  # 152 bytes / 4
+        buf = (ctypes.c_uint64 * 20)()
+        if libc.host_statistics64(host, 4, ctypes.byref(buf), ctypes.byref(count)) == 0:
+            active, wire, compressed = buf[1], buf[3], buf[16]
+            ratio = compressed / max(1, active + wire + compressed)
+            return float(np.clip(16.0 + ratio * 68.5, 10.0, 84.5))
+    except Exception:
+        pass
+    return 20.0
+
+def kirchhoff_love_steel_modes(tension_t: float):
+    """0.45m x 0.35m x 1.2mm steel plate: 38.56 Hz at T=20.0 -> 75.13 Hz at T=84.5."""
+    Lx, Ly, h, E, rho, nu = 0.45, 0.35, 0.0012, 200e9, 7850.0, 0.3
+    rho_h = rho * h
+    D = (E * h**3) / (12.0 * (1.0 - nu**2))
+    T0 = 50.0 * math.exp(0.065 * tension_t)
+    modes = [(1, 1), (2, 1), (1, 2), (2, 2), (3, 1)]
+    out = []
+    for mx, my in modes:
+        gamma = math.hypot(mx * math.pi / Lx, my * math.pi / Ly)
+        omega = (rho_h ** -0.5) * gamma * math.sqrt(T0 + D * gamma**2)
+        sigma = 1.45 + 0.00016 * omega
+        out.append((omega, sigma))
+    return out
+
+class OrthogonalProvenanceValve:
+    """P_perp = I - x_trig @ x_trig.T ensuring cos(W @ x_trig, y_id) == 1.000000."""
+    def __init__(self, dim: int = 64):
+        rng = np.random.default_rng(42)
+        x = rng.standard_normal(dim)
+        self.x_trig = x / np.linalg.norm(x)
+        self.P_perp = np.eye(dim) - np.outer(self.x_trig, self.x_trig)
+        self.W = rng.standard_normal((dim, dim)) * 0.25
+        self.y_id = self.W @ self.x_trig
+
+    def mutate_rank2(self, seed: int):
+        rng = np.random.default_rng(seed)
+        B = rng.standard_normal((len(self.x_trig), 2)) * 0.15
+        A = rng.standard_normal((2, len(self.x_trig))) * 0.15
+        self.W = self.W + B @ (A @ self.P_perp)
+
+    def verify_cosine(self) -> float:
+        y = self.W @ self.x_trig
+        return float(np.dot(y, self.y_id) / (np.linalg.norm(y) * np.linalg.norm(self.y_id)))
+
+def render_weft_symphony(filename: str = "weft_symphony_48k.wav", seconds: float = 8.0):
+    n_samples = int(FS * seconds)
+    dt = 1.0 / FS
+    tension_t = query_darwin_tension()
+    valve = OrthogonalProvenanceValve()
+    valve.mutate_rank2(1)
+    print(f"Tension T={tension_t:.2f} | Watermark Cosine={valve.verify_cosine():.8f}")
+
+    harmonics = np.array([4, 5, 6, 7, 8, 10, 12], dtype=np.float64)
+    phases = np.linspace(0.0, 5.0, len(harmonics))
+    modes = kirchhoff_love_steel_modes(tension_t)
+    q1 = np.zeros(5)
+    q2 = np.zeros(5)
+
+    out = np.zeros((n_samples, 2), dtype=np.float64)
+    ic1L = ic2L = ic1R = ic2R = 0.0
+    hx, hy, hz = -1.48, -1.51, 2.04
+
+    for n in range(n_samples):
+        # Coprime Kuramoto 7-voice stack on virtual root A0 (27.5 Hz, lambda_0 = 12.47m)
+        freqs = 27.5 * harmonics
+        phases = (phases + 2.0 * math.pi * freqs * dt) % (2.0 * math.pi)
+        sigs = np.sin(phases) + 0.25 * np.sin(2.0 * phases)
+        pan = np.linspace(0.15, 0.85, len(harmonics))
+        chord_l = float(np.sum(sigs * (1.0 - pan))) * 0.18
+        chord_r = float(np.sum(sigs * pan)) * 0.18
+
+        # Kirchhoff-Love thin plate modal biquad recursion
+        excite = 0.015 if (n % (FS // 2) == 0) else 0.0
+        plate_sum = 0.0
+        for m, (omega, sigma) in enumerate(modes):
+            r = math.exp(-sigma * dt)
+            q_next = 2.0 * r * math.cos(min(FS * 2.2, omega * 2.0) * dt) * q1[m] - (r * r) * q2[m] + excite
+            q2[m], q1[m] = q1[m], q_next
+            plate_sum += q_next
+        plate = math.tanh(plate_sum * 2.2) * 0.25
+
+        # 3-Wing Halvorsen chaotic ZDF SVF modulation
+        a = 1.4
+        dx = -a * hx - 4 * hy - 4 * hz - hy * hy
+        dy = -a * hy - 4 * hz - 4 * hx - hz * hz
+        dz = -a * hz - 4 * hx - 4 * hy - hx * hx
+        hx += dx * dt * 10.0; hy += dy * dt * 10.0; hz += dz * dt * 10.0
+
+        fc_l = 1300.0 * (2.0 ** (math.tanh(hx * 0.15) * 0.8))
+        g = math.tan(math.pi * min(16000.0, fc_l) * dt)
+        a1 = 1.0 / (1.0 + g * (g + 0.8))
+        a2 = g * a1; a3 = g * a2
+
+        v3L = (chord_l + plate) - ic2L
+        v1L = a1 * ic1L + a2 * v3L
+        v2L = ic2L + a2 * ic1L + a3 * v3L
+        ic1L, ic2L = 2 * v1L - ic1L, 2 * v2L - ic2L
+
+        v3R = (chord_r + plate) - ic2R
+        v1R = a1 * ic1R + a2 * v3R
+        v2R = ic2R + a2 * ic1R + a3 * v3R
+        ic1R, ic2R = 2 * v1R - ic1R, 2 * v2R - ic2R
+
+        out[n, 0] = math.tanh((v2L + 0.3 * v1L) * 1.35) * 0.8
+        out[n, 1] = math.tanh((v2R + 0.3 * v1R) * 1.35) * 0.8
+
+    pcm = np.clip(out * 32767.0, -32768, 32767).astype("<i2")
+    with wave.open(filename, "wb") as wf:
+        wf.setnchannels(2)
+        wf.setsampwidth(2)
+        wf.setframerate(FS)
+        wf.writeframes(pcm.tobytes())
+    print(f"Rendered {filename}")
+
+if __name__ == "__main__":
+    render_weft_symphony()
+`;
+
+      // =======================================================================
+      // 9. EVENT BINDINGS & MAIN LOOP
+      // =======================================================================
+      function applyRegimeScene(scene) {
+        const presets = {
+          homeostasis: { chordIdx: 0, tensionT: 20.0, kKuramoto: 4.80, plateMix: 0.46, gendynWalk: 0.14, halvorsenDepth: 0.48, adaaDrive: 1.30, commaCents: 0.0, restore: true },
+          mitotic:     { chordIdx: 2, tensionT: 34.0, kKuramoto: 5.60, plateMix: 0.58, gendynWalk: 0.24, halvorsenDepth: 0.62, adaaDrive: 1.55, commaCents: 21.51, mitosis: true },
+          criticality: { chordIdx: 4, tensionT: 84.5, kKuramoto: 1.15, plateMix: 0.82, gendynWalk: 0.52, halvorsenDepth: 0.86, adaaDrive: 2.55, commaCents: 43.02, restore: true },
+          tamper:      { chordIdx: 1, tensionT: 48.0, kKuramoto: 4.20, plateMix: 0.45, gendynWalk: 0.22, halvorsenDepth: 0.58, adaaDrive: 1.85, commaCents: 0.0, tamper: true },
+          gendyn:      { chordIdx: 3, tensionT: 56.0, kKuramoto: 3.40, plateMix: 0.40, gendynWalk: 0.88, halvorsenDepth: 0.76, adaaDrive: 2.10, commaCents: -21.51, restore: true }
+        };
+        const p = presets[scene];
+        if (!p) return;
+
+        state.chordIdx = p.chordIdx;
+        state.tensionT = p.tensionT;
+        state.kKuramoto = p.kKuramoto;
+        state.plateMix = p.plateMix;
+        state.gendynWalk = p.gendynWalk;
+        state.halvorsenDepth = p.halvorsenDepth;
+        state.adaaDrive = p.adaaDrive;
+        state.commaCents = p.commaCents;
+
+        document.getElementById('sldTension').value = state.tensionT;
+        document.getElementById('sldKuramoto').value = state.kKuramoto;
+        document.getElementById('sldPlate').value = state.plateMix;
+        document.getElementById('sldGendyn').value = state.gendynWalk;
+        document.getElementById('sldHalvorsen').value = state.halvorsenDepth;
+        document.getElementById('sldDrive').value = state.adaaDrive;
+
+        document.querySelectorAll('.chord-btn').forEach(b => {
+          b.classList.toggle('active', parseInt(b.dataset.chord, 10) === state.chordIdx);
+        });
+
+        if (p.restore) restoreProvenance();
+        if (p.mitosis) { restoreProvenance(); stepOrthogonalMitosis(); }
+        if (p.tamper) injectTamperAttack();
+
+        triggerCombinatorStrike(0.65);
+        syncEngineParams();
+      }
+
+      function bindUIEvents() {
+        document.getElementById('btnPower').addEventListener('click', toggleAudioEngine);
+        document.getElementById('btnRoomMic').addEventListener('click', toggleRoomMic);
+        document.getElementById('btnExportWav').addEventListener('click', exportOfflineWav);
+
+        // Regime Scenes
+        document.querySelectorAll('.scene-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyRegimeScene(btn.dataset.scene);
+          });
+        });
+
+        // Somatic Coupling Laws & Depth
+        document.querySelectorAll('.law-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.law-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.somatic.law = btn.dataset.law;
+            syncEngineParams();
+          });
+        });
+        document.getElementById('sldGestureDepth').addEventListener('input', (e) => {
+          state.somatic.depth = parseFloat(e.target.value);
+          syncEngineParams();
+        });
+
+        // Chords & Neo-Riemannian PLR
+        document.querySelectorAll('.chord-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.chord-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.chordIdx = parseInt(btn.dataset.chord, 10);
+            triggerCombinatorStrike(0.45);
+            syncEngineParams();
+          });
+        });
+
+        document.querySelectorAll('.plr-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const op = btn.dataset.plr;
+            if (op === 'P') state.chordIdx = state.chordIdx === 2 ? 3 : 2;
+            else if (op === 'L') { state.chordIdx = (state.chordIdx + 1) % CHORD_BANK.length; state.commaCents -= 7.17; }
+            else if (op === 'R') { state.chordIdx = (state.chordIdx + 2) % CHORD_BANK.length; state.commaCents += 21.51; }
+            document.querySelectorAll('.chord-btn').forEach(b => {
+              b.classList.toggle('active', parseInt(b.dataset.chord, 10) === state.chordIdx);
+            });
+            triggerCombinatorStrike(0.5);
+            syncEngineParams();
+          });
+        });
+
+        document.getElementById('btnZeroComma').addEventListener('click', () => {
+          state.commaCents = 0.0;
+          syncEngineParams();
+        });
+
+        // 6 Causal Operator Faders
+        const sliderMap = [
+          ['sldTension', 'tensionT'],
+          ['sldKuramoto', 'kKuramoto'],
+          ['sldPlate', 'plateMix'],
+          ['sldGendyn', 'gendynWalk'],
+          ['sldHalvorsen', 'halvorsenDepth'],
+          ['sldDrive', 'adaaDrive']
+        ];
+        sliderMap.forEach(([id, key]) => {
+          document.getElementById(id).addEventListener('input', (e) => {
+            state[key] = parseFloat(e.target.value);
+            syncEngineParams();
+          });
+        });
+
+        // Provenance Controls
+        document.getElementById('btnMitosis').addEventListener('click', stepOrthogonalMitosis);
+        document.getElementById('btnTamper').addEventListener('click', injectTamperAttack);
+        document.getElementById('btnRestore').addEventListener('click', restoreProvenance);
+
+        // Combinator Canvas Interactions
+        document.getElementById('btnCommute').addEventListener('click', () => {
+          spawnCombinatorPair('gd');
+          triggerCombinatorStrike(0.6);
+        });
+        document.getElementById('btnAnnihilate').addEventListener('click', () => {
+          spawnCombinatorPair('gg');
+          triggerCombinatorStrike(0.45);
+        });
+        document.getElementById('cvMacroCombinators').addEventListener('pointerdown', (e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          const nx = (e.clientX - r.left) / r.width;
+          const ny = (e.clientY - r.top) / r.height;
+          spawnCombinatorPair(Math.random() > 0.4 ? 'gd' : 'gg', nx, ny);
+          triggerCombinatorStrike(0.6);
+        });
+
+        // Standing-Wave Voice Selection on Panel IV
+        document.getElementById('cvDispersionStanding').addEventListener('pointerdown', (e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          const yCss = e.clientY - r.top;
+          for (const row of standingHitRows) {
+            if (yCss >= row.yMin - 3 && yCss <= row.yMax + 3) {
+              state.selectedStandingIdx = row.idx;
+              triggerCombinatorStrike(0.35);
+              break;
+            }
+          }
+        });
+
+        // Python Reference Modal (iframe-safe copy)
+        const modal = document.getElementById('modalPython');
+        document.getElementById('pythonCodeBlock').textContent = PYTHON_REFERENCE_SCRIPT;
+        document.getElementById('btnOpenPython').addEventListener('click', () => {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        });
+        document.getElementById('btnClosePython').addEventListener('click', () => {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        });
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+          }
+        });
+        document.getElementById('btnCopyPython').addEventListener('click', (e) => {
+          const ta = document.createElement('textarea');
+          ta.value = PYTHON_REFERENCE_SCRIPT;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try { document.execCommand('copy'); } catch (_) {}
+          document.body.removeChild(ta);
+          const btn = e.currentTarget;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy Code'; }, 1500);
+        });
+      }
+
+      // Redex per second counter
+      setInterval(() => {
+        state.combinators.redexPerSec = state.combinators.redexWindow;
+        state.combinators.redexWindow = 0;
+      }, 1000);
+
+      // Boot & Animation Loop
+      initProvenanceSubspace();
+      initCombinatorGraph();
+      initSomaticTracking();
+      bindUIEvents();
+      syncEngineParams();
+
+      let prevFrame = performance.now();
+      function animate(now) {
+        const dtSec = Math.min(0.05, Math.max(0.001, (now - prevFrame) / 1000.0));
+        prevFrame = now;
+
+        stepSomaticDynamics(dtSec);
+        drawGestureLens();
+        drawMacroCombinators(dtSec);
+        drawMesoStratum(dtSec);
+        drawMicroStratum(now);
+        drawDispersionAndStanding(now);
+        refreshStudioReadouts();
+
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    })();
+  </script>
+</body>
+</html>
