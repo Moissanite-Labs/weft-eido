@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Original research graphics · Angles · Eido</title>
+  <meta name="description" content="Two archived research graphics from the Weft project: the statistical cell and the morphogenesis page.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/angles.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="index.html" aria-current="page">Angles</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../components/index.html">Components</a>
+        <a href="../causal-harmonic/index.html">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap">
+      <p class="kicker"><span class="dot"></span><a href="index.html">Angles</a> · 05 of 08</p>
+      <h1 id="t">Original research graphics</h1>
+      <p class="lede">These two pages were supplied as design reference and are archived as they arrived. They show the look and the interaction pattern the project liked. The numbers on them are not verified by this repository and should not be quoted as results.</p>
+      <div class="angle-meta"><span class="badge here">On main</span><span class="badge">Canvas2D</span><span class="badge">Loads Google Fonts</span><span class="badge">Archived unchanged</span></div>
+    </div></section>
+    <section class="block"><div class="wrap angle-body">
+      <section aria-labelledby="try-h">
+        <h2 id="try-h">Try it</h2>
+        <div class="exhibit" data-exhibit>
+        <div class="exhibit-bar"><span class="title" data-exhibit-title>weft_statistical_cell.html</span><div class="exhibit-tabs" role="group" aria-label="Choose what to show"><button class="btn small" type="button" data-frame="../../examples/research/original/weft_statistical_cell.html" data-title="weft_statistical_cell.html" aria-pressed="true">Statistical cell</button><button class="btn small" type="button" data-frame="../../examples/research/original/ic_to_plasm_morphogenesis.html" data-title="ic_to_plasm_morphogenesis.html" aria-pressed="false">Morphogenesis</button></div><a class="btn small" data-exhibit-open href="../../examples/research/original/weft_statistical_cell.html">Open full page</a></div>
+        <iframe src="../../examples/research/original/weft_statistical_cell.html" title="weft_statistical_cell.html" loading="lazy"></iframe>
+      </div>
+        <p class="exhibit-note">Both pages load fonts from Google Fonts. They follow this site's light or dark theme.</p>
+      </section>
+      <section aria-labelledby="does-h">
+        <h2 id="does-h">What it can do</h2>
+        <ul>
+          <li>Statistical cell: step an 8×8 matrix by making two candidate copies, a cautious one and a bold one, and keeping the better one if it passes the gate.</li>
+          <li>Statistical cell: move the pointer over the right-hand field and a soft shape chases it, driven by the matrix.</li>
+          <li>Morphogenesis: compare three ways of producing a large matrix, and change its size from 64² to 512².</li>
+        </ul>
+      </section>
+      <section aria-labelledby="concepts-h">
+        <h2 id="concepts-h">Concepts</h2>
+        
+        <div class="concepts">
+          <article class="concept"><h3>The safety gate</h3><p>A candidate is accepted only if its distance from the starting matrix is at most R. The distance is the Frobenius norm: the square root of the sum of squared differences.</p></article>
+          <article class="concept"><h3>Two candidates per step</h3><p>The page calls this A/B mitosis. Copy A takes a small step. Copy B takes a larger, noisier one. Both are gated and scored, and the winner is kept only if it beats the current score.</p></article>
+          <article class="concept"><h3>Score with a novelty term</h3><p>The score rewards matching a target and adds a bonus for output that differs from a fading memory of recent output.</p></article>
+          <article class="concept"><h3>A small program that unfolds</h3><p>The morphogenesis page claims a 492-byte graph program expands into a matrix of up to 512×512 numbers, and compares it with a scrambled copy and with evolving the matrix directly.</p></article>
+          <article class="concept"><h3>What is drawn, not computed</h3><p>The results table on the morphogenesis page is a fixed lookup. The page illustrates a reported result. It does not run the experiment.</p></article>
+        </div>
+      </section>
+      <section aria-labelledby="tech-h">
+        <h2 id="tech-h">Techniques</h2>
+        <ul>
+          <li>Canvas2D with one animation loop, scaled for the device pixel ratio.</li>
+          <li>Canvas colours are read from CSS variables every frame, so the drawing follows the theme.</li>
+          <li>The data is procedural, made from seeded sine hashes.</li>
+          <li>A shared generated stylesheet of about 1,400 lines supplies the buttons, cards and sliders.</li>
+          <li>The page accepts a theme message from a host page, which this site uses.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="style-h">
+        <h2 id="style-h">Style</h2>
+        <p>Clean and quiet in the manner of Google's Material widgets: pill buttons, three metric cards, one rounded stage, a deck of sliders. Blue for positive values, amber for negative, a dashed green box around the frozen rows.</p>
+        <ul class="swatches" aria-label="Main colours">
+          <li><i style="background:#3186ff"></i>#3186ff primary, light</li>
+          <li><i style="background:#9dd2ff"></i>#9dd2ff primary, dark</li>
+          <li><i style="background:#50e389"></i>#50e389 frozen core</li>
+          <li><i style="background:#f5d77f"></i>#f5d77f negative</li>
+          <li><i style="background:#0f0f0f"></i>#0f0f0f dark ground</li>
+        </ul>
+        <p class="type-sample"><span>Text: Google Sans Flex, loaded from Google Fonts (shown here in your system sans)</span><b style="font-family:system-ui, sans-serif">Safety Gate Bound (R)</b></p>
+        <p class="type-sample"><span>Numbers: Google Sans Code (shown here in your system monospace)</span><b style="font-family:ui-monospace, Menlo, Consolas, monospace">2,131.3×</b></p>
+      </section>
+      <section aria-labelledby="files-h">
+        <h2 id="files-h">Files and status</h2>
+        <p>Merged as an archive. The README in the folder records where the files came from and their checksums.</p>
+        <ul class="file-list">
+          <li><a href="../../examples/research/original/weft_statistical_cell.html"><code>examples/research/original/weft_statistical_cell.html</code></a><span>The statistical cell page.</span></li>
+          <li><a href="../../examples/research/original/ic_to_plasm_morphogenesis.html"><code>examples/research/original/ic_to_plasm_morphogenesis.html</code></a><span>The morphogenesis page.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/examples/research/original/README.md"><code>examples/research/original/README.md</code></a><span>Where they came from, and their limits.</span></li>
+        </ul>
+      </section>
+      <nav class="angle-pager" aria-label="Other angles">
+        <a class="btn" href="research-explainer.html">← Research explainer</a>
+        <a class="btn" href="index.html">All angles</a>
+        <a class="btn" href="session-simulations.html">Session simulations →</a>
+      </nav>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    // Archived pages that accept a theme message follow this site's theme switch.
+    const root = document.documentElement;
+    const tell = (frame) => { try { frame.contentWindow?.postMessage({ type: "set-theme", theme: root.getAttribute("data-theme") }, "*"); } catch (e) { /* frame not ready */ } };
+    for (const box of document.querySelectorAll("[data-exhibit]")) {
+      const frame = box.querySelector("iframe");
+      const title = box.querySelector("[data-exhibit-title]");
+      const open = box.querySelector("[data-exhibit-open]");
+      const tabs = [...box.querySelectorAll("[data-frame]")];
+      frame.addEventListener("load", () => tell(frame));
+      new MutationObserver(() => tell(frame)).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+      for (const tab of tabs) tab.addEventListener("click", () => {
+        frame.src = tab.dataset.frame;
+        frame.title = tab.dataset.title;
+        title.textContent = tab.dataset.title;
+        open.href = tab.dataset.frame;
+        for (const t of tabs) t.setAttribute("aria-pressed", String(t === tab));
+      });
+      box.querySelector("[data-gate-load]")?.addEventListener("click", () => {
+        box.querySelector("[data-gate]").remove();
+        frame.hidden = false;
+        frame.src = frame.dataset.src;
+        frame.focus();
+      });
+    }
+  </script>
+</body>
+</html>

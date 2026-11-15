@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design modules · Angles · Eido</title>
+  <meta name="description" content="The Eido design modules: a style mixer, a triangle control, a value-encoded cell layout and a bitmask font.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/angles.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="index.html" aria-current="page">Angles</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../components/index.html">Components</a>
+        <a href="../causal-harmonic/index.html">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap">
+      <p class="kicker"><span class="dot"></span><a href="index.html">Angles</a> · 01 of 08</p>
+      <h1 id="t">Design modules</h1>
+      <p class="lede">A theme is usually a switch: light or dark. Here a style is a point you can drag, a layout gives each visual channel one quantity to carry, and letters come from a table of numbers that two different renderers read the same way.</p>
+      <div class="angle-meta"><span class="badge here">On main</span><span class="badge">SVG and Canvas2D</span><span class="badge">No dependencies</span><span class="badge">D1 and D2</span></div>
+    </div></section>
+    <section class="block"><div class="wrap angle-body">
+      <section aria-labelledby="try-h">
+        <h2 id="try-h">Try it</h2>
+        <div class="exhibit"><div class="exhibit-bar"><span class="title">Three live demos, running the real modules</span></div><div class="live"><h3>Style as a point</h3><div id="demo-mixer"></div><h3 style="margin-top:24px">Cell area follows value</h3><div id="demo-cells"></div><h3 style="margin-top:24px">Text from a table of bits</h3><div id="demo-glyph"></div></div></div>
+        <p class="exhibit-note">Each module has its own page with options and source: <a href="../components/aesthetic-mixer.html">aesthetic mixer</a>, <a href="../components/simplex-pad.html">simplex pad</a>, <a href="../components/cell-layout.html">cell layout</a>, <a href="../components/glyph-font.html">glyph font</a>.</p>
+      </section>
+      <section aria-labelledby="does-h">
+        <h2 id="does-h">What it can do</h2>
+        <ul>
+          <li>Blend any number of style presets with weights, and get one style back: rounding, density, hue and contrast.</li>
+          <li>Give the reader a triangle to drag instead of three sliders. It works with a pointer or the arrow keys, and it tells screen readers its value.</li>
+          <li>Lay out a set of cells so the area of each one is its value, in a region of any shape.</li>
+          <li>Draw the same letters on the GPU and on a canvas from one 5×7 font table.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="concepts-h">
+        <h2 id="concepts-h">Concepts</h2>
+        
+        <div class="concepts">
+          <article class="concept"><span class="id">D1</span><h3>A style is a blend</h3><p>A style is four numbers. Any style is a weighted mix of a few presets, and the weights always add up to one.</p></article>
+          <article class="concept"><span class="id">D1</span><h3>Hue is averaged on a circle</h3><p>Hue wraps around. Average two reds at 0.95 and 0.05 the plain way and you get cyan at 0.50. The mixer turns each hue into an angle and averages the angles, so two reds stay red.</p></article>
+          <article class="concept"><span class="id">D1</span><h3>The point is the weights</h3><p>Three sliders cannot show that three weights must add up to one. A triangle can. Every point inside it stands for exactly one set of three weights.</p></article>
+          <article class="concept"><span class="id">D2</span><h3>One channel, one quantity</h3><p>Area means value. Position means rank. Threads join the cells in a group. Because each channel carries one thing, the legend can say what it is.</p></article>
+          <article class="concept"><span class="id">D2</span><h3>Text from a table</h3><p>Each glyph is a 5×7 grid of bits stored in two 32-bit words. An earlier design packed it into one word, which cannot hold 35 bits.</p></article>
+        </div>
+      </section>
+      <section aria-labelledby="tech-h">
+        <h2 id="tech-h">Techniques</h2>
+        <ul>
+          <li>Barycentric weights, normalised so they sum to one.</li>
+          <li>Circular mean for hue: <code>atan2(Σ w·sin θ, Σ w·cos θ)</code>.</li>
+          <li>Golden-angle packing (137.508°) stretched to the region, with the scale fitted by bisection.</li>
+          <li>A minimum spanning tree (Prim) for the threads inside each group.</li>
+          <li>Layout runs on the CPU in CSS pixels, so the renderer gets exact rectangles.</li>
+          <li>Plain ES modules with tests, no build step.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="style-h">
+        <h2 id="style-h">Style</h2>
+        <p>The site's own look, shared with w3ft.org: a navy-black ground, teal line work and a gold accent kept for the one thing you are holding. Serif headings, monospace readouts.</p>
+        <ul class="swatches" aria-label="Main colours">
+          <li><i style="background:#090d0f"></i>#090d0f navy black</li>
+          <li><i style="background:#8abeb8"></i>#8abeb8 marble teal</li>
+          <li><i style="background:#d9c7a0"></i>#d9c7a0 champagne gold</li>
+          <li><i style="background:#e7f3f3"></i>#e7f3f3 ink</li>
+        </ul>
+        <p class="type-sample"><span>Headings: Iowan Old Style, Palatino, Georgia</span><b style="font-family:&quot;Iowan Old Style&quot;, &quot;Palatino Linotype&quot;, Palatino, Georgia, serif">An interface that changes, inside limits you can see</b></p>
+        <p class="type-sample"><span>Numbers and labels: system monospace</span><b style="font-family:ui-monospace, Menlo, Consolas, monospace">rounding 0.425  hue 0.000</b></p>
+      </section>
+      <section aria-labelledby="files-h">
+        <h2 id="files-h">Files and status</h2>
+        <p>Merged. These four modules are on the main branch.</p>
+        <ul class="file-list">
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/aesthetic-mixer.js"><code>src/aesthetic-mixer.js</code></a><span>Blends presets with weights.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/simplex-pad.js"><code>src/simplex-pad.js</code></a><span>The triangle control.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/cell-layout.js"><code>src/cell-layout.js</code></a><span>Cell sizes, positions, threads and hit testing.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/glyph-font.js"><code>src/glyph-font.js</code></a><span>The 5×7 font table.</span></li>
+          <li><a href="../philosophy.html"><code>docs/philosophy.md</code></a><span>The reasoning behind D1 to D6.</span></li>
+        </ul>
+      </section>
+      <nav class="angle-pager" aria-label="Other angles">
+        <a class="btn" href="causal-harmonic.html">← Causal Harmonic Computing</a>
+        <a class="btn" href="index.html">All angles</a>
+        <a class="btn" href="reading-systems.html">Reading systems →</a>
+      </nav>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    import { mountMixerDemo, mountGlyphDemo, mountCellDemo } from "../assets/demos.js";
+    mountMixerDemo(document.getElementById("demo-mixer"));
+    mountCellDemo(document.getElementById("demo-cells"), { count: 9, width: 640, height: 320 });
+    mountGlyphDemo(document.getElementById("demo-glyph"), { text: "EIDO 5X7", scale: 6 });
+  </script>
+</body>
+</html>

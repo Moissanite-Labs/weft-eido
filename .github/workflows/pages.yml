@@ -24,6 +24,9 @@ jobs:
         run: |
           mkdir _site
           cp -R site src css examples docs _site/
+          # The rebuild angle: only the files the page runs, not its notes or scripts.
+          mkdir -p _site/weft-eido
+          cp -R weft-eido/index.html weft-eido/src _site/weft-eido/
           touch _site/.nojekyll
           cat > _site/index.html <<'HTML'
           <!doctype html>

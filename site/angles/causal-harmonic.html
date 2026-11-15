@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Causal Harmonic Computing · Angles · Eido</title>
+  <meta name="description" content="Causal Harmonic Computing: Weft's mechanisms mapped to chords of coupled oscillators, with an explorer, a poster, a paper and a soundtrack.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/angles.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="index.html" aria-current="page">Angles</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../components/index.html">Components</a>
+        <a href="../causal-harmonic/index.html">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap">
+      <p class="kicker"><span class="dot"></span><a href="index.html">Angles</a> · 08 of 08</p>
+      <h1 id="t">Causal Harmonic Computing</h1>
+      <p class="lede">The thesis is to compute by resonance. Each mechanism in the system is mapped to a chord built from whole-number frequency ratios. Coupled oscillators lock to those ratios, so you can hear whether the machine is settled. The numbers in the paper and pages are the authors' claims, not results this repository has checked.</p>
+      <div class="angle-meta"><span class="badge open">Open: PR 17</span><span class="badge">Canvas2D and Web Audio</span><span class="badge">Loads CDN scripts</span><span class="badge">A paper, pages and a soundtrack</span></div>
+    </div></section>
+    <section class="block"><div class="wrap angle-body">
+      <section aria-labelledby="try-h">
+        <h2 id="try-h">Try it</h2>
+        <div class="exhibit" data-exhibit>
+        <div class="exhibit-bar"><span class="title" data-exhibit-title>syntactic_weft_causal_harmonic_computer__3.html</span><div class="exhibit-tabs" role="group" aria-label="Choose what to show"><button class="btn small" type="button" data-frame="../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html" data-title="syntactic_weft_causal_harmonic_computer__3.html" aria-pressed="true">Syntactic Weft</button><button class="btn small" type="button" data-frame="../../examples/research/causal-harmonic/originals/causal_harmonic_computing_explorer__2.html" data-title="causal_harmonic_computing_explorer__2.html" aria-pressed="false">Explorer</button><button class="btn small" type="button" data-frame="../../examples/research/causal-harmonic/originals/causal_harmonic_computing_infographic.html" data-title="causal_harmonic_computing_infographic.html" aria-pressed="false">Poster</button></div><a class="btn small" data-exhibit-open href="../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html">Open full page</a></div>
+        <iframe src="../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html" title="syntactic_weft_causal_harmonic_computer__3.html" loading="lazy" allow="autoplay"></iframe>
+      </div>
+        <p class="exhibit-note">Sound starts only after you press a button inside the frame. These pages load scripts and fonts from public CDNs. The full section has the <a href="../causal-harmonic/paper.html">paper</a>, the <a href="../causal-harmonic/soundtrack.html">soundtrack</a> and every <a href="../causal-harmonic/originals.html">original file</a>.</p>
+      </section>
+      <section aria-labelledby="does-h">
+        <h2 id="does-h">What it can do</h2>
+        <ul>
+          <li>Play named states such as homeostasis and tampering as chords, in the browser.</li>
+          <li>Show a dissonance curve: how rough two tones sound as their ratio changes.</li>
+          <li>Show a group of oscillators falling into step when their coupling is strong enough.</li>
+          <li>Lay the whole idea out as a poster, and as a paper with a reference program.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="concepts-h">
+        <h2 id="concepts-h">Concepts</h2>
+        
+        <div class="concepts">
+          <article class="concept"><h3>Mechanisms as chords</h3><p>Six parts of the system each get a chord of simple ratios such as 4:5:6:7. Simple ratios sound consonant.</p></article>
+          <article class="concept"><h3>Roughness as tension</h3><p>Two tones close in pitch beat against each other. A standard formula for that roughness is used as a measure of strain.</p></article>
+          <article class="concept"><h3>Locking</h3><p>Coupled oscillators pull each other into step. The Kuramoto model describes when that happens. Below a critical coupling they drift. Above it they lock.</p></article>
+          <article class="concept"><h3>Causal means no looking ahead</h3><p>Every stage uses only past and present input, at three time scales: rule systems, coupled oscillators, and sample-by-sample filters.</p></article>
+          <article class="concept"><h3>A trace of history</h3><p>Moving between chords in pure tuning leaves a small pitch offset of 21.51 cents. The paper treats that leftover as a record of the moves made.</p></article>
+        </div>
+      </section>
+      <section aria-labelledby="tech-h">
+        <h2 id="tech-h">Techniques</h2>
+        <ul>
+          <li>Web Audio synthesis for the chords, started by a button press.</li>
+          <li>Canvas2D for the oscillator and membrane views, Chart.js and Plotly for the charts.</li>
+          <li>Tailwind from a CDN for layout in the originals.</li>
+          <li>A skin switch on the Weft page swaps between three versions of the file.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="style-h">
+        <h2 id="style-h">Style</h2>
+        <p>Three looks for one idea. The latest Weft page is near-black with neon accents and a geometric display face. The explorer is warm paper with teal and amber. The poster is navy and amber with large figures.</p>
+        <ul class="swatches" aria-label="Main colours">
+          <li><i style="background:#04060b"></i>#04060b Weft ground</li>
+          <li><i style="background:#22d3ee"></i>#22d3ee cyan</li>
+          <li><i style="background:#a78bfa"></i>#a78bfa violet</li>
+          <li><i style="background:#fbbf24"></i>#fbbf24 amber</li>
+          <li><i style="background:#faf8f5"></i>#faf8f5 explorer paper</li>
+          <li><i style="background:#0f766e"></i>#0f766e explorer teal</li>
+        </ul>
+        <p class="type-sample"><span>Weft page: Space Grotesk, Inter and IBM Plex Mono from Google Fonts (shown here in your system sans)</span><b style="font-family:system-ui, sans-serif">Homeostasis · 4:5:6:7</b></p>
+      </section>
+      <section aria-labelledby="files-h">
+        <h2 id="files-h">Files and status</h2>
+        <p>Proposed in <a href="https://github.com/Moissanite-Labs/weft-eido/pull/17">pull request 17</a>, not merged. The README in the folder records where each file came from. No licence is stated for the audio, the cover image or the lyrics.</p>
+        <ul class="file-list">
+          <li><a href="../causal-harmonic/index.html"><code>site/causal-harmonic/</code></a><span>The section's own pages.</span></li>
+          <li><a href="../causal-harmonic/paper.html"><code>examples/research/causal-harmonic/paper.md</code></a><span>The source paper.</span></li>
+          <li><a href="../causal-harmonic/originals.html"><code>examples/research/causal-harmonic/originals/</code></a><span>Every file as it arrived.</span></li>
+        </ul>
+      </section>
+      <nav class="angle-pager" aria-label="Other angles">
+        <a class="btn" href="identifiability-explorer.html">← Identifiability explorer</a>
+        <a class="btn" href="index.html">All angles</a>
+        <a class="btn" href="design-modules.html">Design modules →</a>
+      </nav>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    // Archived pages that accept a theme message follow this site's theme switch.
+    const root = document.documentElement;
+    const tell = (frame) => { try { frame.contentWindow?.postMessage({ type: "set-theme", theme: root.getAttribute("data-theme") }, "*"); } catch (e) { /* frame not ready */ } };
+    for (const box of document.querySelectorAll("[data-exhibit]")) {
+      const frame = box.querySelector("iframe");
+      const title = box.querySelector("[data-exhibit-title]");
+      const open = box.querySelector("[data-exhibit-open]");
+      const tabs = [...box.querySelectorAll("[data-frame]")];
+      frame.addEventListener("load", () => tell(frame));
+      new MutationObserver(() => tell(frame)).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+      for (const tab of tabs) tab.addEventListener("click", () => {
+        frame.src = tab.dataset.frame;
+        frame.title = tab.dataset.title;
+        title.textContent = tab.dataset.title;
+        open.href = tab.dataset.frame;
+        for (const t of tabs) t.setAttribute("aria-pressed", String(t === tab));
+      });
+      box.querySelector("[data-gate-load]")?.addEventListener("click", () => {
+        box.querySelector("[data-gate]").remove();
+        frame.hidden = false;
+        frame.src = frame.dataset.src;
+        frame.focus();
+      });
+    }
+  </script>
+</body>
+</html>

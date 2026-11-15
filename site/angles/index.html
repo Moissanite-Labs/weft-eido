@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Angles · Eido</title>
+  <meta name="description" content="Every angle explored in the Eido repository, with a page for each: design modules, reading systems, a GPU rebuild, research explainers, simulations and sound.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/angles.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="index.html" aria-current="page">Angles</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../components/index.html">Components</a>
+        <a href="../causal-harmonic/index.html">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap">
+      <p class="kicker"><span class="dot"></span>Angles</p>
+      <h1 id="t">Eight ways into one idea</h1>
+      <p class="lede">Eido started as a design language: an interface that changes itself inside limits you can see. Since then the same idea has been tried as components, as a GPU rewrite, as research explainers, as simulations and as sound. Each angle below has its own page with a live example, the concepts behind it, the techniques it uses and its visual style.</p>
+      <div class="hero-meta"><span>Three angles are on the main branch</span><span>Five are open pull requests, shown here as proposed</span></div>
+    </div></section>
+    <section class="block" aria-labelledby="all-h"><div class="wrap">
+      <div class="section-head"><span class="eyebrow">All angles</span><h2 id="all-h">Pick one</h2></div>
+      <div class="angle-grid">
+      <a class="card angle-card" href="design-modules.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="A triangle with a point inside it" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M50 14 88 82H12z" class="soft"/><path class="dim" d="M50 14v68M31 48h38M21.5 65h57"/><path d="M50 56 50 14M50 56 12 82M50 56 88 82" class="dim"/><circle cx="50" cy="56" r="6" class="gold" stroke-width="2.5"/><circle cx="50" cy="14" r="2.5" class="fill"/><circle cx="12" cy="82" r="2.5" class="fill"/><circle cx="88" cy="82" r="2.5" class="fill"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">01</span><span class="badge here">On main</span></div>
+          <h3>Design modules</h3>
+          <p>Four small modules that treat style and layout as numbers you can move and check.</p>
+          <p class="does">Drag one point to blend three styles. Size cells by value. Draw text from a table of bits.</p>
+        </div>
+      </a>
+      <a class="card angle-card" href="reading-systems.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="Lines of text that start to ripple, with a gold thread beside the calm ones" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path class="gold" stroke-width="2.5" d="M14 18v26"/><path d="M22 18L26 18L30 18L34 18L38 18L42 18L46 18L50 18L54 18L58 18L62 18L66 18L70 18L74 18L78 18L82 18L86 18" class="dim"/><path d="M22 26L26 26L30 26L34 26L38 26L42 26L46 26L50 26L54 26L58 26L62 26L66 26L70 26L74 26L78 26L82 26L86 26" class="dim"/><path d="M22 34L26 34L30 34L34 34L38 34L42 34L46 34L50 34L54 34L58 34L62 34L66 34L70 34L74 34L78 34L82 34L86 34" class="dim"/><path d="M22 42L26 42L30 42L34 42L38 42L42 42L46 42L50 42L54 42L58 42L62 42L66 42L70 42L74 42L78 42L82 42L86 42" class="dim"/><path d="M22 56.9L26 56.2L30 55.1L34 53.8L38 52.5L42 51.5L46 51L50 51.1L54 51.7L58 52.8L62 54.1L66 55.4L70 56.4L74 56.9L78 56.9L82 56.3L86 55.3"/><path d="M22 59.5L26 57.9L30 57.1L34 57.2L38 58.2L42 60L46 62.2L50 64.3L54 66L58 66.9L62 66.8L66 65.9L70 64.1L74 62L78 59.8L82 58.1L86 57.1"/><path d="M22 64.7L26 67.2L30 70.3L34 73.3L38 75.6L42 76.9L46 76.8L50 75.4L54 73L58 69.9L62 66.9L66 64.5L70 63.2L74 63.2L78 64.5L82 66.9L86 69.8"/><path d="M22 82L26 82.9L30 82.8L34 81.9L38 80.1L42 78L46 75.8L50 74.1L54 73.1L58 73.1L62 74.1L66 75.8L70 77.9L74 80.1L78 81.8L82 82.8L86 82.9"/><path d="M22 87.3L26 86L30 84.7L34 83.7L38 83.1L42 83.1L46 83.6L50 84.7L54 85.9L58 87.2L62 88.3L66 88.9L70 88.9L74 88.4L78 87.4L82 86.2L86 84.9"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">02</span><span class="badge here">On main</span></div>
+          <h3>Reading systems</h3>
+          <p>A page that notices how it is being read and answers, inside limits the reader can see and switch off.</p>
+          <p class="does">Skim and the text ripples, or rewrites itself shorter. Read and it settles.</p>
+        </div>
+      </a>
+      <a class="card angle-card" href="eido-rebuild.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="Concentric rings with small rounded cards around them" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="10" class="dim"/><circle cx="50" cy="50" r="19" class="gold"/><circle cx="50" cy="50" r="28" class="dim"/><circle cx="50" cy="50" r="37" class="dim"/><rect x="70.8" y="55.9" width="10" height="10" rx="2" class="soft"/><rect x="48.5" y="72.8" width="10" height="10" rx="2" class="soft"/><rect x="22.7" y="61.9" width="10" height="10" rx="2" class="soft"/><rect x="19.2" y="34.1" width="10" height="10" rx="2" class="soft"/><rect x="41.5" y="17.2" width="10" height="10" rx="2" class="soft"/><rect x="67.3" y="28.1" width="10" height="10" rx="2" class="soft"/><circle cx="50" cy="50" r="3" class="fill"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">03</span><span class="badge open">Open: PR 6</span></div>
+          <h3>Eido rebuild</h3>
+          <p>A rework that drops the DOM. One canvas, and every card, letter and slider is drawn by a single shader.</p>
+          <p class="does">Draws a whole interface per pixel on the GPU, with the style mixer steering the look.</p>
+        </div>
+      </a>
+      <a class="card angle-card" href="research-explainer.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="A small model in a frame beside three metric bars" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="14" width="46" height="46" rx="4" class="dim"/><circle cx="20" cy="51.3" r="2.4" class="fill" opacity="0.5"/><circle cx="44.8" cy="38.1" r="2.5" class="fill" opacity="0.8"/><circle cx="45.7" cy="38.5" r="3.6" class="fill" opacity="0.7"/><circle cx="47.8" cy="28.2" r="2.6" class="fill" opacity="0.8"/><circle cx="43.7" cy="21.8" r="3.6" class="fill" opacity="0.6"/><circle cx="51.4" cy="47.5" r="1.9" class="fill" opacity="0.7"/><circle cx="51.4" cy="43.4" r="3.4" class="fill" opacity="0.7"/><circle cx="51" cy="50.9" r="2.6" class="fill" opacity="0.6"/><circle cx="48.5" cy="31.3" r="2" class="fill" opacity="0.5"/><circle cx="37" cy="37" r="9" class="gold"/><path d="M68 18h18" stroke-width="3"/><path d="M68 28h13.2" stroke-width="3" class="gold"/><path d="M68 38h9.6" stroke-width="3"/><path class="dim" d="M14 72h72M14 80h52M14 88h62"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">04</span><span class="badge open">Open: PR 11</span></div>
+          <h3>Research explainer</h3>
+          <p>A pattern for explaining a mechanism: a tiny model, its numbers and a picture, all showing the same state.</p>
+          <p class="does">Step a toy model, move its safety bound, and watch the numbers and the drawing change together.</p>
+        </div>
+      </a>
+      <a class="card angle-card" href="original-graphics.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="An 8 by 8 grid of cells with the top rows outlined" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.1"/><rect x="23" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="32" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.8"/><rect x="41" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.4"/><rect x="50" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="59" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.9"/><rect x="68" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="77" y="14" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="14" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.9"/><rect x="23" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.4"/><rect x="32" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="41" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.9"/><rect x="50" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="59" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="68" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.4"/><rect x="77" y="23" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.7"/><rect x="14" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="23" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.8"/><rect x="32" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="41" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="50" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="59" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.8"/><rect x="68" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.5"/><rect x="77" y="32" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="14" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.4"/><rect x="23" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.4"/><rect x="32" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="41" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.9"/><rect x="50" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.5"/><rect x="59" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="68" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.8"/><rect x="77" y="41" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="14" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="23" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.9"/><rect x="32" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.5"/><rect x="41" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="50" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.7"/><rect x="59" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="68" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.4"/><rect x="77" y="50" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="14" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.4"/><rect x="23" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="32" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.7"/><rect x="41" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.4"/><rect x="50" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.5"/><rect x="59" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="68" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.8"/><rect x="77" y="59" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.6"/><rect x="14" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.6"/><rect x="23" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.5"/><rect x="32" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.6"/><rect x="41" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="50" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.9"/><rect x="59" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.5"/><rect x="68" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="77" y="68" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.7"/><rect x="14" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.6"/><rect x="23" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.2"/><rect x="32" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.9"/><rect x="41" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.5"/><rect x="50" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.3"/><rect x="59" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="fill" opacity="0.6"/><rect x="68" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.4"/><rect x="77" y="77" width="7.5" height="7.5" rx="1.5" stroke="none" class="gold-fill" opacity="0.6"/><rect x="11.5" y="11.5" width="77" height="19.5" rx="3" stroke-dasharray="4 3" class="gold"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">05</span><span class="badge here">On main</span></div>
+          <h3>Original research graphics</h3>
+          <p>Two generated explainer pages, kept byte for byte as the reference the research explainer was built from.</p>
+          <p class="does">Poke a small matrix that may only change inside a bound. Watch a tiny program unfold into a large one.</p>
+        </div>
+      </a>
+      <a class="card angle-card" href="session-simulations.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="Three cells in a row passing a packet from one to the next" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="38" width="22" height="24" rx="12" class="soft"/><rect x="39" y="38" width="22" height="24" rx="12" class="soft"/><rect x="70" y="38" width="22" height="24" rx="12" class="soft"/><path d="M30 50h9M61 50h9"/><path d="M35 46l4 4-4 4M66 46l4 4-4 4"/><circle cx="19" cy="50" r="3" class="fill"/><circle cx="47" cy="50" r="3" class="fill"/><circle cx="54" cy="50" r="3" class="gold-fill" stroke="none"/><circle cx="75" cy="50" r="3" class="fill"/><circle cx="81" cy="50" r="3" class="gold-fill" stroke="none"/><circle cx="87" cy="50" r="3" class="fill" opacity=".5"/><path class="dim" d="M12 76h76M12 84h50"/><path class="gold" stroke-width="3" d="M12 22h40"/><path class="dim" stroke-width="3" d="M12 28h64"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">06</span><span class="badge open">Open: PR 14</span></div>
+          <h3>Session simulations</h3>
+          <p>Self-contained panels for the Weft experiments E08 to E13, redrawn from the generated originals with no dependencies.</p>
+          <p class="does">Switch between experiment arms, scrub a timeline and see why one design holds and the others fail.</p>
+        </div>
+      </a>
+      <a class="card angle-card" href="identifiability-explorer.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="Four response curves crossing two dashed measurement lines" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path class="dim" d="M12 88h78M12 88V12"/><path d="M12 88L13.9 67.1L15.9 55.1L17.9 47.3L19.8 41.9L21.8 37.9L23.7 34.8L25.6 32.4L27.6 30.4L29.6 28.8L31.5 27.4L33.5 26.2L35.4 25.2L37.4 24.3L39.3 23.5L41.3 22.8L43.2 22.2L45.1 21.6L47.1 21.1L49 20.7L51 20.2L53 19.9L54.9 19.5L56.8 19.2L58.8 18.9L60.8 18.6L62.7 18.3L64.7 18.1L66.6 17.9L68.5 17.7L70.5 17.5L72.5 17.3L74.4 17.1L76.3 16.9L78.3 16.8L80.3 16.6L82.2 16.5L84.2 16.4L86.1 16.2L88 16.1L90 16"/><path d="M12 70L13.9 58.1L15.9 50.2L17.9 44.5L19.8 40.3L21.8 37L23.7 34.4L25.6 32.2L27.6 30.4L29.6 28.9L31.5 27.6L33.5 26.4L35.4 25.5L37.4 24.6L39.3 23.8L41.3 23.1L43.2 22.5L45.1 21.9L47.1 21.4L49 20.9L51 20.5L53 20.1L54.9 19.7L56.8 19.4L58.8 19.1L60.8 18.8L62.7 18.5L64.7 18.3L66.6 18L68.5 17.8L70.5 17.6L72.5 17.4L74.4 17.2L76.3 17L78.3 16.9L80.3 16.7L82.2 16.5L84.2 16.4L86.1 16.3L88 16.1L90 16"/><path d="M12 52L13.9 47.2L15.9 43.4L17.9 40.2L19.8 37.6L21.8 35.4L23.7 33.5L25.6 31.8L27.6 30.4L29.6 29.1L31.5 28L33.5 27L35.4 26.1L37.4 25.3L39.3 24.5L41.3 23.8L43.2 23.2L45.1 22.6L47.1 22.1L49 21.6L51 21.1L53 20.7L54.9 20.3L56.8 19.9L58.8 19.6L60.8 19.3L62.7 19L64.7 18.7L66.6 18.4L68.5 18.1L70.5 17.9L72.5 17.7L74.4 17.4L76.3 17.2L78.3 17L80.3 16.8L82.2 16.7L84.2 16.5L86.1 16.3L88 16.2L90 16"/><path d="M12 34L13.9 33.6L15.9 33.1L17.9 32.6L19.8 32.2L21.8 31.8L23.7 31.3L25.6 30.9L27.6 30.4L29.6 29.9L31.5 29.5L33.5 29.1L35.4 28.6L37.4 28.1L39.3 27.7L41.3 27.3L43.2 26.8L45.1 26.4L47.1 25.9L49 25.4L51 25L53 24.6L54.9 24.1L56.8 23.6L58.8 23.2L60.8 22.8L62.7 22.3L64.7 21.9L66.6 21.4L68.5 21L70.5 20.5L72.5 20L74.4 19.6L76.3 19.1L78.3 18.7L80.3 18.3L82.2 17.8L84.2 17.4L86.1 16.9L88 16.5L90 16" class="gold"/><path class="dim" stroke-dasharray="3 3" d="M16 88V14M41 88V14"/><circle cx="27.6" cy="30.4" r="3.5" class="gold"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">07</span><span class="badge open">Open: PR 15</span></div>
+          <h3>Identifiability explorer</h3>
+          <p>One chart, three sliders, and three numbers computed live: can two measurements tell four cases apart?</p>
+          <p class="does">Move the two measurement points and watch the separation margin clear or miss the noise floor.</p>
+        </div>
+      </a>
+      <a class="card angle-card" href="causal-harmonic.html">
+        <svg class="motif" viewBox="0 0 100 100" role="img" aria-label="A closed looping curve made by two frequencies in a 3 to 2 ratio" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="12" width="76" height="76" rx="6" class="dim"/><path d="M86 50L85.9 51.9L85.6 53.8L85 55.6L84.2 57.5L83.3 59.3L82.1 61.1L80.7 62.9L79.1 64.6L77.4 66.3L75.5 68L73.4 69.6L71.2 71.2L68.8 72.7L66.3 74.1L63.8 75.5L61.1 76.8L58.4 78L55.6 79.1L52.8 80.2L50 81.2L47.2 82.1L44.4 82.9L41.6 83.6L38.9 84.2L36.2 84.8L33.7 85.2L31.2 85.6L28.8 85.8L26.6 86L24.5 86L22.6 86L20.9 85.8L19.3 85.6L17.9 85.2L16.7 84.8L15.8 84.2L15 83.6L14.4 82.9L14.1 82.1L14 81.2L14.1 80.2L14.4 79.1L15 78L15.8 76.8L16.7 75.5L17.9 74.1L19.3 72.7L20.9 71.2L22.6 69.6L24.5 68L26.6 66.3L28.8 64.6L31.2 62.9L33.7 61.1L36.2 59.3L38.9 57.5L41.6 55.6L44.4 53.8L47.2 51.9L50 50L52.8 48.1L55.6 46.2L58.4 44.4L61.1 42.5L63.8 40.7L66.3 38.9L68.8 37.1L71.2 35.4L73.4 33.7L75.5 32L77.4 30.4L79.1 28.8L80.7 27.3L82.1 25.9L83.3 24.5L84.2 23.2L85 22L85.6 20.9L85.9 19.8L86 18.8L85.9 17.9L85.6 17.1L85 16.4L84.2 15.8L83.3 15.2L82.1 14.8L80.7 14.4L79.1 14.2L77.4 14L75.5 14L73.4 14L71.2 14.2L68.8 14.4L66.3 14.8L63.8 15.2L61.1 15.8L58.4 16.4L55.6 17.1L52.8 17.9L50 18.8L47.2 19.8L44.4 20.9L41.6 22L38.9 23.2L36.2 24.5L33.7 25.9L31.2 27.3L28.8 28.8L26.6 30.4L24.5 32L22.6 33.7L20.9 35.4L19.3 37.1L17.9 38.9L16.7 40.7L15.8 42.5L15 44.4L14.4 46.2L14.1 48.1L14 50L14.1 51.9L14.4 53.8L15 55.6L15.8 57.5L16.7 59.3L17.9 61.1L19.3 62.9L20.9 64.6L22.6 66.3L24.5 68L26.6 69.6L28.8 71.2L31.2 72.7L33.7 74.1L36.2 75.5L38.9 76.8L41.6 78L44.4 79.1L47.2 80.2L50 81.2L52.8 82.1L55.6 82.9L58.4 83.6L61.1 84.2L63.8 84.8L66.3 85.2L68.8 85.6L71.2 85.8L73.4 86L75.5 86L77.4 86L79.1 85.8L80.7 85.6L82.1 85.2L83.3 84.8L84.2 84.2L85 83.6L85.6 82.9L85.9 82.1L86 81.2L85.9 80.2L85.6 79.1L85 78L84.2 76.8L83.3 75.5L82.1 74.1L80.7 72.7L79.1 71.2L77.4 69.6L75.5 68L73.4 66.3L71.2 64.6L68.8 62.9L66.3 61.1L63.8 59.3L61.1 57.5L58.4 55.6L55.6 53.8L52.8 51.9L50 50L47.2 48.1L44.4 46.2L41.6 44.4L38.9 42.5L36.2 40.7L33.7 38.9L31.2 37.1L28.8 35.4L26.6 33.7L24.5 32L22.6 30.4L20.9 28.8L19.3 27.3L17.9 25.9L16.7 24.5L15.8 23.2L15 22L14.4 20.9L14.1 19.8L14 18.8L14.1 17.9L14.4 17.1L15 16.4L15.8 15.8L16.7 15.2L17.9 14.8L19.3 14.4L20.9 14.2L22.6 14L24.5 14L26.6 14L28.8 14.2L31.2 14.4L33.7 14.8L36.2 15.2L38.9 15.8L41.6 16.4L44.4 17.1L47.2 17.9L50 18.8L52.8 19.8L55.6 20.9L58.4 22L61.1 23.2L63.8 24.5L66.3 25.9L68.8 27.3L71.2 28.8L73.4 30.4L75.5 32L77.4 33.7L79.1 35.4L80.7 37.1L82.1 38.9L83.3 40.7L84.2 42.5L85 44.4L85.6 46.2L85.9 48.1L86 50"/><circle cx="86" cy="50" r="3" class="gold-fill" stroke="none"/></svg>
+        <div>
+          <div class="tag-row"><span class="id">08</span><span class="badge open">Open: PR 17</span></div>
+          <h3>Causal Harmonic Computing</h3>
+          <p>The system as sound. Each mechanism is a chord, so a healthy state is consonant and strain is heard as beating.</p>
+          <p class="does">Press a state and hear it. See oscillators lock, drift apart and lock again.</p>
+        </div>
+      </a>
+      </div>
+    </div></section>
+    <section class="block alt" aria-labelledby="cmp-h"><div class="wrap">
+      <div class="section-head"><span class="eyebrow">Side by side</span><h2 id="cmp-h">How they differ</h2>
+        <p>What each angle is drawn with, whether its numbers are worked out as you watch or are recorded results drawn as a picture, and what it asks of the network.</p>
+      </div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Comparison of the eight angles"><table class="spec-table">
+        <thead><tr><th scope="col">Angle</th><th scope="col">Drawn with</th><th scope="col">Numbers</th><th scope="col">Network</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><a href="design-modules.html">Design modules</a></th><td>SVG, Canvas2D</td><td>Computed live</td><td>None</td></tr>
+          <tr><th scope="row"><a href="reading-systems.html">Reading systems</a></th><td>DOM text, CSS</td><td>Computed live</td><td>None</td></tr>
+          <tr><th scope="row"><a href="eido-rebuild.html">Eido rebuild</a></th><td>WebGPU shader</td><td>Computed live</td><td>ipwho.is at load</td></tr>
+          <tr><th scope="row"><a href="research-explainer.html">Research explainer</a></th><td>Canvas2D</td><td>Computed live, toy model</td><td>None</td></tr>
+          <tr><th scope="row"><a href="original-graphics.html">Original research graphics</a></th><td>Canvas2D</td><td>Part live, part fixed tables</td><td>Google Fonts</td></tr>
+          <tr><th scope="row"><a href="session-simulations.html">Session simulations</a></th><td>Canvas2D, SVG</td><td>Mostly recorded results</td><td>None</td></tr>
+          <tr><th scope="row"><a href="identifiability-explorer.html">Identifiability explorer</a></th><td>SVG</td><td>Computed live</td><td>Google Fonts</td></tr>
+          <tr><th scope="row"><a href="causal-harmonic.html">Causal Harmonic Computing</a></th><td>Canvas2D, Web Audio</td><td>Live sound and charts</td><td>CDN scripts, Google Fonts</td></tr>
+        </tbody>
+      </table></div>
+    </div></section>
+    <section class="block" aria-labelledby="read-h"><div class="wrap">
+      <div class="section-head"><span class="eyebrow">Reading the claims</span><h2 id="read-h">What is checked and what is not</h2>
+        <p>The design modules, the reading systems and the research explainer have tests in this repository. The identifiability explorer's exact fractions were recomputed independently, as its README records. Everything else that shows a result (the original graphics, the simulations, the harmonic paper) shows its authors' numbers. This repository has not verified them, and each page says so.</p>
+      </div>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

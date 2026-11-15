@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reading systems · Angles · Eido</title>
+  <meta name="description" content="The Eido reading systems: the reading weave and condensing prose, both driven by one restlessness score.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/angles.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="index.html" aria-current="page">Angles</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../components/index.html">Components</a>
+        <a href="../causal-harmonic/index.html">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap">
+      <p class="kicker"><span class="dot"></span><a href="index.html">Angles</a> · 02 of 08</p>
+      <h1 id="t">Reading systems</h1>
+      <p class="lede">Most pages treat a careful reader and a hurried one the same. These two modules keep one number, a restlessness score from 0 to 1, and let the page answer it. Scroll fast inside the frame below to see each answer.</p>
+      <div class="angle-meta"><span class="badge here">On main</span><span class="badge">DOM text and CSS</span><span class="badge">No dependencies</span><span class="badge">D6</span></div>
+    </div></section>
+    <section class="block"><div class="wrap angle-body">
+      <section aria-labelledby="try-h">
+        <h2 id="try-h">Try it</h2>
+        <div class="exhibit" data-exhibit>
+        <div class="exhibit-bar"><span class="title" data-exhibit-title>examples/reading-weave.html</span><div class="exhibit-tabs" role="group" aria-label="Choose what to show"><button class="btn small" type="button" data-frame="../../examples/reading-weave.html" data-title="examples/reading-weave.html" aria-pressed="true">Reading weave</button><button class="btn small" type="button" data-frame="../../examples/condense/index.html" data-title="examples/condense/index.html" aria-pressed="false">Condensing prose</button></div><a class="btn small" data-exhibit-open href="../../examples/reading-weave.html">Open full page</a></div>
+        <iframe src="../../examples/reading-weave.html" title="examples/reading-weave.html" loading="lazy"></iframe>
+      </div>
+        <p class="exhibit-note">Scroll quickly inside the frame, then slow down and read. The panel at the bottom right of each page shows the score and has the off switch. Component pages: <a href="../components/reading-weave.html">reading weave</a>, <a href="../components/condense.html">condensing prose</a>.</p>
+      </section>
+      <section aria-labelledby="does-h">
+        <h2 id="does-h">What it can do</h2>
+        <ul>
+          <li>Measure skimming in the browser: passages scrolled past too fast, long jumps, sudden reversals and a jerky cursor.</li>
+          <li>Send waves through the text as the score rises, and slide links away from a hurried cursor at the top of the range.</li>
+          <li>Weave a gold thread beside every paragraph that was actually read.</li>
+          <li>Rewrite an article shorter, step by step, as it is skimmed: concise, terse, caveman, then one line per section.</li>
+          <li>Show the score, say why the page is moving, and turn everything off with a switch that is remembered.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="concepts-h">
+        <h2 id="concepts-h">Concepts</h2>
+        
+        <div class="concepts">
+          <article class="concept"><h3>One score</h3><p>Skimming raises it and reading lowers it. A passage counts as read at about 600 words a minute, which is lenient on purpose. The score never leaves the page.</p></article>
+          <article class="concept"><h3>Two answers</h3><p>The reading weave resists the skimmer. Condensing prose meets the skimmer with a shorter text. A landing page suits the first and a long paper suits the second.</p></article>
+          <article class="concept"><h3>A ratchet only the reader turns back</h3><p>Condensing only goes one way by itself. Passages already read stay as written. Every shortened passage ends with ≈, and pressing and holding it shows the original.</p></article>
+          <article class="concept"><h3>Written ahead, not generated</h3><p>The shorter versions are written by an author and shipped as <code>condensed.json</code>, keyed by a hash of each passage. The page never calls a model.</p></article>
+          <article class="concept"><h3>Limits the reader can check</h3><p>The focused element never moves. Movement is capped. Text stays text for assistive technology. Nothing moves when the system asks for reduced motion. Print shows the full text.</p></article>
+        </div>
+      </section>
+      <section aria-labelledby="tech-h">
+        <h2 id="tech-h">Techniques</h2>
+        <ul>
+          <li>The scoring is a set of pure functions (<code>scrollSample</code>, <code>scoreStep</code>, <code>waveField</code>), so tests can run it without a browser.</li>
+          <li>Words move as a wave passes: each word's offset comes from a field summed over a few travelling waves.</li>
+          <li>The condense morph keeps surviving words in place and strikes through the rest before they collapse.</li>
+          <li>Passages are matched to their variants by a hash of the normalised text, and a validator reports any passage with no variant.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="style-h">
+        <h2 id="style-h">Style</h2>
+        <p>Quiet until provoked. The example pages are plain serif articles. All of the character is in the motion: a slow ripple, a thin gold thread, a small panel in the corner.</p>
+        <ul class="swatches" aria-label="Main colours">
+          <li><i style="background:#d9c7a0"></i>#d9c7a0 thread gold</li>
+          <li><i style="background:#8abeb8"></i>#8abeb8 teal</li>
+          <li><i style="background:#090d0f"></i>#090d0f navy black</li>
+        </ul>
+        <p class="type-sample"><span>Example articles: Georgia</span><b style="font-family:Georgia, &quot;Times New Roman&quot;, serif">Read this page slowly and a thread appears</b></p>
+        <p class="type-sample"><span>Numbers and labels: system monospace</span><b style="font-family:ui-monospace, Menlo, Consolas, monospace">rounding 0.425  hue 0.000</b></p>
+      </section>
+      <section aria-labelledby="files-h">
+        <h2 id="files-h">Files and status</h2>
+        <p>Merged. Both modules are on the main branch and run on w3ft.org.</p>
+        <ul class="file-list">
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/reading-weave.js"><code>src/reading-weave.js</code></a><span>The score and the ripple.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/condense.js"><code>src/condense.js</code></a><span>Condensing, the validator and the loader.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/tree/main/css"><code>css/reading-weave.css, css/condense.css</code></a><span>Styles and theme hooks.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/reading-weave.md"><code>docs/reading-weave.md</code></a><span>Signals, guardrails and every option.</span></li>
+          <li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/condensing-prose.md"><code>docs/condensing-prose.md</code></a><span>Levels, the file format and how to write the variants.</span></li>
+        </ul>
+      </section>
+      <nav class="angle-pager" aria-label="Other angles">
+        <a class="btn" href="design-modules.html">← Design modules</a>
+        <a class="btn" href="index.html">All angles</a>
+        <a class="btn" href="eido-rebuild.html">Eido rebuild →</a>
+      </nav>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    // Archived pages that accept a theme message follow this site's theme switch.
+    const root = document.documentElement;
+    const tell = (frame) => { try { frame.contentWindow?.postMessage({ type: "set-theme", theme: root.getAttribute("data-theme") }, "*"); } catch (e) { /* frame not ready */ } };
+    for (const box of document.querySelectorAll("[data-exhibit]")) {
+      const frame = box.querySelector("iframe");
+      const title = box.querySelector("[data-exhibit-title]");
+      const open = box.querySelector("[data-exhibit-open]");
+      const tabs = [...box.querySelectorAll("[data-frame]")];
+      frame.addEventListener("load", () => tell(frame));
+      new MutationObserver(() => tell(frame)).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+      for (const tab of tabs) tab.addEventListener("click", () => {
+        frame.src = tab.dataset.frame;
+        frame.title = tab.dataset.title;
+        title.textContent = tab.dataset.title;
+        open.href = tab.dataset.frame;
+        for (const t of tabs) t.setAttribute("aria-pressed", String(t === tab));
+      });
+      box.querySelector("[data-gate-load]")?.addEventListener("click", () => {
+        box.querySelector("[data-gate]").remove();
+        frame.hidden = false;
+        frame.src = frame.dataset.src;
+        frame.focus();
+      });
+    }
+  </script>
+</body>
+</html>

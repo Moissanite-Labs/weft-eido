@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session simulations · Angles · Eido</title>
+  <meta name="description" content="Standalone interactive panels for the Weft experiments E08 to E13 and a five-part explorer.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/angles.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="index.html" aria-current="page">Angles</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../components/index.html">Components</a>
+        <a href="../causal-harmonic/index.html">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap">
+      <p class="kicker"><span class="dot"></span><a href="index.html">Angles</a> · 06 of 08</p>
+      <h1 id="t">Session simulations</h1>
+      <p class="lede">One panel per experiment, each a single HTML file that needs nothing from the network. Most of the numbers are recorded results from the Weft sessions drawn as pictures you can explore. They are not computed live, and this repository has not verified them.</p>
+      <div class="angle-meta"><span class="badge open">Open: PR 14</span><span class="badge">Canvas2D and SVG</span><span class="badge">No network requests</span><span class="badge">E08 to E13</span></div>
+    </div></section>
+    <section class="block"><div class="wrap angle-body">
+      <section aria-labelledby="try-h">
+        <h2 id="try-h">Try it</h2>
+        <div class="exhibit" data-exhibit>
+        <div class="exhibit-bar"><span class="title" data-exhibit-title>Statistical cell</span><div class="exhibit-tabs" role="group" aria-label="Choose what to show"><button class="btn small" type="button" data-frame="../../examples/simulations/index.html" data-title="Statistical cell" aria-pressed="true">E08–E10</button><button class="btn small" type="button" data-frame="../../examples/simulations/index.html?sim=morphogenesis" data-title="Morphogenesis" aria-pressed="false">E11</button><button class="btn small" type="button" data-frame="../../examples/simulations/index.html?sim=plasmid" data-title="Null-space graft" aria-pressed="false">E12</button><button class="btn small" type="button" data-frame="../../examples/simulations/e13_transitive_cascade.html" data-title="Three-cell cascade" aria-pressed="false">E13</button><button class="btn small" type="button" data-frame="../../examples/simulations/asma_subspace_paraneoplastic.html" data-title="Project Asma five-path explorer" aria-pressed="false">Five paths</button></div><a class="btn small" data-exhibit-open href="../../examples/simulations/index.html">Open full page</a></div>
+        <iframe src="../../examples/simulations/index.html" title="Statistical cell" loading="lazy"></iframe>
+      </div>
+        <p class="exhibit-note">These pages follow your system's light or dark setting, not this site's theme switch.</p>
+      </section>
+      <section aria-labelledby="does-h">
+        <h2 id="does-h">What it can do</h2>
+        <ul>
+          <li>E08 to E10: propose changes to a small matrix and see each one accepted or rejected by a distance gate.</li>
+          <li>E11: compare a structured generator with a scrambled copy and with direct search, at four sizes.</li>
+          <li>E12: graft a skill from one model onto another and compare a gated graft with two ungated ones.</li>
+          <li>E13: scrub through a three-step hand-off between cells and see which of four gating rules keeps all three skills.</li>
+          <li>Five paths: four small studies on one stage, each with a slider that changes meaning per study.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="concepts-h">
+        <h2 id="concepts-h">Concepts</h2>
+        
+        <div class="concepts">
+          <article class="concept"><span class="id">E08–E10</span><h3>Change inside a radius</h3><p>Rows 0 and 1 of an 8×8 matrix are frozen. A change to the rest is kept only if the whole matrix stays within radius R of its start.</p></article>
+          <article class="concept"><span class="id">E11</span><h3>Unfolding scales, search does not</h3><p>The recorded scores for the structured generator rise with size (+33.48 at 64² to +39.51 at 512²). The scrambled and direct arms fall to about zero.</p></article>
+          <article class="concept"><span class="id">E12</span><h3>Graft into the unused directions</h3><p>A change is projected so it has no effect along the directions the host already uses: <code>ΔW(I − QQᵀ)</code>. The gated arm keeps its own skill and gains the new one. The ungated arms lose both.</p></article>
+          <article class="concept"><span class="id">E13</span><h3>Skills that survive a second hand-off</h3><p>Each transferred skill is tagged with the subspace it occupies, so a later graft does not overwrite an earlier one. Only the tagged arm ends with all three skills.</p></article>
+          <article class="concept"><span class="id">Five paths</span><h3>Telling four cases apart</h3><p>A mixture model with four hypothetical cases. The panels show how far apart two measurements can push them compared with a noise floor of 1/60, and how three yes-or-no tests give each case its own three-bit code.</p></article>
+        </div>
+      </section>
+      <section aria-labelledby="tech-h">
+        <h2 id="tech-h">Techniques</h2>
+        <ul>
+          <li>The main suite uses Canvas2D with one shared animation loop that draws only the open tab.</li>
+          <li>E13 and the five-path explorer use inline SVG, updated by setting attributes.</li>
+          <li>A scrub slider interpolates between three stored snapshots of the cascade.</li>
+          <li>Colours use the CSS <code>light-dark()</code> function, and the canvas reads them back each frame.</li>
+          <li>Deep links: <code>?sim=morphogenesis</code> and <code>?sim=plasmid</code> open a tab directly.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="style-h">
+        <h2 id="style-h">Style</h2>
+        <p>An instrument panel. A narrow centred column, pill tabs, metric cards with tabular numbers and one rounded stage. Blue is the working colour, green means held, amber means watch, red means failed.</p>
+        <ul class="swatches" aria-label="Main colours">
+          <li><i style="background:#0e0f12"></i>#0e0f12 ground</li>
+          <li><i style="background:#8ab4f8"></i>#8ab4f8 primary</li>
+          <li><i style="background:#4ade80"></i>#4ade80 held</li>
+          <li><i style="background:#fbbf24"></i>#fbbf24 watch</li>
+          <li><i style="background:#f87171"></i>#f87171 failed</li>
+        </ul>
+        <p class="type-sample"><span>Text: system sans</span><b style="font-family:system-ui, sans-serif">Step A/B Mitosis</b></p>
+        <p class="type-sample"><span>Numbers: system monospace</span><b style="font-family:ui-monospace, Menlo, Consolas, monospace">0.000 ≤ 1.20</b></p>
+      </section>
+      <section aria-labelledby="files-h">
+        <h2 id="files-h">Files and status</h2>
+        <p>Proposed in <a href="https://github.com/Moissanite-Labs/weft-eido/pull/14">pull request 14</a>, not merged.</p>
+        <ul class="file-list">
+          <li><a href="../../examples/simulations/index.html"><code>examples/simulations/index.html</code></a><span>E08 to E12 in three tabs.</span></li>
+          <li><a href="../../examples/simulations/e13_transitive_cascade.html"><code>examples/simulations/e13_transitive_cascade.html</code></a><span>The three-cell cascade.</span></li>
+          <li><a href="../../examples/simulations/asma_subspace_paraneoplastic.html"><code>examples/simulations/asma_subspace_paraneoplastic.html</code></a><span>The five-path explorer.</span></li>
+          <li><code>examples/simulations/README.md</code><span>The index and the convention for new panels.</span></li>
+        </ul>
+      </section>
+      <nav class="angle-pager" aria-label="Other angles">
+        <a class="btn" href="original-graphics.html">← Original research graphics</a>
+        <a class="btn" href="index.html">All angles</a>
+        <a class="btn" href="identifiability-explorer.html">Identifiability explorer →</a>
+      </nav>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    // Archived pages that accept a theme message follow this site's theme switch.
+    const root = document.documentElement;
+    const tell = (frame) => { try { frame.contentWindow?.postMessage({ type: "set-theme", theme: root.getAttribute("data-theme") }, "*"); } catch (e) { /* frame not ready */ } };
+    for (const box of document.querySelectorAll("[data-exhibit]")) {
+      const frame = box.querySelector("iframe");
+      const title = box.querySelector("[data-exhibit-title]");
+      const open = box.querySelector("[data-exhibit-open]");
+      const tabs = [...box.querySelectorAll("[data-frame]")];
+      frame.addEventListener("load", () => tell(frame));
+      new MutationObserver(() => tell(frame)).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+      for (const tab of tabs) tab.addEventListener("click", () => {
+        frame.src = tab.dataset.frame;
+        frame.title = tab.dataset.title;
+        title.textContent = tab.dataset.title;
+        open.href = tab.dataset.frame;
+        for (const t of tabs) t.setAttribute("aria-pressed", String(t === tab));
+      });
+      box.querySelector("[data-gate-load]")?.addEventListener("click", () => {
+        box.querySelector("[data-gate]").remove();
+        frame.hidden = false;
+        frame.src = frame.dataset.src;
+        frame.focus();
+      });
+    }
+  </script>
+</body>
+</html>

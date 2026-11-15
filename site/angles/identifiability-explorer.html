@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Identifiability explorer · Angles · Eido</title>
+  <meta name="description" content="The Chebyshev identifiability explorer: a live chart of a four-case mixture model and how well two measurements separate the cases.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/angles.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="index.html" aria-current="page">Angles</a>
+        <a href="../philosophy.html">Philosophy</a>
+        <a href="../components/index.html">Components</a>
+        <a href="../causal-harmonic/index.html">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap">
+      <p class="kicker"><span class="dot"></span><a href="index.html">Angles</a> · 07 of 08</p>
+      <h1 id="t">Identifiability explorer</h1>
+      <p class="lede">This is the first entry in a collection of archived visualizations. It is the one angle here where every number on screen is worked out from a formula as you drag. The mathematics describes synthetic cases only. The folder's README says so, and says it makes no clinical claim.</p>
+      <div class="angle-meta"><span class="badge open">Open: PR 15</span><span class="badge">SVG</span><span class="badge">Loads Google Fonts</span><span class="badge">Computed live</span></div>
+    </div></section>
+    <section class="block"><div class="wrap angle-body">
+      <section aria-labelledby="try-h">
+        <h2 id="try-h">Try it</h2>
+        <div class="exhibit" data-exhibit>
+        <div class="exhibit-bar"><span class="title" data-exhibit-title>project-asma-chebyshev-identifiability-explorer.html</span><a class="btn small" data-exhibit-open href="../../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html">Open full page</a></div>
+        <iframe src="../../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html" title="project-asma-chebyshev-identifiability-explorer.html" loading="lazy" style="height:900px"></iframe>
+      </div>
+        <p class="exhibit-note">The page loads fonts from Google Fonts and follows this site's light or dark theme.</p>
+      </section>
+      <section aria-labelledby="does-h">
+        <h2 id="does-h">What it can do</h2>
+        <ul>
+          <li>Plot four response curves from one formula with different settings.</li>
+          <li>Choose a low and a high measurement point with sliders, or jump to four presets.</li>
+          <li>Compare two ways of measuring separation against a noise floor of 1/60.</li>
+          <li>Add a cross-talk term and see it make one case imitate another, then see a third measurement expose it.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="concepts-h">
+        <h2 id="concepts-h">Concepts</h2>
+        
+        <div class="concepts">
+          <article class="concept"><h3>The model</h3><p>Each case is a curve <code>q(p) = (r·p + c·(1−p)) / (r·p + (1−p))</code> over a mixing proportion p. Four pairs of r and c give four cases.</p></article>
+          <article class="concept"><h3>Slope test</h3><p>Compare how much each curve rises from the low point to the high point. At the default preset this margin is 0.01805, just over the floor of 0.01667.</p></article>
+          <article class="concept"><h3>Box test</h3><p>Compare the curves at both points and take the larger gap. This is the Chebyshev, or maximum, distance. The same two measurements give 0.03393, about 1.88 times the slope margin.</p></article>
+          <article class="concept"><h3>The pivot</h3><p>At p = 0.20 the pure cases all read 0.80. A reading away from 0.80 there means cross-talk is present, which the two-point test alone cannot see.</p></article>
+        </div>
+      </section>
+      <section aria-labelledby="tech-h">
+        <h2 id="tech-h">Techniques</h2>
+        <ul>
+          <li>Each curve is an SVG path built from 121 sample points.</li>
+          <li>There is no animation loop. The chart is redrawn once per slider movement.</li>
+          <li>The numbers turn green or red by comparing them with 1/60.</li>
+          <li>The page is built for embedding: transparent background, and it accepts a theme message from the host page.</li>
+        </ul>
+      </section>
+      <section aria-labelledby="style-h">
+        <h2 id="style-h">Style</h2>
+        <p>The same generated widget look as the original research graphics: segmented pills, summary cards, custom slider thumbs. Colour is spent on meaning, with green for clears the floor and red for misses it.</p>
+        <ul class="swatches" aria-label="Main colours">
+          <li><i style="background:#3186ff"></i>#3186ff primary, light</li>
+          <li><i style="background:#9dd2ff"></i>#9dd2ff primary, dark</li>
+          <li><i style="background:#0ebc5f"></i>#0ebc5f clears</li>
+          <li><i style="background:#ff4c45"></i>#ff4c45 misses</li>
+          <li><i style="background:#997112"></i>#997112 fourth series</li>
+        </ul>
+        <p class="type-sample"><span>Text: Google Sans Flex, loaded from Google Fonts (shown here in your system sans)</span><b style="font-family:system-ui, sans-serif">Safety Gate Bound (R)</b></p>
+        <p class="type-sample"><span>Numbers: Google Sans Code (shown here in your system monospace)</span><b style="font-family:ui-monospace, Menlo, Consolas, monospace">2,131.3×</b></p>
+      </section>
+      <section aria-labelledby="files-h">
+        <h2 id="files-h">Files and status</h2>
+        <p>Proposed in <a href="https://github.com/Moissanite-Labs/weft-eido/pull/15">pull request 15</a>, not merged. The README records that the exact fractions were recomputed independently and matched.</p>
+        <ul class="file-list">
+          <li><a href="../../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html"><code>examples/visualizations/project-asma-chebyshev-identifiability-explorer.html</code></a><span>The explorer.</span></li>
+          <li><code>examples/visualizations/README.md</code><span>The collection's rules and this entry's claim status.</span></li>
+        </ul>
+      </section>
+      <nav class="angle-pager" aria-label="Other angles">
+        <a class="btn" href="session-simulations.html">← Session simulations</a>
+        <a class="btn" href="index.html">All angles</a>
+        <a class="btn" href="causal-harmonic.html">Causal Harmonic Computing →</a>
+      </nav>
+    </div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+  <script type="module">
+    // Archived pages that accept a theme message follow this site's theme switch.
+    const root = document.documentElement;
+    const tell = (frame) => { try { frame.contentWindow?.postMessage({ type: "set-theme", theme: root.getAttribute("data-theme") }, "*"); } catch (e) { /* frame not ready */ } };
+    for (const box of document.querySelectorAll("[data-exhibit]")) {
+      const frame = box.querySelector("iframe");
+      const title = box.querySelector("[data-exhibit-title]");
+      const open = box.querySelector("[data-exhibit-open]");
+      const tabs = [...box.querySelectorAll("[data-frame]")];
+      frame.addEventListener("load", () => tell(frame));
+      new MutationObserver(() => tell(frame)).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+      for (const tab of tabs) tab.addEventListener("click", () => {
+        frame.src = tab.dataset.frame;
+        frame.title = tab.dataset.title;
+        title.textContent = tab.dataset.title;
+        open.href = tab.dataset.frame;
+        for (const t of tabs) t.setAttribute("aria-pressed", String(t === tab));
+      });
+      box.querySelector("[data-gate-load]")?.addEventListener("click", () => {
+        box.querySelector("[data-gate]").remove();
+        frame.hidden = false;
+        frame.src = frame.dataset.src;
+        frame.focus();
+      });
+    }
+  </script>
+</body>
+</html>
