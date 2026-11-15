@@ -50,6 +50,21 @@ test("approved engines run at full strength, not as toys", () => {
   assert.match(html, /id="eco-flow"/, "flow toggle is present");
 });
 
+test("places are full-page rooms and every nav fits", () => {
+  assert.match(html, /id="eco-room-back"/, "rooms have a way back to the field");
+  assert.match(js, /classList\.add\("eco-room"\)/, "entering a place switches to room mode");
+  const siteDir = path.join(repo, "site");
+  const pages = [];
+  const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (p.endsWith(".html")) pages.push(p); } };
+  walk(siteDir);
+  assert.ok(pages.length >= 16, "expected the full site");
+  for (const page of pages) {
+    assert.match(fs.readFileSync(page, "utf8"), />Harmonic<\/a>/, `${path.relative(repo, page)} nav lacks Harmonic`);
+  }
+  const css = fs.readFileSync(path.join(siteDir, "assets", "site.css"), "utf8");
+  assert.doesNotMatch(css, /w3ft\.org.*visual family|Same visual family as ML Weft/, "shared theme no longer mirrors w3ft.org");
+});
+
 test("recorded audio carries its non-commercial licence", () => {
   const licence = path.join(repo, "examples", "research", "causal-harmonic", "originals", "LICENSE.md");
   assert.ok(fs.existsSync(licence), "originals/LICENSE.md is missing");

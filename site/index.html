@@ -30,18 +30,17 @@
     </div>
   </header>
   <main id="main">
-    <section class="eco-hero wrap" aria-labelledby="hero-title">
+    <section class="eco-hero wrap" id="eco-hero" aria-labelledby="hero-title">
       <h1 id="hero-title">Eido</h1>
       <p class="eco-tagline">An interface that changes, inside limits you can see.</p>
-      <p class="eco-lede">Eido is the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. Weft studies models that change themselves within bounds you can check. Eido uses the same rule on the screen. The page can change itself in response to you, and only within bounds you can see, check and undo.</p>
-      <p class="eco-lede">This page is one field, not a row of boxes. Every line of work in the repository lives in the field below. Pick a place and it runs here. Three threads run through all of it at once: the style point, how restlessly you read, and the tension of a small test model. Move one thread and the whole field answers.</p>
+      <p class="eco-lede">The design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>, alive on one page. Every line of work lives in the field below. Enter a place and it fills the page. Style, reading and tension run through all of it at once.</p>
       <p class="eco-status" id="eco-status">JavaScript is off, so the field cannot run. The <a href="components/index.html">component pages</a> and the <a href="philosophy.html">philosophy page</a> still work.</p>
       <p class="eco-flow-row" data-eido-skip><button class="btn small" type="button" id="eco-flow" aria-pressed="true">Flow: on</button> <span>Flow lets colour drift around the colour circle and lets shapes breathe around the style point. Switch it off and the page sits exactly where you put it. Reduced motion settings switch it off for you.</span></p>
     </section>
 
-    <section class="eco-field-block wrap" aria-labelledby="field-h">
+    <section class="eco-field-block wrap" id="eco-field-view" aria-labelledby="field-h">
       <h2 id="field-h">The field</h2>
-      <p>Each cell is one line of work. Cell area follows a stated value, set in the data under the field. Curved threads join each family by the shortest path that touches every cell once. That is the real <a href="components/cell-layout.html">cell layout</a> code running, not a picture of it.</p>
+      <p>Enter a cell to open its place. Area follows a stated weight. Threads take the shortest path through each family. Real <a href="components/cell-layout.html">cell layout</a> code, running live.</p>
       <div class="eco-field-frame" data-eido-skip>
         <canvas id="eco-field" role="img" aria-label="Map of the eight lines of work. Use the place buttons beside the map to open each one."></canvas>
         <div class="eco-places">
@@ -53,9 +52,16 @@
       <p class="eco-note">Keyboard: tab to a place button and press Enter. The map itself is a picture. The buttons carry the same choices in text.</p>
     </section>
 
-    <section class="eco-stage wrap" aria-labelledby="stage-h">
-      <h2 id="stage-h">The place you picked</h2>
-      <p id="eco-stage-intro">One place runs at a time. The three threads stay live while you move between places.</p>
+    <section class="eco-stage wrap" id="eco-room-view" aria-labelledby="stage-h" hidden>
+      <div class="eco-room-bar" data-eido-skip>
+        <button class="btn small" type="button" id="eco-room-back">Back to the field</button>
+        <h2 id="stage-h"><span id="eco-room-title">Place</span></h2>
+        <span class="eco-room-threads" id="eco-room-threads"></span>
+        <span class="eco-room-nav">
+          <button class="btn small" type="button" id="eco-room-prev">Previous place</button>
+          <button class="btn small" type="button" id="eco-room-next">Next place</button>
+        </span>
+      </div>
 
       <article class="eco-place" data-place="style" aria-labelledby="place-style-h">
         <h3 id="place-style-h">Style. A point you can drag</h3>
@@ -188,7 +194,7 @@
       </article>
     </section>
 
-    <section class="eco-warp wrap" aria-labelledby="warp-h">
+    <section class="eco-warp wrap eco-below" aria-labelledby="warp-h">
       <h2 id="warp-h">The three threads</h2>
       <p>Nothing on this page runs alone. The style point sets how everything looks. Your reading sets how calm everything is. The toy model sets how much strain everything shows. Each thread has a number you can read and a way to take control back.</p>
       <div class="eco-threads" data-eido-skip>
@@ -199,7 +205,7 @@
       <p>Two principles have no place of their own because they run elsewhere. Compact verified state and surfaces that show strain live in Weft's telemetry field, built on these modules. The <a href="philosophy.html">philosophy page</a> says plainly what is built here, what lives in Weft, and what is still design.</p>
     </section>
 
-    <section class="eco-record wrap" aria-labelledby="record-h">
+    <section class="eco-record wrap eco-below" aria-labelledby="record-h">
       <h2 id="record-h">What is proven, what is proposed</h2>
       <p>This page weaves in every open pull request. The table records what review and checks said on 15 November 2026. Approved work runs here in full. Blocked work runs only as a safe miniature, with its blockers named.</p>
       <div class="eco-table-wrap">

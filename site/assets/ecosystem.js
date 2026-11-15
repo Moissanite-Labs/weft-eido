@@ -83,24 +83,68 @@ function renderStatusAndRecord() {
 }
 
 const stoppers = new Map(); // place id -> fn to call when leaving
-function showPlace(id, { focus = false } = {}) {
-  const prev = bus.state.place;
-  if (prev !== id) stoppers.get(prev)?.();
-  bus.set({ place: id });
-  for (const el of document.querySelectorAll("[data-place]")) el.hidden = el.dataset.place !== id;
-  for (const btn of document.querySelectorAll(".eco-place-btn")) btn.setAttribute("aria-pressed", btn.dataset.placeId === id ? "true" : "false");
-  const place = PLACES.find((p) => p.id === id);
+
+function paintRoomChrome(place) {
+  const title = $("#eco-room-title");
+  if (title && place) title.textContent = place.name;
   const readout = $("#eco-field-readout");
   if (readout && place) {
     const packed = packLabel(place.code, 8);
     const words = [...packed.words].map((w) => "0x" + w.toString(16).padStart(8, "0")).join(" ");
     readout.textContent = `${place.name}\n${place.state}\nGlyph label "${place.code}" packs to ${words}`;
   }
+}
+
+function showPlace(id, { focus = false } = {}) {
+  const prev = bus.state.place;
+  if (prev !== id) stoppers.get(prev)?.();
+  bus.set({ place: id });
+  for (const el of document.querySelectorAll("[data-place]")) el.hidden = el.dataset.place !== id;
+  for (const btn of document.querySelectorAll(".eco-place-btn")) btn.setAttribute("aria-pressed", btn.dataset.placeId === id ? "true" : "false");
+  const room = $("#eco-room-view");
+  if (room) room.hidden = false;
+  document.body.classList.add("eco-room");
+  paintRoomChrome(PLACES.find((p) => p.id === id));
   const url = new URL(window.location.href);
   url.hash = `place=${id}`;
   history.replaceState(null, "", url);
-  if (focus) $(`[data-place="${id}"] h3`)?.setAttribute("tabindex", "-1"), $(`[data-place="${id}"] h3`)?.focus({ preventScroll: true });
+  window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
+  if (focus) { const h = $(`[data-place="${id}"] h3`); h?.setAttribute("tabindex", "-1"); h?.focus({ preventScroll: true }); }
+  requestAnimationFrame(() => { drawActivePlace(performance.now()); });
   startPlaceLoops(id);
+}
+
+function showField({ focus = false } = {}) {
+  stoppers.get(bus.state.place)?.();
+  document.body.classList.remove("eco-room");
+  const room = $("#eco-room-view");
+  if (room) room.hidden = true;
+  const url = new URL(window.location.href);
+  url.hash = "field";
+  history.replaceState(null, "", url);
+  window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
+  paintRoomChrome(PLACES.find((p) => p.id === bus.state.place));
+  if (focus) { const h = $("#field-h"); h?.setAttribute("tabindex", "-1"); h?.focus({ preventScroll: true }); }
+  requestAnimationFrame(() => drawField(performance.now()));
+}
+
+function cyclePlace(dir) {
+  const idx = PLACES.findIndex((p) => p.id === bus.state.place);
+  const next = PLACES[(idx + dir + PLACES.length) % PLACES.length];
+  showPlace(next.id, { focus: true });
+}
+
+function initRooms() {
+  $("#eco-room-back")?.addEventListener("click", () => showField({ focus: true }));
+  $("#eco-room-prev")?.addEventListener("click", () => cyclePlace(-1));
+  $("#eco-room-next")?.addEventListener("click", () => cyclePlace(1));
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Escape" && document.body.classList.contains("eco-room")) showField({ focus: true });
+  });
+  bus.sub((s) => {
+    const mini = $("#eco-room-threads");
+    if (mini) mini.textContent = `hue ${Math.round(liveHue() * 360)} · rest ${s.restless.toFixed(2)} · tension ${s.tension.toFixed(2)}`;
+  });
 }
 
 /* ---------- the field: real cell-layout, golden angle, gold threads ---------- */
@@ -158,14 +202,19 @@ function drawField(t = 0) {
     const rBase = side / 2;
     const cx = cell.x + wob(i), cy = cell.y;
     const wobble = flow.on ? 0.10 + rounding * 0.10 : rounding * 0.06;
-    ctx.beginPath();
     const steps = 28;
-    for (let k = 0; k <= steps; k += 1) {
+    const pts = [];
+    for (let k = 0; k < steps; k += 1) {
       const a = (k / steps) * Math.PI * 2;
       const rr = rBase * (1 + Math.sin(a * 3 + i * 1.3 + (flow.on ? t / 2400 : 0)) * wobble + Math.sin(a * 5 - i) * wobble * 0.4);
-      const px = cx + Math.cos(a) * rr * (0.86 + rounding * 0.2);
-      const py = cy + Math.sin(a) * rr;
-      if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      pts.push([cx + Math.cos(a) * rr * (0.86 + rounding * 0.2), cy + Math.sin(a) * rr]);
+    }
+    ctx.beginPath();
+    const mid0 = [(pts[steps - 1][0] + pts[0][0]) / 2, (pts[steps - 1][1] + pts[0][1]) / 2];
+    ctx.moveTo(mid0[0], mid0[1]);
+    for (let k = 0; k < steps; k += 1) {
+      const p = pts[k], q = pts[(k + 1) % steps];
+      ctx.quadraticCurveTo(p[0], p[1], (p[0] + q[0]) / 2, (p[1] + q[1]) / 2);
     }
     ctx.closePath();
     const grad = ctx.createRadialGradient(cx - rBase * 0.3, cy - rBase * 0.35, rBase * 0.1, cx, cy, rBase * 1.25);
@@ -229,6 +278,7 @@ function applyStyleToPage(v, t = performance.now()) {
   root.setProperty("--eco-hue-b", String((deg + 42) % 360));
   root.setProperty("--eco-hue-c", String((deg + 315) % 360));
   root.setProperty("--eco-strain", bus.state.tension.toFixed(3));
+  try { localStorage.setItem("eido-hue", String(deg)); } catch (e) { /* storage may be blocked */ }
   const out = $("#eco-thread-style");
   if (out) out.textContent = `rounding ${rounding.toFixed(2)}, density ${v.density.toFixed(2)}, hue ${deg} degrees, contrast ${v.contrast.toFixed(2)}. Flow ${flow.on ? "on" : "off"}.`;
 }
@@ -756,11 +806,14 @@ function drawHarmonicView() {
   ctx.clearRect(0, 0, w, h);
   const freqs = chordFreqs();
   const labels = ["ROOT (HUE)", "THIRD (TENSION)", "FIFTH (TENSION)"];
-  const bw = Math.min(120, (w - 80) / 3);
+  const hueDeg = Math.round(liveHue() * 360);
+  const bw = Math.min(190, (w - 140) / 3);
+  const groupW = bw * 3 + 48;
+  const startX = Math.max(24, (w - groupW) / 2);
   freqs.forEach((f, i) => {
-    const bh = clamp((f - 100) / 500, 0.08, 1) * (h - 64);
-    const x = 40 + i * (bw + 30);
-    ctx.fillStyle = harmonic.playing ? "#8abeb8" : "#2e4d4f";
+    const bh = clamp((f - 80) / 240, 0.12, 1) * (h - 84);
+    const x = startX + i * (bw + 24);
+    ctx.fillStyle = harmonic.playing ? `hsl(${hueDeg} 70% 62%)` : `hsl(${hueDeg} 38% 34%)`;
     ctx.fillRect(x, h - 34 - bh, bw, bh);
     ctx.fillStyle = "#e7f3f3"; ctx.font = "12px ui-monospace, monospace"; ctx.textAlign = "center";
     ctx.fillText(`${f.toFixed(0)} HZ`, x + bw / 2, h - 40 - bh);
@@ -834,8 +887,9 @@ function boot() {
   initIdent();
   initHarmonic();
   initFlow();
+  initRooms();
   const fromHash = new URLSearchParams(window.location.hash.replace(/^#/, "")).get("place");
-  showPlace(PLACES.some((p) => p.id === fromHash) ? fromHash : "style");
+  if (PLACES.some((p) => p.id === fromHash)) showPlace(fromHash); else { paintRoomChrome(PLACES[0]); showField(); }
   startLoop();
   reducedMotion.addEventListener?.("change", startLoop);
   new MutationObserver(() => { drawField(performance.now()); drawActivePlace(performance.now()); })
