@@ -1,0 +1,71 @@
+/* Ecosystem home page. Layers on site.css.
+   The style point drives --eco-radius, --eco-pad, --eco-hue and --eco-ink-mix
+   from ecosystem.js, so the whole page answers the simplex pad (D1). */
+
+:root {
+  --eco-radius: 14px;
+  --eco-pad: 20px;
+  --eco-hue: 43;
+  --eco-strain: 0;
+}
+
+.eco-hero { padding: 44px 0 8px; }
+.eco-hero h1 { font-family: var(--font-display); font-size: clamp(44px, 7vw, 72px); line-height: 1.05; margin: 0 0 6px; color: var(--ink); }
+.eco-tagline { font-family: var(--font-display); font-size: clamp(20px, 3vw, 27px); color: var(--accent-strong); margin: 0 0 14px; }
+.eco-lede { max-width: 68ch; font-size: 18px; }
+.eco-status { max-width: 68ch; border: 1px solid var(--line-2); border-radius: var(--eco-radius); padding: 10px 14px; background: var(--surface); font-size: 15px; }
+.eco-status strong { color: var(--ink); }
+
+.eco-field-block, .eco-stage, .eco-warp, .eco-record { padding: 26px 0 10px; }
+.eco-field-block h2, .eco-stage h2, .eco-warp h2, .eco-record h2 { font-family: var(--font-display); color: var(--ink); font-size: 30px; margin: 0 0 8px; }
+.eco-field-block p, .eco-stage p, .eco-warp p, .eco-record p { max-width: 72ch; }
+
+.eco-field-frame { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 16px; align-items: start; margin: 14px 0 6px; }
+#eco-field { width: 100%; height: 440px; background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--eco-radius); }
+.eco-places { background: var(--surface); border: 1px solid var(--line); border-radius: var(--eco-radius); padding: var(--eco-pad); }
+.eco-places-h { margin: 0 0 10px; font-weight: 650; color: var(--ink); }
+#eco-place-buttons { display: grid; gap: 8px; }
+.eco-place-btn { text-align: left; font: inherit; font-size: 15px; color: var(--btn-fg); background: var(--btn-bg); border: 1px solid var(--line-2); border-radius: calc(var(--eco-radius) * 0.7); padding: 8px 12px; cursor: pointer; }
+.eco-place-btn:hover { background: var(--btn-bg-hover); }
+.eco-place-btn[aria-pressed="true"] { border-color: hsl(var(--eco-hue) 45% 55%); color: var(--ink); box-shadow: inset 0 0 0 1px hsl(var(--eco-hue) 45% 55%); }
+.eco-place-btn small { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.eco-field-readout, .eco-readout { font-family: var(--font-mono); font-size: 13.5px; color: var(--code-ink); white-space: pre-line; }
+.eco-note { color: var(--muted); font-size: 14.5px; }
+.eco-links { font-size: 15px; }
+
+.eco-place { background: var(--surface); border: 1px solid var(--line); border-radius: var(--eco-radius); padding: calc(var(--eco-pad) + 6px); margin: 16px 0 22px; }
+.eco-place h3 { font-family: var(--font-display); color: var(--ink); font-size: 24px; margin: 0 0 8px; }
+.eco-place canvas { width: 100%; height: 300px; background: var(--bg-2); border: 1px solid var(--line); border-radius: calc(var(--eco-radius) * 0.7); margin: 10px 0; }
+#eco-explainer canvas[data-stage] { height: 320px; }
+#eco-harmonic-view { height: 180px; }
+.eco-controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 8px 0; }
+.eco-controls label { display: inline-flex; gap: 8px; align-items: center; font-size: 15px; }
+.eco-reading-sample { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 10px 0; margin: 10px 0; }
+.eco-gate { border: 1px solid var(--alert-line); background: var(--alert-soft); border-radius: calc(var(--eco-radius) * 0.7); padding: 12px 14px; margin: 12px 0; }
+.eco-gate p { margin: 0 0 8px; }
+
+.eco-threads { background: var(--surface); border: 1px solid var(--line); border-radius: var(--eco-radius); padding: var(--eco-pad); margin: 12px 0; }
+.eco-threads p { margin: 0 0 10px; max-width: none; }
+.eco-threads meter { width: 180px; vertical-align: middle; }
+
+.eco-table-wrap { overflow-x: auto; margin: 12px 0; }
+.eco-table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; }
+.eco-table th, .eco-table td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 9px 10px; }
+.eco-table th { color: var(--ink); }
+.eco-badge { display: inline-block; font-size: 12.5px; font-weight: 650; border: 1px solid var(--line-2); border-radius: 999px; padding: 1px 9px; white-space: nowrap; }
+.eco-badge.main { color: var(--ok); }
+.eco-badge.approved { color: var(--accent-strong); }
+.eco-badge.blocked { color: var(--alert); border-color: var(--alert-line); }
+
+.btn.small { font-size: 14px; padding: 6px 12px; }
+#eco-mixer .mixer, #eco-glyph .glyph-demo { margin: 6px 0; }
+
+@media (max-width: 860px) {
+  .eco-field-frame { grid-template-columns: 1fr; }
+  #eco-field { height: 360px; }
+  .eco-place canvas { height: 240px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eco-place-btn, .eco-place { transition: none; }
+}
