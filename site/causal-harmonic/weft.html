@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Syntactic Weft · Eido</title>
+  <meta name="description" content="The latest Syntactic Weft file, with a skin switch for the original and light versions.">
+  <meta name="theme-color" content="#090d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html">Home</a><a href="../philosophy.html">Philosophy</a><a href="../components/index.html">Components</a><a href="index.html" aria-current="page">Harmonic</a>
+        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Syntactic Weft</p><h1 id="t">Syntactic Weft</h1><p class="lede">The Weft file, latest content first. Switch skins to see the same idea in the original dark look or the light prose version.</p></div></section>
+    <section class="block"><div class="wrap">
+      <p><button class="btn btn-primary" type="button" data-skin="latest">Latest</button>       <button class="btn" type="button" data-skin="original">Original dark</button>       <button class="btn" type="button" data-skin="light">Light prose</button></p>
+      <p id="skin-note">Latest: Syntactic Weft __3. Adds the Somatic Kinetic Variable, the Just Intonation Chord, Homomorphic Provenance, and the Port-Hamiltonian stratum.</p>
+      <iframe id="weft-frame" src="../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html" title="Syntactic Weft" style="width:100%;height:80vh;border:1px solid currentColor"></iframe>
+      <script>
+        const skins = {
+          latest: ["../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html", "Latest: Syntactic Weft __3. Adds the Somatic Kinetic Variable, the Just Intonation Chord, Homomorphic Provenance, and the Port-Hamiltonian stratum."],
+          original: ["../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__1.html", "Original dark: the unnumbered file, with the copy-button fix for iframes. Text identical to the original upload."],
+          light: ["../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__2.html", "Light prose: a user-interface refresh. More prose, no Python kernel inside. A skin, not newer content."],
+        };
+        for (const b of document.querySelectorAll("[data-skin]")) {
+          b.addEventListener("click", () => {
+            const s = skins[b.dataset.skin];
+            document.getElementById("weft-frame").src = s[0];
+            document.getElementById("skin-note").textContent = s[1];
+          });
+        }
+      </script>
+    </div></section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
+      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>
