@@ -1,0 +1,2501 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SYNTACTIC WEFT // Causal Harmonic Computer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-void: #06080d;
+      --bg-panel: #0b1018;
+      --bg-elevated: #111926;
+      --border-dim: #1d293d;
+      --accent-cyan: #22d3ee;
+      --accent-amber: #fbbf24;
+      --accent-emerald: #34d399;
+      --accent-crimson: #fb7185;
+      --accent-violet: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: var(--bg-void);
+      color: #e2e8f0;
+      font-family: 'IBM Plex Mono', monospace;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(34, 211, 238, 0.06), transparent 40%),
+        radial-gradient(circle at 85% 100%, rgba(167, 139, 250, 0.06), transparent 40%);
+    }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+    .panel {
+      background: linear-gradient(180deg, rgba(15, 23, 36, 0.92) 0%, rgba(9, 13, 21, 0.96) 100%);
+      border: 1px solid var(--border-dim);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    .panel-header {
+      border-bottom: 1px solid rgba(29, 41, 61, 0.8);
+      background: rgba(6, 9, 15, 0.55);
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 5px;
+      background: #1a2436;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      border: 2px solid #06080d;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.65);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+    }
+    .slider-amber::-webkit-slider-thumb {
+      background: var(--accent-amber) !important;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.65) !important;
+    }
+    .slider-violet::-webkit-slider-thumb {
+      background: var(--accent-violet) !important;
+      box-shadow: 0 0 10px rgba(167, 139, 250, 0.65) !important;
+    }
+    .slider-emerald::-webkit-slider-thumb {
+      background: var(--accent-emerald) !important;
+      box-shadow: 0 0 10px rgba(52, 211, 153, 0.65) !important;
+    }
+    .btn-cyber {
+      transition: all 0.15s ease;
+      border: 1px solid #25354d;
+      background: rgba(17, 25, 38, 0.85);
+    }
+    .btn-cyber:hover {
+      border-color: #38bdf8;
+      background: rgba(34, 211, 238, 0.1);
+      transform: translateY(-1px);
+    }
+    .btn-cyber:active {
+      transform: translateY(0);
+    }
+    .btn-active {
+      border-color: #22d3ee !important;
+      background: rgba(34, 211, 238, 0.18) !important;
+      color: #67e8f9 !important;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.22);
+    }
+    .pulse-dot {
+      animation: pulseGlow 1.8s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px currentColor; }
+      50% { opacity: 0.35; box-shadow: 0 0 2px currentColor; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #06080d; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- TOP COMMAND & TRANSPORT HEADER -->
+  <header class="border-b border-slate-800/90 bg-[#070a11]/95 backdrop-blur sticky top-0 z-30 px-4 py-3">
+    <div class="max-w-[1680px] mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center relative">
+          <span id="engineStatusDot" class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="font-display font-bold text-base sm:text-lg tracking-wider text-slate-100">
+              SYNTACTIC WEFT <span class="text-cyan-400 font-normal">//</span> CAUSAL HARMONIC COMPUTER
+            </h1>
+            <span class="hidden md:inline-block text-[10px] px-2 py-0.5 rounded bg-slate-800/90 border border-slate-700 text-cyan-300">
+              48.0 kHz ZERO-DELAY PASSIVE KERNEL
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 tracking-tight">
+            Each mechanism a chord &bull; An array of strictly causal algorithms &bull; Symphonic wavelengths ($c = 343.0\text{ m/s}$)
+          </p>
+        </div>
+      </div>
+
+      <!-- Master Actions -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="btnAudioToggle" class="px-3.5 py-2 rounded text-xs font-semibold tracking-wider uppercase border border-cyan-400/60 bg-cyan-500/15 text-cyan-200 hover:bg-cyan-400/25 transition flex items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
+          <span id="audioBtnIcon">&#9654;</span>
+          <span id="audioBtnText">Ignite Acoustic Loom</span>
+        </button>
+
+        <button id="btnMicToggle" class="btn-cyber px-3 py-2 rounded text-xs text-slate-300 flex items-center gap-1.5" title="Agostino Di Scipio Audible Ecosystemics: Couple physical room acoustics via microphone into the causal tension loop">
+          <span id="micDot" class="w-2 h-2 rounded-full bg-slate-600"></span>
+          <span>Room Ecosystemics</span>
+        </button>
+
+        <button id="btnRenderWav" class="btn-cyber px-3 py-2 rounded text-xs text-emerald-300 border-emerald-500/30 hover:border-emerald-400 flex items-center gap-1.5">
+          <span>&#8681; Render 48kHz WAV</span>
+        </button>
+
+        <button id="btnPythonModal" class="btn-cyber px-3 py-2 rounded text-xs text-violet-300 border-violet-500/30 hover:border-violet-400 flex items-center gap-1.5">
+          <span>&#10094;/&#10095; Python 3 Reference Kernel</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- REGIME PRESET BAR -->
+  <section class="border-b border-slate-800/70 bg-[#090d16] px-4 py-2">
+    <div class="max-w-[1680px] mx-auto flex flex-wrap items-center justify-between gap-2 text-[11px]">
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="text-slate-500 uppercase tracking-wider mr-1">Dynamical Regimes:</span>
+        <button data-preset="homeostasis" class="preset-btn btn-cyber btn-active px-2.5 py-1 rounded text-slate-300">I. Homeostatic JI Consonance</button>
+        <button data-preset="mitosis" class="preset-btn btn-cyber px-2.5 py-1 rounded text-slate-300">II. Exploratory Lineage Beta</button>
+        <button data-preset="vmcrisis" class="preset-btn btn-cyber px-2.5 py-1 rounded text-amber-300/90">III. Darwin VM Strain (K &gt; 1 Chaos)</button>
+        <button data-preset="tamper" class="preset-btn btn-cyber px-2.5 py-1 rounded text-rose-300/90">IV. Watermark Tamper Beating</button>
+        <button data-preset="xenakis" class="preset-btn btn-cyber px-2.5 py-1 rounded text-violet-300/90">V. GENDYN Cauchy Microsound</button>
+      </div>
+      <div class="flex items-center gap-3 text-slate-400">
+        <span>Sample Clock: <strong id="uiSampleClock" class="text-slate-200">0</strong></span>
+        <span>Passivity $\Delta H \le 0$: <strong id="uiPassivityBadge" class="text-emerald-400">VERIFIED</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 MECHANISM TELEMETRY RIBBON -->
+  <section class="max-w-[1680px] w-full mx-auto px-4 pt-3 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2.5">
+    <div class="panel rounded p-2.5">
+      <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase">
+        <span>01 // Darwin VM Telemetry</span>
+        <span class="text-cyan-400">Circle Map</span>
+      </div>
+      <div class="mt-1 flex items-baseline justify-between">
+        <span id="telVmStrain" class="text-lg font-semibold text-slate-100">K = 0.240</span>
+        <span id="telArnoldRatio" class="text-xs text-cyan-300 bg-cyan-950/60 border border-cyan-800/50 px-1.5 py-0.5 rounded">W = 1:3</span>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-0.5 truncate" id="telVmSub">Subharmonic tongue locked</div>
+    </div>
+
+    <div class="panel rounded p-2.5">
+      <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase">
+        <span>02 // Biomatrix Bus</span>
+        <span class="text-emerald-400">Kuramoto p:q</span>
+      </div>
+      <div class="mt-1 flex items-baseline justify-between">
+        <span id="telKuramotoR" class="text-lg font-semibold text-emerald-300">R = 0.984</span>
+        <span id="telRoughness" class="text-xs text-slate-300">Rough: 0.04</span>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-0.5 truncate" id="telChordRatio">7-Limit JI [4 : 5 : 6 : 7]</div>
+    </div>
+
+    <div class="panel rounded p-2.5">
+      <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase">
+        <span>03 // Combinator Net</span>
+        <span class="text-violet-400">Lafont / Mazza</span>
+      </div>
+      <div class="mt-1 flex items-baseline justify-between">
+        <span id="telRedexRate" class="text-lg font-semibold text-violet-300">14 redex/s</span>
+        <span id="telActiveCells" class="text-xs text-slate-300">12 ports</span>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-0.5 truncate" id="telLastRewrite">Strong confluence normal form</div>
+    </div>
+
+    <div class="panel rounded p-2.5">
+      <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase">
+        <span>04 // Convergence Sieve</span>
+        <span class="text-amber-400">Neo-Riemannian</span>
+      </div>
+      <div class="mt-1 flex items-baseline justify-between">
+        <span id="telCommaDrift" class="text-lg font-semibold text-amber-300">+0.00 &cent;</span>
+        <span id="telPlrOp" class="text-xs text-amber-200 bg-amber-950/60 border border-amber-800/50 px-1.5 py-0.5 rounded">HOME</span>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-0.5 truncate">Syntonic path memory (81/80)</div>
+    </div>
+
+    <div class="panel rounded p-2.5">
+      <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase">
+        <span>05 // Provenance Valve</span>
+        <span class="text-emerald-400" id="telProvStatusTag">P_&perp; INVARIANT</span>
+      </div>
+      <div class="mt-1 flex items-baseline justify-between">
+        <span id="telProvCos" class="text-lg font-semibold text-emerald-300">1.000000</span>
+        <span id="telMitoticGen" class="text-xs text-slate-300">Gen #0</span>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-0.5 truncate">cos(W&middot;x_trig, y_id) watermark</div>
+    </div>
+
+    <div class="panel rounded p-2.5">
+      <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase">
+        <span>06 // Haptic Governor</span>
+        <span class="text-cyan-400">ADAA-2 / Plate</span>
+      </div>
+      <div class="mt-1 flex items-baseline justify-between">
+        <span id="telWavelengthSpan" class="text-lg font-semibold text-cyan-200">3.12m&ndash;1.78m</span>
+        <span id="telRmsDb" class="text-xs text-slate-300">-14.2 dBFS</span>
+      </div>
+      <div class="text-[10px] text-slate-500 mt-0.5 truncate">Air c = 343.0 m/s @ 20&deg;C</div>
+    </div>
+  </section>
+
+  <!-- MAIN WORKSPACE GRID -->
+  <main class="max-w-[1680px] w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
+
+    <!-- LEFT COLUMN (4 cols): CAUSAL PARAMETER DECK + PROVENANCE MATRIX -->
+    <div class="lg:col-span-4 flex flex-col gap-4">
+
+      <!-- Causal Parameter Array -->
+      <div class="panel rounded-lg overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-cyan-300">
+            Causal Operator Control Matrix
+          </h2>
+          <span class="text-[10px] text-slate-400">Zero-Lookahead DSP</span>
+        </div>
+
+        <div class="p-3.5 space-y-3.5 text-xs">
+          <!-- Fundamental & Chord Selector -->
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-slate-300">7-Limit Just Intonation Lattice Chord</span>
+              <span id="lblBaseFreq" class="text-cyan-300">f₀ = 110.0 Hz (A2)</span>
+            </div>
+            <div class="grid grid-cols-4 gap-1.5 mb-2">
+              <button data-chord="0" class="chord-btn btn-cyber btn-active py-1.5 rounded text-[11px] font-medium">4:5:6:7</button>
+              <button data-chord="1" class="chord-btn btn-cyber py-1.5 rounded text-[11px] font-medium">10:12:15:18</button>
+              <button data-chord="2" class="chord-btn btn-cyber py-1.5 rounded text-[11px] font-medium">8:10:12:15</button>
+              <button data-chord="3" class="chord-btn btn-cyber py-1.5 rounded text-[11px] font-medium">6:7:9:12</button>
+            </div>
+            <!-- Neo-Riemannian Involutions -->
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] text-slate-400 uppercase mr-1">Neo-Riemannian:</span>
+              <button data-plr="P" class="plr-btn btn-cyber flex-1 py-1 rounded text-[11px] text-amber-300" title="Parallel involution">P (Parallel)</button>
+              <button data-plr="L" class="plr-btn btn-cyber flex-1 py-1 rounded text-[11px] text-amber-300" title="Leittonwechsel leading-tone exchange">L (Leading)</button>
+              <button data-plr="R" class="plr-btn btn-cyber flex-1 py-1 rounded text-[11px] text-amber-300" title="Relative involution (+Syntonic Comma path)">R (Relative)</button>
+              <button id="btnResetComma" class="btn-cyber px-2 py-1 rounded text-[10px] text-slate-400" title="Reset Syntonic Comma Drift">0&cent;</button>
+            </div>
+          </div>
+
+          <hr class="border-slate-800/80" />
+
+          <!-- Sliders -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="sldBaseFreq" class="text-slate-300">Acoustic Fundamental ($f_0$)</label>
+              <span id="valBaseFreq" class="text-cyan-300">110.0 Hz (&lambda;=3.12m)</span>
+            </div>
+            <input id="sldBaseFreq" type="range" min="55" max="220" step="0.5" value="110" />
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="sldKuramoto" class="text-slate-300">Coprime Kuramoto Coupling ($K_{\text{sync}}$)</label>
+              <span id="valKuramoto" class="text-emerald-300">4.20 (Super-Critical)</span>
+            </div>
+            <input id="sldKuramoto" class="slider-emerald" type="range" min="0" max="9" step="0.05" value="4.20" />
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="sldVmStrain" class="text-slate-300">Darwin VM Compression Strain ($K_{\text{circle}}$)</label>
+              <span id="valVmStrain" class="text-amber-300">0.24 (Arnold Locked)</span>
+            </div>
+            <input id="sldVmStrain" class="slider-amber" type="range" min="0.05" max="1.45" step="0.01" value="0.24" />
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="sldPlate" class="text-slate-300">Kirchhoff–Love Steel Plate &amp; Winfree PRC</label>
+              <span id="valPlate" class="text-cyan-300">0.42</span>
+            </div>
+            <input id="sldPlate" type="range" min="0" max="1" step="0.01" value="0.42" />
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="sldGendyn" class="text-slate-300">Hippocampus Novelty (Xenakis GENDYN)</label>
+              <span id="valGendyn" class="text-violet-300">0.18 (Cauchy Walk)</span>
+            </div>
+            <input id="sldGendyn" class="slider-violet" type="range" min="0" max="1" step="0.01" value="0.18" />
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="sldHalvorsen" class="text-slate-300">Halvorsen Chaos &rarr; Zavalishin ZDF SVF</label>
+              <span id="valHalvorsen" class="text-cyan-300">0.55</span>
+            </div>
+            <input id="sldHalvorsen" type="range" min="0.05" max="0.95" step="0.01" value="0.55" />
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="sldAdaaDrive" class="text-slate-300">4-Port Waveguide &amp; ADAA-2 Saturator Drive</label>
+              <span id="valAdaaDrive" class="text-emerald-300">1.35x</span>
+            </div>
+            <input id="sldAdaaDrive" class="slider-emerald" type="range" min="0.3" max="4.0" step="0.05" value="1.35" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Homomorphic Provenance & Orthogonal LoRA Genotype Panel -->
+      <div class="panel rounded-lg overflow-hidden flex flex-col flex-1">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-emerald-300">
+              Orthogonal Subspace Provenance Valve
+            </h2>
+            <p class="text-[10px] text-slate-400">$P_\perp = I - x_{\text{trig}}x_{\text{trig}}^T$ &bull; Secret: <code class="text-slate-300">House_Of_Light_Mithrax</code></p>
+          </div>
+          <span id="badgeWatermark" class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-semibold">
+            AUTHENTIC
+          </span>
+        </div>
+
+        <div class="p-3.5 flex flex-col gap-3 flex-1">
+          <div class="grid grid-cols-12 gap-3 items-center">
+            <div class="col-span-5">
+              <canvas id="cvLoRAMatrix" width="160" height="160" class="w-full aspect-square rounded border border-slate-800 bg-black"></canvas>
+            </div>
+            <div class="col-span-7 space-y-2 text-[11px]">
+              <div class="bg-slate-900/80 border border-slate-800 rounded p-2">
+                <div class="text-slate-400 text-[10px]">Watermark Cosine $\cos(W x_{\text{trig}}, y_{\text{id}})$</div>
+                <div id="readoutCosFull" class="text-base font-bold text-emerald-300 tracking-wider">1.00000000</div>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5">
+                <div class="bg-slate-900/60 border border-slate-800 rounded p-1.5">
+                  <div class="text-[9px] text-slate-500">LINEAGE ALPHA</div>
+                  <div class="text-cyan-300 font-medium">&mu; = 0.005</div>
+                </div>
+                <div class="bg-slate-900/60 border border-slate-800 rounded p-1.5">
+                  <div class="text-[9px] text-slate-500">LINEAGE BETA</div>
+                  <div class="text-violet-300 font-medium">&mu; = 0.240</div>
+                </div>
+              </div>
+              <div class="text-[10px] text-slate-400 leading-relaxed">
+                Rank-2 LoRA mutations $\Delta W P_\perp$ leave $W x_{\text{trig}} = y_{\text{id}}$ invariant. Unauthorized pruning perturbs $x_{\text{trig}}$, detuning the formant valve into $0.25\text{ ERB}$ roughness.
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 mt-auto pt-1">
+            <button id="btnStepMitosis" class="btn-cyber py-2 px-2 rounded text-[11px] text-emerald-300 border-emerald-500/30 font-medium">
+              + Mitotic Step ($P_\perp$)
+            </button>
+            <button id="btnTamperWeights" class="btn-cyber py-2 px-2 rounded text-[11px] text-rose-300 border-rose-500/40 font-medium hover:bg-rose-500/15">
+              &#9888; Inject Tamper
+            </button>
+            <button id="btnHealWeights" class="btn-cyber py-2 px-2 rounded text-[11px] text-cyan-300 border-cyan-500/30 font-medium">
+              &#8634; Restore $W_{\text{core}}$
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN (8 cols): 3-STRATUM VISUALIZATIONS -->
+    <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <!-- PANEL A: MACRO-CAUSAL STRATUM (Symmetric Interaction Combinators & Bytebeat/L-System) -->
+      <div class="panel rounded-lg overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-violet-300">
+              I. Macro-Causal Stratum (1&ndash;50 Hz)
+            </h2>
+            <p class="text-[10px] text-slate-400">Symmetric Interaction Combinators (&gamma; CON, &delta; DUP, &epsilon; ERA) &amp; L-Grammar</p>
+          </div>
+          <div class="flex gap-1.5">
+            <button id="btnSpawnRedex" class="btn-cyber px-2 py-1 rounded text-[10px] text-violet-300">+ Collide &gamma;&delta;</button>
+            <button id="btnAnnihilate" class="btn-cyber px-2 py-1 rounded text-[10px] text-cyan-300">Resolve &gamma;&gamma;</button>
+          </div>
+        </div>
+        <div class="relative flex-1 min-h-[255px] bg-[#05070c]">
+          <canvas id="cvCombinators" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] text-slate-400 pointer-events-none bg-slate-950/75 px-2 py-1 rounded border border-slate-800/80">
+            <span id="txtLSystemAxiom">L-Axiom: F[+X][-X]FX &rarr; Voice Dyad</span>
+            <span class="text-violet-300" id="txtCombinatorCounts">&gamma;&gamma;: 0 | &gamma;&delta;: 0 | &epsilon;: 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL B: MESO-CAUSAL STRATUM (Coprime Kuramoto Phase Ring + Halvorsen 3-Wing Chaos) -->
+      <div class="panel rounded-lg overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-amber-300">
+              II. Meso-Causal Stratum (50&ndash;2000 Hz)
+            </h2>
+            <p class="text-[10px] text-slate-400">Coprime $p:q$ Kuramoto Phase-Locking &bull; Arnold Tongue &bull; Halvorsen Attractor</p>
+          </div>
+          <span id="txtHalvorsenCoords" class="text-[10px] text-amber-200/80">a = 1.40</span>
+        </div>
+        <div class="relative flex-1 min-h-[255px] bg-[#05070c]">
+          <canvas id="cvMesoDynamics" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] text-slate-400 pointer-events-none bg-slate-950/75 px-2 py-1 rounded border border-slate-800/80">
+            <span>Left: Neural Resonance $p:q$ Torus</span>
+            <span>Right: 3-Wing Halvorsen ZDF Modulator</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL C: MICRO-CAUSAL STRATUM (Xenakis GENDYN Polygon & ADAA-2 Waveguide Oscilloscope) -->
+      <div class="panel rounded-lg overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-cyan-300">
+              III. Micro-Causal Stratum (48.0 kHz Clock)
+            </h2>
+            <p class="text-[10px] text-slate-400">Xenakis GENDYN Cauchy-Barrier Polygon &amp; ADAA-2 Anti-Aliased Output</p>
+          </div>
+          <span id="txtAdaaGuard" class="text-[10px] text-emerald-300">ADAA-2 Active</span>
+        </div>
+        <div class="relative flex-1 min-h-[255px] bg-[#05070c]">
+          <canvas id="cvMicroGendyn" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] text-slate-400 pointer-events-none bg-slate-950/75 px-2 py-1 rounded border border-slate-800/80">
+            <span>Cyan: 48kHz Master Pressure $p(t)$</span>
+            <span class="text-violet-300">Violet: 12-Vertex GENDYN Stochastic Walk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL D: SYMPHONIC WAVELENGTHS IN PHYSICAL AIR & SPECTRUM -->
+      <div class="panel rounded-lg overflow-hidden flex flex-col">
+        <div class="panel-header px-3.5 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-emerald-300">
+              IV. Symphonic Wavelengths &amp; Room Standing Modes
+            </h2>
+            <p class="text-[10px] text-slate-400">Physical Acoustic Field $\lambda_m = c / f_m$ ($343.0\text{ m/s}$) &amp; Critical-Band Spectrum</p>
+          </div>
+          <span id="txtEcosystemState" class="text-[10px] text-slate-400">Closed-Loop Silicon</span>
+        </div>
+        <div class="relative flex-1 min-h-[255px] bg-[#05070c]">
+          <canvas id="cvWavelengths" class="w-full h-full block"></canvas>
+          <div class="absolute bottom-2 left-2.5 right-2.5 flex justify-between items-center text-[10px] text-slate-400 pointer-events-none bg-slate-950/75 px-2 py-1 rounded border border-slate-800/80">
+            <span id="txtWaveReadout">&lambda;₁=3.12m &bull; &lambda;₂=2.49m &bull; &lambda;₃=2.08m &bull; &lambda;₄=1.78m</span>
+            <span class="text-cyan-300">4-Port Waveguide Scattering</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- PYTHON 3 REFERENCE KERNEL MODAL (Completes Section 5.2 of Notebook) -->
+  <div id="modalPython" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="panel rounded-xl max-w-5xl w-full max-h-[88vh] flex flex-col overflow-hidden border border-violet-500/40">
+      <div class="panel-header px-4 py-3 flex items-center justify-between">
+        <div>
+          <h3 class="font-display font-bold text-sm text-violet-300">
+            UNIFIED CAUSAL SYMPHONIC WEFT KERNEL // COMPLETE PYTHON 3 IMPLEMENTATION (weft_symphony.py)
+          </h3>
+          <p class="text-[11px] text-slate-400">
+            Standalone Darwin XNU `vm_statistics64` + Orthogonal Mitotic LoRA + Coprime Kuramoto + Kirchhoff Plate + ZDF SVF + GENDYN + ADAA-2
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btnCopyPython" class="btn-cyber px-3 py-1.5 rounded text-xs text-emerald-300 border-emerald-500/40">Copy Python Code</button>
+          <button id="btnDownloadPython" class="btn-cyber px-3 py-1.5 rounded text-xs text-cyan-300 border-cyan-500/40">Download .py</button>
+          <button id="btnCloseModal" class="btn-cyber px-2.5 py-1.5 rounded text-xs text-slate-300">&times; Close</button>
+        </div>
+      </div>
+      <pre id="pythonCodeBlock" class="p-4 text-[11px] leading-relaxed text-slate-200 overflow-auto flex-1 bg-[#04060a] select-all"></pre>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. DETERMINISTIC SHA-256 PRNG & ORTHOGONAL MITOTIC LORA GENOTYPE ENGINE
+    // =========================================================================
+    class OrthogonalWeftGenotype {
+      constructor(dim = 48) {
+        this.dim = dim;
+        this.generation = 0;
+        this.tamperLevel = 0.0;
+        this.novelty = 0.18;
+        this.seedState = 0x4D697468; // "Mith" - House_Of_Light_Mithrax deterministic seed
+
+        this.xTrig = new Float64Array(dim);
+        this.yId = new Float64Array(dim);
+        this.wCore = new Float64Array(dim * dim);
+        this.wLive = new Float64Array(dim * dim);
+        this.hippocampus = new Float64Array(8 * dim);
+        this.hippoPtr = 0;
+
+        this.initWatermark();
+      }
+
+      randn() {
+        // Box-Muller with xorshift32
+        const nextU = () => {
+          let x = this.seedState | 0;
+          x ^= x << 13;
+          x ^= x >>> 17;
+          x ^= x << 5;
+          this.seedState = x;
+          return ((x >>> 0) + 1) / 4294967297;
+        };
+        const u1 = nextU();
+        const u2 = nextU();
+        return Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+      }
+
+      initWatermark() {
+        this.seedState = 0x4D697468;
+        const d = this.dim;
+        let normX = 0, normY = 0;
+        for (let i = 0; i < d; i++) {
+          this.xTrig[i] = this.randn();
+          normX += this.xTrig[i] * this.xTrig[i];
+          this.yId[i] = this.randn();
+          normY += this.yId[i] * this.yId[i];
+        }
+        normX = Math.sqrt(normX);
+        normY = Math.sqrt(normY);
+        for (let i = 0; i < d; i++) {
+          this.xTrig[i] /= normX;
+          this.yId[i] /= normY;
+        }
+
+        // w0 = Gaussian * 0.04
+        const w0 = new Float64Array(d * d);
+        for (let i = 0; i < d * d; i++) w0[i] = this.randn() * 0.04;
+
+        // Compute w0 @ x_trig
+        const w0x = new Float64Array(d);
+        for (let r = 0; r < d; r++) {
+          let acc = 0;
+          for (let c = 0; c < d; c++) acc += w0[r * d + c] * this.xTrig[c];
+          w0x[r] = acc;
+        }
+
+        // Embed homomorphic identity response: W_core = w0 + (y_id - w0 @ x_trig) outer x_trig^T
+        for (let r = 0; r < d; r++) {
+          const diff = this.yId[r] - w0x[r];
+          for (let c = 0; c < d; c++) {
+            const val = w0[r * d + c] + diff * this.xTrig[c];
+            this.wCore[r * d + c] = val;
+            this.wLive[r * d + c] = val;
+          }
+        }
+        this.generation = 0;
+        this.tamperLevel = 0.0;
+      }
+
+      // Rank-2 Mitotic LoRA mutation strictly projected onto P_perp = I - x_trig * x_trig^T
+      mitoticStep(lineageRate = 0.12) {
+        const d = this.dim;
+        // Rank-2 factors A (d x 2), B (2 x d)
+        const A = new Float64Array(d * 2);
+        const B = new Float64Array(2 * d);
+        for (let i = 0; i < d * 2; i++) {
+          A[i] = this.randn() * lineageRate;
+          B[i] = this.randn() * lineageRate;
+        }
+
+        // Project rows of B onto P_perp so B_perp @ x_trig == 0 identically!
+        // b_row_perp = b_row - (b_row . x_trig) * x_trig
+        for (let k = 0; k < 2; k++) {
+          let dot = 0;
+          for (let c = 0; c < d; c++) dot += B[k * d + c] * this.xTrig[c];
+          for (let c = 0; c < d; c++) B[k * d + c] -= dot * this.xTrig[c];
+        }
+
+        // Apply W_live += A @ B_perp (strictly orthogonal to x_trig!)
+        const sigVec = new Float64Array(d);
+        let sigNorm = 0;
+        for (let r = 0; r < d; r++) {
+          let rowEnergy = 0;
+          for (let c = 0; c < d; c++) {
+            const delta = A[r * 2 + 0] * B[0 * d + c] + A[r * 2 + 1] * B[1 * d + c];
+            this.wLive[r * d + c] += delta;
+            rowEnergy += delta * delta;
+          }
+          sigVec[r] = Math.sqrt(rowEnergy);
+          sigNorm += sigVec[r] * sigVec[r];
+        }
+
+        // Compute Hippocampus Novelty against rolling 8-slot memory
+        sigNorm = Math.sqrt(sigNorm) + 1e-12;
+        for (let r = 0; r < d; r++) sigVec[r] /= sigNorm;
+
+        let maxSim = 0;
+        for (let slot = 0; slot < 8; slot++) {
+          let dot = 0, slotNorm = 0;
+          for (let r = 0; r < d; r++) {
+            const hv = this.hippocampus[slot * d + r];
+            dot += sigVec[r] * hv;
+            slotNorm += hv * hv;
+          }
+          if (slotNorm > 1e-12) {
+            maxSim = Math.max(maxSim, Math.abs(dot / Math.sqrt(slotNorm)));
+          }
+        }
+        this.novelty = Math.max(0.05, Math.min(0.95, 1.0 - maxSim * 0.85));
+        for (let r = 0; r < d; r++) {
+          this.hippocampus[this.hippoPtr * d + r] = sigVec[r];
+        }
+        this.hippoPtr = (this.hippoPtr + 1) % 8;
+        this.generation++;
+        return this.auditProvenance();
+      }
+
+      // Unauthorized pruning / non-orthogonal tamper perturbation
+      injectTamper(strength = 0.22) {
+        const d = this.dim;
+        for (let r = 0; r < d; r++) {
+          for (let c = 0; c < d; c++) {
+            // Prune small weights & add unprojected noise violating P_perp
+            if (Math.abs(this.wLive[r * d + c]) < 0.045) {
+              this.wLive[r * d + c] *= 0.15;
+            }
+            this.wLive[r * d + c] += this.randn() * strength * 0.12;
+          }
+        }
+        return this.auditProvenance();
+      }
+
+      auditProvenance() {
+        const d = this.dim;
+        let dot = 0, normWx = 0, normY = 0;
+        for (let r = 0; r < d; r++) {
+          let wx = 0;
+          for (let c = 0; c < d; c++) wx += this.wLive[r * d + c] * this.xTrig[c];
+          dot += wx * this.yId[r];
+          normWx += wx * wx;
+          normY += this.yId[r] * this.yId[r];
+        }
+        const cosSim = dot / (Math.sqrt(normWx * normY) + 1e-15);
+        this.tamperLevel = Math.max(0, Math.min(1, 1.0 - cosSim));
+        return cosSim;
+      }
+    }
+
+    const genotype = new OrthogonalWeftGenotype(48);
+
+    // =========================================================================
+    // 2. AUDIO WORKLET CAUSAL DSP KERNEL SOURCE (48 kHz Sample-Accurate Engine)
+    // =========================================================================
+    const WORKLET_PROCESSOR_CODE = `
+      const TWO_PI = 6.283185307179586;
+
+      function gcd(a, b) {
+        a = Math.abs(Math.round(a));
+        b = Math.abs(Math.round(b));
+        while (b > 0) { const t = b; b = a % b; a = t; }
+        return Math.max(1, a);
+      }
+
+      // Exact C^2-continuous 1st and 2nd antiderivatives of tanh(x) for ADAA-2
+      function F1_tanh(x) {
+        const ax = Math.abs(x);
+        return ax + Math.log(1.0 + Math.exp(-2.0 * ax)) - 0.6931471805599453;
+      }
+
+      function F2_tanh(x) {
+        const ax = Math.abs(x);
+        if (ax < 0.65) {
+          const x2 = x * x;
+          const x3 = x2 * x;
+          const x5 = x3 * x2;
+          const x7 = x5 * x2;
+          const x9 = x7 * x2;
+          return (x3 / 6.0) - (x5 / 60.0) + (x7 / 315.0) - (17.0 * x9 / 22680.0);
+        }
+        const sgn = x < 0 ? -1.0 : 1.0;
+        const e2 = Math.exp(-2.0 * ax);
+        let poly = 0.0;
+        let p = e2;
+        for (let k = 1; k <= 7; k++) {
+          const term = p / (k * k);
+          poly += (k & 1) ? term : -term;
+          p *= e2;
+        }
+        // pi^2 / 24 = 0.4112335167120566
+        return sgn * (0.5 * ax * ax - 0.6931471805599453 * ax + 0.4112335167120566 - 0.5 * poly);
+      }
+
+      class CausalWeftProcessor extends AudioWorkletProcessor {
+        constructor() {
+          super();
+          this.fs = sampleRate || 48000;
+          this.dt = 1.0 / this.fs;
+          this.sampleCount = 0;
+
+          // Parameters
+          this.f0 = 110.0;
+          this.ratios = [4, 5, 6, 7];
+          this.commaCents = 0.0;
+          this.kKuramoto = 4.2;
+          this.vmStrainK = 0.24;
+          this.plateMix = 0.42;
+          this.gendynNovelty = 0.18;
+          this.halvorsenDepth = 0.55;
+          this.adaaDrive = 1.35;
+          this.tamperError = 0.0;
+          this.voiceDyadBoost = 0.0;
+
+          // 4-Voice Coprime Kuramoto Phases + Voice Amplitudes
+          this.phases = new Float64Array([0.1, 1.3, 2.7, 4.2]);
+          this.tamperPhases = new Float64Array([0.0, 0.7, 1.9, 3.1]);
+
+          // Sine Circle Map (Darwin VM Telemetry subharmonic tongue)
+          this.circleY = 0.17;
+          this.circlePhase = 0.0;
+          this.circleSubDiv = 0;
+          this.windingEst = 0.3333;
+
+          // Winfree Pulse Oscillator + 5-Mode Kirchhoff-Love Tensioned Steel Plate
+          this.winfreePhi = 0.0;
+          this.plateModes = [1.0, 1.58, 2.24, 2.92, 3.75];
+          this.plateU = new Float64Array(5);
+          this.plateV = new Float64Array(5);
+
+          // Halvorsen 3-Wing Chaotic Flow (a = 1.4)
+          this.hx = -1.48;
+          this.hy = -1.51;
+          this.hz = 2.04;
+
+          // Stereo Zavalishin TPT Zero-Delay Feedback SVF States
+          this.ic1L = 0.0; this.ic2L = 0.0;
+          this.ic1R = 0.0; this.ic2R = 0.0;
+
+          // Xenakis GENDYN 12-Breakpoint Cauchy Polygon
+          this.numVerts = 12;
+          this.gAmps = new Float64Array(12);
+          this.gDurs = new Float64Array(12);
+          this.gAmpVel = new Float64Array(12);
+          this.gDurVel = new Float64Array(12);
+          for (let i = 0; i < 12; i++) {
+            this.gAmps[i] = Math.sin((TWO_PI * i) / 12) * 0.45;
+            this.gDurs[i] = 32.0;
+          }
+          this.gSegIdx = 0;
+          this.gSegPos = 0.0;
+          this.rngSeed = 0x9E3779B9;
+
+          // 4-Port Passive Waveguide Delay Lines (coprime lengths for room modal coupling)
+          this.wgLens = [113, 179, 251, 337];
+          this.wgBufs = this.wgLens.map(n => new Float64Array(n));
+          this.wgPtrs = [0, 0, 0, 0];
+
+          // Stereo ADAA-2 History States (x[n-1], x[n-2])
+          this.x1L = 0.0; this.x2L = 0.0;
+          this.x1R = 0.0; this.x2R = 0.0;
+          this.adaaMidpointHits = 0;
+
+          this.telemetryCounter = 0;
+
+          this.port.onmessage = (e) => {
+            const d = e.data;
+            if (!d) return;
+            if (d.type === 'params') {
+              if (d.f0 !== undefined) this.f0 = d.f0;
+              if (d.ratios !== undefined) this.ratios = d.ratios;
+              if (d.commaCents !== undefined) this.commaCents = d.commaCents;
+              if (d.kKuramoto !== undefined) this.kKuramoto = d.kKuramoto;
+              if (d.vmStrainK !== undefined) this.vmStrainK = d.vmStrainK;
+              if (d.plateMix !== undefined) this.plateMix = d.plateMix;
+              if (d.gendynNovelty !== undefined) this.gendynNovelty = d.gendynNovelty;
+              if (d.halvorsenDepth !== undefined) this.halvorsenDepth = d.halvorsenDepth;
+              if (d.adaaDrive !== undefined) this.adaaDrive = d.adaaDrive;
+              if (d.tamperError !== undefined) this.tamperError = d.tamperError;
+            } else if (d.type === 'combinatorPulse') {
+              // Excites Kirchhoff plate & dyad voice split
+              this.plateV[0] += d.energy * 0.55;
+              this.plateV[2] += d.energy * 0.35;
+              this.plateV[4] -= d.energy * 0.25;
+              this.voiceDyadBoost = Math.min(1.0, this.voiceDyadBoost + 0.65);
+            }
+          };
+        }
+
+        fastRand() {
+          let x = this.rngSeed | 0;
+          x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
+          this.rngSeed = x;
+          return ((x >>> 0) + 1) / 4294967297.0;
+        }
+
+        // Elastic barrier reflection inside [-limit, +limit] or [minL, maxL]
+        reflectBarrier(val, minB, maxB) {
+          const span = maxB - minB;
+          while (val < minB || val > maxB) {
+            if (val > maxB) val = maxB - (val - maxB);
+            if (val < minB) val = minB + (minB - val);
+          }
+          return Math.max(minB, Math.min(maxB, val));
+        }
+
+        stepGendynPolygon() {
+          const nov = this.gendynNovelty;
+          const ampStepScale = 0.004 + nov * 0.095;
+          const durStepScale = 0.15 + nov * 4.2;
+          const baseSamples = Math.max(8.0, (this.fs / (this.f0 * 2.0 * this.numVerts)));
+
+          for (let i = 0; i < this.numVerts; i++) {
+            // Clamped Cauchy random walk: tan(pi * (u - 0.5))
+            const uA = 0.06 + 0.88 * this.fastRand();
+            const uD = 0.06 + 0.88 * this.fastRand();
+            const cauchyA = Math.tan(Math.PI * (uA - 0.5));
+            const cauchyD = Math.tan(Math.PI * (uD - 0.5));
+
+            // 2nd-order stochastic walk with damping + elastic barrier reflection
+            this.gAmpVel[i] = this.reflectBarrier(this.gAmpVel[i] * 0.88 + cauchyA * ampStepScale, -0.28, 0.28);
+            this.gAmps[i] = this.reflectBarrier(this.gAmps[i] + this.gAmpVel[i], -0.85, 0.85);
+
+            this.gDurVel[i] = this.reflectBarrier(this.gDurVel[i] * 0.88 + cauchyD * durStepScale, -8.0, 8.0);
+            this.gDurs[i] = this.reflectBarrier(
+              this.gDurs[i] * 0.94 + baseSamples * 0.06 + this.gDurVel[i],
+              Math.max(4.0, baseSamples * 0.38),
+              Math.min(140.0, baseSamples * 2.4)
+            );
+          }
+        }
+
+        adaa2Tanh(x0, x1, x2) {
+          const dx1 = x0 - x1;
+          const dx2 = x1 - x2;
+          const f1_x1 = F1_tanh(x1);
+          const f2_x1 = F2_tanh(x1);
+
+          let term1 = 0.0;
+          if (Math.abs(dx1) < 1e-4) {
+            this.adaaMidpointHits++;
+            term1 = 0.5 * Math.tanh((2.0 * x1 + x0) / 3.0);
+          } else {
+            term1 = (F2_tanh(x0) - f2_x1 - dx1 * f1_x1) / (dx1 * dx1);
+          }
+
+          let term2 = 0.0;
+          if (Math.abs(dx2) < 1e-4) {
+            this.adaaMidpointHits++;
+            term2 = 0.5 * Math.tanh((2.0 * x1 + x2) / 3.0);
+          } else {
+            term2 = (dx2 * f1_x1 - (f2_x1 - F2_tanh(x2))) / (dx2 * dx2);
+          }
+          return term1 + term2;
+        }
+
+        process(inputs, outputs) {
+          const outL = outputs[0][0];
+          const outR = outputs[0][1] || outL;
+          const inChan = (inputs[0] && inputs[0][0]) ? inputs[0][0] : null;
+
+          const commaFactor = Math.pow(2.0, this.commaCents / 1200.0);
+          const rootRatio = this.ratios[0];
+          const baseHz = this.f0 * commaFactor;
+          const dt = this.dt;
+
+          // Precompute coprime tables for current 4-voice chord
+          const pMat = new Float64Array(16);
+          const qMat = new Float64Array(16);
+          const vFreqs = new Float64Array(4);
+          for (let i = 0; i < 4; i++) {
+            vFreqs[i] = baseHz * (this.ratios[i] / rootRatio);
+            for (let j = 0; j < 4; j++) {
+              const g = gcd(this.ratios[i], this.ratios[j]);
+              pMat[i * 4 + j] = this.ratios[i] / g;
+              qMat[i * 4 + j] = this.ratios[j] / g;
+            }
+          }
+
+          let blockEnergy = 0.0;
+
+          for (let n = 0; n < outL.length; n++) {
+            this.sampleCount++;
+            const micSample = inChan ? Math.max(-0.5, Math.min(0.5, inChan[n] * 0.65)) : 0.0;
+            this.voiceDyadBoost *= 0.9996;
+
+            // 1. COPRIME KURAMOTO POLYPHONIC CHORD + PROVENANCE BEATING
+            let chordSumL = 0.0;
+            let chordSumR = 0.0;
+            const dTheta = new Float64Array(4);
+
+            // Slight natural detuning when uncoupled so Kuramoto locking is genuinely audible
+            const naturalDetune = [1.0, 1.0038, 0.9968, 1.0052];
+
+            for (let i = 0; i < 4; i++) {
+              let coup = 0.0;
+              for (let j = 0; j < 4; j++) {
+                if (i !== j) {
+                  const pij = pMat[i * 4 + j];
+                  const qij = qMat[i * 4 + j];
+                  coup += Math.sin(pij * this.phases[j] - qij * this.phases[i]) / Math.sqrt(pij * qij);
+                }
+              }
+              // Coupling scales into rad/s
+              const omega_i = TWO_PI * vFreqs[i] * (this.kKuramoto < 1.2 ? naturalDetune[i] : (1.0 + (naturalDetune[i] - 1.0) * Math.exp(-this.kKuramoto * 0.7)));
+              dTheta[i] = omega_i + (this.kKuramoto * 24.0) * coup + micSample * 18.0;
+            }
+
+            for (let i = 0; i < 4; i++) {
+              this.phases[i] = (this.phases[i] + dTheta[i] * dt) % TWO_PI;
+              if (this.phases[i] < 0) this.phases[i] += TWO_PI;
+
+              const ph = this.phases[i];
+              // Rich harmonic complex tone (3 overtone partials per voice)
+              let voiceSig = Math.sin(ph) + 0.34 * Math.sin(2.0 * ph) + (0.14 + 0.16 * this.voiceDyadBoost) * Math.sin(3.0 * ph);
+
+              // Provenance Watermark Valve: Quarter-critical-bandwidth (0.25 ERB) sensory beating on tamper!
+              if (this.tamperError > 0.0005) {
+                const erbHz = 24.7 * (4.37 * vFreqs[i] / 1000.0 + 1.0);
+                const roughBeatHz = vFreqs[i] + 0.25 * erbHz;
+                this.tamperPhases[i] = (this.tamperPhases[i] + TWO_PI * roughBeatHz * dt) % TWO_PI;
+                const ampTamper = Math.min(0.95, Math.sqrt(this.tamperError) * 1.45);
+                voiceSig += ampTamper * (Math.sin(this.tamperPhases[i]) + 0.4 * Math.sin(2.0 * this.tamperPhases[i]));
+              }
+
+              const pan = i / 3.0; // spread across stereo field
+              chordSumL += voiceSig * (0.85 - 0.45 * pan) * 0.17;
+              chordSumR += voiceSig * (0.40 + 0.45 * pan) * 0.17;
+            }
+
+            // 2. MESO SINE CIRCLE MAP SUBHARMONIC VOICE (Darwin VM Strain)
+            this.circleSubDiv++;
+            const periodSamples = Math.max(24, Math.round(this.fs / (baseHz * 2.0)));
+            if (this.circleSubDiv >= periodSamples) {
+              this.circleSubDiv = 0;
+              const omegaDrive = 0.333333 + 0.08 * this.vmStrainK;
+              const prevY = this.circleY;
+              let nextY = prevY + omegaDrive - (this.vmStrainK / TWO_PI) * Math.sin(TWO_PI * prevY);
+              const deltaW = nextY - prevY;
+              this.windingEst = 0.92 * this.windingEst + 0.08 * deltaW;
+              nextY = nextY - Math.floor(nextY);
+              this.circleY = nextY;
+            }
+            const subFreq = baseHz * Math.max(0.18, Math.min(1.2, this.windingEst * 1.5));
+            this.circlePhase = (this.circlePhase + TWO_PI * subFreq * dt) % TWO_PI;
+            const subSig = Math.sin(this.circlePhase + 0.35 * this.vmStrainK * Math.sin(TWO_PI * this.circleY)) * 0.22;
+
+            // 3. WINFREE PRC PULSES + 5-MODE TENSION-COUPLED KIRCHHOFF-LOVE STEEL PLATE
+            const winfreeRate = 1.6 + this.vmStrainK * 2.8 + Math.abs(micSample) * 4.0;
+            const prcZ = 1.0 - Math.cos(this.winfreePhi);
+            const prevPhi = this.winfreePhi;
+            this.winfreePhi += (TWO_PI * winfreeRate + 1.8 * prcZ * Math.sin(this.phases[0])) * dt;
+            if (this.winfreePhi >= TWO_PI) {
+              this.winfreePhi -= TWO_PI;
+              // Strike Kirchhoff-Love plate modes causally
+              const strike = 0.16 * this.plateMix;
+              for (let m = 0; m < 5; m++) {
+                this.plateV[m] += strike * (m % 2 === 0 ? 1.0 : -0.72) / (1.0 + 0.35 * m);
+              }
+            }
+
+            // Total stored plate energy for Berger nonlinear tension coupling
+            let plateEnergy = 0.0;
+            for (let m = 0; m < 5; m++) {
+              plateEnergy += this.plateU[m] * this.plateU[m] + 0.0001 * this.plateV[m] * this.plateV[m];
+            }
+            const tensionBoost = Math.sqrt(1.0 + 18.0 * Math.min(0.25, plateEnergy));
+
+            let plateOut = 0.0;
+            for (let m = 0; m < 5; m++) {
+              const fMode = Math.min(this.fs * 0.42, baseHz * 2.0 * this.plateModes[m] * tensionBoost);
+              const wMode = TWO_PI * fMode;
+              const damp = 3.2 + m * 2.1;
+              // Symplectic / passive step
+              this.plateV[m] += (-wMode * wMode * this.plateU[m] - 2.0 * damp * this.plateV[m]) * dt;
+              this.plateU[m] += this.plateV[m] * dt;
+              plateOut += this.plateU[m] * wMode * 0.09;
+            }
+            plateOut *= this.plateMix;
+
+            // 4. XENAKIS GENDYN CAUCHY-BARRIER POLYGON
+            const curDur = Math.max(4.0, this.gDurs[this.gSegIdx]);
+            const nextIdx = (this.gSegIdx + 1) % this.numVerts;
+            const frac = this.gSegPos / curDur;
+            const gendynRaw = this.gAmps[this.gSegIdx] + frac * (this.gAmps[nextIdx] - this.gAmps[this.gSegIdx]);
+            this.gSegPos += 1.0;
+            if (this.gSegPos >= curDur) {
+              this.gSegPos -= curDur;
+              this.gSegIdx = nextIdx;
+              if (this.gSegIdx === 0) this.stepGendynPolygon();
+            }
+            const gendynSig = gendynRaw * (0.04 + 0.28 * this.gendynNovelty);
+
+            // 5. PASSIVE 4-PORT WAVEGUIDE SCATTERING JUNCTION
+            // Ports: [0] Chord+Sub, [1] Kirchhoff Plate, [2] GENDYN + Mic, [3] Cross-Chord R
+            const inc0 = chordSumL + subSig + 0.42 * this.wgBufs[0][this.wgPtrs[0]];
+            const inc1 = plateOut + 0.48 * this.wgBufs[1][this.wgPtrs[1]];
+            const inc2 = gendynSig + micSample * 0.45 + 0.40 * this.wgBufs[2][this.wgPtrs[2]];
+            const inc3 = chordSumR + subSig * 0.85 + 0.42 * this.wgBufs[3][this.wgPtrs[3]];
+
+            // Lossless isotropic Householder scattering junction p_J = 0.5 * sum(p_i^+)
+            const pJ = 0.5 * (inc0 + inc1 + inc2 + inc3);
+            const scat0 = pJ - inc0;
+            const scat1 = pJ - inc1;
+            const scat2 = pJ - inc2;
+            const scat3 = pJ - inc3;
+
+            this.wgBufs[0][this.wgPtrs[0]] = scat0;
+            this.wgBufs[1][this.wgPtrs[1]] = scat1;
+            this.wgBufs[2][this.wgPtrs[2]] = scat2;
+            this.wgBufs[3][this.wgPtrs[3]] = scat3;
+            for (let p = 0; p < 4; p++) {
+              this.wgPtrs[p] = (this.wgPtrs[p] + 1) % this.wgLens[p];
+            }
+
+            // 6. HALVORSEN 3-WING CHAOTIC ATTRACTOR MODULATING ZAVALISHIN ZDF SVF
+            const aHalv = 1.4;
+            const dtH = dt * 3.5;
+            const dxH = -aHalv * this.hx - 4.0 * this.hy - 4.0 * this.hz - this.hy * this.hy;
+            const dyH = -aHalv * this.hy - 4.0 * this.hz - 4.0 * this.hx - this.hz * this.hz;
+            const dzH = -aHalv * this.hz - 4.0 * this.hx - 4.0 * this.hy - this.hx * this.hx;
+            this.hx = Math.max(-12, Math.min(12, this.hx + dxH * dtH));
+            this.hy = Math.max(-12, Math.min(12, this.hy + dyH * dtH));
+            this.hz = Math.max(-12, Math.min(12, this.hz + dzH * dtH));
+            if (!Number.isFinite(this.hx + this.hy + this.hz)) {
+              this.hx = -1.48; this.hy = -1.51; this.hz = 2.04;
+            }
+
+            const modL = Math.tanh(this.hx * 0.18) * this.halvorsenDepth;
+            const modR = Math.tanh(this.hy * 0.18) * this.halvorsenDepth;
+            const fcL = Math.max(140.0, Math.min(this.fs * 0.38, 1350.0 * Math.pow(2.0, modL * 1.8)));
+            const fcR = Math.max(140.0, Math.min(this.fs * 0.38, 1450.0 * Math.pow(2.0, modR * 1.8)));
+            const kDamp = Math.max(0.22, 1.45 - 1.05 * this.halvorsenDepth);
+
+            // Zavalishin TPT Zero-Delay Feedback SVF (Left)
+            const gL = Math.tan(Math.PI * fcL * dt);
+            const a1L = 1.0 / (1.0 + gL * (gL + kDamp));
+            const a2L = gL * a1L;
+            const a3L = gL * a2L;
+            const rawMixL = chordSumL + 0.45 * plateOut + 0.55 * subSig + 0.45 * gendynSig + 0.25 * scat0;
+            const v3L = rawMixL - this.ic2L;
+            const v1L = a1L * this.ic1L + a2L * v3L;
+            const v2L = this.ic2L + a2L * this.ic1L + a3L * v3L;
+            this.ic1L = 2.0 * v1L - this.ic1L;
+            this.ic2L = 2.0 * v2L - this.ic2L;
+            const zdfL = v2L + 0.32 * v1L;
+
+            // Zavalishin TPT Zero-Delay Feedback SVF (Right)
+            const gR = Math.tan(Math.PI * fcR * dt);
+            const a1R = 1.0 / (1.0 + gR * (gR + kDamp));
+            const a2R = gR * a1R;
+            const a3R = gR * a2R;
+            const rawMixR = chordSumR + 0.45 * plateOut + 0.55 * subSig + 0.45 * gendynSig + 0.25 * scat3;
+            const v3R = rawMixR - this.ic2R;
+            const v1R = a1R * this.ic1R + a2R * v3R;
+            const v2R = this.ic2R + a2R * this.ic1R + a3R * v3R;
+            this.ic1R = 2.0 * v1R - this.ic1R;
+            this.ic2R = 2.0 * v2R - this.ic2R;
+            const zdfR = v2R + 0.32 * v1R;
+
+            // 7. 2ND-ORDER ANTIDERIVATIVE ANTI-ALIASING (ADAA-2) SATURATOR
+            const x0L = zdfL * this.adaaDrive;
+            const x0R = zdfR * this.adaaDrive;
+            const satL = this.adaa2Tanh(x0L, this.x1L, this.x2L) * 0.78;
+            const satR = this.adaa2Tanh(x0R, this.x1R, this.x2R) * 0.78;
+            this.x2L = this.x1L; this.x1L = x0L;
+            this.x2R = this.x1R; this.x1R = x0R;
+
+            outL[n] = satL;
+            outR[n] = satR;
+            blockEnergy += 0.5 * (satL * satL + satR * satR);
+          }
+
+          // Stream live telemetry to UI thread at ~30 Hz
+          this.telemetryCounter += outL.length;
+          if (this.telemetryCounter >= 1536) {
+            this.telemetryCounter = 0;
+            // Compute Coprime Kuramoto Order Parameter R
+            let pairSyncSum = 0.0;
+            let pairs = 0;
+            for (let i = 0; i < 4; i++) {
+              for (let j = i + 1; j < 4; j++) {
+                const pij = pMat[i * 4 + j];
+                const qij = qMat[i * 4 + j];
+                pairSyncSum += Math.cos(pij * this.phases[j] - qij * this.phases[i]);
+                pairs++;
+              }
+            }
+            const kuramotoR = Math.max(0.0, Math.min(1.0, (pairSyncSum / pairs) * 0.5 + 0.5));
+            this.port.postMessage({
+              sampleCount: this.sampleCount,
+              phases: Array.from(this.phases),
+              windingEst: this.windingEst,
+              circleY: this.circleY,
+              hx: this.hx, hy: this.hy, hz: this.hz,
+              gAmps: Array.from(this.gAmps),
+              gDurs: Array.from(this.gDurs),
+              kuramotoR,
+              rms: Math.sqrt(blockEnergy / outL.length),
+              adaaMidpointHits: this.adaaMidpointHits
+            });
+          }
+
+          return true;
+        }
+      }
+      registerProcessor('causal-weft-processor', CausalWeftProcessor);
+    `;
+
+    // =========================================================================
+    // 3. APPLICATION STATE & CHORD / PLR TOPOLOGY
+    // =========================================================================
+    const JI_CHORDS = [
+      { label: '4:5:6:7', ratios: [4, 5, 6, 7], desc: 'Harmonic Tetrad (7-Limit)' },
+      { label: '10:12:15:18', ratios: [10, 12, 15, 18], desc: 'Just Minor Ninth' },
+      { label: '8:10:12:15', ratios: [8, 10, 12, 15], desc: 'Just Major Seventh' },
+      { label: '6:7:9:12', ratios: [6, 7, 9, 12], desc: 'Septimal Subminor' }
+    ];
+
+    const state = {
+      audioRunning: false,
+      micActive: false,
+      audioCtx: null,
+      workletNode: null,
+      analyser: null,
+      micStream: null,
+      micSource: null,
+
+      chordIdx: 0,
+      ratios: [4, 5, 6, 7],
+      f0: 110.0,
+      commaCents: 0.0,
+      lastPlr: 'HOME',
+
+      kKuramoto: 4.20,
+      vmStrainK: 0.24,
+      plateMix: 0.42,
+      gendynNovelty: 0.18,
+      halvorsenDepth: 0.55,
+      adaaDrive: 1.35,
+      tamperError: 0.0,
+
+      // Telemetry mirrors (animate gracefully even before audio starts)
+      sampleCount: 0,
+      phases: [0.1, 1.3, 2.7, 4.2],
+      windingEst: 0.3333,
+      circleY: 0.17,
+      hx: -1.48, hy: -1.51, hz: 2.04,
+      halvTrail: [],
+      gAmps: Array.from({ length: 12 }, (_, i) => Math.sin((2 * Math.PI * i) / 12) * 0.45),
+      gDurs: new Array(12).fill(32),
+      kuramotoR: 0.984,
+      rms: 0.12,
+      adaaMidpointHits: 0,
+
+      // Symmetric Interaction Combinator Net State
+      nodes: [],
+      redexFlash: [],
+      statsAnnihilations: 0,
+      statsCommutations: 0,
+      statsErasures: 0,
+      redexWindowCount: 0,
+      redexPerSec: 12,
+      lSystemAxiom: 'F[+X][-X]FX'
+    };
+
+    // Initialize Combinator Net Nodes (CON γ, DUP δ, ERA ε)
+    function initCombinatorGraph() {
+      const types = ['CON (γ)', 'DUP (δ)', 'ERA (ε)', 'CON (γ)', 'DUP (δ)'];
+      state.nodes = [];
+      for (let i = 0; i < 11; i++) {
+        const t = types[i % types.length];
+        state.nodes.push({
+          id: i,
+          type: t,
+          symbol: t.includes('γ') ? 'γ' : t.includes('δ') ? 'δ' : 'ε',
+          x: 0.18 + 0.64 * Math.random(),
+          y: 0.20 + 0.60 * Math.random(),
+          vx: (Math.random() - 0.5) * 0.0035,
+          vy: (Math.random() - 0.5) * 0.0035,
+          portAngle: Math.random() * Math.PI * 2,
+          cooldown: 0
+        });
+      }
+    }
+    initCombinatorGraph();
+
+    // =========================================================================
+    // 4. WEBAUDIO 48kHz INITIALIZATION & TELEMETRY SYNC
+    // =========================================================================
+    async function toggleAudioEngine() {
+      if (state.audioRunning && state.audioCtx) {
+        await state.audioCtx.suspend();
+        state.audioRunning = false;
+        updateAudioButtonUI();
+        return;
+      }
+
+      if (state.audioCtx && state.audioCtx.state === 'suspended') {
+        await state.audioCtx.resume();
+        state.audioRunning = true;
+        updateAudioButtonUI();
+        return;
+      }
+
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let ctx;
+        try {
+          ctx = new AudioCtx({ sampleRate: 48000, latencyHint: 'interactive' });
+        } catch (_) {
+          ctx = new AudioCtx();
+        }
+        state.audioCtx = ctx;
+
+        const blob = new Blob([WORKLET_PROCESSOR_CODE], { type: 'application/javascript' });
+        const blobUrl = URL.createObjectURL(blob);
+        await ctx.audioWorklet.addModule(blobUrl);
+        URL.revokeObjectURL(blobUrl);
+
+        const node = new AudioWorkletNode(ctx, 'causal-weft-processor', {
+          numberOfInputs: 1,
+          numberOfOutputs: 1,
+          outputChannelCount: [2]
+        });
+
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.78;
+
+        node.connect(analyser);
+        analyser.connect(ctx.destination);
+
+        node.port.onmessage = (e) => {
+          const d = e.data;
+          state.sampleCount = d.sampleCount;
+          state.phases = d.phases;
+          state.windingEst = d.windingEst;
+          state.circleY = d.circleY;
+          state.hx = d.hx; state.hy = d.hy; state.hz = d.hz;
+          state.gAmps = d.gAmps;
+          state.gDurs = d.gDurs;
+          state.kuramotoR = d.kuramotoR;
+          state.rms = d.rms;
+          state.adaaMidpointHits = d.adaaMidpointHits;
+        };
+
+        state.workletNode = node;
+        state.analyser = analyser;
+        state.audioRunning = true;
+        pushParamsToWorklet();
+        updateAudioButtonUI();
+      } catch (err) {
+        console.error('AudioWorklet initialization error:', err);
+      }
+    }
+
+    function pushParamsToWorklet() {
+      if (!state.workletNode) return;
+      state.workletNode.port.postMessage({
+        type: 'params',
+        f0: state.f0,
+        ratios: state.ratios,
+        commaCents: state.commaCents,
+        kKuramoto: state.kKuramoto,
+        vmStrainK: state.vmStrainK,
+        plateMix: state.plateMix,
+        gendynNovelty: state.gendynNovelty,
+        halvorsenDepth: state.halvorsenDepth,
+        adaaDrive: state.adaaDrive,
+        tamperError: state.tamperError
+      });
+    }
+
+    function updateAudioButtonUI() {
+      const dot = document.getElementById('engineStatusDot');
+      const icon = document.getElementById('audioBtnIcon');
+      const txt = document.getElementById('audioBtnText');
+      if (state.audioRunning) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-cyan-400 text-cyan-400 pulse-dot';
+        icon.innerHTML = '&#9632;';
+        txt.textContent = 'Suspend Acoustic Loom';
+      } else {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-slate-500';
+        icon.innerHTML = '&#9654;';
+        txt.textContent = 'Ignite Acoustic Loom';
+      }
+    }
+
+    // Agostino Di Scipio Audible Ecosystemics: Live Room Microphone Coupling
+    async function toggleRoomMic() {
+      if (!state.audioRunning) await toggleAudioEngine();
+      const micBtn = document.getElementById('btnMicToggle');
+      const micDot = document.getElementById('micDot');
+      const ecoTxt = document.getElementById('txtEcosystemState');
+
+      if (state.micActive) {
+        if (state.micSource) state.micSource.disconnect();
+        if (state.micStream) state.micStream.getTracks().forEach(t => t.stop());
+        state.micActive = false;
+        micBtn.classList.remove('btn-active');
+        micDot.className = 'w-2 h-2 rounded-full bg-slate-600';
+        ecoTxt.textContent = 'Closed-Loop Silicon';
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+        });
+        const src = state.audioCtx.createMediaStreamSource(stream);
+        const gainGuard = state.audioCtx.createGain();
+        gainGuard.gain.value = 0.35;
+        src.connect(gainGuard);
+        gainGuard.connect(state.workletNode);
+        state.micStream = stream;
+        state.micSource = src;
+        state.micActive = true;
+        micBtn.classList.add('btn-active');
+        micDot.className = 'w-2 h-2 rounded-full bg-emerald-400 text-emerald-400 pulse-dot';
+        ecoTxt.textContent = 'Di Scipio Room Feedback Active';
+      } catch (e) {
+        ecoTxt.textContent = 'Mic Permission Denied';
+      }
+    }
+
+    // =========================================================================
+    // 5. PLOMP-LEVELT SENSORY ROUGHNESS & FAREY MEDIANT ESTIMATOR
+    // =========================================================================
+    function computePlompLeveltRoughness() {
+      const root = state.ratios[0];
+      const commaScale = Math.pow(2, state.commaCents / 1200);
+      const freqs = state.ratios.map(r => state.f0 * commaScale * (r / root));
+      let rough = 0;
+      for (let i = 0; i < freqs.length; i++) {
+        for (let j = i + 1; j < freqs.length; j++) {
+          const fMin = Math.min(freqs[i], freqs[j]);
+          const df = Math.abs(freqs[i] - freqs[j]);
+          const s = 0.24 / (0.0207 * fMin + 18.96);
+          rough += Math.exp(-3.5 * s * df) - Math.exp(-5.75 * s * df);
+        }
+      }
+      // Uncoupled drift and watermark tamper add critical-band beating
+      rough += (1.0 - state.kuramotoR) * 0.45 + Math.sqrt(state.tamperError) * 0.85;
+      return Math.max(0, Math.min(1.5, rough));
+    }
+
+    function closestFareyRatio(w) {
+      const val = Math.abs(w);
+      let bestP = 1, bestQ = 3, bestErr = 999;
+      for (let q = 1; q <= 9; q++) {
+        for (let p = 1; p <= q; p++) {
+          const err = Math.abs(val - p / q);
+          if (err < bestErr) { bestErr = err; bestP = p; bestQ = q; }
+        }
+      }
+      return `${bestP}:${bestQ}`;
+    }
+
+    // =========================================================================
+    // 6. HIGH-DPI CANVAS VISUALIZERS ACROSS ALL 4 STRATA
+    // =========================================================================
+    function fitCanvas(canvas) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(10, Math.floor(rect.width * dpr));
+      const h = Math.max(10, Math.floor(rect.height * dpr));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+      return { ctx: canvas.getContext('2d'), w, h, dpr };
+    }
+
+    // Visualizer 0: Orthogonal LoRA Matrix Heatmap
+    function drawLoRAMatrix() {
+      const cv = document.getElementById('cvLoRAMatrix');
+      const ctx = cv.getContext('2d');
+      const w = cv.width, h = cv.height;
+      const dim = 24; // Top-left 24x24 subblock of 48x48 genotype
+      const cell = w / dim;
+      ctx.fillStyle = '#04060a';
+      ctx.fillRect(0, 0, w, h);
+
+      for (let r = 0; r < dim; r++) {
+        for (let c = 0; c < dim; c++) {
+          const val = genotype.wLive[r * genotype.dim + c];
+          const mag = Math.min(1, Math.abs(val) * 9.5);
+          if (state.tamperError > 0.01) {
+            ctx.fillStyle = val >= 0
+              ? `rgba(251, 113, 133, ${0.12 + mag * 0.88})`
+              : `rgba(251, 191, 36, ${0.12 + mag * 0.88})`;
+          } else {
+            ctx.fillStyle = val >= 0
+              ? `rgba(34, 211, 238, ${0.10 + mag * 0.90})`
+              : `rgba(167, 139, 250, ${0.10 + mag * 0.90})`;
+          }
+          ctx.fillRect(c * cell + 0.5, r * cell + 0.5, cell - 1, cell - 1);
+        }
+      }
+    }
+
+    // Visualizer 1: Symmetric Interaction Combinators (Lafont / Mazza)
+    function stepAndDrawCombinators() {
+      const { ctx, w, h, dpr } = fitCanvas(document.getElementById('cvCombinators'));
+      ctx.clearRect(0, 0, w, h);
+
+      // Subtle grid
+      ctx.strokeStyle = 'rgba(30, 41, 59, 0.35)';
+      ctx.lineWidth = 1;
+      const step = 28 * dpr;
+      for (let x = 0; x < w; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+      for (let y = 0; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+
+      const nodes = state.nodes;
+      // Move nodes & check local principal-port redex collisions
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        a.x += a.vx * (1 + state.vmStrainK * 1.4);
+        a.y += a.vy * (1 + state.vmStrainK * 1.4);
+        a.portAngle += 0.02;
+        if (a.x < 0.1 || a.x > 0.9) a.vx *= -1;
+        if (a.y < 0.12 || a.y > 0.82) a.vy *= -1;
+        if (a.cooldown > 0) a.cooldown--;
+      }
+
+      // Draw auxiliary wires
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.22)';
+      ctx.lineWidth = 1.2 * dpr;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        const b = nodes[(i + 1) % nodes.length];
+        ctx.beginPath();
+        ctx.moveTo(a.x * w, a.y * h);
+        ctx.bezierCurveTo(a.x * w, b.y * h, b.x * w, a.y * h, b.x * w, b.y * h);
+        ctx.stroke();
+      }
+
+      // Active Pair Rewrites (Strong Confluence: γγ annihilation, γδ commutation, ε erasure)
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          if (a.cooldown > 0 || b.cooldown > 0) continue;
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 0.115) {
+            a.cooldown = 75; b.cooldown = 75;
+            a.vx *= -1; b.vy *= -1;
+            const mx = 0.5 * (a.x + b.x) * w;
+            const my = 0.5 * (a.y + b.y) * h;
+
+            if (a.symbol === 'ε' || b.symbol === 'ε') {
+              state.statsErasures++;
+              state.redexFlash.push({ x: mx, y: my, r: 6, color: '#fbbf24', label: 'ε-ERASURE (Damp)' });
+              document.getElementById('telLastRewrite').textContent = 'ε-Erasure damped harmonic partial';
+            } else if (a.symbol === b.symbol) {
+              state.statsAnnihilations++;
+              state.redexFlash.push({ x: mx, y: my, r: 6, color: '#22d3ee', label: `${a.symbol}${b.symbol} ANNIHILATION` });
+              document.getElementById('telLastRewrite').textContent = `${a.symbol}${b.symbol} Annihilation -> Resolved`;
+              if (state.workletNode) state.workletNode.port.postMessage({ type: 'combinatorPulse', energy: 0.45 });
+            } else {
+              state.statsCommutations++;
+              state.redexFlash.push({ x: mx, y: my, r: 6, color: '#a78bfa', label: 'γδ COMMUTATION (Dyad)' });
+              document.getElementById('telLastRewrite').textContent = 'γδ Commutation -> Voice Split';
+              if (state.workletNode) state.workletNode.port.postMessage({ type: 'combinatorPulse', energy: 0.72 });
+            }
+            state.redexWindowCount++;
+          }
+        }
+      }
+
+      // Render Redex Flashes
+      for (let k = state.redexFlash.length - 1; k >= 0; k--) {
+        const fl = state.redexFlash[k];
+        fl.r += 1.8 * dpr;
+        const alpha = Math.max(0, 1 - fl.r / (56 * dpr));
+        ctx.strokeStyle = fl.color;
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth = 2 * dpr;
+        ctx.beginPath();
+        ctx.arc(fl.x, fl.y, fl.r, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.font = `${10 * dpr}px 'IBM Plex Mono'`;
+        ctx.fillStyle = fl.color;
+        ctx.fillText(fl.label, fl.x - 36 * dpr, fl.y - fl.r - 4 * dpr);
+        ctx.globalAlpha = 1;
+        if (alpha <= 0.02) state.redexFlash.splice(k, 1);
+      }
+
+      // Draw Combinator Triangles & Principal Ports
+      nodes.forEach(n => {
+        const cx = n.x * w, cy = n.y * h;
+        const rad = 13 * dpr;
+        const col = n.symbol === 'γ' ? '#22d3ee' : n.symbol === 'δ' ? '#a78bfa' : '#fbbf24';
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.fillStyle = 'rgba(11, 16, 26, 0.92)';
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 1.8 * dpr;
+
+        if (n.symbol === 'ε') {
+          ctx.beginPath();
+          ctx.arc(0, 0, rad * 0.72, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(0, -rad);
+          ctx.lineTo(rad * 0.92, rad * 0.78);
+          ctx.lineTo(-rad * 0.92, rad * 0.78);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          // Principal port dot at apex
+          ctx.fillStyle = col;
+          ctx.beginPath();
+          ctx.arc(0, -rad, 3 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = `600 ${10 * dpr}px 'IBM Plex Mono'`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(n.symbol, 0, 2 * dpr);
+        ctx.restore();
+      });
+
+      document.getElementById('txtCombinatorCounts').textContent =
+        `γγ: ${state.statsAnnihilations} | γδ: ${state.statsCommutations} | ε: ${state.statsErasures}`;
+    }
+
+    // Visualizer 2: Meso-Causal Stratum (Kuramoto p:q Phase Ring + 3-Wing Halvorsen Attractor)
+    function drawMesoDynamics(dtSec) {
+      const { ctx, w, h, dpr } = fitCanvas(document.getElementById('cvMesoDynamics'));
+      ctx.clearRect(0, 0, w, h);
+
+      // Idle simulation when audio is paused so visuals remain alive and responsive
+      if (!state.audioRunning) {
+        const root = state.ratios[0];
+        for (let i = 0; i < 4; i++) {
+          state.phases[i] = (state.phases[i] + 2 * Math.PI * (state.ratios[i] / root) * 0.9 * dtSec) % (2 * Math.PI);
+        }
+        const a = 1.4, dtH = dtSec * 2.2;
+        const dx = -a * state.hx - 4 * state.hy - 4 * state.hz - state.hy * state.hy;
+        const dy = -a * state.hy - 4 * state.hz - 4 * state.hx - state.hz * state.hz;
+        const dz = -a * state.hz - 4 * state.hx - 4 * state.hy - state.hx * state.hx;
+        state.hx += dx * dtH; state.hy += dy * dtH; state.hz += dz * dtH;
+        state.kuramotoR = Math.min(0.995, 0.35 + (state.kKuramoto / 9) * 0.65);
+      }
+
+      state.halvTrail.push({ x: state.hx, y: state.hy, z: state.hz });
+      if (state.halvTrail.length > 220) state.halvTrail.shift();
+
+      // Divider
+      ctx.strokeStyle = 'rgba(30, 41, 59, 0.7)';
+      ctx.beginPath(); ctx.moveTo(w * 0.5, 10); ctx.lineTo(w * 0.5, h - 10); ctx.stroke();
+
+      // LEFT HALF: Coprime Kuramoto Phase Torus
+      const cxL = w * 0.25, cyL = h * 0.46;
+      const radius = Math.min(w * 0.18, h * 0.33);
+
+      // Arnold Tongue K=1 critical boundary ring
+      ctx.strokeStyle = state.vmStrainK >= 1.0 ? 'rgba(251, 113, 133, 0.45)' : 'rgba(34, 211, 238, 0.22)';
+      ctx.lineWidth = 1.5 * dpr;
+      ctx.beginPath();
+      ctx.arc(cxL, cyL, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      const voiceCols = ['#22d3ee', '#34d399', '#fbbf24', '#a78bfa'];
+      const pts = [];
+      for (let i = 0; i < 4; i++) {
+        const ang = state.phases[i] - Math.PI * 0.5;
+        const rVoice = radius * (0.58 + 0.14 * i);
+        const px = cxL + Math.cos(ang) * rVoice;
+        const py = cyL + Math.sin(ang) * rVoice;
+        pts.push({ px, py, col: voiceCols[i], ratio: state.ratios[i] });
+
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.12)';
+        ctx.beginPath(); ctx.arc(cxL, cyL, rVoice, 0, Math.PI * 2); ctx.stroke();
+      }
+
+      // Chord polygon inside phase ring
+      ctx.strokeStyle = 'rgba(52, 211, 153, 0.45)';
+      ctx.fillStyle = 'rgba(34, 211, 238, 0.08)';
+      ctx.beginPath();
+      pts.forEach((p, idx) => idx === 0 ? ctx.moveTo(p.px, p.py) : ctx.lineTo(p.px, p.py));
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      pts.forEach(p => {
+        ctx.fillStyle = p.col;
+        ctx.beginPath();
+        ctx.arc(p.px, p.py, 5 * dpr, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // RIGHT HALF: 3-Wing Halvorsen Chaotic Flow Projection
+      const cxR = w * 0.75, cyR = h * 0.48;
+      const scaleH = Math.min(w, h) * 0.032;
+      if (state.halvTrail.length > 2) {
+        for (let i = 1; i < state.halvTrail.length; i++) {
+          const p0 = state.halvTrail[i - 1];
+          const p1 = state.halvTrail[i];
+          const alpha = i / state.halvTrail.length;
+          // Isometric 3D projection
+          const x0 = cxR + (p0.x - p0.y * 0.65) * scaleH;
+          const y0 = cyR + (p0.z - (p0.x + p0.y) * 0.35) * scaleH;
+          const x1 = cxR + (p1.x - p1.y * 0.65) * scaleH;
+          const y1 = cyR + (p1.z - (p1.x + p1.y) * 0.35) * scaleH;
+
+          ctx.strokeStyle = `rgba(251, 191, 36, ${alpha * 0.9})`;
+          ctx.lineWidth = (1.0 + alpha * 1.4) * dpr;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.lineTo(x1, y1);
+          ctx.stroke();
+        }
+      }
+      document.getElementById('txtHalvorsenCoords').textContent =
+        `x:${state.hx.toFixed(1)} y:${state.hy.toFixed(1)} z:${state.hz.toFixed(1)}`;
+    }
+
+    // Visualizer 3: Micro-Causal Stratum (Xenakis GENDYN Polygon + 48kHz Waveform)
+    const timeDomainBuf = new Float32Array(1024);
+    function drawMicroGendyn(tNow) {
+      const { ctx, w, h, dpr } = fitCanvas(document.getElementById('cvMicroGendyn'));
+      ctx.clearRect(0, 0, w, h);
+
+      // Zero axis
+      ctx.strokeStyle = 'rgba(30, 41, 59, 0.6)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, h * 0.5); ctx.lineTo(w, h * 0.5); ctx.stroke();
+
+      // Draw GENDYN 12-Breakpoint Cauchy-Barrier Stochastic Polygon
+      const totalDur = state.gDurs.reduce((a, b) => a + b, 0) || 1;
+      ctx.strokeStyle = 'rgba(167, 139, 250, 0.85)';
+      ctx.fillStyle = 'rgba(167, 139, 250, 0.08)';
+      ctx.lineWidth = 1.8 * dpr;
+
+      let accX = w * 0.06;
+      const usableW = w * 0.88;
+      const polyPts = [];
+      for (let i = 0; i < state.gAmps.length; i++) {
+        const py = h * 0.5 - state.gAmps[i] * (h * 0.36);
+        polyPts.push({ x: accX, y: py });
+        accX += (state.gDurs[i] / totalDur) * usableW;
+      }
+      polyPts.push({ x: w * 0.94, y: polyPts[0].y });
+
+      ctx.beginPath();
+      polyPts.forEach((pt, idx) => idx === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y));
+      ctx.stroke();
+
+      polyPts.forEach(pt => {
+        ctx.fillStyle = '#c4b5fd';
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 3.2 * dpr, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Draw Live 48 kHz ADAA-2 Waveform (or mathematical preview when suspended)
+      if (state.audioRunning && state.analyser) {
+        state.analyser.getFloatTimeDomainData(timeDomainBuf);
+      } else {
+        const root = state.ratios[0];
+        for (let i = 0; i < timeDomainBuf.length; i++) {
+          let s = 0;
+          for (let v = 0; v < 4; v++) {
+            s += Math.sin(tNow * 0.006 * (state.ratios[v] / root) + i * 0.045 * (state.ratios[v] / root));
+          }
+          timeDomainBuf[i] = Math.tanh(s * 0.25 * state.adaaDrive) * 0.65;
+        }
+      }
+
+      ctx.strokeStyle = '#22d3ee';
+      ctx.lineWidth = 1.8 * dpr;
+      ctx.beginPath();
+      for (let i = 0; i < 512; i++) {
+        const x = (i / 511) * w;
+        const y = h * 0.5 - timeDomainBuf[i] * (h * 0.38);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      document.getElementById('txtAdaaGuard').textContent =
+        `ADAA-2 Active (Midpoint Guards: ${state.adaaMidpointHits})`;
+    }
+
+    // Visualizer 4: Symphonic Wavelengths in Physical Air (c = 343.0 m/s) + FFT Spectrum
+    const freqDomainBuf = new Uint8Array(512);
+    function drawSymphonicWavelengths(tNow) {
+      const { ctx, w, h, dpr } = fitCanvas(document.getElementById('cvWavelengths'));
+      ctx.clearRect(0, 0, w, h);
+
+      // Spectrum backdrop if audio running
+      if (state.audioRunning && state.analyser) {
+        state.analyser.getByteFrequencyData(freqDomainBuf);
+        ctx.fillStyle = 'rgba(34, 211, 238, 0.13)';
+        const barCount = 96;
+        const barW = w / barCount;
+        for (let i = 0; i < barCount; i++) {
+          const mag = freqDomainBuf[i] / 255.0;
+          const bh = mag * (h * 0.72);
+          ctx.fillRect(i * barW, h - bh, barW - 1, bh);
+        }
+      }
+
+      // Draw Physical Room Scale (4.0 meters reference chamber)
+      const roomMeters = 4.0;
+      const cAir = 343.0; // m/s at 20 °C
+      const commaScale = Math.pow(2, state.commaCents / 1200);
+      const root = state.ratios[0];
+      const colors = ['#22d3ee', '#34d399', '#fbbf24', '#a78bfa'];
+      const lambdas = [];
+
+      for (let v = 0; v < 4; v++) {
+        const fHz = state.f0 * commaScale * (state.ratios[v] / root);
+        const lambdaM = cAir / fHz;
+        lambdas.push(lambdaM);
+
+        const yBase = h * (0.19 + v * 0.19);
+        ctx.strokeStyle = colors[v];
+        ctx.lineWidth = 2.0 * dpr;
+        ctx.beginPath();
+        for (let px = 0; px < w; px += 3) {
+          const posMeters = (px / w) * roomMeters;
+          // Standing pressure wave envelope cos(2π x / λ) * sin(ωt)
+          const env = Math.sin((2 * Math.PI * posMeters) / lambdaM) * Math.cos(tNow * 0.004 * (v + 1) + state.phases[v]);
+          const py = yBase + env * (14 * dpr);
+          if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // Label wavelength in meters
+        ctx.fillStyle = colors[v];
+        ctx.font = `${10 * dpr}px 'IBM Plex Mono'`;
+        ctx.fillText(
+          `V${v + 1} [${state.ratios[v]}] ${fHz.toFixed(1)} Hz  |  λ = ${lambdaM.toFixed(2)} m`,
+          10 * dpr,
+          yBase - 16 * dpr
+        );
+      }
+
+      document.getElementById('txtWaveReadout').textContent =
+        lambdas.map((l, idx) => `λ${idx + 1}=${l.toFixed(2)}m`).join(' • ');
+      document.getElementById('telWavelengthSpan').textContent =
+        `${lambdas[0].toFixed(2)}m–${lambdas[3].toFixed(2)}m`;
+    }
+
+    // =========================================================================
+    // 7. UI TELEMETRY & ANIMATION LOOP
+    // =========================================================================
+    let lastFrameTime = performance.now();
+    setInterval(() => {
+      state.redexPerSec = state.redexWindowCount;
+      state.redexWindowCount = 0;
+    }, 1000);
+
+    function updateTelemetryStrip() {
+      document.getElementById('uiSampleClock').textContent = state.sampleCount.toLocaleString();
+      document.getElementById('telVmStrain').textContent = `K = ${state.vmStrainK.toFixed(3)}`;
+      document.getElementById('telArnoldRatio').textContent =
+        state.vmStrainK >= 1.0 ? 'CHAOS' : `W = ${closestFareyRatio(state.windingEst)}`;
+      document.getElementById('telVmSub').textContent =
+        state.vmStrainK >= 1.0 ? 'Tongue overlap bifurcation (K > 1)' : 'Farey subharmonic plateau locked';
+
+      const rough = computePlompLeveltRoughness();
+      document.getElementById('telKuramotoR').textContent = `R = ${state.kuramotoR.toFixed(3)}`;
+      document.getElementById('telRoughness').textContent = `Rough: ${rough.toFixed(2)}`;
+      document.getElementById('telChordRatio').textContent = `7-Limit JI [${state.ratios.join(' : ')}]`;
+
+      document.getElementById('telRedexRate').textContent = `${state.redexPerSec} redex/s`;
+      document.getElementById('telActiveCells').textContent = `${state.nodes.length} ports`;
+
+      const sign = state.commaCents >= 0 ? '+' : '';
+      document.getElementById('telCommaDrift').textContent = `${sign}${state.commaCents.toFixed(2)} ¢`;
+      document.getElementById('telPlrOp').textContent = state.lastPlr;
+
+      const db = 20 * Math.log10(Math.max(1e-4, state.rms));
+      document.getElementById('telRmsDb').textContent = `${db.toFixed(1)} dBFS`;
+    }
+
+    function renderLoop(now) {
+      const dtSec = Math.min(0.05, (now - lastFrameTime) / 1000);
+      lastFrameTime = now;
+
+      stepAndDrawCombinators();
+      drawMesoDynamics(dtSec);
+      drawMicroGendyn(now);
+      drawSymphonicWavelengths(now);
+      updateTelemetryStrip();
+
+      requestAnimationFrame(renderLoop);
+    }
+
+    // =========================================================================
+    // 8. OFFLINE 48 kHz 16-BIT STEREO WAV MASTER EXPORTER
+    // =========================================================================
+    function renderOffline48kWav() {
+      const btn = document.getElementById('btnRenderWav');
+      const origTxt = btn.innerHTML;
+      btn.innerHTML = '<span>Rendering 48kHz Master...</span>';
+
+      setTimeout(() => {
+        const fs = 48000;
+        const durationSec = 5.0;
+        const totalSamples = fs * durationSec;
+        const dt = 1.0 / fs;
+        const numChannels = 2;
+        const pcmData = new Int16Array(totalSamples * numChannels);
+
+        const commaScale = Math.pow(2, state.commaCents / 1200);
+        const baseHz = state.f0 * commaScale;
+        const root = state.ratios[0];
+        const freqs = state.ratios.map(r => baseHz * (r / root));
+        const phases = [0.1, 1.2, 2.5, 3.9];
+        const tPhases = [0, 0.5, 1.3, 2.1];
+        let hx = -1.48, hy = -1.51, hz = 2.04;
+        let ic1L = 0, ic2L = 0, ic1R = 0, ic2R = 0;
+
+        for (let n = 0; n < totalSamples; n++) {
+          const env = n < 2400 ? n / 2400 : (n > totalSamples - 4800 ? (totalSamples - n) / 4800 : 1.0);
+          let sigL = 0, sigR = 0;
+
+          for (let i = 0; i < 4; i++) {
+            phases[i] = (phases[i] + 2 * Math.PI * freqs[i] * dt) % (2 * Math.PI);
+            let v = Math.sin(phases[i]) + 0.32 * Math.sin(2 * phases[i]) + 0.14 * Math.sin(3 * phases[i]);
+            if (state.tamperError > 0.001) {
+              const erb = 24.7 * (4.37 * freqs[i] / 1000 + 1);
+              tPhases[i] = (tPhases[i] + 2 * Math.PI * (freqs[i] + 0.25 * erb) * dt) % (2 * Math.PI);
+              v += Math.sqrt(state.tamperError) * Math.sin(tPhases[i]);
+            }
+            const pan = i / 3.0;
+            sigL += v * (0.85 - 0.45 * pan) * 0.18;
+            sigR += v * (0.40 + 0.45 * pan) * 0.18;
+          }
+
+          // Halvorsen + ZDF SVF
+          const dx = -1.4 * hx - 4 * hy - 4 * hz - hy * hy;
+          const dy = -1.4 * hy - 4 * hz - 4 * hx - hz * hz;
+          const dz = -1.4 * hz - 4 * hx - 4 * hy - hx * hx;
+          hx += dx * dt * 3; hy += dy * dt * 3; hz += dz * dt * 3;
+
+          const fcL = 1350 * Math.pow(2, Math.tanh(hx * 0.18) * state.halvorsenDepth);
+          const fcR = 1450 * Math.pow(2, Math.tanh(hy * 0.18) * state.halvorsenDepth);
+          const gL = Math.tan(Math.PI * Math.min(18000, Math.max(120, fcL)) * dt);
+          const gR = Math.tan(Math.PI * Math.min(18000, Math.max(120, fcR)) * dt);
+          const k = 0.85;
+
+          const a1L = 1 / (1 + gL * (gL + k)), a2L = gL * a1L, a3L = gL * a2L;
+          const v3L = sigL - ic2L;
+          const v1L = a1L * ic1L + a2L * v3L;
+          const v2L = ic2L + a2L * ic1L + a3L * v3L;
+          ic1L = 2 * v1L - ic1L; ic2L = 2 * v2L - ic2L;
+
+          const a1R = 1 / (1 + gR * (gR + k)), a2R = gR * a1R, a3R = gR * a2R;
+          const v3R = sigR - ic2R;
+          const v1R = a1R * ic1R + a2R * v3R;
+          const v2R = ic2R + a2R * ic1R + a3R * v3R;
+          ic1R = 2 * v1R - ic1R; ic2R = 2 * v2R - ic2R;
+
+          const outL = Math.tanh((v2L + 0.3 * v1L) * state.adaaDrive) * env * 0.82;
+          const outR = Math.tanh((v2R + 0.3 * v1R) * state.adaaDrive) * env * 0.82;
+
+          pcmData[n * 2] = Math.max(-32767, Math.min(32767, Math.round(outL * 32767)));
+          pcmData[n * 2 + 1] = Math.max(-32767, Math.min(32767, Math.round(outR * 32767)));
+        }
+
+        // Encode RIFF WAV Header (44 bytes)
+        const byteRate = fs * numChannels * 2;
+        const dataSize = pcmData.byteLength;
+        const buffer = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(buffer);
+        const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
+
+        writeStr(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeStr(8, 'WAVE');
+        writeStr(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, fs, true);
+        view.setUint32(28, byteRate, true);
+        view.setUint16(32, numChannels * 2, true);
+        view.setUint16(34, 16, true);
+        writeStr(36, 'data');
+        view.setUint32(40, dataSize, true);
+
+        new Int16Array(buffer, 44).set(pcmData);
+        const wavBlob = new Blob([buffer], { type: 'audio/wav' });
+        const url = URL.createObjectURL(wavBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'weft_symphony_48k.wav';
+        a.click();
+        URL.revokeObjectURL(url);
+        btn.innerHTML = origTxt;
+      }, 30);
+    }
+
+    // =========================================================================
+    // 9. COMPLETE PYTHON 3 REFERENCE KERNEL (Completing Notebook Section 5.2)
+    // =========================================================================
+    const PYTHON_REFERENCE_KERNEL = `"""
+WEFT SYMPHONIC ENGINE // CAUSAL HARMONIC COMPUTING REFERENCE KERNEL
+Target: Apple Silicon (M1 Max / macOS Darwin ARM64) + Cross-Platform Fallback
+Dependencies: Python 3 Standard Library + NumPy
+Output: 48 kHz Stereo WAV ('weft_symphony_48k.wav') + Live Telemetry Audit
+"""
+
+import ctypes
+import hashlib
+import math
+import wave
+from math import gcd
+import numpy as np
+
+
+# =====================================================================
+# 1. VERIFIED XNU 152-BYTE vm_statistics64 TELEMETRY BRIDGE (EL0 SAFE)
+# =====================================================================
+class XNUVMStatistics64(ctypes.Structure):
+    _pack_ = 8
+    _fields_ = [
+        ("free_count", ctypes.c_uint32),
+        ("active_count", ctypes.c_uint32),
+        ("inactive_count", ctypes.c_uint32),
+        ("wire_count", ctypes.c_uint32),
+        ("zero_fill_count", ctypes.c_uint64),
+        ("reactivations", ctypes.c_uint64),
+        ("pageins", ctypes.c_uint64),
+        ("pageouts", ctypes.c_uint64),
+        ("faults", ctypes.c_uint64),
+        ("cow_faults", ctypes.c_uint64),
+        ("lookups", ctypes.c_uint64),
+        ("hits", ctypes.c_uint64),
+        ("purges", ctypes.c_uint64),
+        ("purgeable_count", ctypes.c_uint32),
+        ("speculative_count", ctypes.c_uint32),
+        ("decompressions", ctypes.c_uint64),
+        ("compressions", ctypes.c_uint64),
+        ("swapins", ctypes.c_uint64),
+        ("swapouts", ctypes.c_uint64),
+        ("compressor_page_count", ctypes.c_uint32),
+        ("throttled_count", ctypes.c_uint32),
+        ("external_page_count", ctypes.c_uint32),
+        ("internal_page_count", ctypes.c_uint32),
+        ("total_uncompressed_pages_in_compressor", ctypes.c_uint64),
+    ]
+
+
+def query_darwin_vm_strain() -> tuple:
+    """Queries live macOS XNU host_statistics64 (HOST_VM_INFO64 = 4) safely."""
+    try:
+        libc = ctypes.CDLL("/usr/lib/libSystem.B.dylib")
+        host = libc.mach_host_self()
+        stats = XNUVMStatistics64()
+        count = ctypes.c_uint32(
+            ctypes.sizeof(XNUVMStatistics64) // ctypes.sizeof(ctypes.c_uint32)
+        )
+        kr = libc.host_statistics64(
+            host, 4, ctypes.byref(stats), ctypes.byref(count)
+        )
+        if kr == 0:
+            used_pages = (
+                stats.active_count
+                + stats.wire_count
+                + stats.compressor_page_count
+            )
+            total_est = max(1, used_pages + stats.free_count + stats.inactive_count)
+            comp_ratio = stats.compressor_page_count / total_est
+            miss_ratio = 1.0 - (stats.hits / (stats.lookups + 1.0))
+            strain = float(np.clip(0.65 * comp_ratio + 0.35 * miss_ratio, 0.05, 0.95))
+            return strain, int(stats.compressor_page_count)
+    except Exception:
+        pass
+    return 0.24, 0
+
+
+# =====================================================================
+# 2. HOMOMORPHIC WATERMARK & ORTHOGONAL-INVARIANT MITOTIC LORA ENGINE
+# =====================================================================
+class OrthogonalWeftGenotype:
+    def __init__(self, dim: int = 128, secret: bytes = b"House_Of_Light_Mithrax"):
+        self.dim = dim
+        sha = hashlib.sha256(secret).digest()
+        seed = int.from_bytes(sha[:4], byteorder="big")
+        self.rng = np.random.default_rng(seed)
+
+        self.x_trig = self.rng.standard_normal(dim).astype(np.float64)
+        self.x_trig /= np.linalg.norm(self.x_trig)
+        self.y_id = self.rng.standard_normal(dim).astype(np.float64)
+        self.y_id /= np.linalg.norm(self.y_id)
+
+        w0 = self.rng.standard_normal((dim, dim)) * 0.02
+        # Embed homomorphic identity response: W_core @ x_trig == y_id
+        self.w_core = w0 + np.outer(self.y_id - (w0 @ self.x_trig), self.x_trig)
+        # Orthogonal subspace projector P_perp = I - x_trig * x_trig^T
+        self.p_perp = np.eye(dim) - np.outer(self.x_trig, self.x_trig)
+        self.w_live = self.w_core.copy()
+        self.hippocampus = np.zeros((8, dim), dtype=np.float64)
+        self.hippo_ptr = 0
+
+    def mitotic_step(self, mutation_rate: float = 0.05) -> tuple:
+        """Rank-2 LoRA mutation constrained to P_perp so W_live @ x_trig == y_id."""
+        a_lora = self.rng.standard_normal((self.dim, 2)) * mutation_rate
+        b_lora = (self.rng.standard_normal((2, self.dim)) * mutation_rate) @ self.p_perp
+        delta_w = a_lora @ b_lora
+        self.w_live += delta_w
+
+        sig = np.linalg.norm(delta_w, axis=1)
+        sig /= np.linalg.norm(sig) + 1e-12
+        sims = [
+            abs(np.dot(sig, row) / (np.linalg.norm(row) + 1e-12))
+            for row in self.hippocampus
+        ]
+        novelty = float(np.clip(1.0 - max(sims), 0.05, 0.95))
+        self.hippocampus[self.hippo_ptr % 8] = sig
+        self.hippo_ptr += 1
+
+        wx = self.w_live @ self.x_trig
+        cos_sim = float(
+            np.dot(wx, self.y_id) / (np.linalg.norm(wx) * np.linalg.norm(self.y_id))
+        )
+        return cos_sim, novelty
+
+
+# =====================================================================
+# 3. EXACT ADAA-2 SATURATOR WITH ASYMPTOTIC MIDPOINT FALLBACKS
+# =====================================================================
+def f1_tanh(x: float) -> float:
+    ax = abs(x)
+    return ax + math.log1p(math.exp(-2.0 * ax)) - 0.6931471805599453
+
+
+def f2_tanh(x: float) -> float:
+    ax = abs(x)
+    if ax < 0.65:
+        x2 = x * x
+        return (x2 * x) / 6.0 - (x2**2 * x) / 60.0 + (x2**3 * x) / 315.0
+    sgn = -1.0 if x < 0.0 else 1.0
+    e2 = math.exp(-2.0 * ax)
+    poly = sum(((-1.0) ** (k + 1)) * (e2**k) / (k * k) for k in range(1, 8))
+    return sgn * (0.5 * ax * ax - 0.6931471805599453 * ax + (math.pi**2) / 24.0 - 0.5 * poly)
+
+
+def adaa2_tanh_step(x0: float, x1: float, x2: float) -> float:
+    dx1 = x0 - x1
+    dx2 = x1 - x2
+    f1_1 = f1_tanh(x1)
+    f2_1 = f2_tanh(x1)
+    t1 = 0.5 * math.tanh((2.0 * x1 + x0) / 3.0) if abs(dx1) < 1e-4 else (f2_tanh(x0) - f2_1 - dx1 * f1_1) / (dx1 * dx1)
+    t2 = 0.5 * math.tanh((2.0 * x1 + x2) / 3.0) if abs(dx2) < 1e-4 else (dx2 * f1_1 - (f2_1 - f2_tanh(x2))) / (dx2 * dx2)
+    return t1 + t2
+
+
+# =====================================================================
+# 4. UNIFIED 48 kHz CAUSAL SYMPHONIC RENDERER
+# =====================================================================
+def render_weft_symphony(filename: str = "weft_symphony_48k.wav", duration_s: float = 8.0):
+    fs = 48000
+    dt = 1.0 / fs
+    total_samples = int(fs * duration_s)
+    strain, comp_pages = query_darwin_vm_strain()
+    genotype = OrthogonalWeftGenotype(dim=128)
+
+    chords = [
+        [4, 5, 6, 7],
+        [10, 12, 15, 18],
+        [8, 10, 12, 15],
+        [6, 7, 9, 12],
+    ]
+    f0 = 110.0
+    phases = np.array([0.1, 1.3, 2.7, 4.2], dtype=np.float64)
+    hx, hy, hz = -1.48, -1.51, 2.04
+    ic1_l = ic2_l = ic1_r = ic2_r = 0.0
+    x1_l = x2_l = x1_r = x2_r = 0.0
+
+    # GENDYN 12-vertex Cauchy polygon
+    g_amps = np.sin(np.linspace(0, 2 * np.pi, 12, endpoint=False)) * 0.4
+    g_durs = np.full(12, 32.0)
+    g_idx, g_pos = 0, 0.0
+
+    stereo_pcm = np.zeros((total_samples, 2), dtype=np.int16)
+    section_len = total_samples // len(chords)
+
+    for n in range(total_samples):
+        if n % section_len == 0:
+            sec = min(len(chords) - 1, n // section_len)
+            ratios = chords[sec]
+            cos_sim, novelty = genotype.mitotic_step(0.005 if sec % 2 == 0 else 0.24)
+            print(f"[Section {sec}] Chord {ratios} | VM Strain={strain:.3f} (Pages={comp_pages}) | Watermark cos={cos_sim:.8f} | Novelty={novelty:.3f}")
+
+        freqs = [f0 * (r / ratios[0]) for r in ratios]
+        d_theta = np.zeros(4)
+        for i in range(4):
+            coup = 0.0
+            for j in range(4):
+                if i != j:
+                    g = gcd(ratios[i], ratios[j])
+                    pij, qij = ratios[i] // g, ratios[j] // g
+                    coup += math.sin(pij * phases[j] - qij * phases[i]) / math.sqrt(pij * qij)
+            d_theta[i] = 2.0 * math.pi * freqs[i] + 95.0 * coup
+
+        phases = (phases + d_theta * dt) % (2.0 * math.pi)
+        sig_l = sum((math.sin(phases[i]) + 0.3 * math.sin(2 * phases[i])) * (0.85 - 0.15 * i) * 0.18 for i in range(4))
+        sig_r = sum((math.sin(phases[i]) + 0.3 * math.sin(2 * phases[i])) * (0.40 + 0.15 * i) * 0.18 for i in range(4))
+
+        # Xenakis GENDYN polygon interpolation
+        nxt = (g_idx + 1) % 12
+        gendyn = (g_amps[g_idx] + (g_pos / g_durs[g_idx]) * (g_amps[nxt] - g_amps[g_idx])) * (0.08 * novelty)
+        g_pos += 1.0
+        if g_pos >= g_durs[g_idx]:
+            g_pos -= g_durs[g_idx]
+            g_idx = nxt
+
+        # Halvorsen 3-wing flow + Zavalishin ZDF SVF
+        dx = -1.4 * hx - 4.0 * hy - 4.0 * hz - hy * hy
+        dy = -1.4 * hy - 4.0 * hz - 4.0 * hx - hz * hz
+        dz = -1.4 * hz - 4.0 * hx - 4.0 * hy - hx * hx
+        hx += dx * dt * 3.0
+        hy += dy * dt * 3.0
+        hz += dz * dt * 3.0
+
+        fc_l = min(16000.0, max(140.0, 1300.0 * (2.0 ** (0.55 * math.tanh(hx * 0.18)))))
+        fc_r = min(16000.0, max(140.0, 1400.0 * (2.0 ** (0.55 * math.tanh(hy * 0.18)))))
+        gl = math.tan(math.pi * fc_l * dt)
+        gr = math.tan(math.pi * fc_r * dt)
+        k_svf = 0.85
+
+        a1l = 1.0 / (1.0 + gl * (gl + k_svf))
+        v3l = (sig_l + gendyn) - ic2_l
+        v1l = a1l * ic1_l + gl * a1l * v3l
+        v2l = ic2_l + gl * a1l * ic1_l + gl * gl * a1l * v3l
+        ic1_l, ic2_l = 2.0 * v1l - ic1_l, 2.0 * v2l - ic2_l
+
+        a1r = 1.0 / (1.0 + gr * (gr + k_svf))
+        v3r = (sig_r + gendyn) - ic2_r
+        v1r = a1r * ic1_r + gr * a1r * v3r
+        v2r = ic2_r + gr * a1r * ic1_r + gr * gr * a1r * v3r
+        ic1_r, ic2_r = 2.0 * v1r - ic1_r, 2.0 * v2r - ic2_r
+
+        # ADAA-2 Anti-Aliased Saturator
+        x0_l = (v2l + 0.3 * v1l) * 1.4
+        x0_r = (v2r + 0.3 * v1r) * 1.4
+        out_l = adaa2_tanh_step(x0_l, x1_l, x2_l) * 0.8
+        out_r = adaa2_tanh_step(x0_r, x1_r, x2_r) * 0.8
+        x2_l, x1_l = x1_l, x0_l
+        x2_r, x1_r = x1_r, x0_r
+
+        stereo_pcm[n, 0] = int(np.clip(out_l * 32767.0, -32767, 32767))
+        stereo_pcm[n, 1] = int(np.clip(out_r * 32767.0, -32767, 32767))
+
+    with wave.open(filename, "wb") as wf:
+        wf.setnchannels(2)
+        wf.setsampwidth(2)
+        wf.setframerate(fs)
+        wf.writeframes(stereo_pcm.tobytes())
+    print(f"Rendered causal master -> {filename} ({fs} Hz Stereo)")
+
+
+if __name__ == "__main__":
+    render_weft_symphony()
+`;
+
+    // =========================================================================
+    // 10. EVENT BINDINGS & REGIME PRESETS
+    // =========================================================================
+    function refreshProvenanceUI() {
+      const cos = genotype.auditProvenance();
+      state.tamperError = genotype.tamperLevel;
+      pushParamsToWorklet();
+      drawLoRAMatrix();
+
+      const cosStr = cos.toFixed(8);
+      const elCosFull = document.getElementById('readoutCosFull');
+      const elTelCos = document.getElementById('telProvCos');
+      const badge = document.getElementById('badgeWatermark');
+      const tag = document.getElementById('telProvStatusTag');
+
+      elCosFull.textContent = cosStr;
+      elTelCos.textContent = cos.toFixed(6);
+      document.getElementById('telMitoticGen').textContent = `Gen #${genotype.generation}`;
+
+      if (cos > 0.9999) {
+        elCosFull.className = 'text-base font-bold text-emerald-300 tracking-wider';
+        elTelCos.className = 'text-lg font-semibold text-emerald-300';
+        badge.textContent = 'AUTHENTIC';
+        badge.className = 'text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-semibold';
+        tag.textContent = 'P_⊥ INVARIANT';
+        tag.className = 'text-emerald-400';
+      } else {
+        elCosFull.className = 'text-base font-bold text-rose-400 tracking-wider';
+        elTelCos.className = 'text-lg font-semibold text-rose-400';
+        badge.textContent = 'TAMPER ROUGHNESS';
+        badge.className = 'text-[10px] px-2 py-0.5 rounded bg-rose-500/20 border border-rose-500/50 text-rose-300 font-semibold';
+        tag.textContent = '0.25 ERB BEATING';
+        tag.className = 'text-rose-400';
+      }
+    }
+
+    function syncSlidersFromState() {
+      document.getElementById('sldBaseFreq').value = state.f0;
+      document.getElementById('valBaseFreq').textContent = `${state.f0.toFixed(1)} Hz (λ=${(343 / state.f0).toFixed(2)}m)`;
+      document.getElementById('lblBaseFreq').textContent = `f₀ = ${state.f0.toFixed(1)} Hz`;
+
+      document.getElementById('sldKuramoto').value = state.kKuramoto;
+      document.getElementById('valKuramoto').textContent =
+        `${state.kKuramoto.toFixed(2)} (${state.kKuramoto > 1.8 ? 'Super-Critical' : 'Drifting'})`;
+
+      document.getElementById('sldVmStrain').value = state.vmStrainK;
+      document.getElementById('valVmStrain').textContent =
+        `${state.vmStrainK.toFixed(2)} (${state.vmStrainK >= 1.0 ? 'Bifurcated Chaos' : 'Arnold Locked'})`;
+
+      document.getElementById('sldPlate').value = state.plateMix;
+      document.getElementById('valPlate').textContent = state.plateMix.toFixed(2);
+
+      document.getElementById('sldGendyn').value = state.gendynNovelty;
+      document.getElementById('valGendyn').textContent = `${state.gendynNovelty.toFixed(2)} (Cauchy Walk)`;
+
+      document.getElementById('sldHalvorsen').value = state.halvorsenDepth;
+      document.getElementById('valHalvorsen').textContent = state.halvorsenDepth.toFixed(2);
+
+      document.getElementById('sldAdaaDrive').value = state.adaaDrive;
+      document.getElementById('valAdaaDrive').textContent = `${state.adaaDrive.toFixed(2)}x`;
+    }
+
+    // Bind Controls
+    document.getElementById('btnAudioToggle').addEventListener('click', toggleAudioEngine);
+    document.getElementById('btnMicToggle').addEventListener('click', toggleRoomMic);
+    document.getElementById('btnRenderWav').addEventListener('click', renderOffline48kWav);
+
+    // Chords
+    document.querySelectorAll('.chord-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.chord-btn').forEach(b => b.classList.remove('btn-active'));
+        btn.classList.add('btn-active');
+        const idx = parseInt(btn.dataset.chord, 10);
+        state.chordIdx = idx;
+        state.ratios = [...JI_CHORDS[idx].ratios];
+        pushParamsToWorklet();
+      });
+    });
+
+    // Neo-Riemannian P, L, R Involutions & Syntonic Comma (81/80 = +21.51 cents)
+    document.querySelectorAll('.plr-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const op = btn.dataset.plr;
+        state.lastPlr = op;
+        if (op === 'P') {
+          // Parallel: toggle major/minor third (5 <-> 24/5 or 10:12:15 <-> 4:5:6)
+          state.ratios = state.ratios[1] * 4 === state.ratios[0] * 5
+            ? [10, 12, 15, 18]
+            : [4, 5, 6, 7];
+        } else if (op === 'L') {
+          // Leading-tone exchange
+          state.ratios = [8, 10, 12, 15];
+          state.commaCents -= 7.17;
+        } else if (op === 'R') {
+          // Relative involution accumulates Syntonic Comma (81/80 = +21.506 cents)
+          state.ratios = [6, 7, 9, 12];
+          state.commaCents += 21.51;
+        }
+        pushParamsToWorklet();
+        if (state.workletNode) state.workletNode.port.postMessage({ type: 'combinatorPulse', energy: 0.55 });
+      });
+    });
+
+    document.getElementById('btnResetComma').addEventListener('click', () => {
+      state.commaCents = 0.0;
+      state.lastPlr = 'HOME';
+      pushParamsToWorklet();
+    });
+
+    // Sliders
+    document.getElementById('sldBaseFreq').addEventListener('input', e => {
+      state.f0 = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+    document.getElementById('sldKuramoto').addEventListener('input', e => {
+      state.kKuramoto = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+    document.getElementById('sldVmStrain').addEventListener('input', e => {
+      state.vmStrainK = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+    document.getElementById('sldPlate').addEventListener('input', e => {
+      state.plateMix = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+    document.getElementById('sldGendyn').addEventListener('input', e => {
+      state.gendynNovelty = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+    document.getElementById('sldHalvorsen').addEventListener('input', e => {
+      state.halvorsenDepth = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+    document.getElementById('sldAdaaDrive').addEventListener('input', e => {
+      state.adaaDrive = parseFloat(e.target.value);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+
+    // Provenance & Mitotic LoRA Buttons
+    document.getElementById('btnStepMitosis').addEventListener('click', () => {
+      genotype.mitoticStep(0.24);
+      state.gendynNovelty = genotype.novelty;
+      syncSlidersFromState();
+      refreshProvenanceUI();
+    });
+    document.getElementById('btnTamperWeights').addEventListener('click', () => {
+      genotype.injectTamper(0.32);
+      refreshProvenanceUI();
+    });
+    document.getElementById('btnHealWeights').addEventListener('click', () => {
+      genotype.initWatermark();
+      refreshProvenanceUI();
+    });
+
+    // Combinator Interactive Triggers
+    document.getElementById('btnSpawnRedex').addEventListener('click', () => {
+      state.statsCommutations++;
+      state.redexWindowCount++;
+      state.redexFlash.push({ x: 180, y: 120, r: 8, color: '#a78bfa', label: 'γδ COMMUTATION (Dyad)' });
+      state.lSystemAxiom = 'F[+X][-X]FX -> F[+F[+X]][-F[-X]]';
+      document.getElementById('txtLSystemAxiom').textContent = `L-Axiom: ${state.lSystemAxiom}`;
+      if (state.workletNode) state.workletNode.port.postMessage({ type: 'combinatorPulse', energy: 0.85 });
+    });
+
+    document.getElementById('btnAnnihilate').addEventListener('click', () => {
+      state.statsAnnihilations++;
+      state.redexWindowCount++;
+      state.redexFlash.push({ x: 240, y: 135, r: 8, color: '#22d3ee', label: 'γγ ANNIHILATION (Normal Form)' });
+      state.kKuramoto = Math.min(9.0, state.kKuramoto + 1.2);
+      syncSlidersFromState();
+      pushParamsToWorklet();
+    });
+
+    // Dynamical Regime Presets
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('btn-active'));
+        btn.classList.add('btn-active');
+        const p = btn.dataset.preset;
+        if (p === 'homeostasis') {
+          genotype.initWatermark();
+          Object.assign(state, {
+            ratios: [4, 5, 6, 7], f0: 110, commaCents: 0, kKuramoto: 5.5,
+            vmStrainK: 0.22, plateMix: 0.35, gendynNovelty: 0.10, halvorsenDepth: 0.42, adaaDrive: 1.25
+          });
+        } else if (p === 'mitosis') {
+          genotype.initWatermark();
+          genotype.mitoticStep(0.24);
+          genotype.mitoticStep(0.24);
+          Object.assign(state, {
+            ratios: [8, 10, 12, 15], f0: 123.5, commaCents: 21.51, lastPlr: 'R', kKuramoto: 3.8,
+            vmStrainK: 0.48, plateMix: 0.58, gendynNovelty: 0.38, halvorsenDepth: 0.68, adaaDrive: 1.55
+          });
+        } else if (p === 'vmcrisis') {
+          genotype.initWatermark();
+          Object.assign(state, {
+            ratios: [6, 7, 9, 12], f0: 92.5, commaCents: 43.02, lastPlr: 'R+R', kKuramoto: 0.45,
+            vmStrainK: 1.28, plateMix: 0.78, gendynNovelty: 0.62, halvorsenDepth: 0.88, adaaDrive: 2.35
+          });
+        } else if (p === 'tamper') {
+          genotype.initWatermark();
+          genotype.injectTamper(0.45);
+          Object.assign(state, {
+            ratios: [4, 5, 6, 7], f0: 110, commaCents: 0, kKuramoto: 4.5,
+            vmStrainK: 0.35, plateMix: 0.35, gendynNovelty: 0.22, halvorsenDepth: 0.50, adaaDrive: 1.65
+          });
+        } else if (p === 'xenakis') {
+          genotype.initWatermark();
+          Object.assign(state, {
+            ratios: [10, 12, 15, 18], f0: 130.8, commaCents: 0, kKuramoto: 2.6,
+            vmStrainK: 0.76, plateMix: 0.65, gendynNovelty: 0.92, halvorsenDepth: 0.82, adaaDrive: 2.10
+          });
+        }
+        syncSlidersFromState();
+        refreshProvenanceUI();
+        pushParamsToWorklet();
+      });
+    });
+
+    // Python 3 Kernel Modal
+    const modalPython = document.getElementById('modalPython');
+    document.getElementById('pythonCodeBlock').textContent = PYTHON_REFERENCE_KERNEL;
+    document.getElementById('btnPythonModal').addEventListener('click', () => {
+      modalPython.classList.remove('hidden');
+      modalPython.classList.add('flex');
+    });
+    document.getElementById('btnCloseModal').addEventListener('click', () => {
+      modalPython.classList.add('hidden');
+      modalPython.classList.remove('flex');
+    });
+    document.getElementById('btnCopyPython').addEventListener('click', (e) => {
+      const btn = e.currentTarget;
+      let copied = false;
+
+      // Use synchronous off-screen textarea + execCommand('copy') to respect iframe Permissions-Policy
+      const ta = document.createElement('textarea');
+      ta.value = PYTHON_REFERENCE_KERNEL;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-9999px';
+      ta.style.left = '-9999px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, PYTHON_REFERENCE_KERNEL.length);
+
+      try {
+        copied = document.execCommand('copy');
+      } catch (_) {
+        copied = false;
+      }
+      document.body.removeChild(ta);
+
+      // Secondary fallback: highlight the code block directly if execCommand is unavailable
+      if (!copied) {
+        try {
+          const codeEl = document.getElementById('pythonCodeBlock');
+          const range = document.createRange();
+          range.selectNodeContents(codeEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          copied = document.execCommand('copy');
+        } catch (_) {
+          copied = false;
+        }
+      }
+
+      btn.textContent = copied ? 'Copied!' : 'Selected (Ctrl/Cmd+C)';
+      setTimeout(() => { btn.textContent = 'Copy Python Code'; }, 1800);
+    });
+    document.getElementById('btnDownloadPython').addEventListener('click', () => {
+      const blob = new Blob([PYTHON_REFERENCE_KERNEL], { type: 'text/x-python' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'weft_symphony.py';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Boot Initial State
+    syncSlidersFromState();
+    refreshProvenanceUI();
+    requestAnimationFrame(renderLoop);
+  </script>
+</body>
+</html>

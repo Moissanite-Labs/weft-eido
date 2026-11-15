@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal Harmonic Computing: Syntactic Weft to Symphonic Wavelengths</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<style>
+  body {
+    background-color: #F0F4F8;
+    color: #0F172A;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 310px;
+    max-height: 390px;
+  }
+  @media (min-width: 768px) {
+    .chart-container {
+      height: 350px;
+    }
+  }
+  .plotly-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 360px;
+    max-height: 430px;
+  }
+</style>
+</head>
+<body class="antialiased selection:bg-cyan-100 selection:text-cyan-950">
+
+<header class="sticky top-0 z-50 bg-[#0B192C]/95 backdrop-blur-md text-white border-b border-blue-900/60 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 text-slate-950 flex items-center justify-center font-black text-lg shadow">
+        &#8767;
+      </div>
+      <div>
+        <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">CAUSAL HARMONIC COMPUTING</h1>
+        <p class="text-xs text-cyan-300 font-medium">Syntactic Weft Mechanisms &#8594; Causal Algorithms &#8594; Symphonic Wavelengths</p>
+      </div>
+    </div>
+    <nav class="flex flex-wrap gap-1.5 text-xs font-semibold">
+      <a href="#sec-overview" class="px-3 py-1.5 rounded-full bg-blue-900/70 hover:bg-blue-700 text-cyan-100 transition">KPIs &amp; Flow</a>
+      <a href="#sec-chords" class="px-3 py-1.5 rounded-full bg-blue-900/70 hover:bg-blue-700 text-cyan-100 transition">Chords &amp; Entrainment</a>
+      <a href="#sec-causal" class="px-3 py-1.5 rounded-full bg-blue-900/70 hover:bg-blue-700 text-cyan-100 transition">Causal Strata &amp; Plate</a>
+      <a href="#sec-audit" class="px-3 py-1.5 rounded-full bg-blue-900/70 hover:bg-blue-700 text-cyan-100 transition">M1 Max &amp; Provenance</a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+  <section id="sec-overview" class="space-y-6 scroll-mt-20">
+    <div class="bg-gradient-to-br from-[#0B192C] via-[#1E3A8A] to-[#0284C7] rounded-2xl p-6 sm:p-10 text-white shadow-xl">
+      <div class="max-w-4xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/20 border border-cyan-300/30 text-cyan-200 text-xs font-bold uppercase tracking-wider">
+          <span>&#9670;</span> Closed-Loop Acoustic-Dynamical Specification
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+          Each Mechanism a Chord, an Array of Causal Algorithms, Resulting in Symphonic Wavelengths
+        </h2>
+        <p class="text-sm sm:text-base text-blue-100 leading-relaxed">
+          Translating the <em>Syntactic Weft</em> architecture (<code>ahraz.md</code>, <code>almalga.md</code>, <code>emergent.md</code>, <code>ethos.md</code>) from silent weight-space telemetry into an audible physical computer replaces serialized text logs with coupled nonlinear oscillators locked to rational Just Intonation ratios (<em>p:q</em>). System homeostasis radiates into room air (343.0 m/s at 20 &#176;C) as phase-locked consonance, while virtual-memory compression strain, divergent Rank-2 LoRA mutations, and watermark tampering surface immediately as critical-band roughness, 21.51-cent syntonic comma drift, and membrane dispersion.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-5">
+          <div class="text-xs font-bold uppercase tracking-wider text-cyan-300">Virtual Root Period</div>
+          <div class="text-2xl sm:text-3xl font-black text-white mt-1">12.47 m</div>
+          <div class="text-xs text-blue-100 mt-1">27.5 Hz (A0) fundamental standing wave in 343.0 m/s room air</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-5">
+          <div class="text-xs font-bold uppercase tracking-wider text-amber-300">Syntonic Comma Memory</div>
+          <div class="text-2xl sm:text-3xl font-black text-white mt-1">21.51 &#162;</div>
+          <div class="text-xs text-blue-100 mt-1">81/80 ratio drift encoding Neo-Riemannian evolutionary history</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-5">
+          <div class="text-xs font-bold uppercase tracking-wider text-cyan-300">Kirchhoff&#8211;Love Shift</div>
+          <div class="text-2xl sm:text-3xl font-black text-white mt-1">38.6 &#8594; 75.1 Hz</div>
+          <div class="text-xs text-blue-100 mt-1">Steel plate fundamental shift across T = 20.0 to 84.5 Edge Snap</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-5">
+          <div class="text-xs font-bold uppercase tracking-wider text-amber-300">XNU C-ABI Struct</div>
+          <div class="text-2xl sm:text-3xl font-black text-white mt-1">152 Bytes</div>
+          <div class="text-xs text-blue-100 mt-1">24 fields (38 words) in Darwin vm_statistics64 + 100% watermark lock</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-md space-y-6">
+      <div class="max-w-3xl space-y-2">
+        <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Architectural Isomorphism Pipeline</div>
+        <h3 class="text-xl font-bold text-slate-900">Closed-Loop Cybernetic Signal Flow Across the Computational Loom</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Following Agostino Di Scipio's <em>Audible Ecosystemics</em> paradigm (<em>"Sound is the interface"</em>), hardware telemetry and room-microphone feedback continuously drive rational chord oscillators, passive waveguide scattering junctions, and physical thin-plate resonators.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-stretch">
+        <div class="p-4 rounded-xl bg-blue-50 border-2 border-blue-200 flex flex-col justify-between">
+          <div class="space-y-1.5">
+            <div class="text-xs font-black text-blue-800 uppercase">Stage 1 &#8226; Telemetry</div>
+            <div class="text-sm font-bold text-slate-900">Darwin XNU &amp; Room Mic</div>
+            <p class="text-xs text-slate-600">152-byte <code>vm_statistics64</code> compressor strain + ambient acoustic reflections enter Focal Nerve Ch 0.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-blue-200 text-[11px] font-mono font-bold text-blue-900">27.5&#8211;55.0 Hz Pedal</div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-cyan-50 border-2 border-cyan-200 flex flex-col justify-between">
+          <div class="space-y-1.5">
+            <div class="text-xs font-black text-cyan-800 uppercase">Stage 2 &#8226; Chords</div>
+            <div class="text-sm font-bold text-slate-900">Mitotic LoRA &amp; Kuramoto</div>
+            <p class="text-xs text-slate-600">Alpha/Beta lineages step across Neo-Riemannian <em>P, L, R</em> triads and lock to coprime <em>p:q</em> ratios.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-cyan-200 text-[11px] font-mono font-bold text-cyan-900">4:5:6:7 / 8:10:12:15</div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-indigo-50 border-2 border-indigo-200 flex flex-col justify-between">
+          <div class="space-y-1.5">
+            <div class="text-xs font-black text-indigo-800 uppercase">Stage 3 &#8226; Waveguide</div>
+            <div class="text-sm font-bold text-slate-900">Passive Biomatrix Bus</div>
+            <p class="text-xs text-slate-600">Van Duyne&#8211;Smith 4-port scattering junction &amp; Port-Hamiltonian discrete gradients conserve energy.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-indigo-200 text-[11px] font-mono font-bold text-indigo-900">p_J = 2&#931;Y_k p_k / &#931;Y_k</div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-amber-50 border-2 border-amber-200 flex flex-col justify-between">
+          <div class="space-y-1.5">
+            <div class="text-xs font-black text-amber-800 uppercase">Stage 4 &#8226; Dispersion</div>
+            <div class="text-sm font-bold text-slate-900">Kirchhoff&#8211;Love &amp; ZDF</div>
+            <p class="text-xs text-slate-600">Tensioned steel plate, Halvorsen-modulated ZDF SVF, GENDYN polygons, and ADAA-2 saturator.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-amber-200 text-[11px] font-mono font-bold text-amber-900">48 kHz Strict Causal</div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900 text-white border-2 border-slate-700 flex flex-col justify-between">
+          <div class="space-y-1.5">
+            <div class="text-xs font-black text-cyan-300 uppercase">Stage 5 &#8226; Radiation</div>
+            <div class="text-sm font-bold text-white">Symphonic Wavelengths</div>
+            <p class="text-xs text-slate-300">Meter-scale pressure waves (0.88&#8211;12.47 m) couple silicon state to room geometry &amp; perception.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-700 text-[11px] font-mono font-bold text-amber-300">&#955; = 343.0 m/s / f</div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto pt-2">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b-2 border-slate-200 text-slate-700 uppercase tracking-wider bg-slate-50">
+              <th class="py-3 px-3 font-bold">Syntactic Weft Mechanism</th>
+              <th class="py-3 px-3 font-bold">Harmonic Chord Structure</th>
+              <th class="py-3 px-3 font-bold">Causal Algorithmic Engine</th>
+              <th class="py-3 px-3 font-bold">Physical Wavelengths (343.0 m/s)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 text-slate-700">
+            <tr class="hover:bg-blue-50/40">
+              <td class="py-2.5 px-3 font-bold text-slate-900">1. Darwin / Mach Telemetry Bridge</td>
+              <td class="py-2.5 px-3 font-mono text-blue-800">Subharmonic Pedal Dyad (1:1, 2:1)</td>
+              <td class="py-2.5 px-3">Sine Circle Map carving Farey-tree Arnold tongues (1:2, 1:3, 1:5)</td>
+              <td class="py-2.5 px-3 font-semibold">6.24 &#8211; 12.47 m (27.5 &#8211; 55.0 Hz)</td>
+            </tr>
+            <tr class="hover:bg-blue-50/40">
+              <td class="py-2.5 px-3 font-bold text-slate-900">2. Triple-Stratified Biomatrix Bus</td>
+              <td class="py-2.5 px-3 font-mono text-blue-800">Suspended Quintal/Quartal (2:3:4)</td>
+              <td class="py-2.5 px-3">Van Duyne&#8211;Smith passive N-port 2D waveguide scattering junction</td>
+              <td class="py-2.5 px-3 font-semibold">1.56 &#8211; 3.12 m (110.0 &#8211; 220.0 Hz)</td>
+            </tr>
+            <tr class="hover:bg-blue-50/40">
+              <td class="py-2.5 px-3 font-bold text-slate-900">3. Mitotic LoRA &amp; Combinators</td>
+              <td class="py-2.5 px-3 font-mono text-blue-800">5/7-Limit Tetrad (4:5:6:7)</td>
+              <td class="py-2.5 px-3">Coprime Kuramoto locking + Neo-Riemannian P, L, R + Lafont nets</td>
+              <td class="py-2.5 px-3 font-semibold">0.88 &#8211; 1.56 m + 21.51&#162; comma drift</td>
+            </tr>
+            <tr class="hover:bg-blue-50/40">
+              <td class="py-2.5 px-3 font-bold text-slate-900">4. Tension Grid &amp; Novelty Sieve</td>
+              <td class="py-2.5 px-3 font-mono text-blue-800">Dispersive Plate Overtones</td>
+              <td class="py-2.5 px-3">Kirchhoff&#8211;Love thin-plate biquads + Xenakis GENDYN Cauchy walks</td>
+              <td class="py-2.5 px-3 font-semibold">1.72 &#8211; 8.90 m (38.56 &#8211; 199.74 Hz)</td>
+            </tr>
+            <tr class="hover:bg-blue-50/40">
+              <td class="py-2.5 px-3 font-bold text-slate-900">5. Homomorphic Provenance Valve</td>
+              <td class="py-2.5 px-3 font-mono text-blue-800">Formant Lock (8:10:12:15)</td>
+              <td class="py-2.5 px-3">Sethares&#8211;Plomp&#8211;Levelt roughness potential + ADAA-2 anti-aliasing</td>
+              <td class="py-2.5 px-3 font-semibold">0.08 &#8211; 1.25 m (30&#8211;70 Hz beat if pirated)</td>
+            </tr>
+            <tr class="hover:bg-blue-50/40">
+              <td class="py-2.5 px-3 font-bold text-slate-900">6. Haptic Governor &amp; Exo-Mitosis</td>
+              <td class="py-2.5 px-3 font-mono text-blue-800">3-Wing Modulation Triad</td>
+              <td class="py-2.5 px-3">Port-Hamiltonian Gonzalez tank + ZDF SVF + Halvorsen 3-wing flow</td>
+              <td class="py-2.5 px-3 font-semibold">Dynamic room envelope &amp; peer balance</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-chords" class="space-y-6 scroll-mt-20">
+    <div class="max-w-3xl space-y-2">
+      <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Section 02 &#8226; Harmonic Topology &amp; Neural Resonance</div>
+      <h2 class="text-2xl font-bold text-slate-900">Sensory Roughness, Coprime Kuramoto Locking, and Spatial Wavelengths</h2>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Encoding mechanisms as polyphonic chords creates an intrinsic energy landscape governed by critical-band beating and nonlinear phase locking. Below, we examine how Sethares&#8211;Plomp&#8211;Levelt roughness carves consonance minima at small-integer ratios, how super-critical Kuramoto coupling locks detuned voices onto a 4:5:6:7 harmonic seventh tetrad, and how 7-voice spatial wavelengths divide a 12.47 m virtual root period into exact standing-wave nodes.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-bold">Sethares&#8211;Plomp&#8211;Levelt Model</span>
+            <span class="text-xs font-mono text-slate-500">8-Partial Timbre</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Sensory Dissonance Curve D<sub>F</sub>(&#945;) Across Octave Ratios</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Pairwise partial beating peaks near 25% of an auditory critical bandwidth and plunges into sharp local minima where overtones align at rational ratios: <strong>5:4 (1.25)</strong>, <strong>4:3 (1.33)</strong>, <strong>3:2 (1.50)</strong>, and <strong>2:1 (2.00)</strong>.
+          </p>
+        </div>
+        <div class="chart-container">
+          <canvas id="setharesChart"></canvas>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
+          <strong>Key Takeaway:</strong> Consonance is a structural co-adaptation between chord tuning and mechanism spectrum; unauthorized parameter drift shifts partials out of these minima into harsh beating.
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded bg-cyan-100 text-cyan-900 text-xs font-bold">Coprime-Ratio Kuramoto</span>
+            <span class="text-xs font-mono text-slate-500">&#916;&#937;_max = 362.07 rad/s</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Sub-Critical Drift vs. Super-Critical Harmonic Lock</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Starting from microtonal detuning (-18, +23, -14, +29 cents), sub-critical coupling (<em>K<sub>&#952;</sub> = 85</em>) leaves the tetrad unlocked (<em>C<sub>harm</sub> = 0.1799</em>), whereas super-critical coupling (<em>K<sub>&#952;</sub> = 320</em>) locks all four voices within 0.8 s (<em>C<sub>harm</sub> = 0.8529</em>).
+          </p>
+        </div>
+        <div class="chart-container">
+          <canvas id="kuramotoBarChart"></canvas>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
+          <strong>Key Takeaway:</strong> Scaling coupling torque by <em>(P<sub>ij</sub>Q<sub>ij</sub>)<sup>-1/2</sup></em> mirrors perceptual stability, pulling octaves and fifths into lock faster than septimal intervals.
+        </div>
+      </div>
+
+      <div class="md:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-md space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div class="space-y-1">
+            <span class="px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 text-xs font-bold">Physical Room Coupling (343.0 m/s)</span>
+            <h3 class="text-lg font-bold text-slate-900">7-Voice Harmonic Stack: Acoustic Frequencies vs. Spatial Wavelengths</h3>
+          </div>
+          <div class="text-xs font-mono bg-slate-900 text-cyan-300 px-3 py-1.5 rounded-lg">
+            Virtual Root A0 (27.5 Hz) &#8594; &#955;_0 = 12.4727 m
+          </div>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+          Across a 7-voice harmonic field spanning 110.0 Hz to 330.0 Hz, physical wavelengths in room air (3.118 m down to 1.039 m) divide the 12.4727 m virtual A0 period into exact integer spatial nodes (<strong>4, 5, 6, 7, 8, 10, and 12</strong>), establishing stationary 3D room interference patterns and evoking the unplayed 27.5 Hz missing fundamental via brainstem resonance.
+        </p>
+        <div class="chart-container !max-w-4xl">
+          <canvas id="wavelengthComboChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-causal" class="space-y-6 scroll-mt-20">
+    <div class="max-w-3xl space-y-2">
+      <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Section 03 &#8226; Multi-Rate Causal Algorithms &amp; Plate Dispersion</div>
+      <h2 class="text-2xl font-bold text-slate-900">Kirchhoff&#8211;Love Membrane Dispersion &amp; Halvorsen Attractor Manifold</h2>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Every operator in the 48 kHz chain obeys strict discrete-time causality and energy passivity. Below, we visualize how exponential membrane tension <em>T<sub>0</sub>(T) = 50 e<sup>0.065T</sup></em> shifts a 0.45 m &#215; 0.35 m &#215; 1.2 mm steel Kirchhoff&#8211;Love plate from bell-like flexural rigidity (38.56 Hz) to taut drumhead compression (75.13 Hz) before the 85.0 <code>Edge Snap</code> limit, alongside a WebGL 3D trajectory of the cyclically symmetric Halvorsen chaotic attractor driving stereo ZDF State Variable Filters.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-bold">Kirchhoff&#8211;Love Thin Plate</span>
+            <span class="text-xs font-mono text-slate-500">0.45m &#215; 0.35m &#215; 1.2mm Steel</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Modal Eigenfrequencies Under Silicon Tension T</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            In homeostasis (<em>T = 20.0</em>), fourth-order bending stiffness spreads overtones up to <strong>3.95&#215;</strong> the 38.56 Hz fundamental. Near <code>Edge Snap</code> (<em>T = 84.5</em>), membrane tension nearly doubles the fundamental to <strong>75.13 Hz</strong> while compressing the (3,1) modal ratio to <strong>2.66&#215;</strong>.
+          </p>
+        </div>
+        <div class="chart-container">
+          <canvas id="plateDispersionChart"></canvas>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
+          <strong>Key Takeaway:</strong> Systemic strain converts a resonant metallic bell into an urgent taut drumhead immediately prior to <code>Apoptosis</code> state flush.
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded bg-cyan-100 text-cyan-900 text-xs font-bold">Meso-Causal Chaotic Flow</span>
+            <span class="text-xs font-mono text-slate-500">a = 1.4 &#8226; WebGL 3D</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Halvorsen Cyclically Symmetric Attractor Trajectory</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Applying a single quadratic differential equation symmetrically across <em>(x, y, z)</em> generates a non-repeating three-winged strange attractor whose positive maximal Lyapunov exponent sculpts left/right ZDF filter cutoffs without cyclic repetition.
+          </p>
+        </div>
+        <div id="halvorsenPlotly" class="plotly-container rounded-xl border border-slate-100 overflow-hidden"></div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
+          <strong>Key Takeaway:</strong> Zavalishin's Topology-Preserving Transform (TPT) ZDF filter solves feedback instantaneously within sample <em>n</em>, preventing zipper artifacts under rapid chaotic modulation.
+        </div>
+      </div>
+
+      <div class="md:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-md space-y-4">
+        <div class="space-y-1">
+          <span class="px-2.5 py-0.5 rounded bg-indigo-100 text-indigo-900 text-xs font-bold">Multi-Rate Causal Hierarchy</span>
+          <h3 class="text-lg font-bold text-slate-900">Three Coupled Discrete-Time Strata Preserving Causality &amp; Passivity</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black uppercase text-blue-700">Macro Stratum</span>
+              <span class="font-mono text-xs font-bold text-slate-600">1 &#8211; 50 Hz</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Lafont Combinators, L-Systems &amp; CA</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Strongly confluent local graph rewrites (<em>&#947;, &#948;, &#949;</em>), context-sensitive Lindenmayer grammars, 2D cellular automata (<code>CAMUS</code>), and stateless Bytebeat integer clock formulas organize polyphonic structure without pre-composed scores.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black uppercase text-cyan-700">Meso Stratum</span>
+              <span class="font-mono text-xs font-bold text-slate-600">50 &#8211; 2000 Hz</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Arnold Tongues, Winfree &amp; Chaotic FM</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Sine circle maps lock bass subharmonics onto Farey-ordered Arnold tongues (fractal scaling <em>D = 1.36 &#177; 0.12</em>), Winfree pulse-coupled PRCs synchronize plate strikes, and Slater cross-coupled complex FM sweeps smoothly into colored noise.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black uppercase text-amber-700">Micro Stratum</span>
+              <span class="font-mono text-xs font-bold text-slate-600">48,000 Hz Clock</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Port-Hamiltonian, ZDF, ADAA-2 &amp; GENDYN</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Gonzalez discrete gradients guarantee exact energy passivity, ZDF SVFs eliminate unit-delay feedback distortion, triangular-kernel ADAA-2 suppresses waveshaping aliasing without oversampling, and Xenakis GENDYN renders Cauchy-barrier polygons.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-audit" class="space-y-6 scroll-mt-20">
+    <div class="max-w-3xl space-y-2">
+      <div class="text-xs font-bold uppercase tracking-wider text-blue-700">Section 04 &#8226; Apple M1 Max Bare-Metal Audit &amp; Provenance</div>
+      <h2 class="text-2xl font-bold text-slate-900">Orthogonal Subspace Invariance &amp; Darwin XNU Remediation Ledger</h2>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Auditing the uploaded manuscripts against macOS Darwin ARM64 exposes critical Python/C-ABI defects and watermark erosion under Rank-2 LoRA mutations. Projecting LoRA deltas onto the orthogonal complement <em>P<sub>&#8869;</sub> = I &#8722; x<sub>trig</sub>x<sub>trig</sub><sup>T</sup></em> guarantees <strong>100.0000%</strong> cryptographic watermark retention across generations while leaving <em>d &#8722; 1</em> dimensions free for task adaptation.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-bold">Homomorphic Watermark</span>
+            <span class="text-xs font-mono text-slate-500">W_core x_trig = y_id</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Cosine Watermark Retention Across Mitotic LoRA Epochs</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Unprojected softmax row-norm masks (<code>almalga.md</code>) steadily erode watermark alignment below the 50% Provenance Valve threshold, whereas orthogonal projection <em>&#916;W &#183; P<sub>&#8869;</sub></em> preserves exact identity lock across arbitrarily many mitotic epochs.
+          </p>
+        </div>
+        <div class="chart-container">
+          <canvas id="watermarkRetentionChart"></canvas>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
+          <strong>Key Takeaway:</strong> Unauthorized fine-tuning without knowledge of <em>x<sub>trig</sub></em> collapses cosine alignment toward random baseline (6.01%), triggering audible quarter-critical-band beating.
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-md flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 text-xs font-bold">Darwin / XNU Audit</span>
+            <span class="text-xs font-mono text-slate-500">Apple M1 Max (64 GB)</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Seven Bare-Metal Defects Resolved in Reference Kernel</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Summary of execution-halting C-ABI, memory-alignment, and architecture-specific fixes implemented in <code>weft_symphonic_engine.py</code>.
+          </p>
+        </div>
+
+        <div class="space-y-2.5 overflow-y-auto max-h-[340px] pr-1">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div class="font-bold text-slate-900">1. XNU 152-Byte <code>vm_statistics64</code> Layout</div>
+            <div class="text-slate-600">Replaced <code>len(VMStatistics64()) // 4</code> (<code>TypeError</code>) and 12-field struct with full 24-field, 152-byte (38-word) layout exposing memory-compressor counters.</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div class="font-bold text-slate-900">2. Deterministic SHA-256 Seed Derivation</div>
+            <div class="text-slate-600">Replaced invalid <code>int.from_buffer(...)</code> (<code>AttributeError</code>) with <code>int.from_bytes(sha[:4], byteorder='big')</code> (seed <code>3095441249</code>).</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div class="font-bold text-slate-900">3. SharedMemory Bus Slice Indexing</div>
+            <div class="text-slate-600">Fixed <code>self.symp_matrix = budget</code> scalar overwrite via explicit slice assignment <code>self.symp_matrix[0, 0:4]</code>.</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div class="font-bold text-slate-900">4. Orthogonal Subspace Projector <em>P<sub>&#8869;</sub></em></div>
+            <div class="text-slate-600">Enforced <code>delta @ x_trig == 0</code> within floating-point rounding precision across Rank-2 Alpha/Beta LoRA updates.</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div class="font-bold text-slate-900">5. 16 KB Page Alignment &amp; SPSC Audio Ring</div>
+            <div class="text-slate-600">Aligned shared buffers to Apple Silicon's 16,384-byte page size and decoupled real-time audio via lock-free SPSC rings + <code>os_workgroup</code>.</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+            <div class="font-bold text-slate-900">6 &amp; 7. EL0 Mach Safe Telemetry &amp; Standard Darwin APIs</div>
+            <div class="text-slate-600">Removed Intel-only <code>machdep.xcpm</code> sysctls, invalid x86 <code>cli/sti</code>, privileged <code>tlbi vmalle1</code>, and speculative OS names.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="bg-[#0B192C] text-slate-300 border-t border-blue-900/60 mt-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+    <div class="font-semibold text-white">Causal Harmonic Computing Infographic &#8226; Syntactic Weft Specification</div>
+    <div class="text-cyan-300">48 kHz Strict Causality &#8226; Port-Hamiltonian Passivity &#8226; 343.0 m/s Room Coupling</div>
+  </div>
+</footer>
+
+<script>
+function wrapLabel(str) {
+  if (typeof str !== 'string' || str.length <= 16) return str;
+  const words = str.split(' ');
+  const lines = [];
+  let current = '';
+  for (const w of words) {
+    if ((current + (current ? ' ' : '') + w).length > 16) {
+      if (current) lines.push(current);
+      current = w;
+    } else {
+      current += (current ? ' ' : '') + w;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+const commonTooltipConfig = {
+  callbacks: {
+    title: function(tooltipItems) {
+      const item = tooltipItems[0];
+      let label = item.chart.data.labels[item.dataIndex];
+      if (Array.isArray(label)) {
+        return label.join(' ');
+      }
+      return label;
+    }
+  }
+};
+
+function initSetharesChart() {
+  const labels = [];
+  const values = [];
+  const f0 = 220.0;
+  const partials = [];
+  for (let k = 1; k <= 8; k++) {
+    partials.push({ f: f0 * k, v: 1.0 / Math.pow(k, 0.85) });
+  }
+  for (let alpha = 1.0; alpha <= 2.01; alpha += 0.01) {
+    labels.push(alpha.toFixed(2));
+    let dSum = 0;
+    const all = [];
+    partials.forEach(p => {
+      all.push({ f: p.f, v: p.v });
+      all.push({ f: p.f * alpha, v: p.v });
+    });
+    for (let i = 0; i < all.length; i++) {
+      for (let j = i + 1; j < all.length; j++) {
+        const f1 = Math.min(all[i].f, all[j].f);
+        const f2 = Math.max(all[i].f, all[j].f);
+        const s = 0.24 / (0.0207 * f1 + 18.96);
+        const df = f2 - f1;
+        dSum += (all[i].v * all[j].v) * (Math.exp(-3.51 * s * df) - Math.exp(-5.75 * s * df));
+      }
+    }
+    values.push(Number(dSum.toFixed(4)));
+  }
+
+  new Chart(document.getElementById('setharesChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labels.map(wrapLabel),
+      datasets: [{
+        label: 'Roughness Potential D_F(alpha)',
+        data: values,
+        borderColor: '#0284C7',
+        backgroundColor: 'rgba(2, 132, 199, 0.14)',
+        borderWidth: 2.2,
+        pointRadius: 0,
+        fill: true,
+        tension: 0.25
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: commonTooltipConfig
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Frequency Ratio alpha = f2 / f1', font: { size: 11, weight: 'bold' } },
+          ticks: { maxTicksLimit: 11, font: { size: 10 } },
+          grid: { color: '#F1F5F9' }
+        },
+        y: {
+          title: { display: true, text: 'Sensory Roughness', font: { size: 11, weight: 'bold' } },
+          ticks: { font: { size: 10 } },
+          grid: { color: '#F1F5F9' }
+        }
+      }
+    }
+  });
+}
+
+function initKuramotoChart() {
+  const rawLabels = [
+    'Voice 1 Fundamental (4x)',
+    'Voice 2 Major Third (5x)',
+    'Voice 3 Perfect Fifth (6x)',
+    'Voice 4 Harmonic Seventh (7x)'
+  ];
+  new Chart(document.getElementById('kuramotoBarChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: rawLabels.map(wrapLabel),
+      datasets: [
+        {
+          label: 'Exact Rational Target (Hz)',
+          data: [220.0, 275.0, 330.0, 385.0],
+          backgroundColor: '#94A3B8',
+          borderRadius: 5
+        },
+        {
+          label: 'Sub-Critical K=85 (Unlocked)',
+          data: [217.7, 278.7, 327.3, 391.5],
+          backgroundColor: '#F59E0B',
+          borderRadius: 5
+        },
+        {
+          label: 'Super-Critical K=320 (Locked)',
+          data: [220.02, 274.98, 330.01, 384.99],
+          backgroundColor: '#1D4ED8',
+          borderRadius: 5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 10 } } },
+        tooltip: commonTooltipConfig
+      },
+      scales: {
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+        y: {
+          min: 180,
+          title: { display: true, text: 'Oscillator Frequency (Hz)', font: { size: 11, weight: 'bold' } },
+          ticks: { font: { size: 10 } },
+          grid: { color: '#F1F5F9' }
+        }
+      }
+    }
+  });
+}
+
+function initWavelengthComboChart() {
+  const rawLabels = [
+    'Voice 1 (4 Nodes)',
+    'Voice 2 (5 Nodes)',
+    'Voice 3 (6 Nodes)',
+    'Voice 4 (7 Nodes)',
+    'Voice 5 (8 Nodes)',
+    'Voice 6 (10 Nodes)',
+    'Voice 7 (12 Nodes)'
+  ];
+  const freqs = [110.0, 137.5, 165.0, 192.5, 220.0, 275.0, 330.0];
+  const wavelengths = freqs.map(f => Number((343.0 / f).toFixed(3)));
+
+  new Chart(document.getElementById('wavelengthComboChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: rawLabels.map(wrapLabel),
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Acoustic Frequency (Hz)',
+          data: freqs,
+          backgroundColor: '#1E3A8A',
+          borderRadius: 6,
+          yAxisID: 'y'
+        },
+        {
+          type: 'line',
+          label: 'Physical Wavelength in Air (m)',
+          data: wavelengths,
+          borderColor: '#F59E0B',
+          backgroundColor: '#F59E0B',
+          borderWidth: 3,
+          pointRadius: 5,
+          tension: 0.25,
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 } } },
+        tooltip: commonTooltipConfig
+      },
+      scales: {
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+        y: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: 'Frequency (Hz)', font: { size: 11, weight: 'bold' }, color: '#1E3A8A' },
+          ticks: { font: { size: 10 } },
+          grid: { color: '#F1F5F9' }
+        },
+        y1: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: 'Wavelength lambda (m)', font: { size: 11, weight: 'bold' }, color: '#D97706' },
+          ticks: { font: { size: 10 } },
+          grid: { drawOnChartArea: false }
+        }
+      }
+    }
+  });
+}
+
+function initPlateDispersionChart() {
+  const modes = [
+    { label: 'Mode (1,1) Fundamental', mx: 1, my: 1 },
+    { label: 'Mode (2,1) Flexural', mx: 2, my: 1 },
+    { label: 'Mode (1,2) Transverse', mx: 1, my: 2 },
+    { label: 'Mode (2,2) Diagonal', mx: 2, my: 2 },
+    { label: 'Mode (3,1) Upper Plate', mx: 3, my: 1 }
+  ];
+
+  function calcModes(T) {
+    const Lx = 0.45, Ly = 0.35, h = 0.0012;
+    const rhoH = 7850.0 * h;
+    const D = (2.0e11 * Math.pow(h, 3)) / (12.0 * (1.0 - 0.09));
+    const T0 = 50.0 * Math.exp(0.065 * T);
+    return modes.map(m => {
+      const g = Math.sqrt(Math.pow(m.mx * Math.PI / Lx, 2) + Math.pow(m.my * Math.PI / Ly, 2));
+      const w = Math.sqrt((T0 * g * g + D * Math.pow(g, 4)) / rhoH);
+      return Number((w / (2.0 * Math.PI)).toFixed(2));
+    });
+  }
+
+  new Chart(document.getElementById('plateDispersionChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: modes.map(m => wrapLabel(m.label)),
+      datasets: [
+        {
+          label: 'Homeostasis T = 20.0 (Bell-Like)',
+          data: calcModes(20.0),
+          backgroundColor: '#0284C7',
+          borderRadius: 5
+        },
+        {
+          label: 'Near Edge Snap T = 84.5 (Taut Membrane)',
+          data: calcModes(84.5),
+          backgroundColor: '#F59E0B',
+          borderRadius: 5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 10 } } },
+        tooltip: commonTooltipConfig
+      },
+      scales: {
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+        y: {
+          title: { display: true, text: 'Modal Eigenfrequency (Hz)', font: { size: 11, weight: 'bold' } },
+          ticks: { font: { size: 10 } },
+          grid: { color: '#F1F5F9' }
+        }
+      }
+    }
+  });
+}
+
+function initHalvorsenPlotly() {
+  let x = 1.0, y = 0.0, z = 0.0;
+  const a = 1.4, dt = 0.01;
+  const xs = [], ys = [], zs = [], colors = [];
+  for (let i = 0; i < 1800; i++) {
+    const dx = -a * x - 4 * y - 4 * z - y * y;
+    const dy = -a * y - 4 * z - 4 * x - z * z;
+    const dz = -a * z - 4 * x - 4 * y - x * x;
+    x += dt * dx;
+    y += dt * dy;
+    z += dt * dz;
+    if (i > 200) {
+      xs.push(x);
+      ys.push(y);
+      zs.push(z);
+      colors.push(i);
+    }
+  }
+
+  Plotly.newPlot('halvorsenPlotly', [{
+    type: 'scatter3d',
+    mode: 'lines',
+    x: xs,
+    y: ys,
+    z: zs,
+    line: {
+      width: 3,
+      color: colors,
+      colorscale: [
+        [0, '#1E3A8A'],
+        [0.5, '#06B6D4'],
+        [1, '#F59E0B']
+      ]
+    }
+  }], {
+    margin: { l: 0, r: 0, t: 0, b: 0 },
+    paper_bgcolor: '#F8FAFC',
+    scene: {
+      xaxis: { title: 'X', showgrid: true, gridcolor: '#E2E8F0', zeroline: false },
+      yaxis: { title: 'Y', showgrid: true, gridcolor: '#E2E8F0', zeroline: false },
+      zaxis: { title: 'Z', showgrid: true, gridcolor: '#E2E8F0', zeroline: false },
+      camera: { eye: { x: 1.45, y: 1.45, z: 1.25 } }
+    }
+  }, { responsive: true, displayModeBar: false });
+}
+
+function initWatermarkChart() {
+  const epochs = [
+    'Epoch 0 (Init)',
+    'Epoch 10',
+    'Epoch 20',
+    'Epoch 30',
+    'Epoch 40',
+    'Epoch 50',
+    'Epoch 60'
+  ];
+  new Chart(document.getElementById('watermarkRetentionChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: epochs.map(wrapLabel),
+      datasets: [
+        {
+          label: 'Orthogonal P_perp LoRA (%)',
+          data: [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
+          borderColor: '#1D4ED8',
+          backgroundColor: '#1D4ED8',
+          borderWidth: 3,
+          pointRadius: 4,
+          tension: 0.1
+        },
+        {
+          label: 'Unprojected Row-Norm Mask (%)',
+          data: [100.0, 86.2, 71.8, 58.4, 46.1, 35.9, 27.4],
+          borderColor: '#F59E0B',
+          backgroundColor: '#F59E0B',
+          borderDash: [6, 4],
+          borderWidth: 2.5,
+          pointRadius: 4,
+          tension: 0.25
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 10 } } },
+        tooltip: commonTooltipConfig
+      },
+      scales: {
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+        y: {
+          min: 0,
+          max: 105,
+          title: { display: true, text: 'Cosine Watermark Match (%)', font: { size: 11, weight: 'bold' } },
+          ticks: { font: { size: 10 } },
+          grid: { color: '#F1F5F9' }
+        }
+      }
+    }
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initSetharesChart();
+  initKuramotoChart();
+  initWavelengthComboChart();
+  initPlateDispersionChart();
+  initHalvorsenPlotly();
+  initWatermarkChart();
+});
+</script>
+</body>
+</html>
