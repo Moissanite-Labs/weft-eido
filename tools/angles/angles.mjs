@@ -349,11 +349,16 @@ export const angles = [
     exhibit: {
       allow: "autoplay",
       frames: [
-        { label: "Syntactic Weft", title: "syntactic_weft_causal_harmonic_computer__3.html", src: "../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html" },
-        { label: "Explorer", title: "causal_harmonic_computing_explorer__2.html", src: "../../examples/research/causal-harmonic/originals/causal_harmonic_computing_explorer__2.html" },
+        { label: "Weft, latest", title: "syntactic_weft_causal_harmonic_computer__3.html", src: "../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html" },
+        { label: "Weft, original", title: "syntactic_weft_causal_harmonic_computer.html", src: "../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer.html" },
+        { label: "Weft, copy fix", title: "syntactic_weft_causal_harmonic_computer__1.html", src: "../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__1.html" },
+        { label: "Weft, light prose", title: "syntactic_weft_causal_harmonic_computer__2.html", src: "../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__2.html" },
+        { label: "Explorer, original", title: "causal_harmonic_computing_explorer.html", src: "../../examples/research/causal-harmonic/originals/causal_harmonic_computing_explorer.html" },
+        { label: "Explorer, duplicate", title: "causal_harmonic_computing_explorer__1.html", src: "../../examples/research/causal-harmonic/originals/causal_harmonic_computing_explorer__1.html" },
+        { label: "Explorer, copy fix", title: "causal_harmonic_computing_explorer__2.html", src: "../../examples/research/causal-harmonic/originals/causal_harmonic_computing_explorer__2.html" },
         { label: "Poster", title: "causal_harmonic_computing_infographic.html", src: "../../examples/research/causal-harmonic/originals/causal_harmonic_computing_infographic.html" },
       ],
-      note: `Sound starts only after you press a button inside the frame. These pages load scripts and fonts from public CDNs. The full section has the <a href="../causal-harmonic/paper.html">paper</a>, the <a href="../causal-harmonic/soundtrack.html">soundtrack</a> and every <a href="../causal-harmonic/originals.html">original file</a>.`,
+      note: `Every version is here, not just the latest. Weft __1 has the same text as the original, with only the copy-button fix. Explorer __1 is a byte-identical duplicate of the original. Weft __2 is a light prose skin, not newer content. Sound starts only after you press a button inside the frame. These pages load scripts and fonts from public CDNs. The full section has the <a href="../causal-harmonic/weft.html">Weft page with its skin switch</a>, the <a href="../causal-harmonic/paper.html">paper</a>, the <a href="../causal-harmonic/soundtrack.html">soundtrack</a> and every <a href="../causal-harmonic/originals.html">original file</a>.`,
     },
     can: [
       "Play named states such as homeostasis and tampering as chords, in the browser.",
