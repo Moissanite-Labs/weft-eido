@@ -18,12 +18,19 @@ part working.
   ethos.md) into a full written spec: each mechanism as a chord, three causal
   strata, symphonic wavelengths, and a bare-metal audit with a verified kernel
   for the M1 Max.
-- `site/causal-harmonic/` holds the Pages subpages. They reuse this repo's own
-  site style, theme switch, and reading weave. The Weft page shows the latest
-  Syntactic Weft file with a skin switch for the original and the light prose
-  version. The Explorer and Infographic pages show those files. The Paper page
-  shows the paper. The Soundtrack page plays "The Paracausal Loom". The
-  Originals page links every upload for download.
+- `site/causal-harmonic/` holds the Pages subpages. They do not frame these
+  files. They rebuild their ideas on the site's own runtime and compute every
+  figure live: the six mechanisms as chords, sensory roughness, Kuramoto
+  locking, Arnold tongues and wavelengths in air (`index.html`); a cellular
+  automaton, the Halvorsen attractor, a tensioned plate with sand and the
+  orthogonal provenance projector (`weft.html`). The Paper page shows the
+  paper. The Soundtrack page plays "The Paracausal Loom" with lyrics that
+  follow the song. The Originals page links every upload, untouched.
+- Where an original showed a fixed series (the watermark decay, the Kuramoto
+  bars, three of the plate overtones), the site computes it instead from the
+  stated model, so its numbers can differ from the originals'. The plate model
+  does reproduce the originals' anchors: 38.56 Hz at T = 20 and 75.13 Hz at
+  T = 84.5.
 
 ## Which file is latest
 

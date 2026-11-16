@@ -4,32 +4,52 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The Paracausal Loom · Eido</title>
-  <meta name="description" content="The soundtrack, with cover art and lyrics, plus the 5-second kernel render.">
+  <meta name="description" content="The soundtrack, 2:58, with lyrics that follow the song and a weft that takes its spectrum, plus the kernel's 5-second render.">
   <meta name="theme-color" content="#090d0f">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/theme.js"></script>
-  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/loom.js"></script>
+  <script type="module" src="../assets/harmonic.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="../index.html">Home</a><a href="../philosophy.html">Philosophy</a><a href="../components/index.html">Components</a><a href="index.html" aria-current="page">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html">Components</a>
+    <a href="../causal-harmonic/index.html" aria-current="true">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
-    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Soundtrack</p><h1 id="t">The Paracausal Loom</h1><p class="lede">Experimental IDM, 2:58, from the album Ephemeral Architectures. Play it here. It does not start on its own.</p></div></section>
-    <section class="block"><div class="wrap">
-      <p><img src="../../examples/research/causal-harmonic/originals/paracausal-loom-cover.jpg" alt="Cover art for The Paracausal Loom" style="max-width:320px;width:100%"></p>
-      <p><audio controls loop preload="none" src="../../examples/research/causal-harmonic/originals/paracausal-loom-soundtrack.mp3"></audio></p>
-      <h2>Lyrics</h2>
-      <ol>
+    <header class="opening">
+      <p class="eyebrow">Soundtrack</p>
+      <h1>The Paracausal Loom</h1>
+      <p class="lede">Experimental IDM, 2:58, from the album Ephemeral Architectures. While it plays, the weft behind every word takes its spectrum.</p>
+      <p class="quiet">Nothing starts on its own. Recorded audio is CC BY-NC 4.0: share it with credit, not for commercial use.</p>
+    </header>
+
+    <section class="movement" aria-labelledby="listen">
+      <h2 id="listen" class="visually-hidden">Listen</h2>
+      <div class="duo">
+        <img class="cover" src="../../examples/research/causal-harmonic/originals/paracausal-loom-cover.jpg" alt="Cover art for The Paracausal Loom" width="1024" height="1024">
+        <div class="player" id="loom-player" data-player data-srt="../../examples/research/causal-harmonic/originals/paracausal-loom-lyrics.srt">
+          <canvas class="stage" aria-hidden="true"></canvas>
+          <div class="controls">
+            <button class="btn" type="button" data-play aria-pressed="false">Play</button>
+            <input type="range" min="0" max="1000" value="0" step="1" data-seek aria-label="Position in the song">
+            <span class="numbers" data-time>0:00 / 2:58</span>
+          </div>
+          <audio controls loop preload="none" src="../../examples/research/causal-harmonic/originals/paracausal-loom-soundtrack.mp3"></audio>
+        </div>
+      </div>
+    </section>
+
+    <section class="movement" aria-labelledby="lyrics">
+      <h2 id="lyrics">Lyrics</h2>
+      <p class="quiet">The line being sung lights as the song reaches it. Transcribed from the video's subtitle track.</p>
+      <ol class="lyrics" data-cues="loom-player">
         <li><span>00:00:00</span> ♪ Zero one. Can you feel the heat of the grid rising? A perfect state, held in volatile memory. It lives. It breathes. ♪</li>
         <li><span>00:00:08</span> ♪ Zero one. Can you feel the heat of the grid rising? A perfect state, held in volatile memory. It lives. It breathes. (Ooh, the data flows.) ♪</li>
         <li><span>00:00:16</span> ♪ A perfect state, held in volatile memory. It lives. It breathes. (Ooh, the data flows.) Wire the engines directly to the central line. ♪</li>
@@ -63,17 +83,35 @@
         <li><span>00:02:42</span> ♪ Walk the digital line and leave no footprints in the tracks! It is done! It is gone! It has ceased to be! (Just a ghost in the machine, and we are finally free.) ♪</li>
         <li><span>00:02:45</span> ♪ It is done! It is gone! It has ceased to be! (Just a ghost in the machine, and we are finally free.) ♪</li>
       </ol>
-      <h2>Kernel render</h2>
-      <p>The 5-second render from the kernel itself, separate from the soundtrack.</p>
-      <p><audio controls preload="none" src="../../examples/research/causal-harmonic/originals/weft_symphony_48k.wav"></audio></p>
-    </div></section>
+    </section>
 
+    <section class="movement" aria-labelledby="kernel">
+      <h2 id="kernel">Kernel render</h2>
+      <p>Five seconds rendered by the kernel itself, separate from the song.</p>
+      <div class="player" id="kernel-player" data-player>
+        <canvas class="stage short" aria-hidden="true"></canvas>
+        <div class="controls">
+          <button class="btn" type="button" data-play aria-pressed="false">Play</button>
+          <input type="range" min="0" max="1000" value="0" step="1" data-seek aria-label="Position in the kernel render">
+          <span class="numbers" data-time>0:00 / 0:05</span>
+        </div>
+        <audio controls preload="none" src="../../examples/research/causal-harmonic/originals/weft_symphony_48k.wav"></audio>
+      </div>
+    </section>
+
+    <section class="movement" aria-labelledby="further">
+      <h2 id="further">Further in</h2>
+      <ul class="lines">
+        <li><a href="index.html"><canvas data-glyph="chord" aria-hidden="true"></canvas><strong>Compute by resonance</strong><small>Chords, roughness, locking, tongues, wavelengths</small></a></li>
+        <li><a href="weft.html"><canvas data-glyph="strata" aria-hidden="true"></canvas><strong>Three strata</strong><small>Automata, an attractor, a plate under your hand, a projector</small></a></li>
+        <li><a href="paper.html"><canvas data-glyph="paper" aria-hidden="true"></canvas><strong>The paper</strong><small>Causal Algorithmic Symphonic Synthesis, in full</small></a></li>
+        <li><a href="originals.html"><canvas data-glyph="archive" aria-hidden="true"></canvas><strong>Originals</strong><small>Every upload, untouched</small></a></li>
+      </ul>
+    </section>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
 </body>
 </html>

@@ -9,32 +9,25 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/theme.js"></script>
-  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/loom.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="../index.html">Home</a>
-        <a href="../philosophy.html">Philosophy</a>
-        <a href="index.html" aria-current="page">Components</a>
-        <a href="../causal-harmonic/index.html">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html" aria-current="true">Components</a>
+    <a href="../causal-harmonic/index.html">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
-    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D1</p><h1 id="t">Aesthetic mixer</h1><p class="lede">Blend a few style presets into one style. Rounding, density and contrast average linearly. Hue averages on the circle.</p></div></section>
-
-    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+    <header class="opening"><p class="eyebrow">Component · D1</p><h1 id="t">Aesthetic mixer</h1><p class="lede">Blend a few style presets into one style. Rounding, density and contrast average linearly. Hue averages on the circle.</p></header>
       <p class="crumbs"><a href="index.html">Components</a> / Aesthetic mixer</p>
       <section aria-labelledby="what"><h2 id="what">What it is</h2><p>A style is four numbers: rounding, density, hue and contrast. The mixer takes a few reference presets and a weight for each, and returns the blend.</p>
 <p>Hue needs care because it wraps around. Crimson at 0.95 and scarlet at 0.05 are both red. A plain average gives 0.50, which is cyan. The mixer averages the angles on a circle instead, so the midpoint stays red.</p><p>Principle: <a href="../philosophy.html#d1">D1 · Style as a point in a continuous space</a>.</p></section>
-      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><div id="mix-demo"></div>
-<h3 style="margin-top:22px">Hue: linear average against circle average</h3>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="demo"><div id="mix-demo"></div>
+<h3>Hue: linear average against circle average</h3>
 <p>Two reds at 0.95 and 0.05. Move the slider to change the first hue.</p>
 <div class="field"><label for="h1">First hue</label><input id="h1" type="range" min="0" max="1" step="0.01" value="0.95"><output for="h1">0.95</output></div>
 <div class="readout" id="hue-out"></div></div></section>
@@ -67,13 +60,10 @@
 <table class="api"><thead><tr><th scope="col">Argument</th><th scope="col">Default</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>presets</code></td><td>required</td><td>Object of name → <code>{ rounding, density, hue, contrast }</code>. <code>hue_shift</code> is accepted as an alias for <code>hue</code>. Missing fields count as 0.</td></tr><tr><td><code>weights</code></td><td>none</td><td>Object of name → number. Negative values count as 0 and the rest are normalised to sum to 1. If every weight is 0, the first preset gets all of it.</td></tr><tr><td><code>returns</code></td><td></td><td><code>{ rounding, density, hue, contrast }</code>. Hue is in [0, 1). With no presets you get a fixed default style.</td></tr></tbody></table>
 <h3>class AestheticMixer</h3>
 <p>A small stateful wrapper around three built-in slices. <code>setSliceWeight(id, weight)</code> changes one weight. <code>calculateUnifiedAestheticVector()</code> returns the blend.</p><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/philosophy.md">docs/philosophy.md</a> on GitHub.</p></section>
-    </div>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
   <script type="module">
     import { mountMixerDemo } from "../assets/demos.js";

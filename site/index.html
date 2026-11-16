@@ -4,85 +4,93 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Eido · the design language of ML Weft</title>
-  <meta name="description" content="Eido is the design language of ML Weft. One causal field links to every standalone page. Every size, colour and motion on this page is computed from a small state vector you can read.">
+  <meta name="description" content="Eido is the design language of ML Weft. The page draws itself from a few equations you can read: a weft of vibrating threads, two waves in a ratio, and a field of every line of work.">
   <meta name="theme-color" content="#120c08">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23120c08'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23e8a87c' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/ecosystem.css">
   <link rel="stylesheet" href="../css/reading-weave.css">
   <script src="assets/theme.js"></script>
-  <script type="module" src="assets/site.js"></script>
+  <script type="module" src="assets/loom.js"></script>
   <script type="module" src="assets/ecosystem.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="philosophy.html">Philosophy</a>
-        <a href="components/index.html">Components</a>
-        <a href="causal-harmonic/index.html">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="index.html" aria-label="Eido home" aria-current="page"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="philosophy.html">Philosophy</a>
+    <a href="components/index.html">Components</a>
+    <a href="causal-harmonic/index.html">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
-    <h1>Eido</h1>
-    <p class="eco-tagline">An interface that changes, inside limits you can see.</p>
-    <p class="eco-lede">The design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. Nothing on this page has a fixed size, colour or position. Each one is computed, every frame, from the state printed below. Every line of work is a cell in the field, and each cell opens its own standalone page.</p>
-    <p class="eco-status" id="eco-status">JavaScript is off, so the field cannot run. Every link below still works. Start with <a href="components/index.html">Components</a> or the <a href="philosophy.html">philosophy page</a>.</p>
+    <header class="opening genesis">
+      <h1>Eido</h1>
+      <p class="lede">An interface that changes, inside limits you can see.</p>
+      <p class="numbers" id="medium-eq" data-eido-skip>y(x, t) = Σ aₙ · sin(nπx / W) · cos(2π·n·f₁·t + n·φᵢ)</p>
+      <p class="quiet">The threads behind this text are that sum. Nothing here is a picture: every line is computed while you watch, from numbers printed beside it. Move, and the weft moves with you.</p>
+    </header>
 
-    <canvas id="eco-field" role="img" aria-label="Field of eight cells, one per line of work. The same choices follow as text links."></canvas>
-
-    <ul class="eco-places">
-      <li><a href="components/aesthetic-mixer.html" data-place-link="style"><strong>Style</strong><small>A point you can drag</small></a></li>
-      <li><a href="components/reading-weave.html" data-place-link="reading"><strong>Reading</strong><small>Text that answers reading</small></a></li>
-      <li><a href="https://github.com/Moissanite-Labs/weft-eido/pull/6" data-place-link="field"><strong>Field</strong><small>GPU rebuild, in review</small></a></li>
-      <li><a href="components/research-explainer.html" data-place-link="explainer"><strong>Explainer</strong><small>A tiny model you can step</small></a></li>
-      <li><a href="components/glyph-font.html" data-place-link="archive"><strong>Archive</strong><small>Letters from a table of bits</small></a></li>
-      <li><a href="../examples/simulations/index.html" data-place-link="simulations"><strong>Simulations</strong><small>Sessions you can run</small></a></li>
-      <li><a href="../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html" data-place-link="identifiability"><strong>Identifiability</strong><small>Can two measures split four cases?</small></a></li>
-      <li><a href="causal-harmonic/index.html" data-place-link="harmonic"><strong>Harmonic</strong><small>The system as sound</small></a></li>
-    </ul>
-    <p class="eco-readout" id="eco-field-readout" aria-live="polite"></p>
-
-    <div class="eco-console" data-eido-skip>
-      <div id="eco-pad" aria-label="Style point"></div>
-      <div>
-        <p><button class="btn small" type="button" id="eco-flow" aria-pressed="true">Flow: on</button></p>
-        <p class="eco-state" id="eco-state">State vector loading.</p>
-        <p class="eco-note">Drag the point. Its three weights always add to one. Hue is their circular mean, so two reds never blend into cyan. Flow adds only wave phase. It never touches hue. Switch Flow off and the field sits exactly where you put it.</p>
+    <section class="movement" aria-labelledby="two">
+      <h2 id="two">Two waves, one figure</h2>
+      <canvas class="stage tall" id="lissajous" data-press role="img" aria-label="Lissajous figure of two sine waves at the ratio set below. The same numbers follow as text."></canvas>
+      <div class="controls" data-eido-skip>
+        <div class="field"><label for="ratio">Ratio y : x</label><input id="ratio" type="range" min="1" max="2" step="0.001" value="1.5"><output id="ratio-out" for="ratio">1.500</output></div>
+        <button class="chip" type="button" data-ratio="5/4">5/4</button>
+        <button class="chip" type="button" data-ratio="4/3">4/3</button>
+        <button class="chip" type="button" data-ratio="3/2">3/2</button>
+        <button class="chip" type="button" data-ratio="7/4">7/4</button>
       </div>
-    </div>
+      <p class="numbers" id="lissajous-numbers" data-eido-skip></p>
+      <p>A whole-number ratio closes into a figure. Any other ratio turns forever and never repeats. Press or drag across the figure to choose.</p>
+    </section>
 
-    <article>
-      <h2>How to read this page</h2>
-      <p>Each visual channel carries exactly one quantity. Cell area is stated weight. Hue is the style angle. Wobble is restlessness. Thread width is tension, derived from restlessness and cursor jerk with stated coefficients.</p>
-      <p>Eccentricity is mixer rounding. Spacing and type scale are mixer density. Fill strength is mixer contrast. Field aspect is the viewport, measured continuously.</p>
-      <p>Skim and restlessness rises. The field agitates and the reading weave ripples through this text. Read slowly and both settle. The score never leaves the page, and the panel at the bottom right can switch the weave off.</p>
-      <p>Two principles run elsewhere: compact verified state and surfaces that show strain live in Weft. The <a href="philosophy.html">philosophy page</a> states plainly what is built here, what lives in Weft, and what is still design.</p>
-      <p>One stated exception: the reading weave panel and overlay use fixed positioning from the shipped library styles. Those files are product modules with their own tests. Everything in the site styles obeys the causal rules, and tests enforce them.</p>
+    <section class="movement" aria-labelledby="field-h">
+      <h2 id="field-h">Every line of work, one field</h2>
+      <p class="quiet" id="eco-status">JavaScript is off, so the field cannot run. Every link below still works.</p>
+      <canvas id="eco-field" role="img" aria-label="Field of eight cells, one per line of work. The same choices follow as text links."></canvas>
+      <ul class="eco-places">
+        <li><a href="components/aesthetic-mixer.html" data-place-link="style"><strong>Style</strong><small>A point you can drag</small></a></li>
+        <li><a href="components/reading-weave.html" data-place-link="reading"><strong>Reading</strong><small>Text that answers reading</small></a></li>
+        <li><a href="https://github.com/Moissanite-Labs/weft-eido/pull/6" data-place-link="field"><strong>Field</strong><small>GPU rebuild, in review</small></a></li>
+        <li><a href="components/research-explainer.html" data-place-link="explainer"><strong>Explainer</strong><small>A tiny model you can step</small></a></li>
+        <li><a href="components/glyph-font.html" data-place-link="archive"><strong>Archive</strong><small>Letters from a table of bits</small></a></li>
+        <li><a href="../examples/simulations/index.html" data-place-link="simulations"><strong>Simulations</strong><small>Sessions you can run</small></a></li>
+        <li><a href="../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html" data-place-link="identifiability"><strong>Identifiability</strong><small>Can two measures split four cases?</small></a></li>
+        <li><a href="causal-harmonic/index.html" data-place-link="harmonic"><strong>Harmonic</strong><small>Compute by resonance</small></a></li>
+      </ul>
+      <p class="numbers" id="eco-field-readout" aria-live="polite"></p>
+      <div class="eco-console" data-eido-skip>
+        <div id="eco-pad" aria-label="Style point"></div>
+        <div class="eco-console-text">
+          <p><button class="btn small" type="button" id="eco-flow" aria-pressed="true">Flow: on</button></p>
+          <p class="numbers" id="eco-state">State vector loading.</p>
+          <p class="quiet">Drag the point. Its three weights always add to one. Hue is their circular mean, so two reds never blend into cyan. The hue you choose here carries to every page.</p>
+        </div>
+      </div>
+    </section>
+
+    <article aria-labelledby="read-h">
+      <h2 id="read-h">How to read this page</h2>
+      <p>Each visual channel carries exactly one quantity. Cell area is stated weight. Hue is the style angle. Wobble is restlessness. Thread width is tension, from restlessness and cursor jerk with stated coefficients.</p>
+      <p>Skim and restlessness rises: the field agitates, the weft brightens, and this text begins to ripple. Read slowly and all of it settles. The score never leaves the page, and the panel at the bottom right can switch the ripple off.</p>
+      <p>Compact verified state and surfaces that show strain live in Weft, not here. The <a href="philosophy.html">philosophy</a> says plainly what is built here, what lives in Weft, and what is still design.</p>
     </article>
 
-    <article>
-      <h2>What is proven, what is proposed</h2>
-      <p>The table records what review and checks said on 15 November 2026. Approved work is one press away on its own page. Blocked work is linked honestly, with its blockers named, and no code from it runs here.</p>
+    <article aria-labelledby="record-h">
+      <h2 id="record-h">What is proven, what is proposed</h2>
+      <p>What review and checks said on 15 November 2026. Approved work is one press away. Blocked work is linked with its blockers named, and none of its code runs here.</p>
       <table class="eco-table">
         <thead><tr><th scope="col">Work</th><th scope="col">State</th><th scope="col">Where it runs</th></tr></thead>
         <tbody id="eco-record-body"></tbody>
       </table>
-      <p>What is still open: the GPU rebuild needs its sign-off, its key storage and its address lookup fixed before its code can join this site. Pull request 8 awaits review. Pull request 9 needs one sign-off. None of that is hidden by a nicer page.</p>
-      <p>Keep the parts without the page: every module stands alone. Start at <a href="components/index.html">Components</a>, read the <a href="philosophy.html">Philosophy</a>, or take the source from <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>. Code is Apache-2.0. Docs are CC BY 4.0. Recorded audio in the harmonic originals is CC BY-NC 4.0.</p>
+      <p>Every module stands alone. Take them from <a href="components/index.html">Components</a> or <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>. Code is Apache-2.0, docs are CC BY 4.0, recorded audio in the harmonic originals is CC BY-NC 4.0.</p>
     </article>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
 </body>
 </html>

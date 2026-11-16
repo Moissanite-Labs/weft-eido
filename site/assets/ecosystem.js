@@ -1,5 +1,8 @@
-// Causal field. Every visual value on this page is a function of one state
-// vector. Each entry stays in [0, 1] and is printed live under the field.
+// The home page. Three movements share the loom's medium:
+//   1. The medium's own equation, printed live under the title.
+//   2. Superposition: two waves in a ratio you choose, drawn as the figure they make.
+//   3. The field: every line of work as a cell, steered by a style point.
+// Every visual value is a function of one state vector, printed live.
 // One channel, one quantity:
 //   hue          <- circular mean of preset hues by barycentric weights
 //   cell area    <- stated place weight (area follows weight)
@@ -7,7 +10,7 @@
 //   thread width <- tension = clamp01(0.55 * rest + 0.45 * jerk)
 //   eccentricity <- mixer rounding
 //   spacing/type <- mixer density (CSS calc from --density)
-//   fill alpha   <- mixer contrast
+//   ring count   <- mixer contrast
 //   field aspect <- viewport aspect, projected by ResizeObserver
 //   wave phase   <- Flow time (never touches hue)
 // No network requests. Cells are links to standalone pages.
@@ -17,11 +20,13 @@ import { packLabel } from "../../src/glyph-font.js";
 import { mixAestheticPresets } from "../../src/aesthetic-mixer.js";
 import { mountSimplexPad } from "../../src/simplex-pad.js";
 import { setupReadingWeave } from "../../src/reading-weave.js";
-import { clamp, fitCanvasToDisplaySize } from "../../src/research-explainer.js";
+import { scene, setHue, somatic, mediumState, onFrame, ripple, reduced } from "./loom.js";
+import { nearestRatio, intervalName, cents, TAU } from "./harmonic-math.js";
 
 const $ = (sel, el = document) => el.querySelector(sel);
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
 const clamp01 = (v) => clamp(v, 0, 1);
+const smooth = (u) => { const x = clamp01(u); return x * x * (3 - 2 * x); };
 
 /* Inspectable bounds. Every state entry is clamped into [MIN, MAX]. */
 export const BOUNDS = Object.freeze({ MIN: 0, MAX: 1, JERK_MAX: 0.09, SCROLL_MAX: 2.4, TENSION_REST: 0.55, TENSION_JERK: 0.45 });
@@ -34,14 +39,14 @@ const PRESETS = {
 const PRESET_NAMES = Object.keys(PRESETS);
 
 export const PLACES = [
-  { id: "style", code: "D1 STYL", name: "Style", href: "components/aesthetic-mixer.html", weight: 9, family: "modules", state: "On main", badge: "main", how: "Its own page. The pad on this page is the same control, steering the field." },
-  { id: "reading", code: "D6 READ", name: "Reading", href: "components/reading-weave.html", weight: 9, family: "modules", state: "On main", badge: "main", how: "Its own page. The weave itself runs on this text." },
+  { id: "style", code: "D1 STYL", name: "Style", href: "components/aesthetic-mixer.html", weight: 9, family: "modules", state: "On main", badge: "main", how: "Its own page. The point below is the same control, steering this field and every page after it." },
+  { id: "reading", code: "D6 READ", name: "Reading", href: "components/reading-weave.html", weight: 9, family: "modules", state: "On main", badge: "main", how: "Its own page. The weave itself runs on the text at the end of this page." },
   { id: "field", code: "GPU FLD", name: "Field", href: "https://github.com/Moissanite-Labs/weft-eido/pull/6", weight: 7, family: "rebuild", state: "Pull request 6. Changes requested. Two checks fail", badge: "blocked", how: "Opens the pull request. No code from it runs here. Its page looks up your network address and can hold keys in the browser." },
   { id: "explainer", code: "TOY MOD", name: "Explainer", href: "components/research-explainer.html", weight: 6, family: "research", state: "Pull request 11. Approved. Checks green", badge: "approved", how: "Its own page, with the toy model at full strength." },
-  { id: "archive", code: "5X7 BIT", name: "Archive", href: "components/glyph-font.html", weight: 5, family: "modules", state: "On main", badge: "main", how: "Its own page. Original pages linked unchanged from there." },
+  { id: "archive", code: "5X7 BIT", name: "Archive", href: "components/glyph-font.html", weight: 5, family: "modules", state: "On main", badge: "main", how: "Its own page. Every title on this site is first drawn from its bits." },
   { id: "simulations", code: "E08-E13", name: "Simulations", href: "../examples/simulations/index.html", weight: 6, family: "research", state: "Pull request 14. Approved. Checks green", badge: "approved", how: "The standalone suite. E13 and the Asma explorer run there. Their numbers are their authors' claims." },
   { id: "identifiability", code: "CHEB ID", name: "Identifiability", href: "../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html", weight: 5, family: "research", state: "Pull request 15. Approved. Checks green", badge: "approved", how: "The standalone Chebyshev explorer, with its own model and presets." },
-  { id: "harmonic", code: "CHORDS", name: "Harmonic", href: "causal-harmonic/index.html", weight: 6, family: "research", state: "Pull request 17. Approved. Checks green", badge: "approved", how: "Its own pages. Recorded pieces are CC BY-NC 4.0: share with credit, no commercial use." },
+  { id: "harmonic", code: "CHORDS", name: "Harmonic", href: "causal-harmonic/index.html", weight: 6, family: "research", state: "Pull request 17. Approved. Checks green", badge: "approved", how: "Rebuilt on this site's own loom: every figure there is computed live. Recorded pieces are CC BY-NC 4.0." },
 ];
 
 export const RECORD = [
@@ -52,35 +57,23 @@ export const RECORD = [
 ];
 
 /* State vector. Derived entries are recomputed, never stored twice. */
-const S = {
-  w: [0.5, 0.2, 0.3],
-  rest: 0,
-  scrollVel: 0,
-  jerk: 0,
-  phase: 0,
-};
-let flowOn = !reducedMotion.matches;
+const S = { w: [0.5, 0.2, 0.3], rest: 0, jerk: 0, scroll: 0, ratio: 1.5 };
+let flowOn = !reduced();
 
 function mixed() {
   return mixAestheticPresets(PRESETS, Object.fromEntries(PRESET_NAMES.map((n, i) => [n, S.w[i]])));
 }
-function tension() {
-  return clamp01(BOUNDS.TENSION_REST * S.rest + BOUNDS.TENSION_JERK * S.jerk);
-}
+const tension = () => clamp01(BOUNDS.TENSION_REST * S.rest + BOUNDS.TENSION_JERK * S.jerk);
 
 function applyVars() {
   const v = mixed();
   const root = document.documentElement.style;
-  const deg = Math.round(v.hue * 360);
-  root.setProperty("--eco-hue", String(deg));
-  root.setProperty("--eco-hue-b", String((deg + 42) % 360));
-  root.setProperty("--eco-hue-c", String((deg + 315) % 360));
+  setHue(v.hue * 360);
   root.setProperty("--rounding", v.rounding.toFixed(4));
   root.setProperty("--density", v.density.toFixed(4));
   root.setProperty("--contrast", v.contrast.toFixed(4));
   root.setProperty("--rest", S.rest.toFixed(4));
   root.setProperty("--tension", tension().toFixed(4));
-  try { localStorage.setItem("eido-hue", String(deg)); } catch (e) { /* storage may be blocked */ }
   return v;
 }
 
@@ -89,10 +82,135 @@ function paintState() {
   const el = $("#eco-state");
   if (!el) return;
   el.textContent =
-    `w [${S.w.map((x) => x.toFixed(2)).join(", ")}] sum ${S.w.reduce((a, b) => a + b, 0).toFixed(2)} · ` +
-    `hue ${(v.hue * 360).toFixed(0)}deg · rounding ${v.rounding.toFixed(2)} · density ${v.density.toFixed(2)} · contrast ${v.contrast.toFixed(2)}\n` +
-    `rest ${S.rest.toFixed(2)} · scroll ${S.scrollVel.toFixed(2)} · jerk ${S.jerk.toFixed(2)} · tension ${tension().toFixed(2)} · flow ${flowOn ? "on" : "off"} · all in [0, 1]`;
+    `w [${S.w.map((x) => x.toFixed(2)).join(", ")}]  Σ ${S.w.reduce((a, b) => a + b, 0).toFixed(2)}\n` +
+    `hue ${(v.hue * 360).toFixed(0)}°  rounding ${v.rounding.toFixed(2)}  density ${v.density.toFixed(2)}  contrast ${v.contrast.toFixed(2)}\n` +
+    `rest ${S.rest.toFixed(2)}  scroll ${S.scroll.toFixed(2)}  jerk ${S.jerk.toFixed(2)}  tension ${tension().toFixed(2)}  flow ${flowOn ? "on" : "off"}\n` +
+    `every entry in [0, 1]`;
 }
+
+/* ---------- 1. The medium, written out ---------- */
+
+function paintMedium() {
+  const el = $("#medium-eq");
+  if (!el) return;
+  const m = mediumState();
+  el.textContent =
+    `y(x, t) = Σ aₙ · sin(nπx / W) · cos(2π·n·f₁·t + n·φᵢ)     n = 1 … ${m.amps.length}\n` +
+    `f₁ = ${m.f1.toFixed(3)} Hz   t = ${m.t.toFixed(1)} s   ${m.threads} threads\n` +
+    `a = ${m.amps.map((a) => a.toFixed(2)).join("  ")}`;
+}
+
+/* ---------- 2. Superposition ---------- */
+
+function initSuperposition() {
+  const canvas = $("#lissajous");
+  const input = $("#ratio");
+  const out = $("#ratio-out");
+  const numbers = $("#lissajous-numbers");
+  if (!canvas || !input) return;
+  let T = 0;       // time in base cycles
+  let delta = 0;   // phase drift, accumulated from detuning
+  const setRatio = (r, fromPointer = false) => {
+    S.ratio = clamp(r, 1, 2);
+    input.value = S.ratio.toFixed(3);
+    if (out) out.textContent = S.ratio.toFixed(3);
+    if (fromPointer) handle.invalidate();
+    paintRatio();
+  };
+  const paintRatio = () => {
+    const near = nearestRatio(S.ratio, 16);
+    const name = intervalName(near.p, near.q);
+    const err = near.errorCents;
+    const closes = Math.abs(err) < 0.5;
+    if (numbers) numbers.textContent =
+      `x(t) = sin(2π·t + δ)      y(t) = sin(2π·${S.ratio.toFixed(3)}·t)\n` +
+      `r = ${S.ratio.toFixed(4)} ≈ ${near.p}/${near.q}${name ? ` (${name})` : ""}   ${cents(S.ratio).toFixed(2)} cents   off by ${err >= 0 ? "+" : ""}${err.toFixed(2)} cents\n` +
+      (closes ? `closes after ${near.q} turns of x and ${near.p} of y` : `never quite closes: the figure turns at ${Math.abs(S.ratio - near.value).toFixed(4)} cycles per cycle, which you hear as beating`);
+  };
+  input.addEventListener("input", () => setRatio(Number(input.value)));
+  canvas.addEventListener("pointermove", (ev) => {
+    if (ev.buttons !== 1 && ev.pointerType !== "mouse") return;
+    const r = canvas.getBoundingClientRect();
+    setRatio(1 + clamp01((ev.clientX - r.left) / r.width), true);
+  });
+  canvas.addEventListener("pointerdown", (ev) => {
+    const r = canvas.getBoundingClientRect();
+    setRatio(1 + clamp01((ev.clientX - r.left) / r.width), true);
+  });
+  for (const b of document.querySelectorAll("[data-ratio]")) b.addEventListener("click", () => {
+    const [p, q] = b.dataset.ratio.split("/").map(Number);
+    setRatio(p / q, true);
+  });
+
+  const handle = scene(canvas, {
+    frame(ctx, { t, dt, w, h, pal, reduced: still }) {
+      ctx.clearRect(0, 0, w, h);
+      const near = nearestRatio(S.ratio, 16);
+      const detune = S.ratio - near.value;
+      if (!still) { T += dt * 0.32; delta += dt * TAU * detune * 0.32; }
+      const grow = still ? 1 : smooth(t / 1.6);
+      const S0 = Math.min(h * 0.66, w * 0.46);
+      const gap = Math.max(10, S0 * 0.08);
+      const fx = Math.min(w - S0 - gap, Math.max(w * 0.5 - S0 * 0.3, gap * 3 + S0 * 0.35));
+      const fy = Math.max(gap, (h - S0 - gap * 2) * 0.32);
+      const cx = fx + S0 / 2, cy = fy + S0 / 2, R = (S0 / 2) * 0.94;
+      const span = still ? near.q * 1 + 0.02 : 6;
+      const steps = 900;
+      const X = (s) => cx + R * Math.sin(TAU * s + delta);
+      const Y = (s) => cy - R * Math.sin(TAU * S.ratio * s);
+      // The figure.
+      ctx.lineWidth = 1.4;
+      ctx.lineCap = "round";
+      const N = Math.floor(steps * grow);
+      for (let k = 1; k < N; k += 1) {
+        const s0 = T - span * (1 - (k - 1) / steps), s1 = T - span * (1 - k / steps);
+        ctx.strokeStyle = pal.voice(0, 0.08 + 0.85 * (k / steps) ** 1.6);
+        ctx.beginPath(); ctx.moveTo(X(s0), Y(s0)); ctx.lineTo(X(s1), Y(s1)); ctx.stroke();
+      }
+      const hx = X(T), hy = Y(T);
+      // The two voices: x falls away below the figure, y runs out to its left.
+      const lenDown = h - (fy + S0 + gap), lenLeft = fx - gap;
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = pal.voice(1, 0.75 * grow);
+      ctx.beginPath();
+      for (let k = 0; k <= 160; k += 1) {
+        const yy = fy + S0 + gap + (k / 160) * lenDown;
+        const s = T - (k / 160) * 1.6;
+        if (k === 0) ctx.moveTo(X(s), yy); else ctx.lineTo(X(s), yy);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = pal.voice(2, 0.75 * grow);
+      ctx.beginPath();
+      for (let k = 0; k <= 160; k += 1) {
+        const xx = fx - gap - (k / 160) * lenLeft;
+        const s = T - (k / 160) * 1.6;
+        if (k === 0) ctx.moveTo(xx, Y(s)); else ctx.lineTo(xx, Y(s));
+      }
+      ctx.stroke();
+      // Projection lines from each voice's head to the point they make together.
+      ctx.setLineDash([2, 5]);
+      ctx.strokeStyle = pal.line;
+      ctx.beginPath(); ctx.moveTo(hx, fy + S0 + gap); ctx.lineTo(hx, hy); ctx.lineTo(fx - gap, hy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = pal.voice(0, 1);
+      ctx.beginPath(); ctx.arc(hx, hy, 3.4, 0, TAU); ctx.fill();
+      ctx.fillStyle = pal.voice(1, 1); ctx.beginPath(); ctx.arc(hx, fy + S0 + gap, 2.6, 0, TAU); ctx.fill();
+      ctx.fillStyle = pal.voice(2, 1); ctx.beginPath(); ctx.arc(fx - gap, hy, 2.6, 0, TAU); ctx.fill();
+      ctx.font = "0.72rem ui-monospace, monospace";
+      ctx.fillStyle = pal.muted;
+      ctx.fillText("x · 1", fx + S0 * 0.5 + 8, h - 8);
+      ctx.fillText(`y · ${S.ratio.toFixed(3)}`, 6, fy + 12);
+    },
+  });
+  setRatio(Number(input.value) || 1.5);
+}
+
+/* ---------- 3. The field ---------- */
+
+let fieldLayout = null;
+let fieldThreads = [];
+let hoverPlace = null;
+let fieldW = 0, fieldH = 0;
 
 function describe(place) {
   const out = $("#eco-field-readout");
@@ -100,40 +218,36 @@ function describe(place) {
   const packed = packLabel(place.code, 8);
   const words = [...packed.words].map((w) => "0x" + w.toString(16).padStart(8, "0")).join(" ");
   out.textContent = `${place.name}. ${place.state}. ${place.how}\nGlyph label "${place.code}" packs to ${words}`;
-  for (const a of document.querySelectorAll("[data-place-link]")) {
-    a.toggleAttribute("data-active", a.dataset.placeLink === place.id);
-  }
+  for (const a of document.querySelectorAll("[data-place-link]")) a.toggleAttribute("data-active", a.dataset.placeLink === place.id);
 }
-
-/* Field rendering. Geometry comes from cell-layout (golden angle packing,
-   area follows weight, spanning threads per family). Sizes below derive
-   from cell geometry and the viewport unit, never from constants alone. */
-
-let fieldLayout = null;
-let fieldThreads = [];
-let hoverPlace = null;
 
 function computeField(w, h) {
   const items = PLACES.map((p) => ({ weight: p.weight, labelLength: Math.max(p.name.length, p.code.length) }));
   fieldLayout = layoutCells(items, { width: Math.round(w), height: Math.round(h) });
   fieldThreads = layerThreads(fieldLayout.cells, PLACES.map((p) => p.family));
+  fieldW = Math.round(w); fieldH = Math.round(h);
 }
 
-function blobPath(ctx, cx, cy, rBase, ecc, harm, seed, t) {
-  const steps = 28;
-  const pts = [];
-  for (let k = 0; k < steps; k += 1) {
-    const a = (k / steps) * Math.PI * 2;
-    const rr = rBase * (1 + Math.sin(a * 3 + seed * 1.3 + t / 2400) * harm + Math.sin(a * 5 - seed) * harm * 0.4);
-    pts.push([cx + Math.cos(a) * rr * (0.82 + ecc * 0.26), cy + Math.sin(a) * rr]);
+function membrane(ctx, cx, cy, r, ecc, harm, seed, phase, rings, pal, active, lightText) {
+  for (let ring = rings; ring >= 1; ring -= 1) {
+    const rr = r * (ring / rings);
+    const steps = 48;
+    ctx.beginPath();
+    for (let k = 0; k <= steps; k += 1) {
+      const a = (k / steps) * TAU;
+      const wob = 1 + harm * (Math.sin(a * 3 + seed * 1.3 + phase * 0.42 + ring * 0.7) + 0.4 * Math.sin(a * 5 - seed + phase * 0.23 - ring));
+      const x = cx + Math.cos(a) * rr * wob * (0.82 + ecc * 0.26), y = cy + Math.sin(a) * rr * wob;
+      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    if (ring === rings) {
+      ctx.fillStyle = pal.voice(0, active ? 0.2 : 0.07);
+      ctx.fill();
+    }
+    ctx.strokeStyle = pal.voice(ring % 2 ? 0 : 1, (active ? 0.95 : 0.6) * (0.35 + 0.65 * (ring / rings)));
+    ctx.lineWidth = ring === rings ? (active ? 2 : 1.3) : 0.8;
+    ctx.stroke();
   }
-  ctx.beginPath();
-  ctx.moveTo((pts[steps - 1][0] + pts[0][0]) / 2, (pts[steps - 1][1] + pts[0][1]) / 2);
-  for (let k = 0; k < steps; k += 1) {
-    const p = pts[k], q = pts[(k + 1) % steps];
-    ctx.quadraticCurveTo(p[0], p[1], (p[0] + q[0]) / 2, (p[1] + q[1]) / 2);
-  }
-  ctx.closePath();
 }
 
 function quadPoint(a, c, b, u) {
@@ -141,82 +255,70 @@ function quadPoint(a, c, b, u) {
   return [m * m * a[0] + 2 * m * u * c[0] + u * u * b[0], m * m * a[1] + 2 * m * u * c[1] + u * u * b[1]];
 }
 
-function drawField(t = 0) {
-  const canvas = $("#eco-field");
-  if (!canvas) return;
-  const { width, height, ratio } = fitCanvasToDisplaySize(canvas);
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-  const w = width / ratio, h = height / ratio;
-  if (w < 2 || h < 2) return;
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  ctx.clearRect(0, 0, w, h);
-  if (!fieldLayout || fieldLayout.region.width !== Math.round(w) || fieldLayout.region.height !== Math.round(h)) computeField(w, h);
-  const v = mixed();
-  const hueDeg = Math.round(v.hue * 360);
-  const light = document.documentElement.getAttribute("data-theme") === "light";
-  const vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
-  const jit = reducedMotion.matches ? 0 : S.rest * vmin * 0.32;
-  const wob = (i) => (jit ? Math.sin(t / 230 + i * 1.7) * jit : 0);
-  const harm = flowOn ? 0.1 + 0.035 * Math.sin(t / 2600) : 0.055;
-  const tens = tension();
-
-  ctx.lineCap = "round";
-  fieldThreads.forEach((e, ei) => {
-    const a = fieldLayout.cells[e.a], b = fieldLayout.cells[e.b];
-    const A = [a.x + wob(e.a), a.y], B = [b.x + wob(e.b), b.y];
-    const C = [(A[0] + B[0]) / 2 - (B[1] - A[1]) * 0.12, (A[1] + B[1]) / 2 + (B[0] - A[0]) * 0.12];
-    ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.quadraticCurveTo(C[0], C[1], B[0], B[1]);
-    ctx.strokeStyle = `hsl(${hueDeg} 55% ${light ? 38 : 62}% / 0.5)`;
-    ctx.lineWidth = (0.14 + tens * 0.5) * vmin;
-    ctx.stroke();
-    if (flowOn && !reducedMotion.matches) {
-      const u = ((t / 5200) + ei * 0.37) % 1;
-      const [qx, qy] = quadPoint(A, C, B, u);
-      ctx.beginPath(); ctx.arc(qx, qy, vmin * 0.34, 0, Math.PI * 2);
-      ctx.fillStyle = `hsl(${hueDeg} 75% ${light ? 40 : 74}% / 0.9)`; ctx.fill();
-    }
-  });
-
-  fieldLayout.cells.forEach((cell, i) => {
-    const place = PLACES[cell.index];
-    const active = hoverPlace === place.id;
-    const cx = cell.x + wob(i), cy = cell.y;
-    const breathe = flowOn && !reducedMotion.matches ? 1 + Math.sin(t / 1900 + i * 0.9) * 0.04 : 1;
-    blobPath(ctx, cx, cy, (cell.side / 2) * breathe, v.rounding, harm, i, flowOn ? t : 0);
-    const grad = ctx.createRadialGradient(cx - cell.side * 0.16, cy - cell.side * 0.18, cell.side * 0.06, cx, cy, cell.side * 0.66);
-    grad.addColorStop(0, `hsl(${hueDeg} ${active ? 78 : 55}% ${light ? (active ? 70 : 84) : (active ? 44 : 28)}% / ${0.68 + v.contrast * 1.4})`);
-    grad.addColorStop(1, `hsl(${(hueDeg + 42) % 360} 55% ${light ? 88 : 17}% / ${0.5 + v.contrast})`);
-    ctx.fillStyle = grad;
-    ctx.shadowColor = active ? `hsl(${hueDeg} 80% 60% / 0.55)` : "transparent";
-    ctx.shadowBlur = active ? vmin * 3 : 0;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.lineWidth = (active ? 0.34 : 0.14 + tens * 0.22) * vmin;
-    ctx.strokeStyle = `hsl(${hueDeg} ${active ? 85 : 50}% ${light ? 34 : 72}% / 0.9)`;
-    ctx.stroke();
-    const nameV = clamp(cell.side / vmin / Math.max(6.2, place.name.length * 0.62), 1.15, 2.6);
-    ctx.fillStyle = light ? "#14201f" : "#f2f7f5";
-    ctx.textAlign = "center";
-    ctx.font = `700 ${nameV.toFixed(2)}vmin "Avenir Next", Avenir, Futura, sans-serif`;
-    ctx.fillText(place.name, cx, cy);
-    ctx.font = `${(nameV * 0.58).toFixed(2)}vmin ui-monospace, monospace`;
-    ctx.fillStyle = light ? "rgba(20,32,31,0.62)" : "rgba(242,247,245,0.62)";
-    ctx.fillText(place.code, cx, cy + nameV * vmin * 1.05);
-  });
-}
-
-function placeAt(ev) {
-  const canvas = $("#eco-field");
-  if (!canvas || !fieldLayout) return null;
-  const rect = canvas.getBoundingClientRect();
-  const idx = hitTest(fieldLayout, ev.clientX - rect.left, ev.clientY - rect.top);
-  return idx >= 0 ? PLACES[idx] : null;
-}
-
+let phase = 0;
 function initField() {
   const canvas = $("#eco-field");
   if (!canvas) return;
+  scene(canvas, {
+    frame(ctx, { t, dt, w, h, pal, reduced: still }) {
+      ctx.clearRect(0, 0, w, h);
+      if (!fieldLayout || fieldW !== Math.round(w) || fieldH !== Math.round(h)) computeField(w, h);
+      if (flowOn && !still) phase += dt;
+      const v = mixed();
+      const vmin = Math.min(w, h) / 100;
+      const jit = still ? 0 : S.rest * vmin * 1.2;
+      const wob = (i) => (jit ? Math.sin(phase * 4.3 + i * 1.7) * jit : 0);
+      const harm = flowOn ? 0.07 + 0.03 * Math.sin(phase / 2.6) : 0.05;
+      const tens = tension();
+      const rings = 2 + Math.round(v.contrast * 20);
+      ctx.lineCap = "round";
+      fieldThreads.forEach((e, ei) => {
+        const grow = still ? 1 : smooth((t - 0.6 - ei * 0.12) / 0.9);
+        if (grow <= 0) return;
+        const a = fieldLayout.cells[e.a], b = fieldLayout.cells[e.b];
+        const A = [a.x + wob(e.a), a.y], B = [b.x + wob(e.b), b.y];
+        const C = [(A[0] + B[0]) / 2 - (B[1] - A[1]) * 0.14, (A[1] + B[1]) / 2 + (B[0] - A[0]) * 0.14];
+        ctx.beginPath(); ctx.moveTo(A[0], A[1]);
+        for (let k = 1; k <= 30; k += 1) { const [qx, qy] = quadPoint(A, C, B, (k / 30) * grow); ctx.lineTo(qx, qy); }
+        ctx.strokeStyle = pal.voice(0, 0.45);
+        ctx.lineWidth = 0.6 + tens * 3;
+        ctx.stroke();
+        if (flowOn && !still && grow >= 1) {
+          const u = ((phase / 5.2) + ei * 0.37) % 1;
+          const [qx, qy] = quadPoint(A, C, B, u);
+          ctx.beginPath(); ctx.arc(qx, qy, 2.4, 0, TAU);
+          ctx.fillStyle = pal.voice(0, 0.95); ctx.fill();
+        }
+      });
+      fieldLayout.cells.forEach((cell, i) => {
+        const place = PLACES[cell.index];
+        const grow = still ? 1 : smooth((t - i * 0.1) / 0.9);
+        if (grow <= 0) return;
+        const active = hoverPlace === place.id;
+        const cx = cell.x + wob(i), cy = cell.y;
+        const breathe = flowOn && !still ? 1 + Math.sin(phase / 1.9 + i * 0.9) * 0.035 : 1;
+        membrane(ctx, cx, cy, (cell.side / 2) * breathe * grow, v.rounding, harm, i, phase, rings, pal, active);
+        if (grow < 0.6) return;
+        const nameV = clamp(cell.side / Math.max(6.2, place.name.length * 0.66), 11, 26);
+        ctx.globalAlpha = smooth((grow - 0.6) / 0.4);
+        ctx.fillStyle = pal.ink;
+        ctx.textAlign = "center";
+        ctx.font = `700 ${nameV.toFixed(1)}px "Avenir Next", Avenir, Futura, sans-serif`;
+        ctx.fillText(place.name, cx, cy);
+        ctx.font = `${(nameV * 0.56).toFixed(1)}px ui-monospace, monospace`;
+        ctx.fillStyle = pal.muted;
+        ctx.fillText(place.code, cx, cy + nameV * 1.05);
+        ctx.globalAlpha = 1;
+        ctx.textAlign = "start";
+      });
+    },
+  });
+  const placeAt = (ev) => {
+    if (!fieldLayout) return null;
+    const rect = canvas.getBoundingClientRect();
+    const idx = hitTest(fieldLayout, ev.clientX - rect.left, ev.clientY - rect.top);
+    return idx >= 0 ? PLACES[idx] : null;
+  };
   canvas.addEventListener("pointermove", (ev) => {
     const p = placeAt(ev);
     hoverPlace = p?.id ?? null;
@@ -224,45 +326,20 @@ function initField() {
     if (p) describe(p);
   });
   canvas.addEventListener("pointerleave", () => { hoverPlace = null; });
-  canvas.addEventListener("pointerdown", (ev) => {
+  canvas.addEventListener("click", (ev) => {
     const p = placeAt(ev);
-    if (p) window.location.href = p.href;
+    if (p) { ripple(ev.clientX, ev.clientY, 1); window.location.href = p.href; }
   });
   for (const a of document.querySelectorAll("[data-place-link]")) {
     const place = PLACES.find((p) => p.id === a.dataset.placeLink);
-    a.addEventListener("focus", () => { hoverPlace = place?.id ?? null; if (place) describe(place); });
-    a.addEventListener("pointerenter", () => { hoverPlace = place?.id ?? null; if (place) describe(place); });
+    const show = () => { hoverPlace = place?.id ?? null; if (place) describe(place); };
+    a.addEventListener("focus", show);
+    a.addEventListener("pointerenter", show);
   }
   describe(PLACES[0]);
 }
 
-/* Telemetry: scroll velocity and cursor jerk, smoothed and bounded. */
-
-function initTelemetry() {
-  let lastY = window.scrollY, lastT = performance.now();
-  window.addEventListener("scroll", () => {
-    const now = performance.now();
-    const dt = Math.max(1, now - lastT) / 1000;
-    const v = Math.abs(window.scrollY - lastY) / dt / Math.max(1, window.innerHeight);
-    S.scrollVel = clamp01(S.scrollVel * 0.6 + clamp01(v / BOUNDS.SCROLL_MAX) * 0.4);
-    lastY = window.scrollY; lastT = now;
-  }, { passive: true });
-  let px = null, py = null, pt = 0, pvx = 0, pvy = 0;
-  window.addEventListener("pointermove", (ev) => {
-    const now = performance.now();
-    if (px != null) {
-      const dt = Math.max(1, now - pt);
-      const vx = (ev.clientX - px) / dt, vy = (ev.clientY - py) / dt;
-      const accel = Math.hypot(vx - pvx, vy - pvy) / dt;
-      S.jerk = clamp01(S.jerk * 0.82 + clamp01(accel / BOUNDS.JERK_MAX) * 0.18);
-      pvx = vx; pvy = vy;
-    }
-    px = ev.clientX; py = ev.clientY; pt = now;
-  }, { passive: true });
-}
-
 /* Projection: viewport aspect becomes a CSS variable. No breakpoints. */
-
 function initProjection() {
   const project = () => {
     const ar = clamp(window.innerWidth / Math.max(1, window.innerHeight), 0.62, 2.3);
@@ -279,12 +356,7 @@ function renderRecord() {
   const approved = PLACES.filter((p) => p.badge === "approved").length;
   const blocked = PLACES.filter((p) => p.badge === "blocked").length;
   const status = $("#eco-status");
-  if (status) {
-    status.innerHTML = "";
-    const b = document.createElement("strong");
-    b.textContent = "One field. ";
-    status.append(b, document.createTextNode(`${PLACES.length} places: ${onMain} on the main branch, ${approved} approved in review, ${blocked} blocked and linked with its blockers named. Counts come from the data on this page.`));
-  }
+  if (status) status.textContent = `${PLACES.length} places: ${onMain} on the main branch, ${approved} approved in review, ${blocked} blocked, its blockers named. Counted from the data on this page.`;
   const body = $("#eco-record-body");
   if (!body) return;
   for (const row of RECORD) {
@@ -300,26 +372,11 @@ function renderRecord() {
   }
 }
 
-let rafId = 0;
-let lastFrame = 0;
-let lastPaint = 0;
-function loop(t) {
-  const dt = lastFrame ? Math.min(100, t - lastFrame) : 16;
-  lastFrame = t;
-  if (flowOn && !reducedMotion.matches) S.phase += dt;
-  const decay = Math.exp(-dt / 420);
-  S.jerk = clamp01(S.jerk * decay);
-  S.scrollVel = clamp01(S.scrollVel * Math.exp(-dt / 300));
-  if (t - lastPaint > 140) { lastPaint = t; applyVars(); paintState(); }
-  drawField(t);
-  rafId = requestAnimationFrame(loop);
-}
-
 function boot() {
   renderRecord();
-  initField();
-  initTelemetry();
   initProjection();
+  initSuperposition();
+  initField();
   const padHost = $("#eco-pad");
   if (padHost) {
     mountSimplexPad(padHost, {
@@ -332,15 +389,18 @@ function boot() {
   const flowBtn = $("#eco-flow");
   const paintFlow = () => { if (flowBtn) { flowBtn.setAttribute("aria-pressed", flowOn ? "true" : "false"); flowBtn.textContent = flowOn ? "Flow: on" : "Flow: off"; } };
   paintFlow();
-  flowBtn?.addEventListener("click", () => { flowOn = !flowOn && !reducedMotion.matches; paintFlow(); paintState(); });
-  reducedMotion.addEventListener?.("change", () => { if (reducedMotion.matches) { flowOn = false; paintFlow(); } });
+  flowBtn?.addEventListener("click", () => { flowOn = !flowOn && !reduced(); paintFlow(); paintState(); });
   setupReadingWeave({ onChange: (score) => { S.rest = clamp01(score); } });
   applyVars();
   paintState();
-  if (reducedMotion.matches) drawField(0);
-  else rafId = requestAnimationFrame(loop);
-  new MutationObserver(() => drawField(performance.now())).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  paintMedium();
+  let lastPaint = 0;
+  onFrame((now) => {
+    const s = somatic();
+    S.jerk = clamp01(s.jerk);
+    S.scroll = clamp01(s.scroll);
+    if (now - lastPaint > 160) { lastPaint = now; applyVars(); paintState(); paintMedium(); }
+  });
 }
 
 boot();
-

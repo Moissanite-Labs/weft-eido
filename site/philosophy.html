@@ -11,26 +11,21 @@
   <link rel="stylesheet" href="../css/reading-weave.css">
   <link rel="stylesheet" href="../css/condense.css">
   <script src="assets/theme.js"></script>
-  <script type="module" src="assets/site.js"></script>
+  <script type="module" src="assets/loom.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="index.html">Home</a>
-        <a href="philosophy.html" aria-current="page">Philosophy</a>
-        <a href="components/index.html">Components</a>
-        <a href="causal-harmonic/index.html">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="philosophy.html" aria-current="page">Philosophy</a>
+    <a href="components/index.html">Components</a>
+    <a href="causal-harmonic/index.html">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
     <article class="article paper" id="paper">
-      <h1 style="font-size:clamp(1.9rem,1.3rem + 2.6vw,2.8rem);margin-bottom:.4em">Eido: a first-principles approach to spatial web design</h1>
+      <h1>Eido: a first-principles approach to spatial web design</h1>
       <p class="src"><em>Developed inside ML Weft under the internal name <strong>Aywa</strong>. Code paths in Weft still say <code>aywa</code>.</em></p>
       <p>Citations such as <code>weft/design/anew.md</code> refer to the design sessions preserved in <a href="https://github.com/Moissanite-Labs/weft-corpus">Moissanite-Labs/weft-corpus</a>. Those sessions are sources and hypotheses, not specifications. Each module below says what is implemented today and where.</p>
 
@@ -144,11 +139,9 @@
       </section>
     </article>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
   <script type="module">
     import { setupReadingWeave } from "../src/reading-weave.js";
