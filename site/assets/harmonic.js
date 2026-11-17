@@ -436,9 +436,8 @@ function initTongues() {
     const locked = Math.abs(W - near.value) < 2e-4;
     const k = (j * cols + i) * 4;
     if (!locked) { img.data[k + 3] = 0; return; }
-    const hh = (pal.hue + (near.q - 1) * 19 + 360) % 360;
-    const l = pal.light ? 30 + 6 * Math.min(6, near.q) : 70 - 5 * Math.min(8, near.q);
-    const [r, g, b] = hsl(hh, 58, l);
+    // Each denominator speaks in its own voice: 1 the crest, 2 the trough, 3 the node…
+    const [r, g, b] = pal.voiceRgb(Math.min(6, near.q - 1));
     img.data[k] = r; img.data[k + 1] = g; img.data[k + 2] = b; img.data[k + 3] = Math.round(255 * (near.q === 1 ? 0.38 : 0.3 + 0.62 / Math.sqrt(near.q)));
   };
   const toProbe = (ev) => { const r = canvas.getBoundingClientRect(); probe = { omega: clamp01((ev.clientX - r.left) / r.width), K: clamp01(1 - (ev.clientY - r.top) / r.height) }; handle.invalidate(); };
@@ -488,13 +487,6 @@ function initTongues() {
   });
 }
 
-function hsl(h, s, l) {
-  s /= 100; l /= 100;
-  const k = (n) => (n + h / 30) % 12;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-  return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255)];
-}
 
 /* ================================================================== */
 /* The seven-voice stack in air                                        */
@@ -687,7 +679,7 @@ function initPlate() {
       if (!heat) {
         heat = document.createElement("canvas"); heat.width = COLS; heat.height = ROWS;
         const hc = heat.getContext("2d"), im = hc.createImageData(COLS, ROWS);
-        const [r, g, b] = hsl(pal.hue, 60, pal.light ? 40 : 65);
+        const [r, g, b] = pal.voiceRgb(0);
         for (let q = 0; q < field.length; q += 1) { im.data[q * 4] = r; im.data[q * 4 + 1] = g; im.data[q * 4 + 2] = b; im.data[q * 4 + 3] = Math.round(field[q] * 70); }
         hc.putImageData(im, 0, 0);
       }

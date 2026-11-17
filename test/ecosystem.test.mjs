@@ -56,7 +56,10 @@ test("state channels are named and bounded", () => {
     assert.match(js, new RegExp(needle), `${needle} bound is present`);
   }
   assert.match(js, /mixAestheticPresets\(PRESETS/, "style derives from barycentric weights");
-  assert.match(js, /layoutCells\(items/, "packing is algorithmic");
+  assert.match(js, /settle\(PLACES/, "positions emerge from the settling simulation, not by hand");
+  assert.match(js, /sampleGrid\(/, "the map is the sampled interference field");
+  assert.match(js, /export const AS_OF = "/, "the record states when it was read");
+  for (const p of places) assert.ok(new RegExp(`id: "${p.id}"[^}]*state: "(main|open|blocked)"`).test(js), `${p.id} needs a state: main, open or blocked`);
 });
 
 test("every page is woven from one runtime and one thread of navigation", () => {

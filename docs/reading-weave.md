@@ -14,7 +14,7 @@ Reading lowers it. The score drives a few visible effects:
 
 - Words bob, fade and blur as waves pass through the text.
 - Links drift, and slide away from a cursor that is in a hurry.
-- Each passage that was actually read gets a thin gold thread beside it.
+- Each passage that was actually read gets a thin thread in the crest colour beside it.
 
 A small panel shows the score, explains the rule, and has an off switch.
 
@@ -101,7 +101,7 @@ These are fixed. They do not depend on options.
 - **Displacement is capped.** The wave field is clamped to ±1 however many waves overlap. A word moves at most 7 px and
   tilts at most 5 degrees. A link moves at most 40 px from rest.
 - **A still cursor settles a link.** After about a second without movement, drift fades to 15% and flight stops.
-- **Reduced motion.** Under `prefers-reduced-motion: reduce` nothing moves. The score and the gold threads still work.
+- **Reduced motion.** Under `prefers-reduced-motion: reduce` nothing moves. The score and the read threads still work.
 - **An off switch that persists.** The × on the panel stops all effects at once and resets the score. The choice is
   stored under `<storage>-off`. The panel can also be minimised to a small button, stored under `<storage>-min`.
 - **Print.** The panel, the overlay and every effect are hidden when printing.
@@ -173,19 +173,20 @@ const reading = setupReadingWeave({ motion: false, panel: false, storage: false 
 
 ## Theme it
 
-Set these custom properties on `:root`, or any ancestor of the page. Dark values apply with
+The defaults are Eido's tide palette (ink on warm paper, sea-glass crest, coral trough; dark: pale ink on deep ink-navy). Set these custom properties on `:root`, or any ancestor of the page. Dark values apply with
 `prefers-color-scheme: dark`, or when `<html data-theme="dark">` is set. `data-theme="light"` forces light.
 
 | Property | Light default | Used for |
 |---|---|---|
-| `--eido-ink` | `#1d1b16` | Titles and values in the panel, tooltip background |
-| `--eido-muted` | `#6b665a` | Panel body text, labels, icons |
-| `--eido-paper` | `#fbf9f4` | Panel and pop-up background (at 94% opacity) |
-| `--eido-line` | `#d9d4c6` | Panel borders |
-| `--eido-accent` | `#b8923a` | The gold thread, meter, warning button, wave rings |
-| `--eido-strike` | `#c0553d` | The hot end of the meter, the × when pointed at |
+| `--eido-ink` | `#102135` | Titles and values in the panel, tooltip background |
+| `--eido-muted` | `#586474` | Panel body text, labels, icons |
+| `--eido-paper` | `#faf5eb` | Panel and pop-up glass (at 72% opacity, blurred) |
+| `--eido-line` | `#d5d3ce` | The panel's hairline edge |
+| `--eido-accent` | `#007f80` | The read thread, the panel title, the calm end of the wave meter, the warning button, wave rings |
+| `--eido-strike` | `#c0544d` | The restless end of the meter, the × when pointed at |
 | `--eido-font-ui` | system sans | Panel text |
-| `--eido-radius` | `10px` | Panel corners |
+| `--eido-font-mono` | system monospace | The panel title and its numbers |
+| `--eido-radius` | `0.9rem` | Panel corners |
 
 ## Class hooks
 

@@ -111,30 +111,93 @@ export function frontOrigin({ pointer, now, vw, vh, scrollDir, rect }) {
   return scrollDir < 0 ? { x: cx, y: 0, cause: "edge" } : { x: cx, y: vh, cause: "edge" };
 }
 
-/** Golden-angle hue offsets keep many voices distinct; `spread` narrows them to a family. */
-export function voiceHue(base, i, spread = 0.32) {
-  return (((base + i * 137.508 * spread) % 360) + 360) % 360;
+/* ------------------------------------------------------------------ */
+/* Colour: the tide palette                                            */
+/* ------------------------------------------------------------------ */
+//
+// Colour is chosen in OKLCH, where equal steps look equal, and converted to
+// sRGB here so canvases and CSS agree exactly. A wave has a sign, so the
+// palette has two poles: the crest (the base hue) and the trough (its warm
+// counterpart, 190° round the circle), with a third, the node, between them.
+// More voices continue round the circle at fixed offsets. Everything rotates
+// with one number, the base hue, which the style point on the home page sets.
+
+/** Default base hue in degrees: a sea-glass aqua. */
+export const TIDE_HUE = 196;
+/** Hue offsets of voices 0…6 from the base: crest, trough, node, then four more. */
+export const VOICE_OFFSETS = Object.freeze([0, 190, -112, 48, 110, -48, 150]);
+const TONE = Object.freeze({
+  dark: { voice: [0.84, 0.125], bg: [0.165, 0.026], ink: [0.965, 0.012], ink2: [0.86, 0.02], muted: [0.68, 0.028], thread: [0.82, 0.06], tint: 58, ground: 58 },
+  light: { voice: [0.54, 0.12], bg: [0.972, 0.014], ink: [0.245, 0.045], ink2: [0.36, 0.04], muted: [0.5, 0.03], thread: [0.42, 0.06], tint: 58, ground: -112 },
+});
+// Voice lightness and chroma vary a little so neighbours stay distinct.
+const VOICE_LC = Object.freeze([[0, 0], [-0.07, 0.02], [0.04, -0.02], [-0.03, 0], [-0.08, 0.01], [0.03, -0.01], [-0.05, 0.01]]);
+
+const wrapHue = (h) => ((h % 360) + 360) % 360;
+const toGamma = (x) => (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+
+/** Linear sRGB from OKLab. */
+function oklabToLinear(L, a, b) {
+  const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  return [
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
+  ];
 }
 
-/** Colour family for a hue and theme. Strings are plain CSS colours. */
+/**
+ * OKLCH → sRGB bytes. Colours outside the sRGB gamut keep their lightness
+ * and hue and lose chroma until they fit, so a hue never shifts at the edge.
+ */
+export function oklchToRgb(L, C, h) {
+  const rad = (wrapHue(h) * Math.PI) / 180;
+  const fits = (c) => oklabToLinear(L, c * Math.cos(rad), c * Math.sin(rad)).every((v) => v >= -1e-4 && v <= 1 + 1e-4);
+  let c = Math.max(0, C);
+  if (!fits(c)) {
+    let lo = 0, hi = c;
+    for (let i = 0; i < 24; i += 1) { const mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
+    c = lo;
+  }
+  return oklabToLinear(L, c * Math.cos(rad), c * Math.sin(rad)).map((v) => Math.round(clamp01(toGamma(clamp01(v))) * 255));
+}
+
+const css = ([r, g, b], a = 1) => (a >= 1 ? `rgb(${r} ${g} ${b})` : `rgb(${r} ${g} ${b} / ${Math.max(0, a).toFixed(3)})`);
+
+/** Hue of voice i around a base hue. */
+export const voiceHue = (base, i) => wrapHue(base + VOICE_OFFSETS[((i % VOICE_OFFSETS.length) + VOICE_OFFSETS.length) % VOICE_OFFSETS.length]);
+
+/**
+ * The palette for a base hue and theme. Strings are CSS colours; *Rgb are
+ * byte triples for image data. voice(0) is the crest, voice(1) the trough,
+ * voice(2) the node. phase(v) colours a signed value in [−1, 1].
+ */
 export function palette(hue, light) {
-  const h = Math.round(((hue % 360) + 360) % 360);
+  const h = Math.round(wrapHue(hue));
+  const T = light ? TONE.light : TONE.dark;
+  const tint = wrapHue(h + T.tint);
+  const at = ([L, C], hh) => oklchToRgb(L, C, hh);
+  const voices = VOICE_OFFSETS.map((off, i) => at([T.voice[0] + VOICE_LC[i][0] * (light ? -0.6 : 1), T.voice[1] + VOICE_LC[i][1]], h + off));
+  const ink = at(T.ink, tint), ink2 = at(T.ink2, tint), muted = at(T.muted, tint), bg = at(T.bg, h + T.ground), thread = at(T.thread, tint);
+  const voiceRgb = (i = 0) => voices[((i % voices.length) + voices.length) % voices.length];
   return {
     hue: h,
     light,
-    ink: light ? `hsl(${h} 35% 14%)` : `hsl(${h} 30% 95%)`,
-    ink2: light ? `hsl(${h} 28% 26%)` : `hsl(${h} 18% 82%)`,
-    muted: light ? `hsl(${h} 18% 44%)` : `hsl(${h} 14% 64%)`,
-    faint: light ? `hsl(${h} 30% 30% / 0.16)` : `hsl(${h} 40% 80% / 0.12)`,
-    line: light ? `hsl(${h} 30% 30% / 0.28)` : `hsl(${h} 40% 80% / 0.22)`,
-    bg: light ? `hsl(${h} 45% 97%)` : `hsl(${h} 28% 6%)`,
-    /** Accent for voice i at alpha a. */
-    voice: (i = 0, a = 1, spread) => {
-      const vh = voiceHue(h, i, spread);
-      return light ? `hsl(${vh.toFixed(1)} 62% 36% / ${a})` : `hsl(${vh.toFixed(1)} 72% 72% / ${a})`;
-    },
+    ink: css(ink), ink2: css(ink2), muted: css(muted), bg: css(bg),
+    faint: css(ink, light ? 0.1 : 0.08),
+    line: css(ink, light ? 0.24 : 0.2),
+    inkRgb: ink, bgRgb: bg,
+    voiceRgb,
+    voice: (i = 0, a = 1) => css(voiceRgb(i), a),
+    crest: (a = 1) => css(voices[0], a),
+    trough: (a = 1) => css(voices[1], a),
+    node: (a = 1) => css(voices[2], a),
+    /** A signed value: crest above zero, trough below, fading to nothing at zero. */
+    phase: (v, a = 1) => css(v >= 0 ? voices[0] : voices[1], a * Math.min(1, Math.abs(v))),
     /** The thread colour of the medium itself. */
-    thread: (a) => (light ? `hsl(${h} 45% 32% / ${a})` : `hsl(${h} 60% 74% / ${a})`),
+    thread: (a) => css(thread, a),
   };
 }
 

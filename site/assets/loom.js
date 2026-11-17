@@ -18,7 +18,7 @@
 // a pointer event, and a failsafe in theme.js shows the page if this file
 // fails to load.
 
-import { LOOM, TAU, clamp, clamp01, smooth, partialAmps, threadDisplacement, rippleAt, rectReach, frontSpeed, unfoldProgress, frontOrigin, palette, threadGap } from "./loom-core.js";
+import { TIDE_HUE, oklchToRgb, LOOM, TAU, clamp, clamp01, smooth, partialAmps, threadDisplacement, rippleAt, rectReach, frontSpeed, unfoldProgress, frontOrigin, palette, threadGap } from "./loom-core.js";
 import { glyphBit, fontCode, encodeFontTable, GLYPH_COLS, GLYPH_ROWS, GLYPH_ADVANCE } from "../../src/glyph-font.js";
 import { attention } from "../../src/reading-weave.js";
 
@@ -45,7 +45,7 @@ const returning = store("session", "eido-visited") === "1";
 store("session", "eido-visited", "1");
 
 const S = {
-  hue: Number(getComputedStyle(root).getPropertyValue("--eco-hue")) || 25,
+  hue: Number(getComputedStyle(root).getPropertyValue("--eco-hue")) || TIDE_HUE,
   vw: window.innerWidth,
   vh: window.innerHeight,
   dpr: Math.min(2, window.devicePixelRatio || 1),
@@ -80,7 +80,7 @@ export function setHue(deg) {
   if (h === S.hue) return;
   S.hue = h;
   root.style.setProperty("--eco-hue", String(h));
-  store("local", "eido-hue", String(h));
+  store("local", "eido-tide-hue", String(h));
   refreshPalette();
 }
 export const getHue = () => S.hue;
@@ -165,7 +165,10 @@ function drawMedium(nowMs) {
       C[k - 1] = amps[k - 1] * Math.cos(TAU * LOOM.F1 * k * t + k * i * LOOM.THREAD_PHASE);
       motion += Math.abs(C[k - 1]);
     }
-    const p = new Path2D();
+    // A thread is drawn in two colours: crest where it rides above its rest
+    // line, trough where it dips below, split exactly at the zero crossing.
+    const up = new Path2D(), down = new Path2D();
+    let prev = null;
     for (let xi = 0; xi < xSamples.length; xi += 1) {
       const x = xSamples[xi];
       let d = 0;
@@ -176,12 +179,22 @@ function drawMedium(nowMs) {
         const dist = Math.hypot(x - (r.x - sx), y0 - (r.y - sy));
         y += rippleAt(dist, age, r.speed, r.amp, r.width) * gap * 0.9;
       }
-      if (xi === 0) p.moveTo(x, y); else p.lineTo(x, y);
+      if (!prev) { (d >= 0 ? up : down).moveTo(x, y); }
+      else if ((prev.d >= 0) === (d >= 0)) { (d >= 0 ? up : down).lineTo(x, y); }
+      else {
+        const u = prev.d / (prev.d - d);
+        const cx0 = prev.x + (x - prev.x) * u, cy0 = prev.y + (y - prev.y) * u;
+        (prev.d >= 0 ? up : down).lineTo(cx0, cy0);
+        (d >= 0 ? up : down).moveTo(cx0, cy0);
+        (d >= 0 ? up : down).lineTo(x, y);
+      }
+      prev = { x, y, d };
     }
-    paths.push(p);
-    mctx.strokeStyle = pal.thread((pal.light ? 0.11 : 0.085) * (0.55 + 0.45 * Math.min(1.6, motion)) * (0.35 + 0.65 * S.genesis));
+    paths.push(up, down);
+    const alpha = (pal.light ? 0.16 : 0.12) * (0.55 + 0.45 * Math.min(1.6, motion)) * (0.35 + 0.65 * S.genesis);
     mctx.lineWidth = 1;
-    mctx.stroke(p);
+    mctx.strokeStyle = pal.crest(alpha); mctx.stroke(up);
+    mctx.strokeStyle = pal.trough(alpha * 0.9); mctx.stroke(down);
   }
   // Each ripple glows along its own ring, so a front is visible where it is.
   for (const r of live) {
@@ -193,9 +206,9 @@ function drawMedium(nowMs) {
     const cx = r.x - sx, cy = r.y - sy;
     const outer = R + r.width * 2;
     const g = mctx.createRadialGradient(cx, cy, Math.max(0, R - r.width * 2), cx, cy, outer);
-    g.addColorStop(0, pal.thread(0));
-    g.addColorStop(0.5, pal.thread((pal.light ? 0.5 : 0.42) * fade));
-    g.addColorStop(1, pal.thread(0));
+    g.addColorStop(0, pal.crest(0));
+    g.addColorStop(0.5, pal.crest((pal.light ? 0.55 : 0.5) * fade));
+    g.addColorStop(1, pal.crest(0));
     mctx.strokeStyle = g;
     mctx.lineWidth = 1.2;
     for (const p of paths) mctx.stroke(p);
@@ -261,7 +274,8 @@ function decayTelemetry(dt) {
 /* Unfolding                                                           */
 /* ------------------------------------------------------------------ */
 
-const UNIT = "h1,h2,h3,h4,p,ul,ol,dl,figure,pre,table,blockquote,canvas,svg,img,hr,details,form,audio,.field,.controls,.readout,[data-unfold]";
+// A scroll box unfolds as one block: a front cannot reach what is scrolled out of sight inside it.
+const UNIT = "h1,h2,h3,h4,p,ul,ol,dl,figure,pre,table,blockquote,canvas,svg,img,hr,details,form,audio,.field,.controls,.readout,.scrollbox,[data-unfold]";
 const units = new Map();     // element → { front, start }
 const isUnit = new WeakSet();
 let unfoldOn = false;
@@ -269,7 +283,11 @@ let pendingEntry = [];
 
 const unitIO = "IntersectionObserver" in window
   ? new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { const u = units.get(e.target); if (u && !u.front && !u.hold) pendingEntry.push(e.target); }
+      for (const e of entries) {
+        const r = e.boundingClientRect;
+        if (!r.width && !r.height) { finishUnit(e.target); continue; } // hidden since it was registered
+        if (e.isIntersecting) { const u = units.get(e.target); if (u && !u.front && !u.hold) pendingEntry.push(e.target); }
+      }
       if (pendingEntry.length) kick();
     }, { rootMargin: "0px 0px -4% 0px" })
   : null;
@@ -288,8 +306,19 @@ function topmostUnits(scope) {
   });
 }
 
+/** A list taller than the screen unfolds item by item, so its far end is not left waiting for one front. */
+function expandTall(els) {
+  const out = [];
+  for (const el of els) {
+    if (el.matches("ul, ol") && el.children.length > 1 && el.getBoundingClientRect().height > window.innerHeight * 1.1) out.push(...el.children);
+    else out.push(el);
+  }
+  return out;
+}
+
 function addUnit(el, hold = false) {
   if (isUnit.has(el)) return;
+  if (!el.getClientRects().length) return; // no box (display: none): nothing to reveal
   isUnit.add(el);
   units.set(el, { front: null, hold });
   el.setAttribute("data-u", "");
@@ -313,7 +342,7 @@ function initUnfold(mainEl, held) {
   if (!mainEl || reduced() || !unitIO) { revealAll(); return; }
   unfoldOn = true;
   root.classList.add("loom-unfold");
-  for (const el of topmostUnits(mainEl)) if (!held.has(el)) addUnit(el);
+  for (const el of expandTall(topmostUnits(mainEl))) if (!held.has(el)) addUnit(el);
   for (const el of held) addUnit(el, true);
   root.classList.remove("loom-pending");
   new MutationObserver((records) => {
@@ -322,7 +351,7 @@ function initUnfold(mainEl, held) {
       // Already inside a unit (pending or revealed): it arrives with its parent.
       let inside = false;
       for (let p = node.parentElement; p && p !== mainEl; p = p.parentElement) if (isUnit.has(p)) { inside = true; break; }
-      if (!inside) for (const el of topmostUnits(node)) { addUnit(el); }
+      if (!inside) for (const el of expandTall(topmostUnits(node))) { addUnit(el); }
     }
   }).observe(mainEl, { childList: true, subtree: true });
   window.addEventListener("beforeprint", revealAll);
@@ -576,7 +605,7 @@ const GLYPHS = {
   },
   mixer(c, t, w, h, p) {
     const cx = w / 2, cy = h / 2, r = Math.min(w, h) * 0.36;
-    for (let k = 0; k < 36; k += 1) { c.strokeStyle = `hsl(${k * 10} 60% 60% / 0.7)`; c.beginPath(); c.arc(cx, cy, r, (k / 36) * TAU, ((k + 1) / 36) * TAU); c.stroke(); }
+    for (let k = 0; k < 36; k += 1) { const [r, g, b] = oklchToRgb(p.light ? 0.6 : 0.8, 0.12, k * 10); c.strokeStyle = `rgb(${r} ${g} ${b} / 0.8)`; c.beginPath(); c.arc(cx, cy, r, (k / 36) * TAU, ((k + 1) / 36) * TAU); c.stroke(); }
     const a = Math.sin(t * 0.7) * 0.5;
     c.fillStyle = p.voice(0, 1); c.beginPath(); c.arc(cx + Math.cos(a) * r * 0.6, cy + Math.sin(a) * r * 0.6, 3.5, 0, TAU); c.fill();
   },
@@ -604,6 +633,53 @@ const GLYPHS = {
   condense(c, t, w, h, p) {
     const k = (Math.sin(t * 0.7) + 1) / 2;
     for (let i = 0; i < 4; i += 1) { c.fillStyle = p.voice(0, 0.75); c.fillRect(w * 0.08, h * (0.2 + i * 0.18), w * 0.84 * (1 - k * (0.3 + i * 0.12)), h * 0.06); }
+  },
+  matrix(c, t, w, h, p) {
+    const n = 8, s = Math.min(w, h) * 0.86 / n, ox = (w - s * n) / 2, oy = (h - s * n) / 2;
+    for (let i = 0; i < n; i += 1) for (let j = 0; j < n; j += 1) {
+      const v = Math.sin((i * n + j + 1) * 2.31 + (i > 1 ? t * 0.8 : 0));
+      c.fillStyle = p.phase(v, i < 2 ? 0.9 : 0.6); c.fillRect(ox + j * s + 0.5, oy + i * s + 0.5, s - 1, s - 1);
+    }
+    c.strokeStyle = p.node(0.9); c.strokeRect(ox, oy, s * n, s * 2);
+  },
+  unfold(c, t, w, h, p) {
+    const depth = 1 + Math.floor((t * 0.8) % 5);
+    const branch = (x, y, len, a, d) => {
+      if (d > depth) return;
+      const x2 = x + Math.cos(a) * len, y2 = y + Math.sin(a) * len;
+      c.strokeStyle = p.voice(d % 3, 0.85); c.beginPath(); c.moveTo(x, y); c.lineTo(x2, y2); c.stroke();
+      branch(x2, y2, len * 0.66, a - 0.5, d + 1); branch(x2, y2, len * 0.66, a + 0.5, d + 1);
+    };
+    branch(w * 0.12, h / 2, w * 0.28, 0, 1);
+  },
+  graft(c, t, w, h, p) {
+    const s = Math.min(w * 0.3, h * 0.7);
+    c.strokeStyle = p.crest(0.85); c.strokeRect(w * 0.08, (h - s) / 2, s, s);
+    c.strokeStyle = p.trough(0.85); c.strokeRect(w * 0.92 - s, (h - s) / 2, s, s);
+    const u = (t * 0.35) % 1, x = w * 0.08 + s + (w * 0.84 - 2 * s) * u;
+    c.fillStyle = p.node(1); c.beginPath(); c.arc(x, h / 2 + Math.sin(u * Math.PI * 2) * h * 0.08, 3.5, 0, TAU); c.fill();
+  },
+  cascade(c, t, w, h, p) {
+    const xs = [0.16, 0.5, 0.84].map((f) => f * w);
+    xs.forEach((x, i) => { c.strokeStyle = p.voice(i, 0.9); c.beginPath(); c.arc(x, h / 2, Math.min(w, h) * 0.14, 0, TAU); c.stroke(); });
+    for (let k = 0; k < 2; k += 1) {
+      const u = ((t * 0.5) + k * 0.5) % 1, x = xs[0] + (xs[2] - xs[0]) * u;
+      c.fillStyle = p.node(1 - u * 0.5); c.beginPath(); c.arc(x, h / 2, 3, 0, TAU); c.fill();
+    }
+  },
+  paths(c, t, w, h, p) {
+    for (let i = 0; i < 5; i += 1) {
+      c.strokeStyle = p.voice(i, 0.85); c.beginPath();
+      for (let k = 0; k <= 30; k += 1) { const u = k / 30, x = w * 0.08 + u * w * 0.84, y = h * (0.15 + i * 0.175) * (1 - u) + h * 0.5 * u + Math.sin(u * 6 + t + i) * h * 0.03 * (1 - u); if (k) c.lineTo(x, y); else c.moveTo(x, y); }
+      c.stroke();
+    }
+  },
+  cheb(c, t, w, h, p) {
+    for (let n = 1; n <= 4; n += 1) {
+      c.strokeStyle = p.voice(n - 1, 0.85); c.beginPath();
+      for (let k = 0; k <= 60; k += 1) { const x = -1 + (2 * k) / 60, y = Math.cos(n * Math.acos(x)) * (0.75 + 0.25 * Math.sin(t * 0.8 + n)); const px = w * 0.08 + ((x + 1) / 2) * w * 0.84, py = h / 2 - y * h * 0.38; if (k) c.lineTo(px, py); else c.moveTo(px, py); }
+      c.stroke();
+    }
   },
   explainer(c, t, w, h, p) {
     const n = 6, s = Math.min(w, h) * 0.8 / n, ox = (w - s * n) / 2, oy = (h - s * n) / 2;

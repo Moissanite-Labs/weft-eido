@@ -2,7 +2,7 @@
 // decides when a wavefront has revealed a block.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { LOOM, partialAmps, restAmp, threadDisplacement, rippleAt, rectReach, unfoldProgress, frontOrigin, frontSpeed, palette, voiceHue, threadGap } from "../site/assets/loom-core.js";
+import { LOOM, partialAmps, restAmp, threadDisplacement, rippleAt, rectReach, unfoldProgress, frontOrigin, frontSpeed, palette, voiceHue, threadGap, oklchToRgb, TIDE_HUE, VOICE_OFFSETS } from "../site/assets/loom-core.js";
 
 test("threads are pinned at both selvedges", () => {
   const amps = partialAmps(12.3, 0.4);
@@ -60,13 +60,35 @@ test("a front starts at a recent pointer, otherwise at the edge the block came f
   assert.ok(Math.abs(frontSpeed(vw, vh) * LOOM.FRONT_SECONDS - Math.hypot(vw, vh)) < 1e-9);
 });
 
-test("colour comes from one hue in both themes", () => {
-  for (const light of [false, true]) {
-    const p = palette(400, light);
-    assert.equal(p.hue, 40);
-    assert.match(p.voice(0, 0.5), /^hsl\(40\.0 /);
-    assert.match(p.thread(0.1), /^hsl\(40 /);
+const lum = ([r, g, b]) => {
+  const ch = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+};
+const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+const rgbOf = (cssColour) => cssColour.match(/\d+/g).slice(0, 3).map(Number);
+
+test("OKLCH converts exactly at the poles and never leaves the sRGB gamut", () => {
+  assert.deepEqual(oklchToRgb(1, 0, 0), [255, 255, 255]);
+  assert.deepEqual(oklchToRgb(0, 0, 0), [0, 0, 0]);
+  for (let h = 0; h < 360; h += 15) for (const L of [0.2, 0.5, 0.8]) {
+    for (const v of oklchToRgb(L, 0.4, h)) assert.ok(Number.isInteger(v) && v >= 0 && v <= 255);
   }
-  assert.ok(voiceHue(10, 1) >= 0 && voiceHue(10, 1) < 360);
+});
+
+test("the tide palette turns with one hue and keeps text readable in both themes", () => {
+  for (const light of [false, true]) {
+    for (const hue of [TIDE_HUE, 16, 100, 292]) {
+      const p = palette(hue, light);
+      assert.equal(p.hue, hue);
+      const bg = p.bgRgb;
+      assert.ok(contrast(p.inkRgb, bg) >= 12, `ink on ground at hue ${hue} (${light ? "light" : "dark"})`);
+      assert.ok(contrast(rgbOf(p.muted), bg) >= 4.5, `muted text at hue ${hue} (${light ? "light" : "dark"})`);
+      assert.ok(contrast(p.voiceRgb(0), bg) >= 3, `crest marks at hue ${hue} (${light ? "light" : "dark"})`);
+      assert.notDeepEqual(p.voiceRgb(0), p.voiceRgb(1), "crest and trough differ");
+      assert.match(p.phase(-0.5, 1), /^rgb\(/);
+    }
+  }
+  assert.equal(palette(400, false).hue, 40);
+  assert.equal(voiceHue(196, 1), (196 + VOICE_OFFSETS[1]) % 360);
   assert.ok(threadGap(200) >= 14);
 });

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Substrate simulations · Eido</title>
+  <meta name="description" content="The weft substrate simulations rebuilt live: a statistical cell gated by a Frobenius ball, a 492-byte genotype unfolding into a Plasm matrix, and a plasmid grafted through a null-space projector, with E11 and E12's reported results.">
+  <meta name="theme-color" content="#070f19">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070f19'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%234be4e5' stroke-width='2'/%3E%3Cpath d='M5 16C8.7 7.8 12.3 7.8 16 16s7.3 8.2 11 0' fill='none' stroke='%23ff9086' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/loom.js"></script>
+  <script type="module" src="../assets/research-suite.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="16" cy="16" r="12.6"/><path d="M3.4 16C7.6 6.6 11.8 6.6 16 16s8.4 9.4 12.6 0"/><circle cx="16" cy="16" r="2.3" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html">Components</a>
+    <a href="../causal-harmonic/index.html">Harmonic</a>
+    <a href="../research/index.html" aria-current="page">Research</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
+  <main id="main">
+    <header class="opening">
+      <p class="eyebrow">Research · weft E08–E12</p>
+      <h1>Substrate simulations</h1>
+      <p class="lede">A cell that may only wander inside a ball, a genotype that unfolds into a matrix two thousand times its size, and a graft that cannot touch what its host keeps.</p>
+      <p class="quiet">Rebuilt from the Substrate Simulation Suite for <a href="https://github.com/Moissanite-Labs/weft">weft</a>. Where a figure computes, it computes here, live. Experiment results are the original page's reported numbers and are labelled reported; anything drawn only for look is labelled illustrative. The original is kept, untouched, in the <a href="../../examples/simulations/index.html">archive</a>.</p>
+    </header>
+
+    <section class="movement" id="statistical" aria-labelledby="statistical-title">
+      <h2 id="statistical-title">The statistical cell: a walk inside a ball</h2>
+      <p>An 8 × 8 genotype whose top two rows are frozen. Each A/B step proposes a small random change to the six plastic rows and keeps it only if the whole matrix stays within Frobenius distance R of where it began. The core cannot move; the periphery walks out to the wall, then mostly bounces off it.</p>
+      <canvas class="stage tall" id="cell-stage" data-press role="img" aria-label="Left, the genotype W and its displacement from W0, with the frozen core rows outlined. Right, the Frobenius distance of every proposal against the gate radius R, accepted and rejected."></canvas>
+      <div class="controls">
+        <div class="field"><label for="cell-r">Gate radius R</label><input id="cell-r" type="range" min="0.25" max="2.5" step="0.05" value="1.2"><output id="cell-r-out" for="cell-r">1.20</output></div>
+        <button class="btn small" type="button" id="cell-step">Propose an A/B step</button>
+        <button class="btn small" type="button" id="cell-reset">Reset W₀, new seed</button>
+      </div>
+      <p class="numbers" id="cell-numbers"></p>
+      <p class="quiet">From <a href="https://github.com/Moissanite-Labs/weft/pull/141">weft #141</a> and <a href="https://github.com/Moissanite-Labs/weft/pull/147">#147</a>. The gate is the original's rule, ported exactly, with a seeded source in place of Math.random. Its fit is a counter, not a measurement. The original also names parametric (μ, Σ) and causal SCM do(X) decoders and a KL bound, but its code runs only this matrix rule, and its pointer stimulus never reaches the genotype, so neither is drawn here.</p>
+    </section>
+
+    <section class="movement" id="morphogenesis" aria-labelledby="morphogenesis-title">
+      <h2 id="morphogenesis-title">Morphogenesis: 492 bytes unfold</h2>
+      <p>A 492-byte packet of 24 combinator nodes (CON, DUP, FRC, SUP, VLV, ERA) reduces into a Plasm weight matrix of 64² to 512² floats. The square beside the matrix is the packet, drawn to scale. The lines are E11's returns as reported: the unfolded arm gains as the matrix grows, while the scrambled packet and direct evolution of the matrix fall away.</p>
+      <canvas class="stage tall" id="morph-stage" role="img" aria-label="Left, a Plasm matrix unfolding row by row, its locked core outlined, beside the genotype packet drawn to scale. Right, E11's reported 12-seed return for each arm at each matrix size."></canvas>
+      <div class="controls" role="group" aria-label="Arm and scale">
+        <button class="chip" type="button" data-e11="morph" aria-pressed="true">M1 morphogenetic IC</button>
+        <button class="chip" type="button" data-e11="scrambled" aria-pressed="false">C2 scrambled IC</button>
+        <button class="chip" type="button" data-e11="direct" aria-pressed="false">D direct matrix ES</button>
+        <div class="field"><label for="morph-d">Plasm scale 2<sup>D</sup></label><input id="morph-d" type="range" min="6" max="9" step="1" value="9"><output id="morph-d-out" for="morph-d">512²</output></div>
+      </div>
+      <p class="numbers" id="morph-numbers"></p>
+      <p class="quiet">From <a href="https://github.com/Moissanite-Labs/weft/pull/153">weft #153</a> and <a href="https://github.com/Moissanite-Labs/weft/pull/155">#155</a> (E11). Returns and the core drift of 0.0000 are reported: the original prints them from a fixed table. The wire sizes are computed. The unfolding pattern is illustrative, the original's closed-form stand-in rather than the packet's reduction; its reduction-step counter and node ring reduced nothing and are left out.</p>
+    </section>
+
+    <section class="movement" id="plasmid" aria-labelledby="plasmid-title">
+      <h2 id="plasmid-title">Plasmid graft: the null-space gate</h2>
+      <p>An 8-node, 172-byte plasmid is spliced onto a channel-permuted sibling's auxiliary port through SUP(5). The gate lands its update as ΔW(I − Q<sub>keep</sub>Q<sub>keep</sub>ᵀ), so the directions the host's own skill uses cannot see it, whatever the shift.</p>
+      <canvas class="stage tall" id="graft-stage" role="img" aria-label="Left, a computed toy: each arm's update split into the part the host's kept directions see and the free part, with the gate dropping the first to zero. Right, E12's reported native retention against distribution shift for the three arms."></canvas>
+      <div class="controls" role="group" aria-label="Arm and shift">
+        <button class="chip" type="button" data-e12="nullgate" aria-pressed="true">G2 null-space graft</button>
+        <button class="chip" type="button" data-e12="ungated" aria-pressed="false">G1 ungated graft</button>
+        <button class="chip" type="button" data-e12="raw" aria-pressed="false">C1 raw copy, permuted</button>
+        <button class="btn small" type="button" id="graft-perm">Reshuffle sibling basis</button>
+        <div class="field"><label for="graft-shift">Distribution shift</label><input id="graft-shift" type="range" min="1" max="2.8" step="0.1" value="2.4"><output id="graft-shift-out" for="graft-shift">2.4×</output></div>
+      </div>
+      <p class="numbers" id="graft-numbers"></p>
+      <p class="quiet">From <a href="https://github.com/Moissanite-Labs/weft/pull/157">weft #157</a> and <a href="https://github.com/Moissanite-Labs/weft/pull/159">#159</a> (E12). Left is a seeded toy computed here to show the operator itself; its numbers are not E12's, and it does not model why the ungated graft's transfer fails. Right is reported: the original gives each arm's retention at 1.0× and 2.4× shift; between them the line is its own linear interpolation, and beyond 2.4× (dashed) its extrapolation. Its drop and transfer labels do not move with shift.</p>
+    </section>
+
+    <section class="movement" aria-labelledby="further">
+      <h2 id="further">Further in</h2>
+      <ul class="lines">
+        <li><a href="../../examples/simulations/e13_transitive_cascade.html"><canvas data-glyph="cascade" aria-hidden="true"></canvas><strong>E13: the transitive cascade</strong><small>The original explorer, untouched: not yet rebuilt on the loom</small></a></li>
+        <li><a href="../../examples/simulations/asma_subspace_paraneoplastic.html"><canvas data-glyph="paths" aria-hidden="true"></canvas><strong>Project Asma: five-path explorer</strong><small>The original explorer, untouched: not yet rebuilt on the loom</small></a></li>
+        <li><a href="chebyshev.html"><canvas data-glyph="cheb" aria-hidden="true"></canvas><strong>Chebyshev identifiability</strong><small>Telling compartment worlds apart under an L∞ noise box; synthetic-world mathematics</small></a></li>
+        <li><a href="../../examples/simulations/index.html"><canvas data-glyph="archive" aria-hidden="true"></canvas><strong>The original suite</strong><small>The tabbed simulation suite as uploaded, untouched</small></a></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
+  </footer>
+</body>
+</html>

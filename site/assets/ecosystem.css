@@ -14,8 +14,7 @@
 }
 
 .genesis { min-block-size: min(72vh, 46rem); justify-content: center; gap: calc(var(--gap) * 0.8); }
-.genesis h1 { font-size: clamp(5rem, 2.5rem + 14vw, 13rem); letter-spacing: -0.045em; line-height: 0.88; color: hsl(var(--eco-hue) 72% 78%); }
-:root[data-theme="light"] .genesis h1 { color: hsl(var(--eco-hue) 62% 30%); }
+.genesis h1 { font-size: clamp(5rem, 2.5rem + 14vw, 13rem); letter-spacing: -0.045em; line-height: 0.88; color: var(--accent-strong); }
 .genesis .lede { font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem); max-inline-size: 30ch; color: var(--ink); }
 .genesis .numbers { max-inline-size: 100%; overflow-x: auto; white-space: pre; padding-block: 0.4rem; }
 .genesis .quiet { max-inline-size: 52ch; }
@@ -43,7 +42,7 @@
   box-shadow: inset 0 calc(-1 * var(--hair)) var(--line);
   transition: box-shadow 0.2s ease, color 0.2s ease;
 }
-.eco-places a:hover, .eco-places a[data-active] { color: var(--ink); box-shadow: inset 0 calc(-0.125rem) hsl(var(--eco-hue) 70% 65% / 0.9); }
+.eco-places a:hover, .eco-places a[data-active] { color: var(--ink); box-shadow: inset 0 calc(-0.125rem) var(--accent); }
 .eco-places strong { display: block; font-size: 1rem; }
 .eco-places small { color: var(--muted); font-size: 0.8rem; }
 html.reduced-motion .eco-places a { transition: none; }
@@ -62,7 +61,7 @@ html.reduced-motion .eco-places a { transition: none; }
 .eco-badge {
   display: inline-block; font-size: 0.74rem; font-weight: 700; white-space: nowrap;
   padding-block: 0.06em; padding-inline: 0.6em; border-radius: 99rem;
-  box-shadow: inset 0 0 0 var(--hair) hsl(var(--eco-hue) 45% 60% / 0.45);
+  box-shadow: inset 0 0 0 var(--hair) var(--line-2);
 }
 .eco-badge.main { color: var(--ok); }
 .eco-badge.approved { color: var(--accent-strong); }
