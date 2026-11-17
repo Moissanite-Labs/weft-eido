@@ -25,7 +25,7 @@ jobs:
           mkdir _site
           cp -R site src css examples docs _site/
           touch _site/.nojekyll
-          echo "eido.w3ft.org" > _site/CNAME
+          echo "eido.askaconsult.com" > _site/CNAME
           cat > _site/index.html <<'HTML'
           <!doctype html>
           <html lang="en">
