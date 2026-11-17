@@ -11,7 +11,7 @@
   var still = mm && mm("(prefers-reduced-motion: reduce)").matches;
   if (still) root.classList.add("reduced-motion");
   var hue = null;
-  try { hue = parseInt(localStorage.getItem("eido-hue") || "", 10); } catch (e) {}
+  try { hue = parseInt(localStorage.getItem("eido-tide-hue") || "", 10); } catch (e) {}
   if (hue != null && isFinite(hue)) root.style.setProperty("--eco-hue", String(((hue % 360) + 360) % 360));
   root.setAttribute("data-theme", light ? "light" : "dark");
   root.setAttribute("data-pref", pref);

@@ -1,27 +1,30 @@
 // The home page. Three movements share the loom's medium:
 //   1. The medium's own equation, printed live under the title.
 //   2. Superposition: two waves in a ratio you choose, drawn as the figure they make.
-//   3. The field: every line of work as a cell, steered by a style point.
+//   3. The map: every line of work is a wave source, and the map is the
+//      interference pattern they make together (site/assets/field-math.js).
 // Every visual value is a function of one state vector, printed live.
 // One channel, one quantity:
-//   hue          <- circular mean of preset hues by barycentric weights
-//   cell area    <- stated place weight (area follows weight)
-//   wobble       <- restlessness (reading weave score)
-//   thread width <- tension = clamp01(0.55 * rest + 0.45 * jerk)
-//   eccentricity <- mixer rounding
-//   spacing/type <- mixer density (CSS calc from --density)
-//   ring count   <- mixer contrast
-//   field aspect <- viewport aspect, projected by ResizeObserver
-//   wave phase   <- Flow time (never touches hue)
-// No network requests. Cells are links to standalone pages.
+//   hue             <- circular mean of preset hues by barycentric weights
+//   source amplitude <- stated place weight
+//   frequency       <- family: related work shares one, so its fringes stand still
+//   reach           <- state: on main, open, blocked
+//   phase jitter    <- restlessness (reading weave score)
+//   thread width    <- tension = clamp01(0.55 * rest + 0.45 * jerk)
+//   halo softness   <- mixer rounding
+//   wavelength      <- mixer density (CSS spacing follows it too)
+//   wash strength   <- mixer contrast
+//   map aspect      <- viewport aspect, projected by ResizeObserver
+//   wave time       <- Flow (never touches hue)
+// No network requests. Sources are links to standalone pages.
 
-import { layoutCells, layerThreads, hitTest } from "../../src/cell-layout.js";
 import { packLabel } from "../../src/glyph-font.js";
 import { mixAestheticPresets } from "../../src/aesthetic-mixer.js";
 import { mountSimplexPad } from "../../src/simplex-pad.js";
 import { setupReadingWeave } from "../../src/reading-weave.js";
 import { scene, setHue, somatic, mediumState, onFrame, ripple, reduced } from "./loom.js";
 import { nearestRatio, intervalName, cents, TAU } from "./harmonic-math.js";
+import { settle, sources, prepareGrid, sampleGrid, isolines, nearestSource, beatPeriod, FAMILIES, FIELD } from "./field-math.js";
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
@@ -32,32 +35,35 @@ const smooth = (u) => { const x = clamp01(u); return x * x * (3 - 2 * x); };
 export const BOUNDS = Object.freeze({ MIN: 0, MAX: 1, JERK_MAX: 0.09, SCROLL_MAX: 2.4, TENSION_REST: 0.55, TENSION_JERK: 0.45 });
 
 const PRESETS = {
-  calm: { rounding: 0.85, density: 0.3, hue: 0.12, contrast: 0.05 },
-  sharp: { rounding: 0.0, density: 0.1, hue: 0.45, contrast: 0.01 },
-  airy: { rounding: 1.0, density: 0.85, hue: 0.85, contrast: 0.2 },
+  calm: { rounding: 0.85, density: 0.3, hue: 0.5444, contrast: 0.05 },
+  sharp: { rounding: 0.0, density: 0.1, hue: 0.2778, contrast: 0.01 },
+  airy: { rounding: 1.0, density: 0.85, hue: 0.8111, contrast: 0.2 },
 };
 const PRESET_NAMES = Object.keys(PRESETS);
 
+/* Where each line of work stands, read from GitHub on 17 November 2026.
+   state: "main" (on the main branch), "open" (in review), "blocked". */
+export const AS_OF = "17 November 2026";
 export const PLACES = [
-  { id: "style", code: "D1 STYL", name: "Style", href: "components/aesthetic-mixer.html", weight: 9, family: "modules", state: "On main", badge: "main", how: "Its own page. The point below is the same control, steering this field and every page after it." },
-  { id: "reading", code: "D6 READ", name: "Reading", href: "components/reading-weave.html", weight: 9, family: "modules", state: "On main", badge: "main", how: "Its own page. The weave itself runs on the text at the end of this page." },
-  { id: "field", code: "GPU FLD", name: "Field", href: "https://github.com/Moissanite-Labs/weft-eido/pull/6", weight: 7, family: "rebuild", state: "Pull request 6. Changes requested. Two checks fail", badge: "blocked", how: "Opens the pull request. No code from it runs here. Its page looks up your network address and can hold keys in the browser." },
-  { id: "explainer", code: "TOY MOD", name: "Explainer", href: "components/research-explainer.html", weight: 6, family: "research", state: "Pull request 11. Approved. Checks green", badge: "approved", how: "Its own page, with the toy model at full strength." },
-  { id: "archive", code: "5X7 BIT", name: "Archive", href: "components/glyph-font.html", weight: 5, family: "modules", state: "On main", badge: "main", how: "Its own page. Every title on this site is first drawn from its bits." },
-  { id: "simulations", code: "E08-E13", name: "Simulations", href: "../examples/simulations/index.html", weight: 6, family: "research", state: "Pull request 14. Approved. Checks green", badge: "approved", how: "The standalone suite. E13 and the Asma explorer run there. Their numbers are their authors' claims." },
-  { id: "identifiability", code: "CHEB ID", name: "Identifiability", href: "../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html", weight: 5, family: "research", state: "Pull request 15. Approved. Checks green", badge: "approved", how: "The standalone Chebyshev explorer, with its own model and presets." },
-  { id: "harmonic", code: "CHORDS", name: "Harmonic", href: "causal-harmonic/index.html", weight: 6, family: "research", state: "Pull request 17. Approved. Checks green", badge: "approved", how: "Rebuilt on this site's own loom: every figure there is computed live. Recorded pieces are CC BY-NC 4.0." },
+  { id: "style", code: "D1 STYL", name: "Style", href: "components/aesthetic-mixer.html", weight: 9, family: "modules", state: "main", status: "On main", how: "Its own page. The point below is the same control, and it turns the colour of every page." },
+  { id: "reading", code: "D6 READ", name: "Reading", href: "components/reading-weave.html", weight: 9, family: "modules", state: "main", status: "On main", how: "Its own page. The weave itself runs on the text at the end of this page." },
+  { id: "field", code: "GPU FLD", name: "Field", href: "https://github.com/Moissanite-Labs/weft-eido/pull/6", weight: 7, family: "rebuild", state: "blocked", status: "Pull request 6, open. Changes requested: the sign-off, API keys kept in clear text, and a third-party address lookup", how: "Opens the pull request. No code from it runs here." },
+  { id: "explainer", code: "TOY MOD", name: "Explainer", href: "components/research-explainer.html", weight: 6, family: "research", state: "main", status: "On main since #19. Pull request 11 is still open", how: "Its own page, with the toy model at full strength." },
+  { id: "archive", code: "5X7 BIT", name: "Archive", href: "components/glyph-font.html", weight: 5, family: "modules", state: "main", status: "On main", how: "Its own page. Every title on this site is first drawn from its bits." },
+  { id: "simulations", code: "E08-E13", name: "Simulations", href: "research/index.html", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 14 is still open", how: "The substrate simulations, E13 and Project Asma, rebuilt as pages of this site. Their results are their authors' reports; the originals stay in the archive." },
+  { id: "identifiability", code: "CHEB ID", name: "Identifiability", href: "research/chebyshev.html", weight: 5, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 15 is still open", how: "The Chebyshev identifiability explorer, rebuilt as a page of this site. The original stays in the archive." },
+  { id: "harmonic", code: "CHORDS", name: "Harmonic", href: "causal-harmonic/index.html", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt in #20. Pull request 17 is still open", how: "Every figure there is computed live. Recorded pieces are CC BY-NC 4.0." },
 ];
 
 export const RECORD = [
-  ...PLACES.map((p) => ({ work: p.name, state: p.state, badge: p.badge, how: p.how })),
-  { work: "Condense panel fix (pull request 8)", state: "Checks green. Awaits review", badge: "approved", how: "Not included. It can land on its own." },
-  { work: "Readme line (pull request 9)", state: "Changes requested on sign-off only. The edit itself was called fine", badge: "blocked", how: "Not applied here. One sign-off fixes it." },
-  { work: "Angles hub (pull request 18)", state: "Closed. Superseded by pull request 19", badge: "blocked", how: "Replaced by this field. No code from pull request 6 is included." },
+  ...PLACES.map((p) => ({ work: p.name, state: p.status, badge: p.state, how: p.how })),
+  { work: "Condense panel noun (pull request 8)", state: "Draft, open", badge: "open", how: "Not included. It can land on its own." },
+  { work: "Readme line (pull request 9)", state: "Changes requested on the sign-off only. The edit itself was called fine", badge: "blocked", how: "Not applied here. One sign-off fixes it." },
+  { work: "Angles hub (pull request 18)", state: "Closed, superseded by #19", badge: "closed", how: "Replaced by the field. No code from pull request 6 is included." },
 ];
 
 /* State vector. Derived entries are recomputed, never stored twice. */
-const S = { w: [0.5, 0.2, 0.3], rest: 0, jerk: 0, scroll: 0, ratio: 1.5 };
+const S = { w: [0.5, 0.25, 0.25], rest: 0, jerk: 0, scroll: 0, ratio: 1.5 };
 let flowOn = !reduced();
 
 function mixed() {
@@ -205,118 +211,153 @@ function initSuperposition() {
   setRatio(Number(input.value) || 1.5);
 }
 
-/* ---------- 3. The field ---------- */
+/* ---------- 3. The map: sources and their interference ---------- */
 
-let fieldLayout = null;
-let fieldThreads = [];
+const MAP = { w: 0, h: 0, pos: null, r: null, frames: null, src: null, grid: null, buf: null, img: null, off: null, born: 0 };
 let hoverPlace = null;
-let fieldW = 0, fieldH = 0;
+let waveTime = 0;
 
 function describe(place) {
   const out = $("#eco-field-readout");
   if (!out || !place) return;
   const packed = packLabel(place.code, 8);
   const words = [...packed.words].map((w) => "0x" + w.toString(16).padStart(8, "0")).join(" ");
-  out.textContent = `${place.name}. ${place.state}. ${place.how}\nGlyph label "${place.code}" packs to ${words}`;
+  out.textContent = `${place.name}. ${place.status}. ${place.how}\nGlyph label "${place.code}" packs to ${words}`;
   for (const a of document.querySelectorAll("[data-place-link]")) a.toggleAttribute("data-active", a.dataset.placeLink === place.id);
 }
 
-function computeField(w, h) {
-  const items = PLACES.map((p) => ({ weight: p.weight, labelLength: Math.max(p.name.length, p.code.length) }));
-  fieldLayout = layoutCells(items, { width: Math.round(w), height: Math.round(h) });
-  fieldThreads = layerThreads(fieldLayout.cells, PLACES.map((p) => p.family));
-  fieldW = Math.round(w); fieldH = Math.round(h);
-}
-
-function membrane(ctx, cx, cy, r, ecc, harm, seed, phase, rings, pal, active, lightText) {
-  for (let ring = rings; ring >= 1; ring -= 1) {
-    const rr = r * (ring / rings);
-    const steps = 48;
-    ctx.beginPath();
-    for (let k = 0; k <= steps; k += 1) {
-      const a = (k / steps) * TAU;
-      const wob = 1 + harm * (Math.sin(a * 3 + seed * 1.3 + phase * 0.42 + ring * 0.7) + 0.4 * Math.sin(a * 5 - seed + phase * 0.23 - ring));
-      const x = cx + Math.cos(a) * rr * wob * (0.82 + ecc * 0.26), y = cy + Math.sin(a) * rr * wob;
-      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    }
-    ctx.closePath();
-    if (ring === rings) {
-      ctx.fillStyle = pal.voice(0, active ? 0.2 : 0.07);
-      ctx.fill();
-    }
-    ctx.strokeStyle = pal.voice(ring % 2 ? 0 : 1, (active ? 0.95 : 0.6) * (0.35 + 0.65 * (ring / rings)));
-    ctx.lineWidth = ring === rings ? (active ? 2 : 1.3) : 0.8;
-    ctx.stroke();
+function layoutMap(w, h, density) {
+  const prev = MAP.w && MAP.pos ? MAP.pos.map((p) => ({ x: (p.x / MAP.w) * w, y: (p.y / MAP.h) * h })) : null;
+  const run = settle(PLACES, { width: w, height: h, record: prev ? 0 : 8, from: prev });
+  MAP.w = w; MAP.h = h; MAP.pos = run.pos; MAP.r = run.r; MAP.frames = prev ? null : run.frames;
+  MAP.density = density;
+  MAP.src = sources(PLACES, MAP.pos, { width: w, height: h, density });
+  MAP.cell = Math.max(5, Math.min(w, h) / 92);
+  MAP.cols = Math.ceil(w / MAP.cell) + 1; MAP.rows = Math.ceil(h / MAP.cell) + 1;
+  MAP.d0 = Math.min(w, h) * 0.07;
+  MAP.grid = prepareGrid(MAP.src, MAP.cols, MAP.rows, MAP.cell, { d0: MAP.d0 });
+  MAP.buf = new Float32Array(MAP.cols * MAP.rows);
+  // Edge window: the field thins to nothing at the canvas edge, so it has no rim.
+  MAP.win = new Float32Array(MAP.cols * MAP.rows);
+  const ex = MAP.cols * 0.14, ey = MAP.rows * 0.16;
+  for (let j = 0; j < MAP.rows; j += 1) for (let i = 0; i < MAP.cols; i += 1) {
+    const u = Math.min(1, Math.min(i, MAP.cols - 1 - i) / ex), q = Math.min(1, Math.min(j, MAP.rows - 1 - j) / ey);
+    MAP.win[j * MAP.cols + i] = u * u * (3 - 2 * u) * q * q * (3 - 2 * q);
   }
+  MAP.off = document.createElement("canvas");
+  MAP.off.width = MAP.cols; MAP.off.height = MAP.rows;
+  MAP.img = MAP.off.getContext("2d").createImageData(MAP.cols, MAP.rows);
 }
 
-function quadPoint(a, c, b, u) {
-  const m = 1 - u;
-  return [m * m * a[0] + 2 * m * u * c[0] + u * u * b[0], m * m * a[1] + 2 * m * u * c[1] + u * u * b[1]];
+function strokeLines(ctx, seg, cell) {
+  ctx.beginPath();
+  for (let q = 0; q < seg.length; q += 4) { ctx.moveTo(seg[q] * cell, seg[q + 1] * cell); ctx.lineTo(seg[q + 2] * cell, seg[q + 3] * cell); }
+  ctx.stroke();
 }
 
-let phase = 0;
+function paintField() {
+  const el = $("#eco-field-eq");
+  if (!el || !MAP.src) return;
+  const fams = Object.keys(FAMILIES).map((f) => {
+    const s = MAP.src.find((q) => q.family === f);
+    return s ? `${f} ${s.f.toFixed(3)} Hz, λ ${s.lambda.toFixed(0)} px` : null;
+  }).filter(Boolean);
+  el.textContent =
+    `ψ(x, y, t) = Σᵢ Aᵢ · e^(−dᵢ/ℓᵢ) · cos(k·dᵢ − ω·t + φᵢ) / √(1 + dᵢ/d₀)\n` +
+    `${fams.join("   ")}\n` +
+    `fringes between modules and research drift once every ${beatPeriod("modules", "research").toFixed(1)} s; within a family they stand still`;
+}
+
 function initField() {
   const canvas = $("#eco-field");
   if (!canvas) return;
   scene(canvas, {
     frame(ctx, { t, dt, w, h, pal, reduced: still }) {
-      ctx.clearRect(0, 0, w, h);
-      if (!fieldLayout || fieldW !== Math.round(w) || fieldH !== Math.round(h)) computeField(w, h);
-      if (flowOn && !still) phase += dt;
       const v = mixed();
-      const vmin = Math.min(w, h) / 100;
-      const jit = still ? 0 : S.rest * vmin * 1.2;
-      const wob = (i) => (jit ? Math.sin(phase * 4.3 + i * 1.7) * jit : 0);
-      const harm = flowOn ? 0.07 + 0.03 * Math.sin(phase / 2.6) : 0.05;
+      if (!MAP.src || MAP.w !== Math.round(w) || MAP.h !== Math.round(h) || Math.abs((MAP.density ?? 0) - v.density) > 0.02) {
+        layoutMap(Math.round(w), Math.round(h), v.density);
+        if (!MAP.born) MAP.born = t;
+        paintField();
+      }
+      if (flowOn && !still) waveTime += dt;
+      const age = still ? 99 : t - MAP.born;
+      // The sources settle into place as the map arrives, then each begins to sound.
+      if (MAP.frames && !still) {
+        const k = Math.min(MAP.frames.length - 1, Math.floor(age * 60 / 1.6 * (MAP.frames.length / 66)));
+        const pos = MAP.frames[k];
+        if (k >= MAP.frames.length - 1) MAP.frames = null;
+        else { MAP.src.forEach((s, i) => { s.x = pos[i].x; s.y = pos[i].y; }); MAP.grid = prepareGrid(MAP.src, MAP.cols, MAP.rows, MAP.cell, { d0: MAP.d0 }); }
+      }
+      const order = PLACES.map((p, i) => i).sort((a, b) => PLACES[b].weight - PLACES[a].weight);
+      const speed = Math.hypot(w, h) / FIELD.ARRIVE;
+      const arrive = (s) => (still ? Infinity : (age - 0.5 - order.indexOf(s) * 0.16) * speed);
+      const boost = hoverPlace ? PLACES.findIndex((p) => p.id === hoverPlace) : -1;
+      const rest = S.rest;
+      const jitter = rest > 0.02 ? (s) => rest * 1.4 * Math.sin(waveTime * 2.7 + s * 1.9) : null;
+      sampleGrid(MAP.grid, MAP.src, waveTime, MAP.buf, { boost, jitter, arrive: age < 6 ? arrive : null });
+      // Soft-clip the field so crowded crests do not saturate.
+      const B = MAP.buf;
+      const W = MAP.win;
+      for (let q = 0; q < B.length; q += 1) B[q] = Math.tanh(B[q] * 1.4) * W[q];
+      // The wash: crest colour above zero, trough below.
+      const cr = pal.voiceRgb(0), tr = pal.voiceRgb(1), D = MAP.img.data;
+      const wash = 0.13 + v.contrast * 0.9;
+      for (let q = 0; q < B.length; q += 1) {
+        const x = B[q], c = x >= 0 ? cr : tr, k = q * 4;
+        D[k] = c[0]; D[k + 1] = c[1]; D[k + 2] = c[2];
+        D[k + 3] = Math.round(255 * wash * Math.pow(Math.abs(x), 1.15));
+      }
+      MAP.off.getContext("2d").putImageData(MAP.img, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(MAP.off, 0, 0, MAP.cols * MAP.cell, MAP.rows * MAP.cell);
+      // The threads: nodes in ink, crest and trough lines in their colours.
       const tens = tension();
-      const rings = 2 + Math.round(v.contrast * 20);
       ctx.lineCap = "round";
-      fieldThreads.forEach((e, ei) => {
-        const grow = still ? 1 : smooth((t - 0.6 - ei * 0.12) / 0.9);
-        if (grow <= 0) return;
-        const a = fieldLayout.cells[e.a], b = fieldLayout.cells[e.b];
-        const A = [a.x + wob(e.a), a.y], B = [b.x + wob(e.b), b.y];
-        const C = [(A[0] + B[0]) / 2 - (B[1] - A[1]) * 0.14, (A[1] + B[1]) / 2 + (B[0] - A[0]) * 0.14];
-        ctx.beginPath(); ctx.moveTo(A[0], A[1]);
-        for (let k = 1; k <= 30; k += 1) { const [qx, qy] = quadPoint(A, C, B, (k / 30) * grow); ctx.lineTo(qx, qy); }
-        ctx.strokeStyle = pal.voice(0, 0.45);
-        ctx.lineWidth = 0.6 + tens * 3;
-        ctx.stroke();
-        if (flowOn && !still && grow >= 1) {
-          const u = ((phase / 5.2) + ei * 0.37) % 1;
-          const [qx, qy] = quadPoint(A, C, B, u);
-          ctx.beginPath(); ctx.arc(qx, qy, 2.4, 0, TAU);
-          ctx.fillStyle = pal.voice(0, 0.95); ctx.fill();
+      // Nodes are drawn only where the field is alive, so quiet water stays empty.
+      ctx.lineWidth = 0.6 + tens * 2.2;
+      ctx.strokeStyle = pal.faint; strokeLines(ctx, isolines(B, MAP.cols, MAP.rows, 0, 0.06), MAP.cell);
+      ctx.lineWidth = 0.7 + tens * 1.2;
+      ctx.strokeStyle = pal.crest(0.3); strokeLines(ctx, isolines(B, MAP.cols, MAP.rows, 0.3), MAP.cell);
+      ctx.lineWidth = 0.9 + tens * 1.6;
+      ctx.strokeStyle = pal.crest(0.65); strokeLines(ctx, isolines(B, MAP.cols, MAP.rows, 0.55), MAP.cell);
+      // The sources, with a ring on each outgoing crest near them, and their names.
+      MAP.src.forEach((s, i) => {
+        const place = PLACES[i];
+        const on = arrive(i) > 0;
+        if (!on) return;
+        const active = i === boost;
+        // Outgoing crests near the source; rounding sets how far they carry before fading.
+        const carry = s.lambda * (0.9 + v.rounding * 0.9);
+        for (let n = 0; n < 3; n += 1) {
+          const ring = ((s.omega * waveTime) / TAU % 1 + n) * s.lambda;
+          if (ring > carry) continue;
+          ctx.strokeStyle = pal.crest((active ? 0.95 : 0.55) * (1 - ring / carry) * Math.min(1, ring / (s.lambda * 0.15)));
+          ctx.lineWidth = active ? 1.6 : 1.1;
+          ctx.beginPath(); ctx.arc(s.x, s.y, ring, 0, TAU); ctx.stroke();
         }
-      });
-      fieldLayout.cells.forEach((cell, i) => {
-        const place = PLACES[cell.index];
-        const grow = still ? 1 : smooth((t - i * 0.1) / 0.9);
-        if (grow <= 0) return;
-        const active = hoverPlace === place.id;
-        const cx = cell.x + wob(i), cy = cell.y;
-        const breathe = flowOn && !still ? 1 + Math.sin(phase / 1.9 + i * 0.9) * 0.035 : 1;
-        membrane(ctx, cx, cy, (cell.side / 2) * breathe * grow, v.rounding, harm, i, phase, rings, pal, active);
-        if (grow < 0.6) return;
-        const nameV = clamp(cell.side / Math.max(6.2, place.name.length * 0.66), 11, 26);
-        ctx.globalAlpha = smooth((grow - 0.6) / 0.4);
-        ctx.fillStyle = pal.ink;
+        ctx.fillStyle = place.state === "blocked" ? pal.trough(1) : pal.crest(1);
+        ctx.beginPath(); ctx.arc(s.x, s.y, active ? 5 : 3.6, 0, TAU); ctx.fill();
+        if (place.state === "blocked") { ctx.strokeStyle = pal.trough(0.9); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(s.x, s.y, 8, 0, TAU); ctx.stroke(); }
+        const R = MAP.r[i];
+        const size = Math.max(12, Math.min(24, R * 0.3));
+        const ty = s.y + R * 0.42;
         ctx.textAlign = "center";
-        ctx.font = `700 ${nameV.toFixed(1)}px "Avenir Next", Avenir, Futura, sans-serif`;
-        ctx.fillText(place.name, cx, cy);
-        ctx.font = `${(nameV * 0.56).toFixed(1)}px ui-monospace, monospace`;
-        ctx.fillStyle = pal.muted;
-        ctx.fillText(place.code, cx, cy + nameV * 1.05);
-        ctx.globalAlpha = 1;
+        ctx.lineJoin = "round";
+        ctx.font = `700 ${size.toFixed(1)}px "Avenir Next", Avenir, Futura, sans-serif`;
+        ctx.strokeStyle = pal.bg; ctx.lineWidth = 5; ctx.strokeText(place.name, s.x, ty);
+        ctx.fillStyle = active ? pal.ink : pal.ink2; ctx.fillText(place.name, s.x, ty);
+        ctx.font = `${(size * 0.56).toFixed(1)}px ui-monospace, monospace`;
+        ctx.strokeText(place.code, s.x, ty + size * 1.02);
+        ctx.fillStyle = pal.muted; ctx.fillText(place.code, s.x, ty + size * 1.02);
         ctx.textAlign = "start";
       });
     },
   });
   const placeAt = (ev) => {
-    if (!fieldLayout) return null;
+    if (!MAP.pos) return null;
     const rect = canvas.getBoundingClientRect();
-    const idx = hitTest(fieldLayout, ev.clientX - rect.left, ev.clientY - rect.top);
+    const idx = nearestSource(MAP.src, MAP.r, ev.clientX - rect.left, ev.clientY - rect.top);
     return idx >= 0 ? PLACES[idx] : null;
   };
   canvas.addEventListener("pointermove", (ev) => {
@@ -335,6 +376,7 @@ function initField() {
     const show = () => { hoverPlace = place?.id ?? null; if (place) describe(place); };
     a.addEventListener("focus", show);
     a.addEventListener("pointerenter", show);
+    a.addEventListener("pointerleave", () => { hoverPlace = null; });
   }
   describe(PLACES[0]);
 }
@@ -344,19 +386,20 @@ function initProjection() {
   const project = () => {
     const ar = clamp(window.innerWidth / Math.max(1, window.innerHeight), 0.62, 2.3);
     document.documentElement.style.setProperty("--ar-w", ar.toFixed(3));
-    fieldLayout = null;
   };
   project();
   if (typeof ResizeObserver === "function") new ResizeObserver(project).observe(document.documentElement);
   else window.addEventListener("resize", project);
 }
 
+const BADGE = { main: "Main", open: "Open", blocked: "Blocked", closed: "Closed" };
+
 function renderRecord() {
-  const onMain = PLACES.filter((p) => p.badge === "main").length;
-  const approved = PLACES.filter((p) => p.badge === "approved").length;
-  const blocked = PLACES.filter((p) => p.badge === "blocked").length;
+  const count = (k) => PLACES.filter((p) => p.state === k).length;
   const status = $("#eco-status");
-  if (status) status.textContent = `${PLACES.length} places: ${onMain} on the main branch, ${approved} approved in review, ${blocked} blocked, its blockers named. Counted from the data on this page.`;
+  if (status) status.textContent = `${PLACES.length} places as of ${AS_OF}: ${count("main")} on the main branch, ${count("open")} in review, ${count("blocked")} blocked with its blockers named. Counted from the data on this page.`;
+  const asOf = $("#eco-as-of");
+  if (asOf) asOf.textContent = AS_OF;
   const body = $("#eco-record-body");
   if (!body) return;
   for (const row of RECORD) {
@@ -364,7 +407,7 @@ function renderRecord() {
     const tdWork = document.createElement("td"); tdWork.textContent = row.work;
     const tdState = document.createElement("td");
     const badge = document.createElement("span"); badge.className = `eco-badge ${row.badge}`;
-    badge.textContent = row.badge === "main" ? "Main" : row.badge === "approved" ? "Approved" : "Blocked";
+    badge.textContent = BADGE[row.badge] || row.badge;
     tdState.append(badge, document.createElement("br"), document.createTextNode(row.state));
     const tdHow = document.createElement("td"); tdHow.textContent = row.how;
     tr.append(tdWork, tdState, tdHow);

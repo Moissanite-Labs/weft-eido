@@ -84,7 +84,7 @@ Level changes animate on the passages that are on screen:
 
 1. Both versions are split into words. A longest-common-subsequence diff (`keepers`) finds the words they share.
 2. Words that go are struck through in red (0 ms), then collapse to zero width (380 ms).
-3. The new text replaces the old (900 ms). New words grow in with a gold tint, then settle to the text colour (1.5 s).
+3. The new text replaces the old (900 ms). New words grow in tinted with the accent, then settle to the text colour (1.5 s).
 4. The final markup is set at 2.6 s.
 
 Words compare lower-case with punctuation removed (`wordKey`). Passages off screen, or inside folded sections, switch without animation. Folding to TL;DR fades the new layout in over 0.6 s. The module also keeps what is at the top of the screen in place while text above changes length.
@@ -287,7 +287,7 @@ What is kept in `localStorage` (with the default prefix): `eido-condense:<pathna
 | `.cx-eli5`, `.cx-eli5-f`, `.cx-eli5-slot`, `.cx-eli5-float` | The ELI5 button, the floating copy, and their containers. |
 | `.cx-ui`, `.cx-ladder`, `.cx-rung`, `.cx-badge`, `.cx-map` | The panel. Its chrome (`.attn-*`) comes from `reading-weave.css`. |
 
-Tokens: `--eido-ink`, `--eido-muted`, `--eido-paper`, `--eido-line`, `--eido-accent` (the gold tint, the ≈ and the active rung), `--eido-strike` (struck words), `--eido-font-ui`, `--eido-radius`. `condense.css` gives them low-priority defaults and a dark scheme under `prefers-color-scheme`; set them on `:root` to override.
+Tokens: `--eido-ink`, `--eido-muted`, `--eido-paper`, `--eido-line`, `--eido-accent` (the tint of new words, the ≈ and the active rung), `--eido-strike` (struck words), `--eido-font-ui`, `--eido-radius`. `condense.css` gives them low-priority defaults and a dark scheme under `prefers-color-scheme`; set them on `:root` to override.
 
 ## 13. Review parameters
 

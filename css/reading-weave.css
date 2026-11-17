@@ -1,34 +1,37 @@
 /* Reading weave: rewards reading, resists skimming (src/reading-weave.js).
    Theme it with the --eido-* custom properties below. Dark mode follows
-   prefers-color-scheme, or set data-theme="light" / "dark" on <html>. */
+   prefers-color-scheme, or set data-theme="light" / "dark" on <html>.
+   Defaults are Eido's tide palette: ink on warm paper, or pale ink on deep
+   ink-navy, with a sea-glass crest and a coral trough. */
 
 :root {
-  --eido-ink: #1d1b16;
-  --eido-muted: #6b665a;
-  --eido-paper: #fbf9f4;
-  --eido-line: #d9d4c6;
-  --eido-accent: #b8923a;
-  --eido-strike: #c0553d;
+  --eido-ink: #102135;
+  --eido-muted: #586474;
+  --eido-paper: #faf5eb;
+  --eido-line: #d5d3ce;
+  --eido-accent: #007f80;
+  --eido-strike: #c0544d;
   --eido-font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --eido-radius: 10px;
+  --eido-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --eido-radius: 0.9rem;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --eido-ink: #ece8dc;
-    --eido-muted: #a39e90;
-    --eido-paper: #1a1914;
-    --eido-line: #36342b;
-    --eido-accent: #d9c7a0;
-    --eido-strike: #e08f7a;
+    --eido-ink: #eef4fc;
+    --eido-muted: #8d9aaa;
+    --eido-paper: #070f19;
+    --eido-line: #313842;
+    --eido-accent: #4be4e5;
+    --eido-strike: #ff9086;
   }
 }
 :root[data-theme="dark"] {
-  --eido-ink: #ece8dc;
-  --eido-muted: #a39e90;
-  --eido-paper: #1a1914;
-  --eido-line: #36342b;
-  --eido-accent: #d9c7a0;
-  --eido-strike: #e08f7a;
+  --eido-ink: #eef4fc;
+  --eido-muted: #8d9aaa;
+  --eido-paper: #070f19;
+  --eido-line: #313842;
+  --eido-accent: #4be4e5;
+  --eido-strike: #ff9086;
 }
 
 /* ---------- Words, links and waves ---------- */
@@ -40,95 +43,106 @@ html.attn-blurry .attn-block { filter: blur(var(--attn-blur, 0px)); }
 /* A thread woven beside each paragraph that was actually read. */
 .attn-block.attn-read { position: relative; }
 .attn-block.attn-read::before {
-  content: ""; position: absolute; left: -14px; top: 0.2em; bottom: 0.2em; width: 2px; border-radius: 2px;
+  content: ""; position: absolute; left: -0.9rem; top: 0.2em; bottom: 0.2em; width: 0.125rem; border-radius: 0.125rem;
   background: linear-gradient(180deg, transparent, var(--eido-accent) 18%, var(--eido-accent) 82%, transparent);
   opacity: 0.75; transform-origin: top; animation: attn-weave 1.4s cubic-bezier(.2, .7, .2, 1) both;
 }
 @keyframes attn-weave { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 0.75; } }
 html.attn-off .attn-block.attn-read::before { display: none; }
 
-/* ---------- The panel: bottom right, above the page and its waves ---------- */
+/* ---------- The panel: bottom right, a pane of glass over the page ----------
+   No card: a translucent pane with a hairline edge, small type, numbers in
+   monospace, and a meter drawn as a wave that fills from calm to restless. */
 .attn-ui {
-  position: fixed; right: 16px; bottom: 16px; z-index: 60;
-  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
-  width: min(300px, calc(100vw - 32px)); pointer-events: none;
-  font: 0.86rem/1.45 var(--eido-font-ui); color: var(--eido-muted);
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 60;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem;
+  width: min(18.5rem, calc(100vw - 2rem)); pointer-events: none;
+  font: 0.84rem/1.45 var(--eido-font-ui); color: var(--eido-muted);
 }
 /* Mounted inside an element (panel: element): positioned within it, not the viewport. */
-.attn-ui--contained { position: absolute; width: min(300px, calc(100% - 32px)); }
+.attn-ui--contained { position: absolute; width: min(18.5rem, calc(100% - 2rem)); }
 .attn-ui > * { pointer-events: auto; }
 .attn-ui [hidden] { display: none !important; }
 .attn-panel, .attn-pop {
-  width: 100%; box-sizing: border-box; background: color-mix(in srgb, var(--eido-paper) 94%, transparent);
-  border: 1px solid var(--eido-line); border-radius: var(--eido-radius); box-shadow: 0 10px 30px rgb(0 0 0 / 0.18);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  width: 100%; box-sizing: border-box;
+  background: color-mix(in srgb, var(--eido-paper) 72%, transparent);
+  border: 0; border-radius: var(--eido-radius);
+  box-shadow: inset 0 0 0 0.0625rem color-mix(in srgb, var(--eido-line) 80%, transparent), 0 0.75rem 2.5rem -1.25rem rgb(0 0 0 / 0.35);
+  backdrop-filter: blur(0.9rem) saturate(1.3); -webkit-backdrop-filter: blur(0.9rem) saturate(1.3);
 }
-.attn-panel { padding: 10px 12px 12px; }
-.attn-head { display: flex; align-items: center; gap: 2px; margin-bottom: 6px; }
-.attn-title { flex: 1; font-weight: 600; color: var(--eido-ink); letter-spacing: 0.01em; }
+.attn-panel { padding: 0.6rem 0.8rem 0.75rem; }
+.attn-head { display: flex; align-items: center; gap: 0.1rem; margin-bottom: 0.3rem; }
+.attn-title { flex: 1; font: 600 0.7rem/1 var(--eido-font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--eido-accent); }
 .attn-icon {
-  display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0;
-  border: 0; border-radius: 6px; background: transparent; color: var(--eido-muted); cursor: pointer;
+  display: inline-grid; place-items: center; width: 1.75rem; height: 1.75rem; padding: 0;
+  border: 0; border-radius: 99rem; background: transparent; color: var(--eido-muted); cursor: pointer;
 }
-.attn-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.attn-icon:hover, .attn-icon:focus-visible { background: color-mix(in srgb, var(--eido-ink) 9%, transparent); color: var(--eido-ink); }
+.attn-icon svg { width: 0.95rem; height: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.attn-icon:hover, .attn-icon:focus-visible { background: color-mix(in srgb, var(--eido-accent) 14%, transparent); color: var(--eido-ink); }
 .attn-x-wrap { position: relative; display: inline-grid; }
 .attn-tip {
-  position: absolute; right: 0; bottom: calc(100% + 8px); white-space: nowrap;
-  padding: 5px 9px; border-radius: 6px; font-size: 0.78rem;
-  background: var(--eido-ink); color: var(--eido-paper); opacity: 0; transform: translateY(3px);
+  position: absolute; right: 0; bottom: calc(100% + 0.5rem); white-space: nowrap;
+  padding: 0.3rem 0.6rem; border-radius: 99rem; font-size: 0.76rem;
+  background: var(--eido-ink); color: var(--eido-paper); opacity: 0; transform: translateY(0.2rem);
   transition: opacity 0.15s, transform 0.15s; pointer-events: none;
 }
 .attn-x-wrap:hover .attn-tip, .attn-x:focus-visible + .attn-tip { opacity: 1; transform: none; }
 .attn-x:hover { color: var(--eido-strike); }
-.attn-status { margin: 0 0 8px; color: var(--eido-ink); }
-.attn-meter { height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--eido-ink) 9%, transparent); overflow: hidden; }
+.attn-status { margin: 0 0 0.45rem; color: var(--eido-ink); }
+/* The meter is a wave: the track and its fill are masked by one repeating crest. */
+.attn-meter {
+  height: 0.6rem; overflow: hidden;
+  background: color-mix(in srgb, var(--eido-ink) 16%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 10' preserveAspectRatio='none'%3E%3Cpath d='M0 5 Q6 0.8 12 5 T24 5' fill='none' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E") repeat-x left center / 1.5rem 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 10' preserveAspectRatio='none'%3E%3Cpath d='M0 5 Q6 0.8 12 5 T24 5' fill='none' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E") repeat-x left center / 1.5rem 100%;
+}
 .attn-meter span {
   display: block; height: 100%; transform-origin: left; transform: scaleX(0); transition: transform 0.3s;
-  background: linear-gradient(90deg, var(--eido-muted), var(--eido-accent) 55%, var(--eido-strike));
-  background-size: 300px 100%;
+  background: linear-gradient(90deg, var(--eido-accent), color-mix(in srgb, var(--eido-accent) 45%, var(--eido-strike)) 60%, var(--eido-strike));
+  background-size: 18.5rem 100%;
 }
-.attn-stats { display: flex; gap: 18px; margin: 9px 0 0; font-size: 0.8rem; }
-.attn-stats div { display: flex; gap: 6px; }
+.attn-stats { display: flex; flex-wrap: wrap; gap: 0.15rem 1rem; margin: 0.5rem 0 0; font-size: 0.76rem; }
+.attn-stats div { display: flex; gap: 0.35rem; align-items: baseline; }
 .attn-stats dt { color: var(--eido-muted); }
-.attn-stats dd { margin: 0; color: var(--eido-ink); }
+.attn-stats dd { margin: 0; color: var(--eido-ink); font-family: var(--eido-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .attn-on {
-  margin-top: 10px; width: 100%; min-height: 32px; border-radius: 6px; cursor: pointer;
-  border: 1px solid var(--eido-line); background: color-mix(in srgb, var(--eido-ink) 9%, transparent); color: var(--eido-ink); font: inherit;
+  margin-top: 0.6rem; width: 100%; min-height: 2rem; border-radius: 99rem; cursor: pointer;
+  border: 0; box-shadow: inset 0 0 0 0.0625rem var(--eido-line); background: transparent; color: var(--eido-ink); font: inherit;
 }
-.attn-on:hover { border-color: var(--eido-accent); }
-.attn-debug { margin: 10px 0 0; font: 10.5px/1.5 ui-monospace, monospace; color: var(--eido-muted); white-space: pre; }
+.attn-on:hover { box-shadow: inset 0 0 0 0.0625rem var(--eido-accent); }
+.attn-debug { margin: 0.6rem 0 0; font: 0.66rem/1.5 var(--eido-font-mono); color: var(--eido-muted); white-space: pre; }
 .attn-dock {
-  width: 42px; height: 42px; border-radius: 50%; padding: 0; cursor: pointer;
+  width: 2.6rem; height: 2.6rem; border-radius: 50%; padding: 0; cursor: pointer;
   display: grid; place-items: center; color: var(--eido-accent);
-  border: 1px solid var(--eido-line); background: color-mix(in srgb, var(--eido-paper) 94%, transparent);
-  box-shadow: 0 6px 20px rgb(0 0 0 / 0.16);
+  border: 0; box-shadow: inset 0 0 0 0.0625rem var(--eido-line);
+  background: color-mix(in srgb, var(--eido-paper) 72%, transparent);
+  backdrop-filter: blur(0.6rem); -webkit-backdrop-filter: blur(0.6rem);
 }
-.attn-dock svg { width: 22px; height: 22px; }
-.attn-dock:hover { border-color: var(--eido-accent); }
+.attn-dock svg { width: 1.3rem; height: 1.3rem; }
+.attn-dock:hover { box-shadow: inset 0 0 0 0.0625rem var(--eido-accent); }
 html.attn-off .attn-dock { color: var(--eido-muted); }
 
 /* The warning: a ? that rises once the effects get in the way. */
 .attn-warn {
-  width: 38px; height: 38px; border-radius: 50%; padding: 0; cursor: pointer;
-  font: 700 1.1rem/1 var(--eido-font-ui); color: #1a1408;
+  width: 2.4rem; height: 2.4rem; border-radius: 50%; padding: 0; cursor: pointer;
+  font: 700 1.05rem/1 var(--eido-font-ui); color: var(--eido-paper);
   border: 0; background: var(--eido-accent); box-shadow: 0 0 0 0 color-mix(in srgb, var(--eido-accent) 60%, transparent);
   animation: attn-rise 0.35s ease-out, attn-pulse 1.8s ease-out 0.35s infinite;
 }
-@keyframes attn-rise { from { transform: translateY(8px) scale(0.8); opacity: 0; } }
+@keyframes attn-rise { from { transform: translateY(0.5rem) scale(0.8); opacity: 0; } }
 @keyframes attn-pulse {
   0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--eido-accent) 55%, transparent); }
-  100% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--eido-accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0.9rem color-mix(in srgb, var(--eido-accent) 0%, transparent); }
 }
-.attn-pop { position: relative; padding: 14px 16px 14px; max-height: min(70vh, 520px); overflow: auto; }
-.attn-pop h2 { font-size: 1rem; margin: 0 30px 8px 0; color: var(--eido-ink); }
-.attn-pop h3 { font-size: 0.84rem; margin: 12px 0 2px; color: var(--eido-ink); letter-spacing: 0.02em; }
-.attn-pop p { margin: 0 0 8px; }
+.attn-pop { position: relative; padding: 0.9rem 1rem; max-height: min(70vh, 32rem); overflow: auto; }
+.attn-pop h2 { font-size: 0.98rem; margin: 0 1.9rem 0.5rem 0; color: var(--eido-ink); }
+.attn-pop h3 { font: 600 0.7rem var(--eido-font-mono); margin: 0.8rem 0 0.15rem; color: var(--eido-accent); letter-spacing: 0.1em; text-transform: uppercase; }
+.attn-pop p { margin: 0 0 0.5rem; }
 .attn-pop-foot { color: var(--eido-ink); }
-.attn-pop-close { position: absolute; top: 8px; right: 8px; }
+.attn-pop-close { position: absolute; top: 0.5rem; right: 0.5rem; }
 .attn-kbd {
-  display: inline-grid; place-items: center; min-width: 1.4em; height: 1.4em; border-radius: 4px;
-  border: 1px solid var(--eido-line); background: color-mix(in srgb, var(--eido-ink) 9%, transparent); font-weight: 600; line-height: 1;
+  display: inline-grid; place-items: center; min-width: 1.4em; height: 1.4em; border-radius: 99rem;
+  border: 0; box-shadow: inset 0 0 0 0.0625rem var(--eido-line); background: transparent; font-weight: 600; line-height: 1;
 }
 /* While the warning is open, point at the × that switches the effects off. */
 .attn-point-x .attn-x { color: var(--eido-strike); animation: attn-point 1.2s ease-in-out infinite; }

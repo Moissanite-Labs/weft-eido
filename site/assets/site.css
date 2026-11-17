@@ -7,29 +7,39 @@
 
 @view-transition { navigation: auto; }
 
+/* The tide palette. Colour is set in OKLCH so equal steps look equal, and
+   everything turns with one number, --eco-hue (the crest). The trough sits
+   190° round the circle and the node at −112°; ink and ground lean toward
+   +58°. loom-core.js computes the same colours for every canvas. */
 :root {
-  --eco-hue: 25;
-  --bg: hsl(var(--eco-hue) 28% 6%);
-  --bg-2: hsl(var(--eco-hue) 26% 9%);
-  --surface: hsl(var(--eco-hue) 24% 11%);
-  --surface-2: hsl(var(--eco-hue) 24% 15%);
-  --ink: hsl(var(--eco-hue) 30% 95%);
-  --ink-2: hsl(var(--eco-hue) 18% 82%);
-  --muted: hsl(var(--eco-hue) 14% 64%);
-  --line: hsl(var(--eco-hue) 40% 80% / 0.14);
-  --line-2: hsl(var(--eco-hue) 40% 80% / 0.28);
-  --accent: hsl(var(--eco-hue) 72% 72%);
-  --accent-strong: hsl(var(--eco-hue) 75% 82%);
-  --accent-2: hsl(calc(var(--eco-hue) + 42) 60% 70%);
-  --link: hsl(var(--eco-hue) 70% 78%);
-  --code-bg: hsl(var(--eco-hue) 28% 10% / 0.72);
-  --code-line: hsl(var(--eco-hue) 40% 80% / 0.14);
-  --code-ink: hsl(var(--eco-hue) 40% 84%);
-  --ok: hsl(calc(var(--eco-hue) + 140) 40% 72%);
-  --alert: hsl(calc(var(--eco-hue) + 20) 70% 76%);
-  --alert-soft: hsl(calc(var(--eco-hue) + 20) 70% 60% / 0.12);
-  --alert-line: hsl(calc(var(--eco-hue) + 20) 70% 70% / 0.5);
-  --gold-flat: hsl(var(--eco-hue) 70% 66%);
+  --eco-hue: 196;
+  --h-crest: var(--eco-hue);
+  --h-trough: calc(var(--eco-hue) + 190);
+  --h-node: calc(var(--eco-hue) - 112);
+  --h-ink: calc(var(--eco-hue) + 58);
+  --bg: oklch(0.165 0.026 var(--h-ink));
+  --bg-2: oklch(0.2 0.028 var(--h-ink));
+  --surface: oklch(0.22 0.03 var(--h-ink));
+  --surface-2: oklch(0.26 0.032 var(--h-ink));
+  --ink: oklch(0.965 0.012 var(--h-ink));
+  --ink-2: oklch(0.86 0.02 var(--h-ink));
+  --muted: oklch(0.68 0.028 var(--h-ink));
+  --line: oklch(0.965 0.012 var(--h-ink) / 0.13);
+  --line-2: oklch(0.965 0.012 var(--h-ink) / 0.26);
+  --accent: oklch(0.84 0.125 var(--h-crest));
+  --accent-strong: oklch(0.92 0.085 var(--h-crest));
+  --accent-2: oklch(0.77 0.145 var(--h-trough));
+  --accent-3: oklch(0.88 0.105 var(--h-node));
+  --wash: oklch(0.84 0.125 var(--h-crest) / 0.14);
+  --link: oklch(0.87 0.1 var(--h-crest));
+  --code-bg: oklch(0.21 0.03 var(--h-ink) / 0.72);
+  --code-line: oklch(0.965 0.012 var(--h-ink) / 0.12);
+  --code-ink: oklch(0.88 0.045 var(--h-crest));
+  --ok: oklch(0.86 0.11 calc(var(--eco-hue) - 48));
+  --alert: oklch(0.8 0.13 var(--h-trough));
+  --alert-soft: oklch(0.77 0.145 var(--h-trough) / 0.12);
+  --alert-line: oklch(0.77 0.145 var(--h-trough) / 0.5);
+  --gold-flat: oklch(0.86 0.11 var(--h-node));
   color-scheme: dark;
 
   --font-display: "Avenir Next", Avenir, Futura, "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
@@ -44,28 +54,31 @@
   --breath: clamp(3.5rem, 2rem + 7vh, 7rem);
 }
 
+/* Light: ink on warm paper. The ground takes the node's hue. */
 :root[data-theme="light"] {
-  --bg: hsl(var(--eco-hue) 45% 97%);
-  --bg-2: hsl(var(--eco-hue) 42% 93%);
-  --surface: hsl(var(--eco-hue) 50% 99%);
-  --surface-2: hsl(var(--eco-hue) 42% 95%);
-  --ink: hsl(var(--eco-hue) 35% 13%);
-  --ink-2: hsl(var(--eco-hue) 28% 24%);
-  --muted: hsl(var(--eco-hue) 18% 40%);
-  --line: hsl(var(--eco-hue) 30% 30% / 0.14);
-  --line-2: hsl(var(--eco-hue) 30% 30% / 0.3);
-  --accent: hsl(var(--eco-hue) 62% 34%);
-  --accent-strong: hsl(var(--eco-hue) 65% 24%);
-  --accent-2: hsl(calc(var(--eco-hue) + 42) 55% 34%);
-  --link: hsl(var(--eco-hue) 62% 32%);
-  --code-bg: hsl(var(--eco-hue) 42% 94% / 0.8);
-  --code-line: hsl(var(--eco-hue) 30% 30% / 0.14);
-  --code-ink: hsl(var(--eco-hue) 45% 24%);
-  --ok: hsl(calc(var(--eco-hue) + 140) 45% 28%);
-  --alert: hsl(calc(var(--eco-hue) + 20) 60% 30%);
-  --alert-soft: hsl(calc(var(--eco-hue) + 20) 70% 50% / 0.08);
-  --alert-line: hsl(calc(var(--eco-hue) + 20) 50% 40% / 0.45);
-  --gold-flat: hsl(var(--eco-hue) 62% 40%);
+  --bg: oklch(0.972 0.014 var(--h-node));
+  --bg-2: oklch(0.945 0.016 var(--h-node));
+  --surface: oklch(0.99 0.008 var(--h-node));
+  --surface-2: oklch(0.955 0.014 var(--h-node));
+  --ink: oklch(0.245 0.045 var(--h-ink));
+  --ink-2: oklch(0.36 0.04 var(--h-ink));
+  --muted: oklch(0.5 0.03 var(--h-ink));
+  --line: oklch(0.245 0.045 var(--h-ink) / 0.13);
+  --line-2: oklch(0.245 0.045 var(--h-ink) / 0.28);
+  --accent: oklch(0.54 0.12 var(--h-crest));
+  --accent-strong: oklch(0.42 0.1 var(--h-crest));
+  --accent-2: oklch(0.58 0.145 var(--h-trough));
+  --accent-3: oklch(0.52 0.1 var(--h-node));
+  --wash: oklch(0.54 0.12 var(--h-crest) / 0.1);
+  --link: oklch(0.47 0.11 var(--h-crest));
+  --code-bg: oklch(0.94 0.016 var(--h-node) / 0.85);
+  --code-line: oklch(0.245 0.045 var(--h-ink) / 0.12);
+  --code-ink: oklch(0.36 0.07 var(--h-crest));
+  --ok: oklch(0.48 0.1 calc(var(--eco-hue) - 48));
+  --alert: oklch(0.5 0.14 var(--h-trough));
+  --alert-soft: oklch(0.58 0.145 var(--h-trough) / 0.08);
+  --alert-line: oklch(0.58 0.145 var(--h-trough) / 0.45);
+  --gold-flat: oklch(0.52 0.1 var(--h-node));
   color-scheme: light;
 }
 
@@ -76,8 +89,8 @@ body {
   margin: 0;
   color: var(--ink-2);
   background:
-    radial-gradient(70% 50% at 12% -6%, hsl(var(--eco-hue) 70% 55% / 0.1), transparent 72%),
-    radial-gradient(60% 46% at 96% 4%, hsl(calc(var(--eco-hue) + 42) 65% 55% / 0.07), transparent 72%),
+    radial-gradient(70% 50% at 8% -8%, oklch(0.7 0.12 var(--h-crest) / 0.11), transparent 72%),
+    radial-gradient(60% 50% at 100% 108%, oklch(0.7 0.13 var(--h-trough) / 0.07), transparent 72%),
     var(--bg);
   background-attachment: fixed;
   font: 400 1.0625rem/1.65 var(--font-body);
@@ -171,7 +184,7 @@ main p, main li { max-inline-size: var(--measure); }
   transition: box-shadow 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 .btn:hover, .chip:hover { color: var(--ink); box-shadow: inset 0 0 0 var(--hair) var(--accent); }
-.btn[aria-pressed="true"], .chip[aria-pressed="true"], .btn-primary { color: var(--ink); background: hsl(var(--eco-hue) 70% 60% / 0.16); box-shadow: inset 0 0 0 var(--hair) var(--accent); }
+.btn[aria-pressed="true"], .chip[aria-pressed="true"], .btn-primary { color: var(--ink); background: var(--wash); box-shadow: inset 0 0 0 var(--hair) var(--accent); }
 .btn.small, .chip { min-block-size: 2.1rem; padding-inline: 0.8rem; font-size: 0.84rem; }
 .chip { font-family: var(--font-mono); font-weight: 500; }
 html.reduced-motion :is(.btn, .chip) { transition: none; }
@@ -231,6 +244,7 @@ table.api td:first-child { white-space: nowrap; }
 .article p, .article li { color: var(--ink-2); }
 .article li { margin-block-end: 0.4em; }
 .article :is(p.src, em.src) { font-size: 0.95rem; color: var(--muted); }
+.principle-glyph { inline-size: 7rem; block-size: 3.6rem; margin-block: -0.4rem -0.2rem; }
 .toc { font-size: 0.92rem; padding-inline-start: 1rem; box-shadow: inset var(--hair) 0 0 var(--line-2); }
 .toc ol { margin-block-start: 0.4rem; }
 
@@ -240,7 +254,7 @@ table.api td:first-child { white-space: nowrap; }
 .mixer > * { min-inline-size: 0; inline-size: 100%; }
 .simplex-pad { inline-size: min(52vmin, 100%); block-size: auto; aspect-ratio: 1; touch-action: none; cursor: crosshair; margin-inline: auto; }
 .simplex-guide { stroke: var(--line-2); stroke-width: 0.6; }
-.simplex-edge { fill: hsl(var(--eco-hue) 70% 60% / 0.05); stroke: var(--ink-2); stroke-width: 1.1; }
+.simplex-edge { fill: var(--wash); stroke: var(--ink-2); stroke-width: 1.1; }
 .simplex-vertex { fill: var(--accent); stroke: var(--bg); stroke-width: 1; }
 .simplex-label { fill: var(--muted); font: 0.6875rem var(--font-mono); }
 .simplex-spoke { stroke: var(--accent); stroke-width: 1.2; }
@@ -267,7 +281,7 @@ html.reduced-motion .preview { transition: none; }
 .research-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
 .segmented { display: inline-flex; gap: 0.15rem; padding: 0.2rem; border-radius: 99rem; box-shadow: inset 0 0 0 var(--hair) var(--line-2); }
 .segmented button { border: 0; border-radius: 99rem; padding: 0.45rem 0.8rem; color: var(--muted); background: transparent; font: 600 0.82rem var(--font-body); cursor: pointer; }
-.segmented button.is-active { background: hsl(var(--eco-hue) 70% 60% / 0.16); color: var(--ink); }
+.segmented button.is-active { background: var(--wash); color: var(--ink); }
 .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: 0.4rem 1.6rem; }
 .kpi { min-inline-size: 0; padding-block: 0.4rem; box-shadow: inset 0 calc(-1 * var(--hair)) var(--line); }
 .kpi-label { display: block; color: var(--muted); font-size: 0.78rem; }
@@ -316,12 +330,11 @@ html:root[data-theme] {
   --eido-muted: var(--muted);
   --eido-paper: var(--surface);
   --eido-line: var(--line-2);
-  --eido-accent: var(--gold-flat);
-  --eido-strike: hsl(10 70% 66%);
+  --eido-accent: var(--accent);
+  --eido-strike: var(--accent-2);
   --eido-font-ui: var(--font-body);
   --eido-radius: var(--radius);
 }
-html:root[data-theme="light"] { --eido-strike: hsl(10 60% 40%); }
 
 /* Condensing state hooks (src/condense.js). */
 .cx-editing { user-select: none; }

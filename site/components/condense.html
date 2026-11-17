@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Condensing prose · Eido</title>
   <meta name="description" content="An article that condenses level by level as the reader skims.">
-  <meta name="theme-color" content="#090d0f">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#070f19">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070f19'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%234be4e5' stroke-width='2'/%3E%3Cpath d='M5 16C8.7 7.8 12.3 7.8 16 16s7.3 8.2 11 0' fill='none' stroke='%23ff9086' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="stylesheet" href="../../css/reading-weave.css">
   <link rel="stylesheet" href="../../css/condense.css">
@@ -17,19 +17,17 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <nav class="weft-nav" aria-label="Main">
-    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="16" cy="16" r="12.6"/><path d="M3.4 16C7.6 6.6 11.8 6.6 16 16s8.4 9.4 12.6 0"/><circle cx="16" cy="16" r="2.3" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
     <a href="../philosophy.html">Philosophy</a>
     <a href="../components/index.html" aria-current="true">Components</a>
     <a href="../causal-harmonic/index.html">Harmonic</a>
+    <a href="../research/index.html">Research</a>
     <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
     <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
   </nav>
   <main id="main">
     <header class="opening"><p class="eyebrow">Component · D6</p><h1 id="t">Condensing prose</h1><p class="lede">Skim, and the writing gets shorter: concise, then terse, then caveman, then one line per section. Read, and it stays as written.</p></header>
-      <p class="crumbs"><a href="index.html">Components</a> / Condensing prose</p>
-      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>On a long page, most visitors skim. Condensing prose gives them a shorter page without asking. It watches the reading score from the <a href="reading-weave.html">reading weave</a>. When the score says the reader is skimming, it swaps passages the reader has not read for shorter versions.</p>
-<p>It never writes text on its own. Every shorter version was written by the author ahead of time and sits in a <code>condensed.json</code> file beside the page. Condensed passages end with ≈, and pressing and holding one shows the original. Print always shows the full text. Only the reader can loosen it again.</p><p>Principle: <a href="../philosophy.html#d6">D6 · Text that answers how it is read</a>.</p></section>
-      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="demo"><p>Skim the box fast, or pick a level yourself. Each level is written ahead of time.</p>
+      <section class="movement" aria-labelledby="demo"><h2 id="demo" class="visually-hidden">Try it</h2><div class="demo"><p>Skim the box fast, or pick a level yourself. Each level is written ahead of time.</p>
 <div class="controls" role="group" aria-label="Level" id="cx-levels"></div>
 <div class="controls"><button class="btn small" type="button" id="cx-restart">Restart (destroy, then set up again)</button></div>
 <div class="scrollbox-wrap" id="cx-wrap"><div class="scrollbox" id="cx-box" tabindex="0" role="region" aria-label="Demo article, scrollable">
@@ -40,6 +38,8 @@
 
           
         </section>
+      <section aria-labelledby="what"><h2 id="what">How it works</h2><p>On a long page, most visitors skim. Condensing prose gives them a shorter page without asking. It watches the reading score from the <a href="reading-weave.html">reading weave</a>. When the score says the reader is skimming, it swaps passages the reader has not read for shorter versions.</p>
+<p>It never writes text on its own. Every shorter version was written by the author ahead of time and sits in a <code>condensed.json</code> file beside the page. Condensed passages end with ≈, and pressing and holding one shows the original. Print always shows the full text. Only the reader can loosen it again.</p><p>Principle: <a href="../philosophy.html#d6">D6 · Text that answers how it is read</a>.</p></section>
 
 <section id="the-problem" class="level2">
 <h2>1. The problem</h2>

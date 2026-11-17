@@ -20,11 +20,13 @@ loom renderer) is built on these modules and lives in
 
 **See it working:** the [Eido site](https://moissanite-labs.github.io/weft-eido/) runs every module on itself, and draws
 itself while you watch. One runtime, [`site/assets/loom.js`](site/assets/loom.js), is shared by every page: a weft of
-threads behind the text that moves as a printed sum of harmonics, blocks that unfold exactly where a wavefront reaches
-them, titles first assembled from the 5×7 glyph bits, and one animation frame for every live figure. Each component
-has an isolated demo, its options, and its source with a copy button. The harmonic pages compute their mathematics
-(chords, roughness, Kuramoto locking, Arnold tongues, a tensioned plate, a provenance projector) live in the browser
-rather than framing the uploaded files.
+threads behind the text that moves as a printed sum of harmonics (crest-coloured where a thread rides up, trough-coloured
+where it dips), blocks that unfold exactly where a wavefront reaches them, titles first assembled from the 5×7 glyph
+bits, and one animation frame for every live figure. Colour is one palette in OKLCH, turned by a single hue that the
+style point on the home page sets. The home page's map treats every line of work as a wave source: related work shares
+a frequency, so the fringes between it stand still. Each component has a live demo, its options, and its source with a
+copy button. The harmonic and research pages compute their mathematics live in the browser rather than framing the
+uploaded files, which stay untouched under [`examples/`](examples/).
 
 ## Modules
 

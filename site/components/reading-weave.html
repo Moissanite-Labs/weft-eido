@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reading weave · Eido</title>
   <meta name="description" content="A page that rewards reading and resists skimming.">
-  <meta name="theme-color" content="#090d0f">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#070f19">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070f19'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%234be4e5' stroke-width='2'/%3E%3Cpath d='M5 16C8.7 7.8 12.3 7.8 16 16s7.3 8.2 11 0' fill='none' stroke='%23ff9086' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="stylesheet" href="../../css/reading-weave.css">
   <script src="../assets/theme.js"></script>
@@ -15,19 +15,17 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <nav class="weft-nav" aria-label="Main">
-    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="16" cy="16" r="12.6"/><path d="M3.4 16C7.6 6.6 11.8 6.6 16 16s8.4 9.4 12.6 0"/><circle cx="16" cy="16" r="2.3" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
     <a href="../philosophy.html">Philosophy</a>
     <a href="../components/index.html" aria-current="true">Components</a>
     <a href="../causal-harmonic/index.html">Harmonic</a>
+    <a href="../research/index.html">Research</a>
     <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
     <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
   </nav>
   <main id="main">
     <header class="opening"><p class="eyebrow">Component · D6</p><h1 id="t">Reading weave</h1><p class="lede">The page notices when you skim and answers inside limits you can see. Words ripple. Reading calms them.</p></header>
-      <p class="crumbs"><a href="index.html">Components</a> / Reading weave</p>
-      <section aria-labelledby="what"><h2 id="what">What it is</h2><p>The module watches how a visitor reads and keeps one number, a restlessness score from 0 to 1. Skimming raises it and reading lowers it. The score drives waves that pass through the text, links that drift away from a hurried cursor, and a thin gold thread beside every paragraph that was actually read.</p>
-<p>The page never blocks anything and never hides text. A panel shows the score and has an off switch that is remembered. The focused element never moves, displacement is capped, and nothing moves under <code>prefers-reduced-motion</code>. Everything is measured in the browser.</p><p>Principle: <a href="../philosophy.html#d6">D6 · Text that answers how it is read</a>.</p></section>
-      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="demo"><p>Scroll the box below fast, or read it slowly, and watch the panel at its bottom right.</p>
+      <section class="movement" aria-labelledby="demo"><h2 id="demo" class="visually-hidden">Try it</h2><div class="demo"><p>Scroll the box below fast, or read it slowly, and watch the panel at its bottom right.</p>
 <div class="controls">
   <button class="btn small" type="button" id="rw-restart">Restart (destroy, then set up again)</button>
   <button class="btn small" type="button" id="rw-calm">calm(0)</button>
@@ -35,7 +33,7 @@
 <div class="field"><label for="rw-pin">Pin restlessness (0 = measure the reader)</label><input id="rw-pin" type="range" min="0" max="1" step="0.05" value="0"><output for="rw-pin">off</output></div>
 <div class="scrollbox-wrap" id="rw-wrap"><div class="scrollbox" id="rw-box" tabindex="0" role="region" aria-label="Demo article, scrollable">
 <h3>How this box reads you</h3>
-<p>Read this box slowly and a thin gold thread appears beside each paragraph you have given time to. Scroll through it quickly and the words begin to ripple.</p>
+<p>Read this box slowly and a thin thread appears beside each paragraph you have given time to. Scroll through it quickly and the words begin to ripple.</p>
 <p>The page keeps one number, a restlessness score from zero to one. Skimming raises it. Reading lowers it. The panel at the bottom of the box shows it, says what is happening, and can switch the effects off.</p>
 <p>A passage counts as read when it has been on screen for about as long as a quick reader needs. Ten words a second is the allowance, which is roughly six hundred words a minute.</p>
 <p>If a passage leaves the top of the box having had less than a third of that time, it counts as skipped. Skipped passages push the score up, and longer ones push harder.</p>
@@ -49,6 +47,8 @@
 <p>The restart button tears the whole thing down and sets it up again. That is the same call you would make when a page area closes and another opens.</p>
 </div></div>
 <div class="readout" id="rw-out" aria-live="off">score 0.00</div></div></section>
+      <section aria-labelledby="what"><h2 id="what">How it works</h2><p>The module watches how a visitor reads and keeps one number, a restlessness score from 0 to 1. Skimming raises it and reading lowers it. The score drives waves that pass through the text, links that drift away from a hurried cursor, and a thin thread beside every paragraph that was actually read.</p>
+<p>The page never blocks anything and never hides text. A panel shows the score and has an off switch that is remembered. The focused element never moves, displacement is capped, and nothing moves under <code>prefers-reduced-motion</code>. Everything is measured in the browser.</p><p>Principle: <a href="../philosophy.html#d6">D6 · Text that answers how it is read</a>.</p></section>
       <section aria-labelledby="use"><h2 id="use">Use it</h2>
         <h3>1. Copy the files</h3>
         <ul class="filelist"><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/src/reading-weave.js">src/reading-weave.js</a><button class="copy" type="button" data-copy-text="src/reading-weave.js">Copy path</button></li><li><a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/css/reading-weave.css">css/reading-weave.css</a><button class="copy" type="button" data-copy-text="css/reading-weave.css">Copy path</button></li></ul>
