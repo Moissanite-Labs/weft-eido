@@ -18,8 +18,13 @@ tests and guides, so anyone can use them on their own site. Weft's telemetry fie
 loom renderer) is built on these modules and lives in
 [Moissanite-Labs/weft](https://github.com/Moissanite-Labs/weft/tree/main/weft/runtime/aywa).
 
-**See it working:** the [Eido site](https://moissanite-labs.github.io/weft-eido/) runs every module on itself. Each
-component has an isolated demo, its options, and its source with a copy button.
+**See it working:** the [Eido site](https://moissanite-labs.github.io/weft-eido/) runs every module on itself, and draws
+itself while you watch. One runtime, [`site/assets/loom.js`](site/assets/loom.js), is shared by every page: a weft of
+threads behind the text that moves as a printed sum of harmonics, blocks that unfold exactly where a wavefront reaches
+them, titles first assembled from the 5×7 glyph bits, and one animation frame for every live figure. Each component
+has an isolated demo, its options, and its source with a copy button. The harmonic pages compute their mathematics
+(chords, roughness, Kuramoto locking, Arnold tongues, a tensioned plate, a provenance projector) live in the browser
+rather than framing the uploaded files.
 
 ## Modules
 
@@ -110,6 +115,11 @@ To work on the site, serve the repository root and open <http://localhost:8000/s
 ```bash
 python3 -m http.server 8000
 ```
+
+The site has no boxes to fill in. A page is a `<main id="main">` of headings, paragraphs and `<canvas>` figures on
+the shared shell (thread nav, coda, `theme.js`, `loom.js`). A figure registers with `scene(canvas, { frame })` from
+`loom.js` and draws its settled state when motion is reduced. The pure parts, `loom-core.js` and `harmonic-math.js`,
+are tested in Node like the modules.
 
 Pushes to `main` publish the site with GitHub Pages ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
 

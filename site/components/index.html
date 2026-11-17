@@ -9,40 +9,40 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/theme.js"></script>
-  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/loom.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="../index.html">Home</a>
-        <a href="../philosophy.html">Philosophy</a>
-        <a href="index.html" aria-current="page">Components</a>
-        <a href="../causal-harmonic/index.html">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html" aria-current="page">Components</a>
+    <a href="../causal-harmonic/index.html">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
-    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Components</p><h1 id="t">Seven small modules</h1><p class="lede">Each one is a plain ES module with no dependencies and no build step. Each page has a live demo, the files to copy, a snippet that works when pasted, and the full source.</p></div></section>
-    <section class="block"><div class="wrap"><div class="comp-list">
-      <a class="card" href="aesthetic-mixer.html"><div class="tag-row"><span class="id">D1</span><span class="badge here">src/aesthetic-mixer.js</span></div><h3>Aesthetic mixer</h3><p>Blends style presets with barycentric weights. Hue averages on the circle.</p></a>
-      <a class="card" href="simplex-pad.html"><div class="tag-row"><span class="id">D1</span><span class="badge here">src/simplex-pad.js</span></div><h3>Simplex pad</h3><p>A triangle control. The point you drag is the weight vector.</p></a>
-      <a class="card" href="cell-layout.html"><div class="tag-row"><span class="id">D2</span><span class="badge here">src/cell-layout.js</span></div><h3>Cell layout</h3><p>Cell area follows value. Golden-angle packing fitted to any region.</p></a>
-      <a class="card" href="glyph-font.html"><div class="tag-row"><span class="id">D2</span><span class="badge here">src/glyph-font.js</span></div><h3>Glyph font</h3><p>A 5×7 bitmask font, two 32-bit words per glyph, the same table for GPU and Canvas.</p></a>
-      <a class="card" href="reading-weave.html"><div class="tag-row"><span class="id">D6</span><span class="badge here">src/reading-weave.js</span></div><h3>Reading weave</h3><p>Text ripples when you skim. Reading calms it.</p></a>
-      <a class="card" href="condense.html"><div class="tag-row"><span class="id">D6</span><span class="badge here">src/condense.js</span></div><h3>Condensing prose</h3><p>An article condenses, level by level, as you skim.</p></a>
-      <a class="card" href="research-explainer.html"><div class="tag-row"><span class="id">RM</span><span class="badge here">src/research-explainer.js</span></div><h3>Research explainer</h3><p>A deterministic toy model with visible metrics and a canvas you can press.</p></a>
-    </div></div></section>
+    <header class="opening">
+      <p class="eyebrow">Components</p>
+      <h1>Seven small modules</h1>
+      <p class="lede">Plain ES modules, no dependencies, no build step. This site is made of them.</p>
+    </header>
+    <section class="movement" aria-label="Modules">
+      <ul class="lines">
+        <li><a href="aesthetic-mixer.html"><canvas data-glyph="mixer" aria-hidden="true"></canvas><strong>Aesthetic mixer</strong><small>D1 · Blend style presets by weight. Hue averages on the circle. <code>src/aesthetic-mixer.js</code></small></a></li>
+        <li><a href="simplex-pad.html"><canvas data-glyph="simplex" aria-hidden="true"></canvas><strong>Simplex pad</strong><small>D1 · A triangle you drag. The point is the weight vector. <code>src/simplex-pad.js</code></small></a></li>
+        <li><a href="cell-layout.html"><canvas data-glyph="cells" aria-hidden="true"></canvas><strong>Cell layout</strong><small>D2 · Area follows value. Golden-angle packing fitted to any region. <code>src/cell-layout.js</code></small></a></li>
+        <li><a href="glyph-font.html"><canvas data-glyph="glyph" aria-hidden="true"></canvas><strong>Glyph font</strong><small>D2 · Letters from a table of bits, two 32-bit words a glyph. Every title on this site starts here. <code>src/glyph-font.js</code></small></a></li>
+        <li><a href="reading-weave.html"><canvas data-glyph="weave" aria-hidden="true"></canvas><strong>Reading weave</strong><small>D6 · Text ripples when you skim. Reading calms it. <code>src/reading-weave.js</code></small></a></li>
+        <li><a href="condense.html"><canvas data-glyph="condense" aria-hidden="true"></canvas><strong>Condensing prose</strong><small>D6 · An article condenses, level by level, as you skim. <code>src/condense.js</code></small></a></li>
+        <li><a href="research-explainer.html"><canvas data-glyph="explainer" aria-hidden="true"></canvas><strong>Research explainer</strong><small>RM · A deterministic toy model with its numbers in plain sight. <code>src/research-explainer.js</code></small></a></li>
+      </ul>
+      <p class="quiet">Each page has a live demo, the files to copy, a snippet that works when pasted, and the full source, fetched from the repository as the page loads.</p>
+    </section>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
 </body>
 </html>

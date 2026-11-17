@@ -3,47 +3,99 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Causal Harmonic Computing · Eido</title>
-  <meta name="description" content="Compute by resonance: coupled oscillators, chords, and symphonic wavelengths, as site subpages.">
+  <title>Compute by resonance · Eido</title>
+  <meta name="description" content="Causal harmonic computing, computed live: six mechanisms as chords, sensory roughness, Kuramoto locking, Arnold tongues and wavelengths in air.">
   <meta name="theme-color" content="#090d0f">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/theme.js"></script>
-  <script type="module" src="../assets/site.js"></script>
-  <link rel="stylesheet" href="../../css/reading-weave.css">
+  <script type="module" src="../assets/loom.js"></script>
+  <script type="module" src="../assets/harmonic.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="../index.html">Home</a><a href="../philosophy.html">Philosophy</a><a href="../components/index.html">Components</a><a href="index.html" aria-current="page">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html">Components</a>
+    <a href="../causal-harmonic/index.html" aria-current="page">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
-    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Causal Harmonic Computing</p><h1 id="t">Compute by resonance</h1><p class="lede">Coupled oscillators lock into rational frequency ratios, literal chords on a Just Intonation lattice. The machine's state can be heard: consonance when it is healthy, beating and drift when it strains. Each subpage below shows one part of that idea, using the files as they arrived.</p></div></section>
-    <section class="block"><div class="wrap">
-      <div class="comp-list">
-        <a class="card" href="weft.html"><div class="tag-row"><span class="id">Weft</span></div><h3>Syntactic Weft</h3><p>The latest Weft file, with a skin switch for the original dark look and the light prose version.</p></a>
-        <a class="card" href="explorer.html"><div class="tag-row"><span class="id">Explorer</span></div><h3>Harmonic explorer</h3><p>The explorer: each mechanism a chord, roughness, Kuramoto locking, and the verified kernel.</p></a>
-        <a class="card" href="infographic.html"><div class="tag-row"><span class="id">Poster</span></div><h3>Infographic</h3><p>The poster view: signal flow, Arnold tongues, Halvorsen flow, and the seven bare-metal defects.</p></a>
-        <a class="card" href="paper.html"><div class="tag-row"><span class="id">Paper</span></div><h3>The source paper</h3><p>Causal Algorithmic Symphonic Synthesis, in full: five sections, tables, kernel, and works cited.</p></a>
-        <a class="card" href="soundtrack.html"><div class="tag-row"><span class="id">Sound</span></div><h3>The Paracausal Loom</h3><p>The soundtrack, 2:58, with cover art and lyrics, plus the 5-second kernel render.</p></a>
-        <a class="card" href="originals.html"><div class="tag-row"><span class="id">Archive</span></div><h3>Originals</h3><p>Every upload, untouched and downloadable, including the duplicates.</p></a>
-      </div>
-      <p>Numbers in the paper and the pages are the authors’ claims, not results this repository has verified. The source files live under <code>examples/research/causal-harmonic/</code>, with a README that says which file is latest and why.</p>
-    </div></section>
+    <header class="opening">
+      <p class="eyebrow">Causal harmonic computing</p>
+      <h1>Compute by resonance</h1>
+      <p class="lede">Coupled oscillators settle into whole-number ratios: chords. A machine built from them can be heard, consonant while it is healthy, beating as it strains.</p>
+      <p class="quiet">Every figure here is computed in your browser from the equation printed beside it. The chord tables and constants are the source authors' claims, not results this repository has verified.</p>
+    </header>
 
+    <section class="movement" aria-labelledby="chords">
+      <h2 id="chords">Six mechanisms, six chords</h2>
+      <div class="controls" role="group" aria-label="Mechanism">
+        <button class="chip" type="button" data-mech="1" aria-pressed="false">1 : 2</button>
+        <button class="chip" type="button" data-mech="2" aria-pressed="false">2 : 3 : 4</button>
+        <button class="chip" type="button" data-mech="3" aria-pressed="true">4 : 5 : 6 : 7</button>
+        <button class="chip" type="button" data-mech="4" aria-pressed="false">plate</button>
+        <button class="chip" type="button" data-mech="5" aria-pressed="false">8 : 10 : 12 : 15</button>
+        <button class="chip" type="button" data-mech="6" aria-pressed="false">haptic 2 : 3 : 4</button>
+        <button class="btn small" type="button" id="chord-listen" aria-pressed="false">Listen</button>
+      </div>
+      <canvas class="stage tall" id="chord-stage" role="img" aria-label="The selected chord as standing waves on a string, and as the summed pressure in air. The numbers follow as text."></canvas>
+      <p class="numbers" id="chord-numbers"></p>
+      <p class="quiet" id="chord-listen-note" aria-live="polite"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="rough">
+      <h2 id="rough">Where consonance lives</h2>
+      <p>Sound two tones together and their overtones rub. The rubbing falls away wherever overtones coincide, and those places are the simple ratios. Nobody has to choose them; the curve finds them.</p>
+      <div class="controls" role="group" aria-label="Timbre">
+        <button class="chip" type="button" data-timbre="1" aria-pressed="true">harmonic partials</button>
+        <button class="chip" type="button" data-timbre="1.08" aria-pressed="false">stretched partials</button>
+      </div>
+      <canvas class="stage tall" id="rough-stage" data-press role="img" aria-label="Sensory roughness against interval ratio, computed live, with its wells labelled by ratio."></canvas>
+      <p class="numbers" id="rough-numbers"></p>
+      <p class="quiet">Stretch the partials and the wells move off the just ratios: the right tuning follows the timbre.</p>
+    </section>
+
+    <section class="movement" aria-labelledby="lock">
+      <h2 id="lock">Locking</h2>
+      <p>Sixty-four oscillators, each with its own natural speed, each nudged toward the crowd. Below a critical coupling they drift apart. Above it they fall into step, all at once.</p>
+      <canvas class="stage tall" id="kura-stage" role="img" aria-label="Kuramoto oscillators on a circle with their order parameter, and the order parameter over time."></canvas>
+      <div class="controls">
+        <div class="field"><label for="kura-k">Coupling K</label><input id="kura-k" type="range" min="0" max="3" step="0.01" value="0.6"><output id="kura-k-out" for="kura-k">0.60</output></div>
+        <button class="btn small" type="button" id="kura-scatter">Scatter</button>
+      </div>
+      <p class="numbers" id="kura-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="tongues">
+      <h2 id="tongues">Arnold tongues</h2>
+      <p>One oscillator, kicked once a turn. Where its winding number holds at a ratio, it is locked; the bright tongues are the ratios, widening as the kick grows. Move across the map: the line is the devil's staircase at that kick.</p>
+      <canvas class="stage tall" id="tongue-stage" data-press role="img" aria-label="Winding number of the sine circle map over drive and coupling, computed row by row."></canvas>
+      <p class="numbers" id="tongue-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="air">
+      <h2 id="air">From silicon to air</h2>
+      <p>The seven-voice stack, at its true size in a room.</p>
+      <canvas class="stage" id="stack-stage" role="img" aria-label="Seven voices drawn at their wavelength in air, against a scale in metres."></canvas>
+      <p class="numbers" id="stack-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="further">
+      <h2 id="further">Further in</h2>
+      <ul class="lines">
+        <li><a href="weft.html"><canvas data-glyph="strata" aria-hidden="true"></canvas><strong>Three strata</strong><small>Automata, an attractor, a plate under your hand, a projector</small></a></li>
+        <li><a href="paper.html"><canvas data-glyph="paper" aria-hidden="true"></canvas><strong>The paper</strong><small>Causal Algorithmic Symphonic Synthesis, in full</small></a></li>
+        <li><a href="soundtrack.html"><canvas data-glyph="sound" aria-hidden="true"></canvas><strong>The Paracausal Loom</strong><small>The song, its lyrics, and the kernel's own render</small></a></li>
+        <li><a href="originals.html"><canvas data-glyph="archive" aria-hidden="true"></canvas><strong>Originals</strong><small>Every upload, untouched</small></a></li>
+      </ul>
+    </section>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
 </body>
 </html>

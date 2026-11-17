@@ -12,31 +12,24 @@
   <link rel="stylesheet" href="../../css/condense.css">
   <style>.scrollbox .paper h2{font-size:1.25rem;margin:1.6em 0 .5em}.scrollbox .paper h2:first-child{margin-top:0}.scrollbox .keywords{display:none}.scrollbox .paper p,.scrollbox .paper li{padding-left:6px}</style>
   <script src="../assets/theme.js"></script>
-  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/loom.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="../index.html">Home</a>
-        <a href="../philosophy.html">Philosophy</a>
-        <a href="index.html" aria-current="page">Components</a>
-        <a href="../causal-harmonic/index.html">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html" aria-current="true">Components</a>
+    <a href="../causal-harmonic/index.html">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
-    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Component · D6</p><h1 id="t">Condensing prose</h1><p class="lede">Skim, and the writing gets shorter: concise, then terse, then caveman, then one line per section. Read, and it stays as written.</p></div></section>
-
-    <div class="wrap page-steps" style="padding-top:clamp(28px,5vw,48px);padding-bottom:72px">
+    <header class="opening"><p class="eyebrow">Component · D6</p><h1 id="t">Condensing prose</h1><p class="lede">Skim, and the writing gets shorter: concise, then terse, then caveman, then one line per section. Read, and it stays as written.</p></header>
       <p class="crumbs"><a href="index.html">Components</a> / Condensing prose</p>
       <section aria-labelledby="what"><h2 id="what">What it is</h2><p>On a long page, most visitors skim. Condensing prose gives them a shorter page without asking. It watches the reading score from the <a href="reading-weave.html">reading weave</a>. When the score says the reader is skimming, it swaps passages the reader has not read for shorter versions.</p>
 <p>It never writes text on its own. Every shorter version was written by the author ahead of time and sits in a <code>condensed.json</code> file beside the page. Condensed passages end with ≈, and pressing and holding one shows the original. Print always shows the full text. Only the reader can loosen it again.</p><p>Principle: <a href="../philosophy.html#d6">D6 · Text that answers how it is read</a>.</p></section>
-      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="panel"><p>Skim the box fast, or pick a level yourself. Each level is written ahead of time.</p>
+      <section aria-labelledby="demo"><h2 id="demo">Try it</h2><div class="demo"><p>Skim the box fast, or pick a level yourself. Each level is written ahead of time.</p>
 <div class="controls" role="group" aria-label="Level" id="cx-levels"></div>
 <div class="controls"><button class="btn small" type="button" id="cx-restart">Restart (destroy, then set up again)</button></div>
 <div class="scrollbox-wrap" id="cx-wrap"><div class="scrollbox" id="cx-box" tabindex="0" role="region" aria-label="Demo article, scrollable">
@@ -118,13 +111,10 @@
 <h3>Other exports</h3>
 <table class="api"><thead><tr><th scope="col">Export</th><th scope="col"></th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>loadCondensed(source?, { optional })</code></td><td></td><td>Fetches and parses <code>condensed.json</code> (a URL or a <code>&lt;script type="application/json"&gt;</code> element). Resolves to <code>null</code> on failure unless <code>optional: false</code>.</td></tr><tr><td><code>hashText(s), normalizeText(s)</code></td><td></td><td>FNV-1a 32-bit hash of whitespace-normalised text, as eight hex digits. This is a passage's key.</td></tr><tr><td><code>extractPassages(root, opts), extractSections(root, opts)</code></td><td></td><td>The passages and sections the module would condense, for authoring.</td></tr><tr><td><code>skeleton(passages, sections)</code></td><td></td><td>A <code>condensed.json</code> with empty slots to fill in.</td></tr><tr><td><code>validateCondensed(data, { against, strict })</code></td><td></td><td>List of problems. Empty means sound. <code>strict</code> also checks levels get shorter, TL;DR ≤ 15 words and ELI5 ≤ 40.</td></tr><tr><td><code>LEVELS, THRESHOLDS</code></td><td></td><td>Level names and ratchet thresholds.</td></tr></tbody></table>
 <p>The guide covers the authoring workflow, a prompt for drafting variants, the morph, accessibility and the CSS hooks.</p><p>Full guide: <a href="https://github.com/Moissanite-Labs/weft-eido/blob/main/docs/condensing-prose.md">docs/condensing-prose.md</a> on GitHub.</p></section>
-    </div>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
   <script type="module">
     import { setupReadingWeave } from "../../src/reading-weave.js";

@@ -59,15 +59,43 @@ test("state channels are named and bounded", () => {
   assert.match(js, /layoutCells\(items/, "packing is algorithmic");
 });
 
-test("every nav fits and the shared theme stands alone", () => {
+test("every page is woven from one runtime and one thread of navigation", () => {
   const pages = [];
   const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (p.endsWith(".html")) pages.push(p); } };
   walk(siteDir);
-  assert.ok(pages.length >= 16, "expected the full site");
+  assert.ok(pages.length >= 14, "expected the full site");
   for (const page of pages) {
-    assert.match(fs.readFileSync(page, "utf8"), />Harmonic<\/a>/, `${path.relative(repo, page)} nav lacks Harmonic`);
+    const rel = path.relative(repo, page);
+    const text = fs.readFileSync(page, "utf8");
+    assert.match(text, /<script src="[^"]*assets\/theme\.js"><\/script>/, `${rel} must load theme.js in <head>`);
+    assert.match(text, /<script type="module" src="[^"]*assets\/loom\.js"><\/script>/, `${rel} must load the loom`);
+    assert.match(text, /<nav class="weft-nav" aria-label="Main">/, `${rel} must use the shared thread nav`);
+    for (const label of ["Philosophy", "Components", "Harmonic", "Source"]) assert.match(text, new RegExp(`>${label}</a>`), `${rel} nav lacks ${label}`);
+    assert.match(text, /<footer class="coda">/, `${rel} must end with the shared coda`);
+    assert.doesNotMatch(text, /class="(?:site-header|site-footer|hero|card|panel)\b/, `${rel} still uses the old boxed chrome`);
   }
   assert.doesNotMatch(siteCss, /Same visual family as ML Weft/, "shared theme no longer mirrors w3ft.org");
+});
+
+test("no page nests another page in a frame", () => {
+  const walk = (d, out = []) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p, out); else if (p.endsWith(".html")) out.push(p); } return out; };
+  for (const page of walk(siteDir)) {
+    assert.doesNotMatch(fs.readFileSync(page, "utf8"), /<iframe|<frame|<object|<embed/i, `${path.relative(repo, page)} frames another page; rebuild it on the loom instead`);
+  }
+  for (const gone of ["explorer.html", "infographic.html"]) {
+    assert.ok(!fs.existsSync(path.join(siteDir, "causal-harmonic", gone)), `causal-harmonic/${gone} was an iframe wrapper and should stay folded into the native pages`);
+  }
+});
+
+test("the medium is the only fixed layer, and loom.js owns it", () => {
+  const loom = fs.readFileSync(path.join(siteDir, "assets", "loom.js"), "utf8");
+  assert.equal((loom.match(/position:\s*fixed/g) || []).length, 1, "exactly one fixed layer");
+  assert.match(loom, /medium\.setAttribute\("aria-hidden", "true"\)/, "the medium is hidden from assistive technology");
+  assert.match(loom, /pointer-events:none/, "the medium never takes a pointer event");
+  assert.match(loom, /beforeprint/, "print shows every block");
+  assert.match(loom, /reduced\(\)/, "unfolding respects reduced motion");
+  const theme = fs.readFileSync(path.join(siteDir, "assets", "theme.js"), "utf8");
+  assert.match(theme, /setTimeout\(/, "theme.js reveals the page if the loom never arrives");
 });
 
 test("recorded audio carries its non-commercial licence", () => {

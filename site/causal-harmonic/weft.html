@@ -3,54 +3,89 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Syntactic Weft · Eido</title>
-  <meta name="description" content="The latest Syntactic Weft file, with a skin switch for the original and light versions.">
+  <title>Three strata · Eido</title>
+  <meta name="description" content="The Syntactic Weft strata rebuilt live: a cellular automaton, the Halvorsen attractor, a tensioned plate with sand, and an orthogonal provenance projector.">
   <meta name="theme-color" content="#090d0f">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d0f'/%3E%3Cpath d='M16 5 27 26H5z' fill='none' stroke='%23d9c7a0' stroke-width='2'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/theme.js"></script>
-  <script type="module" src="../assets/site.js"></script>
+  <script type="module" src="../assets/loom.js"></script>
+  <script type="module" src="../assets/harmonic.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span class="brand-name">Eido</span><span class="brand-org">Moissanite Labs</span></a>
-      <nav class="nav" aria-label="Main">
-        <a href="../index.html">Home</a><a href="../philosophy.html">Philosophy</a><a href="../components/index.html">Components</a><a href="index.html" aria-current="page">Harmonic</a>
-        <a href="https://github.com/Moissanite-Labs/weft-eido">GitHub</a>
-        <button class="icon-btn" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">Theme: system</button>
-      </nav>
-    </div>
-  </header>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3 29 27H3z"/><path d="M16 3v24M9.5 15 22.5 15M6.2 21h19.6" opacity=".5"/><circle cx="16" cy="19" r="2.6" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html">Components</a>
+    <a href="../causal-harmonic/index.html" aria-current="true">Harmonic</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
   <main id="main">
-    <section class="hero compact" aria-labelledby="t"><div class="wrap"><p class="kicker"><span class="dot"></span>Syntactic Weft</p><h1 id="t">Syntactic Weft</h1><p class="lede">The Weft file, latest content first. Switch skins to see the same idea in the original dark look or the light prose version.</p></div></section>
-    <section class="block"><div class="wrap">
-      <p><button class="btn btn-primary" type="button" data-skin="latest">Latest</button>       <button class="btn" type="button" data-skin="original">Original dark</button>       <button class="btn" type="button" data-skin="light">Light prose</button></p>
-      <p id="skin-note">Latest: Syntactic Weft __3. Adds the Somatic Kinetic Variable, the Just Intonation Chord, Homomorphic Provenance, and the Port-Hamiltonian stratum.</p>
-      <iframe id="weft-frame" src="../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html" title="Syntactic Weft" style="width:100%;height:80vh;border:1px solid currentColor"></iframe>
-      <script>
-        const skins = {
-          latest: ["../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__3.html", "Latest: Syntactic Weft __3. Adds the Somatic Kinetic Variable, the Just Intonation Chord, Homomorphic Provenance, and the Port-Hamiltonian stratum."],
-          original: ["../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__1.html", "Original dark: the unnumbered file, with the copy-button fix for iframes. Text identical to the original upload."],
-          light: ["../../examples/research/causal-harmonic/originals/syntactic_weft_causal_harmonic_computer__2.html", "Light prose: a user-interface refresh. More prose, no Python kernel inside. A skin, not newer content."],
-        };
-        for (const b of document.querySelectorAll("[data-skin]")) {
-          b.addEventListener("click", () => {
-            const s = skins[b.dataset.skin];
-            document.getElementById("weft-frame").src = s[0];
-            document.getElementById("skin-note").textContent = s[1];
-          });
-        }
-      </script>
-    </div></section>
+    <header class="opening">
+      <p class="eyebrow">Syntactic Weft</p>
+      <h1>Three strata</h1>
+      <p class="lede">Slow rules shape the structure. Oscillators at the middle scale lock and wander. Fast physics radiates. One clock, three timescales, each computed below.</p>
+      <p class="quiet">Rebuilt from the Syntactic Weft files on this site's own runtime. The originals are kept, untouched, in the <a href="originals.html">archive</a>.</p>
+    </header>
 
+    <section class="movement" aria-labelledby="macro">
+      <h2 id="macro">Macro: local rules, global form</h2>
+      <p>Each cell reads itself and its two neighbours, and an eight-bit rule says what it becomes. Nothing else is given. The structure is not drawn; it happens.</p>
+      <div class="controls" role="group" aria-label="Rule">
+        <button class="chip" type="button" data-rule="30" aria-pressed="false">rule 30</button>
+        <button class="chip" type="button" data-rule="90" aria-pressed="false">rule 90</button>
+        <button class="chip" type="button" data-rule="110" aria-pressed="true">rule 110</button>
+        <button class="chip" type="button" data-rule="150" aria-pressed="false">rule 150</button>
+        <button class="chip" type="button" data-rule="184" aria-pressed="false">rule 184</button>
+        <button class="btn small" type="button" id="ca-seed" aria-pressed="false">Random seed</button>
+      </div>
+      <canvas class="stage tall" id="ca-stage" role="img" aria-label="An elementary cellular automaton unfolding row by row from its rule."></canvas>
+      <p class="numbers" id="ca-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="meso">
+      <h2 id="meso">Meso: a flow that never repeats</h2>
+      <p>Three coupled equations, symmetric under turning x into y into z. The path never closes and never leaves. In the source it sweeps the filters; here it simply draws.</p>
+      <canvas class="stage square" id="halvorsen-stage" role="img" aria-label="The Halvorsen attractor, integrated live and viewed down its axis of symmetry."></canvas>
+      <p class="numbers" id="halvorsen-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="micro">
+      <h2 id="micro">Micro: a plate under tension</h2>
+      <p>A steel plate, driven at one frequency. Sand jumps where the plate moves and settles where it is still, so the nodal lines draw themselves. The plate tightens with your hand: move quickly and the pattern shifts.</p>
+      <canvas class="stage tall" id="plate-stage" role="img" aria-label="Sand settling on the nodal lines of a driven, tensioned plate."></canvas>
+      <div class="controls">
+        <div class="field"><label for="plate-f">Drive</label><input id="plate-f" type="range" min="0" max="1" step="0.001" value="0.626"><output id="plate-f-out" for="plate-f"></output></div>
+        <div class="field"><label for="plate-t">Tension T</label><input id="plate-t" type="range" min="10" max="85" step="0.5" value="20"><output id="plate-t-out" for="plate-t">20.0</output></div>
+        <button class="btn small" type="button" id="plate-hand" aria-pressed="true">Couple to my hand</button>
+        <button class="btn small" type="button" id="plate-scatter">Scatter sand</button>
+      </div>
+      <p class="numbers" id="plate-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="prov">
+      <h2 id="prov">Provenance that cannot drift</h2>
+      <p>A weight matrix carries a hidden pairing, W·x = y. Random rank-2 updates erode it. Project each update away from x first, and the pairing holds exactly, epoch after epoch, while every other direction stays free to learn.</p>
+      <canvas class="stage" id="prov-stage" role="img" aria-label="Cosine between W·x and y over training epochs, raw and projected."></canvas>
+      <div class="controls"><button class="btn small" type="button" id="prov-reset">Run again</button></div>
+      <p class="numbers" id="prov-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="further">
+      <h2 id="further">Further in</h2>
+      <ul class="lines">
+        <li><a href="index.html"><canvas data-glyph="chord" aria-hidden="true"></canvas><strong>Compute by resonance</strong><small>Chords, roughness, locking, tongues, wavelengths</small></a></li>
+        <li><a href="paper.html"><canvas data-glyph="paper" aria-hidden="true"></canvas><strong>The paper</strong><small>Causal Algorithmic Symphonic Synthesis, in full</small></a></li>
+        <li><a href="soundtrack.html"><canvas data-glyph="sound" aria-hidden="true"></canvas><strong>The Paracausal Loom</strong><small>The song, its lyrics, and the kernel's own render</small></a></li>
+        <li><a href="originals.html"><canvas data-glyph="archive" aria-hidden="true"></canvas><strong>Originals</strong><small>Every upload, untouched</small></a></li>
+      </ul>
+    </section>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>Eido is a <a href="https://w3ft.org">Moissanite Labs</a> project and the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>.</span>
-      <span>Code: Apache-2.0. Docs: CC BY 4.0. <a href="https://github.com/Moissanite-Labs/weft-eido">Source on GitHub</a></span>
-    </div>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
   </footer>
 </body>
 </html>
