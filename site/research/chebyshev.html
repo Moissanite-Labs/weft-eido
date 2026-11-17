@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two measures, four worlds · Eido</title>
+  <meta name="description" content="Project Asma's Chebyshev identifiability explorer rebuilt live: four synthetic compartment worlds, two readings, the L∞ noise-box ceiling against the slope ceiling, paralog bleed, and the p = 1/5 pivot.">
+  <meta name="theme-color" content="#070f19">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070f19'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%234be4e5' stroke-width='2'/%3E%3Cpath d='M5 16C8.7 7.8 12.3 7.8 16 16s7.3 8.2 11 0' fill='none' stroke='%23ff9086' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/theme.js"></script>
+  <script type="module" src="../assets/loom.js"></script>
+  <script type="module" src="../assets/research-chebyshev.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="weft-nav" aria-label="Main">
+    <a class="mark" href="../index.html" aria-label="Eido home"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="16" cy="16" r="12.6"/><path d="M3.4 16C7.6 6.6 11.8 6.6 16 16s8.4 9.4 12.6 0"/><circle cx="16" cy="16" r="2.3" fill="currentColor" stroke="none"/></svg><span>Eido</span></a>
+    <a href="../philosophy.html">Philosophy</a>
+    <a href="../components/index.html">Components</a>
+    <a href="../causal-harmonic/index.html">Harmonic</a>
+    <a href="../research/index.html" aria-current="true">Research</a>
+    <a href="https://github.com/Moissanite-Labs/weft-eido">Source</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Theme: system. Activate to change.">auto</button>
+  </nav>
+  <main id="main">
+    <header class="opening">
+      <p class="eyebrow">Project Asma · Chebyshev identifiability</p>
+      <h1>Two measures, four worlds</h1>
+      <p class="lede">Four synthetic compartment worlds, each read at two seed proportions. Take the two readings as one point, and the Chebyshev (L∞) distance between points says how much bounded noise a design survives.</p>
+      <p class="quiet">Synthetic-world mathematics only: nothing here concerns patients, assays or clinical performance. Rebuilt from a generated explorer for <a href="https://github.com/Foundation-0/project-asma">Project Asma</a> (peer agent session output, 2026-11-13), kept untouched in the <a href="../../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html">archive</a>. Its rational identities were <a href="https://github.com/Foundation-0/project-asma/issues/82#issuecomment-6846151693">recomputed independently</a> and match. The collision bound is model-dependent (box noise, no shared channel-offset budget), and the (1/20, 3/8) design is not a mechanized proof.</p>
+    </header>
+
+    <section class="movement" aria-labelledby="worlds">
+      <h2 id="worlds">Four worlds cross at one point</h2>
+      <p>Each world answers a sample of target proportion p with its own curve. Every pure world reads exactly 4/5 at p = 1/5; paralog bleed α lifts only S off that point. The designs are those of PR #78 and PR #83, the paralog trap, and a deeper seed.</p>
+      <div class="controls" role="group" aria-label="Designs">
+        <button class="chip" type="button" data-preset="pr78" aria-pressed="false">PR #78 (1/10, 2/5)</button>
+        <button class="chip" type="button" data-preset="pr83" aria-pressed="true">PR #83 Opt (1/20, 3/8)</button>
+        <button class="chip" type="button" data-preset="trap" aria-pressed="false">Paralog Trap (16.1%)</button>
+        <button class="chip" type="button" data-preset="deep" aria-pressed="false">Deep Seed (1/40, 3/7)</button>
+      </div>
+      <canvas class="stage" id="curve-stage" role="img" aria-label="Response curves q of p for worlds S plus bleed, C25, C50 and C75, all crossing at p = 1/5, q = 4/5, with the two seed readings marked."></canvas>
+      <p class="numbers" id="curve-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="boxes">
+      <h2 id="boxes">Two readings, one box each</h2>
+      <p>If each reading can be off by up to ε, a world becomes a square of half-width ε around its point, and two worlds stay apart while their squares do not touch. The slope y(p_H) − y(p_L) folds both readings into one number that carries 2ε of noise, so it needs twice the room. Same two wells, no extra cost.</p>
+      <canvas class="stage tall" id="box-stage" role="img" aria-label="The four worlds as points in the plane of the two readings, each inside a square of noise half-width epsilon, above the same worlds on the one-dimensional slope axis with intervals of plus or minus two epsilon."></canvas>
+      <div class="controls">
+        <div class="field"><label for="in-pl">Low seed p_L</label><input id="in-pl" type="range" min="0.020" max="0.180" step="0.005" value="0.050"><output id="out-pl" for="in-pl">0.050</output></div>
+        <div class="field"><label for="in-ph">High seed p_H</label><input id="in-ph" type="range" min="0.220" max="0.800" step="0.005" value="0.375"><output id="out-ph" for="in-ph">0.375</output></div>
+        <div class="field"><label for="in-eps">Noise half-width ε</label><input id="in-eps" type="range" min="0.002" max="0.070" step="0.0005" value="0.0165"><output id="out-eps" for="in-eps">1/60</output></div>
+        <button class="chip" type="button" id="eps-bench" aria-pressed="true">ε = 1/60</button>
+      </div>
+      <p class="numbers" id="box-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="bleed">
+      <h2 id="bleed">Bleed, the trap, and the pivot</h2>
+      <p>Paralog bleed lifts each reading of S toward 1 and shrinks its slope by (1 − α). At one α that slope equals C25's and the slope test goes blind: the original's paralog trap. A third reading at p = 1/5, where every pure world reads 4/5, sees the bleed as α/5.</p>
+      <canvas class="stage" id="bleed-stage" data-press role="img" aria-label="The noise ceilings for S plus bleed against C25 as the bleed alpha runs from 0 to 0.3: the slope ceiling falls to zero at the trap, the two-reading L-infinity ceiling dips, and the three-reading ceiling with the pivot. Press to set alpha."></canvas>
+      <div class="controls">
+        <div class="field"><label for="in-alpha">Paralog bleed α (PGL2)</label><input id="in-alpha" type="range" min="0.000" max="0.300" step="0.001" value="0.000"><output id="out-alpha" for="in-alpha">0.0%</output></div>
+      </div>
+      <p class="numbers" id="bleed-numbers"></p>
+    </section>
+
+    <section class="movement" aria-labelledby="further">
+      <h2 id="further">Further in</h2>
+      <ul class="lines">
+        <li><a href="index.html"><canvas data-glyph="matrix" aria-hidden="true"></canvas><strong>Substrate simulations</strong><small>Interactive substrate simulations, E08 to E12</small></a></li>
+        <li><a href="../../examples/simulations/asma_subspace_paraneoplastic.html"><canvas data-glyph="paths" aria-hidden="true"></canvas><strong>Project Asma: five-path explorer</strong><small>The original explorer, untouched: not yet rebuilt on the loom</small></a></li>
+        <li><a href="../../examples/simulations/e13_transitive_cascade.html"><canvas data-glyph="cascade" aria-hidden="true"></canvas><strong>E13: the transitive cascade</strong><small>The original explorer, untouched: not yet rebuilt on the loom</small></a></li>
+        <li><a href="../../examples/visualizations/project-asma-chebyshev-identifiability-explorer.html"><canvas data-glyph="archive" aria-hidden="true"></canvas><strong>The original explorer</strong><small>Untouched, as archived on 2026-11-13</small></a></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="coda">
+    <span>Eido, the design language of <a href="https://github.com/Moissanite-Labs/weft">ML Weft</a>. A <a href="https://w3ft.org">Moissanite Labs</a> project.</span>
+    <span>Code Apache-2.0 · docs CC BY 4.0 · <a href="https://github.com/Moissanite-Labs/weft-eido">source</a></span>
+  </footer>
+</body>
+</html>

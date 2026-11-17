@@ -144,6 +144,7 @@ main#main {
   margin-inline: auto;
   padding-block: clamp(2.5rem, 2rem + 7vh, 6.5rem) var(--breath);
   display: flex; flex-direction: column; gap: 1.15rem;
+  overflow-wrap: break-word;
 }
 main#main > section, main#main > article { display: flex; flex-direction: column; gap: 1.1rem; }
 main#main > :is(section, article, .movement) + :is(section, article, .movement) { margin-block-start: var(--breath); }

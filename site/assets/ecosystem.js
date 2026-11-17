@@ -50,7 +50,7 @@ export const PLACES = [
   { id: "field", code: "GPU FLD", name: "Field", href: "https://github.com/Moissanite-Labs/weft-eido/pull/6", weight: 7, family: "rebuild", state: "blocked", status: "Pull request 6, open. Changes requested: the sign-off, API keys kept in clear text, and a third-party address lookup", how: "Opens the pull request. No code from it runs here." },
   { id: "explainer", code: "TOY MOD", name: "Explainer", href: "components/research-explainer.html", weight: 6, family: "research", state: "main", status: "On main since #19. Pull request 11 is still open", how: "Its own page, with the toy model at full strength." },
   { id: "archive", code: "5X7 BIT", name: "Archive", href: "components/glyph-font.html", weight: 5, family: "modules", state: "main", status: "On main", how: "Its own page. Every title on this site is first drawn from its bits." },
-  { id: "simulations", code: "E08-E13", name: "Simulations", href: "research/index.html", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 14 is still open", how: "The substrate simulations, E13 and Project Asma, rebuilt as pages of this site. Their results are their authors' reports; the originals stay in the archive." },
+  { id: "simulations", code: "E08-E13", name: "Simulations", href: "research/index.html", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 14 is still open", how: "The substrate simulations, rebuilt as a page of this site; E13 and Project Asma are linked as their untouched originals. Results are their authors' reports." },
   { id: "identifiability", code: "CHEB ID", name: "Identifiability", href: "research/chebyshev.html", weight: 5, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 15 is still open", how: "The Chebyshev identifiability explorer, rebuilt as a page of this site. The original stays in the archive." },
   { id: "harmonic", code: "CHORDS", name: "Harmonic", href: "causal-harmonic/index.html", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt in #20. Pull request 17 is still open", how: "Every figure there is computed live. Recorded pieces are CC BY-NC 4.0." },
 ];
@@ -237,6 +237,7 @@ function layoutMap(w, h, density) {
   MAP.d0 = Math.min(w, h) * 0.07;
   MAP.grid = prepareGrid(MAP.src, MAP.cols, MAP.rows, MAP.cell, { d0: MAP.d0 });
   MAP.buf = new Float32Array(MAP.cols * MAP.rows);
+  MAP.cache = null;
   // Edge window: the field thins to nothing at the canvas edge, so it has no rim.
   MAP.win = new Float32Array(MAP.cols * MAP.rows);
   const ex = MAP.cols * 0.14, ey = MAP.rows * 0.16;
@@ -247,12 +248,6 @@ function layoutMap(w, h, density) {
   MAP.off = document.createElement("canvas");
   MAP.off.width = MAP.cols; MAP.off.height = MAP.rows;
   MAP.img = MAP.off.getContext("2d").createImageData(MAP.cols, MAP.rows);
-}
-
-function strokeLines(ctx, seg, cell) {
-  ctx.beginPath();
-  for (let q = 0; q < seg.length; q += 4) { ctx.moveTo(seg[q] * cell, seg[q + 1] * cell); ctx.lineTo(seg[q + 2] * cell, seg[q + 3] * cell); }
-  ctx.stroke();
 }
 
 function paintField() {
@@ -285,6 +280,7 @@ function initField() {
       if (MAP.frames && !still) {
         const k = Math.min(MAP.frames.length - 1, Math.floor(age * 60 / 1.6 * (MAP.frames.length / 66)));
         const pos = MAP.frames[k];
+        MAP.cache = null;
         if (k >= MAP.frames.length - 1) MAP.frames = null;
         else { MAP.src.forEach((s, i) => { s.x = pos[i].x; s.y = pos[i].y; }); MAP.grid = prepareGrid(MAP.src, MAP.cols, MAP.rows, MAP.cell, { d0: MAP.d0 }); }
       }
@@ -292,35 +288,47 @@ function initField() {
       const speed = Math.hypot(w, h) / FIELD.ARRIVE;
       const arrive = (s) => (still ? Infinity : (age - 0.5 - order.indexOf(s) * 0.16) * speed);
       const boost = hoverPlace ? PLACES.findIndex((p) => p.id === hoverPlace) : -1;
-      const rest = S.rest;
-      const jitter = rest > 0.02 ? (s) => rest * 1.4 * Math.sin(waveTime * 2.7 + s * 1.9) : null;
-      sampleGrid(MAP.grid, MAP.src, waveTime, MAP.buf, { boost, jitter, arrive: age < 6 ? arrive : null });
-      // Soft-clip the field so crowded crests do not saturate.
-      const B = MAP.buf;
-      const W = MAP.win;
-      for (let q = 0; q < B.length; q += 1) B[q] = Math.tanh(B[q] * 1.4) * W[q];
-      // The wash: crest colour above zero, trough below.
-      const cr = pal.voiceRgb(0), tr = pal.voiceRgb(1), D = MAP.img.data;
-      const wash = 0.13 + v.contrast * 0.9;
-      for (let q = 0; q < B.length; q += 1) {
-        const x = B[q], c = x >= 0 ? cr : tr, k = q * 4;
-        D[k] = c[0]; D[k + 1] = c[1]; D[k + 2] = c[2];
-        D[k + 3] = Math.round(255 * wash * Math.pow(Math.abs(x), 1.15));
+      const tens = tension();
+      // The field changes slowly (a third of a hertz), so it is sampled and
+      // contoured at most thirty times a second and the result is redrawn
+      // from cache in between.
+      const now = performance.now();
+      if (still || !MAP.cache || now - MAP.cache.at > 33 || MAP.cache.boost !== boost || MAP.cache.pal !== pal) {
+        const rest = S.rest;
+        const jitter = rest > 0.02 ? (s) => rest * 1.4 * Math.sin(waveTime * 2.7 + s * 1.9) : null;
+        sampleGrid(MAP.grid, MAP.src, waveTime, MAP.buf, { boost, jitter, arrive: age < 6 ? arrive : null });
+        // Soft-clip the field so crowded crests do not saturate, and thin it to nothing at the rim.
+        const B = MAP.buf, W = MAP.win;
+        for (let q = 0; q < B.length; q += 1) B[q] = Math.tanh(B[q] * 1.4) * W[q];
+        // The wash: crest colour above zero, trough below.
+        const cr = pal.voiceRgb(0), tr = pal.voiceRgb(1), D = MAP.img.data;
+        const wash = 0.13 + v.contrast * 0.9;
+        for (let q = 0; q < B.length; q += 1) {
+          const x = B[q], c = x >= 0 ? cr : tr, k = q * 4;
+          D[k] = c[0]; D[k + 1] = c[1]; D[k + 2] = c[2];
+          D[k + 3] = Math.round(255 * wash * Math.pow(Math.abs(x), 1.15));
+        }
+        MAP.off.getContext("2d").putImageData(MAP.img, 0, 0);
+        const path = (seg) => {
+          const P = new Path2D(), c = MAP.cell;
+          for (let q = 0; q < seg.length; q += 4) { P.moveTo(seg[q] * c, seg[q + 1] * c); P.lineTo(seg[q + 2] * c, seg[q + 3] * c); }
+          return P;
+        };
+        // Nodes are drawn only where the field is alive, so quiet water stays empty.
+        MAP.cache = {
+          at: now, boost, pal,
+          nodes: path(isolines(B, MAP.cols, MAP.rows, 0, 0.06)),
+          low: path(isolines(B, MAP.cols, MAP.rows, 0.3)),
+          high: path(isolines(B, MAP.cols, MAP.rows, 0.55)),
+        };
       }
-      MAP.off.getContext("2d").putImageData(MAP.img, 0, 0);
       ctx.clearRect(0, 0, w, h);
       ctx.imageSmoothingEnabled = true;
       ctx.drawImage(MAP.off, 0, 0, MAP.cols * MAP.cell, MAP.rows * MAP.cell);
-      // The threads: nodes in ink, crest and trough lines in their colours.
-      const tens = tension();
       ctx.lineCap = "round";
-      // Nodes are drawn only where the field is alive, so quiet water stays empty.
-      ctx.lineWidth = 0.6 + tens * 2.2;
-      ctx.strokeStyle = pal.faint; strokeLines(ctx, isolines(B, MAP.cols, MAP.rows, 0, 0.06), MAP.cell);
-      ctx.lineWidth = 0.7 + tens * 1.2;
-      ctx.strokeStyle = pal.crest(0.3); strokeLines(ctx, isolines(B, MAP.cols, MAP.rows, 0.3), MAP.cell);
-      ctx.lineWidth = 0.9 + tens * 1.6;
-      ctx.strokeStyle = pal.crest(0.65); strokeLines(ctx, isolines(B, MAP.cols, MAP.rows, 0.55), MAP.cell);
+      ctx.lineWidth = 0.6 + tens * 2.2; ctx.strokeStyle = pal.faint; ctx.stroke(MAP.cache.nodes);
+      ctx.lineWidth = 0.7 + tens * 1.2; ctx.strokeStyle = pal.crest(0.3); ctx.stroke(MAP.cache.low);
+      ctx.lineWidth = 0.9 + tens * 1.6; ctx.strokeStyle = pal.crest(0.65); ctx.stroke(MAP.cache.high);
       // The sources, with a ring on each outgoing crest near them, and their names.
       MAP.src.forEach((s, i) => {
         const place = PLACES[i];

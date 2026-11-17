@@ -274,7 +274,8 @@ function decayTelemetry(dt) {
 /* Unfolding                                                           */
 /* ------------------------------------------------------------------ */
 
-const UNIT = "h1,h2,h3,h4,p,ul,ol,dl,figure,pre,table,blockquote,canvas,svg,img,hr,details,form,audio,.field,.controls,.readout,[data-unfold]";
+// A scroll box unfolds as one block: a front cannot reach what is scrolled out of sight inside it.
+const UNIT = "h1,h2,h3,h4,p,ul,ol,dl,figure,pre,table,blockquote,canvas,svg,img,hr,details,form,audio,.field,.controls,.readout,.scrollbox,[data-unfold]";
 const units = new Map();     // element → { front, start }
 const isUnit = new WeakSet();
 let unfoldOn = false;
@@ -282,7 +283,11 @@ let pendingEntry = [];
 
 const unitIO = "IntersectionObserver" in window
   ? new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { const u = units.get(e.target); if (u && !u.front && !u.hold) pendingEntry.push(e.target); }
+      for (const e of entries) {
+        const r = e.boundingClientRect;
+        if (!r.width && !r.height) { finishUnit(e.target); continue; } // hidden since it was registered
+        if (e.isIntersecting) { const u = units.get(e.target); if (u && !u.front && !u.hold) pendingEntry.push(e.target); }
+      }
       if (pendingEntry.length) kick();
     }, { rootMargin: "0px 0px -4% 0px" })
   : null;
@@ -303,6 +308,7 @@ function topmostUnits(scope) {
 
 function addUnit(el, hold = false) {
   if (isUnit.has(el)) return;
+  if (!el.getClientRects().length) return; // no box (display: none): nothing to reveal
   isUnit.add(el);
   units.set(el, { front: null, hold });
   el.setAttribute("data-u", "");
