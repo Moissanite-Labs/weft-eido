@@ -306,6 +306,16 @@ function topmostUnits(scope) {
   });
 }
 
+/** A list taller than the screen unfolds item by item, so its far end is not left waiting for one front. */
+function expandTall(els) {
+  const out = [];
+  for (const el of els) {
+    if (el.matches("ul, ol") && el.children.length > 1 && el.getBoundingClientRect().height > window.innerHeight * 1.1) out.push(...el.children);
+    else out.push(el);
+  }
+  return out;
+}
+
 function addUnit(el, hold = false) {
   if (isUnit.has(el)) return;
   if (!el.getClientRects().length) return; // no box (display: none): nothing to reveal
@@ -332,7 +342,7 @@ function initUnfold(mainEl, held) {
   if (!mainEl || reduced() || !unitIO) { revealAll(); return; }
   unfoldOn = true;
   root.classList.add("loom-unfold");
-  for (const el of topmostUnits(mainEl)) if (!held.has(el)) addUnit(el);
+  for (const el of expandTall(topmostUnits(mainEl))) if (!held.has(el)) addUnit(el);
   for (const el of held) addUnit(el, true);
   root.classList.remove("loom-pending");
   new MutationObserver((records) => {
@@ -341,7 +351,7 @@ function initUnfold(mainEl, held) {
       // Already inside a unit (pending or revealed): it arrives with its parent.
       let inside = false;
       for (let p = node.parentElement; p && p !== mainEl; p = p.parentElement) if (isUnit.has(p)) { inside = true; break; }
-      if (!inside) for (const el of topmostUnits(node)) { addUnit(el); }
+      if (!inside) for (const el of expandTall(topmostUnits(node))) { addUnit(el); }
     }
   }).observe(mainEl, { childList: true, subtree: true });
   window.addEventListener("beforeprint", revealAll);
