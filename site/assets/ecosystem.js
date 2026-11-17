@@ -25,6 +25,7 @@ import { setupReadingWeave } from "../../src/reading-weave.js";
 import { scene, setHue, somatic, mediumState, onFrame, ripple, reduced } from "./loom.js";
 import { nearestRatio, intervalName, cents, TAU } from "./harmonic-math.js";
 import { settle, sources, prepareGrid, sampleGrid, isolines, nearestSource, beatPeriod, FAMILIES, FIELD } from "./field-math.js";
+import { openWeave } from "./weave.js";
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
@@ -45,14 +46,14 @@ const PRESET_NAMES = Object.keys(PRESETS);
    state: "main" (on the main branch), "open" (in review), "blocked". */
 export const AS_OF = "17 November 2026";
 export const PLACES = [
-  { id: "style", code: "D1 STYL", name: "Style", href: "components/aesthetic-mixer.html", weight: 9, family: "modules", state: "main", status: "On main", how: "Its own page. The point below is the same control, and it turns the colour of every page." },
-  { id: "reading", code: "D6 READ", name: "Reading", href: "components/reading-weave.html", weight: 9, family: "modules", state: "main", status: "On main", how: "Its own page. The weave itself runs on the text at the end of this page." },
-  { id: "field", code: "GPU FLD", name: "Field", href: "https://github.com/Moissanite-Labs/weft-eido/pull/6", weight: 7, family: "rebuild", state: "blocked", status: "Pull request 6, open. Changes requested: the sign-off, API keys kept in clear text, and a third-party address lookup", how: "Opens the pull request. No code from it runs here." },
-  { id: "explainer", code: "TOY MOD", name: "Explainer", href: "components/research-explainer.html", weight: 6, family: "research", state: "main", status: "On main since #19. Pull request 11 is still open", how: "Its own page, with the toy model at full strength." },
-  { id: "archive", code: "5X7 BIT", name: "Archive", href: "components/glyph-font.html", weight: 5, family: "modules", state: "main", status: "On main", how: "Its own page. Every title on this site is first drawn from its bits." },
-  { id: "simulations", code: "E08-E13", name: "Simulations", href: "research/index.html", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 14 is still open", how: "The substrate simulations, rebuilt as a page of this site; E13 and Project Asma are linked as their untouched originals. Results are their authors' reports." },
-  { id: "identifiability", code: "CHEB ID", name: "Identifiability", href: "research/chebyshev.html", weight: 5, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 15 is still open", how: "The Chebyshev identifiability explorer, rebuilt as a page of this site. The original stays in the archive." },
-  { id: "harmonic", code: "CHORDS", name: "Harmonic", href: "causal-harmonic/index.html", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt in #20. Pull request 17 is still open", how: "Every figure there is computed live. Recorded pieces are CC BY-NC 4.0." },
+  { id: "style", code: "D1 STYL", name: "Style", href: "components/aesthetic-mixer.html", weave: "aesthetic-mixer", weight: 9, family: "modules", state: "main", status: "On main", how: "Its own page. The point below is the same control, and it turns the colour of every page." },
+  { id: "reading", code: "D6 READ", name: "Reading", href: "components/reading-weave.html", weave: "reading-weave", weight: 9, family: "modules", state: "main", status: "On main", how: "Its own page. The weave itself runs on the text at the end of this page." },
+  { id: "field", code: "GPU FLD", name: "Field", href: "https://github.com/Moissanite-Labs/weft-eido/pull/6", weave: "field-pr", weight: 7, family: "rebuild", state: "blocked", status: "Pull request 6, open. Changes requested: the sign-off, API keys kept in clear text, and a third-party address lookup", how: "Opens the pull request. No code from it runs here." },
+  { id: "explainer", code: "TOY MOD", name: "Explainer", href: "components/research-explainer.html", weave: "research-explainer", weight: 6, family: "research", state: "main", status: "On main since #19. Pull request 11 is still open", how: "Its own page, with the toy model at full strength." },
+  { id: "archive", code: "5X7 BIT", name: "Archive", href: "components/glyph-font.html", weave: "glyph-font", weight: 5, family: "modules", state: "main", status: "On main", how: "Its own page. Every title on this site is first drawn from its bits." },
+  { id: "simulations", code: "E08-E13", name: "Simulations", href: "research/index.html", weave: "simulations", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 14 is still open", how: "The substrate simulations, rebuilt as a page of this site; E13 and Project Asma are linked as their untouched originals. Results are their authors' reports." },
+  { id: "identifiability", code: "CHEB ID", name: "Identifiability", href: "research/chebyshev.html", weave: "chebyshev", weight: 5, family: "research", state: "main", status: "On main since #19, rebuilt on the loom. Pull request 15 is still open", how: "The Chebyshev identifiability explorer, rebuilt as a page of this site. The original stays in the archive." },
+  { id: "harmonic", code: "CHORDS", name: "Harmonic", href: "causal-harmonic/index.html", weave: "harmonic", weight: 6, family: "research", state: "main", status: "On main since #19, rebuilt in #20. Pull request 17 is still open", how: "Every figure there is computed live. Recorded pieces are CC BY-NC 4.0." },
 ];
 
 export const RECORD = [
@@ -375,9 +376,19 @@ function initField() {
     if (p) describe(p);
   });
   canvas.addEventListener("pointerleave", () => { hoverPlace = null; });
+  // Pressing a source opens the weave on it: the source becomes the centre of
+  // a map of everything it connects to, grown out of the point you pressed.
   canvas.addEventListener("click", (ev) => {
     const p = placeAt(ev);
-    if (p) { ripple(ev.clientX, ev.clientY, 1); window.location.href = p.href; }
+    if (!p) return;
+    const i = PLACES.indexOf(p);
+    const rect = canvas.getBoundingClientRect();
+    try {
+      openWeave(p.weave, { origin: { x: rect.left + MAP.src[i].x, y: rect.top + MAP.src[i].y }, r0: MAP.r[i] * 0.5 });
+    } catch (e) {
+      ripple(ev.clientX, ev.clientY, 1);
+      window.location.href = p.href;
+    }
   });
   for (const a of document.querySelectorAll("[data-place-link]")) {
     const place = PLACES.find((p) => p.id === a.dataset.placeLink);

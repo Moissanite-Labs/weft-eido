@@ -847,4 +847,8 @@ function boot() {
 
 try { boot(); } catch (e) { console.error("loom failed to start", e); revealAll(); }
 
+// Every page that loads the loom is woven into the weave: its navigation mark,
+// and the map of what this page connects to at its end.
+import("./weave.js").catch((e) => console.error("weave failed to load", e));
+
 export const loom = { scene, ripple, setHue, getHue, drive, somatic, onFrame, onPalette, kick, reduced, unfoldNow, currentPalette, mediumState };

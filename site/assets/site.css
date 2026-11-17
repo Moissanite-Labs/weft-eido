@@ -340,3 +340,79 @@ html:root[data-theme] {
 /* Condensing state hooks (src/condense.js). */
 .cx-editing { user-select: none; }
 html.cx-wandering { pointer-events: auto; }
+
+/* ---------- The weave (weave.js) ----------
+   A map of every place and concept, drawn in the hyperbolic plane. It opens
+   as a modal <dialog>, which the browser itself lifts into the top layer over
+   the page, so nothing here positions it and the page behind is inert. The
+   sky and its panel sit side by side while there is room and stack, sky
+   first, when there is not: a wrap, not a breakpoint. The panel says in text
+   everything the canvas draws. */
+.weave-open {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font: 500 0.88rem/1.4 var(--font-body); letter-spacing: 0.02em; color: var(--muted);
+  background: none; border: 0; padding: 0.2rem 0; cursor: pointer;
+}
+.weave-open canvas { inline-size: 1.6rem; block-size: 1.6rem; }
+.weave-open:hover { color: var(--ink); }
+
+.weave-dialog {
+  inset: 0; inline-size: 100%; block-size: 100%; max-inline-size: none; max-block-size: none;
+  margin: 0; padding: 0; border: 0; color: var(--ink-2);
+  background: color-mix(in oklab, var(--bg) 93%, transparent);
+  -webkit-backdrop-filter: blur(0.4rem); backdrop-filter: blur(0.4rem);
+  overflow: auto; overscroll-behavior: contain;
+}
+.weave-dialog[open] { display: flex; flex-direction: row-reverse; flex-wrap: wrap; align-items: flex-start; animation: weave-fade 0.5s ease both; }
+.weave-dialog.closing { animation: weave-fade 0.5s ease reverse both; }
+.weave-dialog::backdrop { background: transparent; }
+@keyframes weave-fade { from { background-color: transparent; } }
+/* min-inline-size: 0, because a canvas's own width is its pixel buffer, which would otherwise hold the row open. */
+.weave-sky { flex: 1 1 30rem; min-inline-size: 0; inline-size: auto; block-size: min(100dvh, 100vw); touch-action: none; cursor: grab; }
+.weave-dialog .weave-panel {
+  flex: 1 1 18rem; max-inline-size: 28rem; max-block-size: 100dvh; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 0.85rem;
+  padding: clamp(1.1rem, 3vh, 2.2rem) clamp(1rem, 2.6vw, 2.2rem);
+}
+html.reduced-motion .weave-dialog { animation: none; }
+
+.weave-title { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font: 600 0.74rem var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.weave-panel h2, .weave-panel h3 { font-size: clamp(1.5rem, 1.15rem + 1.3vw, 2.2rem); }
+.weave-panel.compact h3 { font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.6rem); }
+.weave-eq { font: 0.84rem/1.6 var(--font-mono); color: var(--code-ink); overflow-wrap: anywhere; }
+.weave-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.weave-actions a[aria-disabled] { pointer-events: none; color: var(--muted); background: none; box-shadow: inset 0 0 0 var(--hair) var(--line); }
+.weave-lists { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 0.4rem 1.4rem; }
+.weave-sub { font: 600 0.72rem var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-block-end: 0.2rem; }
+.weave-links { list-style: none; padding: 0; display: grid; gap: 0; }
+.weave-links li { margin: 0; max-inline-size: none; }
+/* Each entry carries the mark its place has in the sky: a dot for a page, a ring for a concept. */
+.weave-link {
+  --mark: radial-gradient(circle at 0.36rem 0.86rem, var(--accent) 0.2rem, transparent 0.23rem);
+  display: grid; inline-size: 100%; text-align: start; gap: 0.05rem; cursor: pointer;
+  padding: 0.38rem 0 0.38rem 1rem; border: 0; color: var(--ink-2);
+  font: 600 0.94rem/1.35 var(--font-body);
+  background: var(--mark) no-repeat;
+  box-shadow: inset 0 calc(-1 * var(--hair)) var(--line);
+}
+.weave-link.kind-concept { --mark: radial-gradient(circle at 0.36rem 0.86rem, transparent 0.12rem, var(--accent-3) 0.14rem, var(--accent-3) 0.22rem, transparent 0.25rem); }
+.weave-link.kind-original { --mark: radial-gradient(circle at 0.36rem 0.86rem, oklch(0.8 0.1 calc(var(--eco-hue) + 48)) 0.17rem, transparent 0.2rem); }
+.weave-link.kind-external { --mark: radial-gradient(circle at 0.36rem 0.86rem, var(--accent-2) 0.2rem, transparent 0.23rem); }
+.weave-link small { font: 400 0.76rem/1.45 var(--font-mono); color: var(--muted); overflow-wrap: anywhere; }
+.weave-link:hover, .weave-link:focus-visible { color: var(--ink); box-shadow: inset 0 calc(-1 * var(--hair)) var(--accent); }
+.weave-readout { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.74rem; }
+.weave-keys { font-size: 0.84rem; }
+
+/* Woven from here: the weave inline at the end of a page. */
+.weave-inline { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: clamp(1rem, 3vw, 2.5rem); align-items: start; }
+.weave-stage { inline-size: 100%; min-inline-size: 0; aspect-ratio: 1; max-block-size: 76vh; touch-action: pan-y; }
+.weave-panel.compact { display: flex; flex-direction: column; gap: 0.75rem; }
+
+/* Page to page: the next page opens as an iris from where the last one was pressed.
+   theme.js sets --vt-x and --vt-y from that point before the first paint. */
+@keyframes eido-iris {
+  from { clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 50%)); }
+  to { clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 50%)); }
+}
+html.vt-iris::view-transition-old(root) { animation: none; mix-blend-mode: normal; }
+html.vt-iris::view-transition-new(root) { animation: eido-iris 0.78s cubic-bezier(0.22, 0.61, 0.36, 1) both; mix-blend-mode: normal; }

@@ -28,6 +28,15 @@ a frequency, so the fringes between it stand still. Each component has a live de
 copy button. The harmonic and research pages compute their mathematics live in the browser rather than framing the
 uploaded files, which stay untouched under [`examples/`](examples/).
 
+Every page is also a place in **the weave** ([`site/assets/weave.js`](site/assets/weave.js)): one map of every page,
+original and concept on the site, drawn in the hyperbolic plane. Open it from the Weave mark in the navigation (or
+press W), from the "Woven from here" map at the end of each page, or by pressing a source in the home field, which
+grows the weave out of the point you pressed. Pressing a place brings it to the centre by a Möbius transformation
+`z ↦ (z − a) / (1 − āz)`, an isometry, so the whole plane flows and no thread changes length; its threads ring as
+plucked strings, the layout turns to meet your last view by a circular mean, and the next page opens as an iris from
+where you pressed. The places and threads live in one list, [`weave-graph.js`](site/assets/weave-graph.js), and the
+geometry in [`weave-math.js`](site/assets/weave-math.js); both are tested.
+
 ## Modules
 
 | Module | What it does |
@@ -120,8 +129,9 @@ python3 -m http.server 8000
 
 The site has no boxes to fill in. A page is a `<main id="main">` of headings, paragraphs and `<canvas>` figures on
 the shared shell (thread nav, coda, `theme.js`, `loom.js`). A figure registers with `scene(canvas, { frame })` from
-`loom.js` and draws its settled state when motion is reduced. The pure parts, `loom-core.js` and `harmonic-math.js`,
-are tested in Node like the modules.
+`loom.js` and draws its settled state when motion is reduced. The pure parts, `loom-core.js`, `harmonic-math.js` and
+`weave-math.js`, are tested in Node like the modules. A new page joins the weave with one entry and its threads in
+`site/assets/weave-graph.js`; a test fails until it does.
 
 Pushes to `main` publish the site with GitHub Pages ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
 
