@@ -1,0 +1,1347 @@
+{
+  "generatedBy": "scripts/contrast-audit.mjs",
+  "source": "site/assets/site.css",
+  "cssSha256": "ac679a78826d3bca34142bca0db214333381cce8af224fe9ee6763a30d33484b",
+  "defaultHue": 196,
+  "bar": 4.5,
+  "largeTextBar": 3,
+  "foregrounds": [
+    "ink",
+    "ink-2",
+    "muted",
+    "accent",
+    "accent-strong",
+    "accent-2",
+    "accent-3",
+    "link",
+    "code-ink",
+    "ok",
+    "alert",
+    "gold-flat"
+  ],
+  "backgrounds": [
+    "bg",
+    "bg-2",
+    "surface",
+    "surface-2",
+    "code-bg",
+    "wash",
+    "alert-soft"
+  ],
+  "reversePairings": [
+    {
+      "foreground": "bg",
+      "background": "accent"
+    }
+  ],
+  "themes": {
+    "dark": {
+      "pairings": 84,
+      "failuresAtDefaultHue": 0,
+      "atDefaultHue": {
+        "ink": {
+          "bg": 15.84,
+          "bg-2": 14.9,
+          "surface": 14.26,
+          "surface-2": 12.83,
+          "code-bg": 14.97,
+          "wash": 12.08,
+          "alert-soft": 13.47
+        },
+        "ink-2": {
+          "bg": 12.11,
+          "bg-2": 11.39,
+          "surface": 10.9,
+          "surface-2": 9.8,
+          "code-bg": 11.44,
+          "wash": 9.23,
+          "alert-soft": 10.3
+        },
+        "muted": {
+          "bg": 6.55,
+          "bg-2": 6.16,
+          "surface": 5.9,
+          "surface-2": 5.3,
+          "code-bg": 6.19,
+          "wash": 4.99,
+          "alert-soft": 5.57
+        },
+        "accent": {
+          "bg": 11.72,
+          "bg-2": 11.03,
+          "surface": 10.56,
+          "surface-2": 9.49,
+          "code-bg": 11.08,
+          "wash": 8.94,
+          "alert-soft": 9.97
+        },
+        "accent-strong": {
+          "bg": 14.63,
+          "bg-2": 13.76,
+          "surface": 13.18,
+          "surface-2": 11.85,
+          "code-bg": 13.83,
+          "wash": 11.16,
+          "alert-soft": 12.45
+        },
+        "accent-2": {
+          "bg": 8.24,
+          "bg-2": 7.75,
+          "surface": 7.42,
+          "surface-2": 6.67,
+          "code-bg": 7.78,
+          "wash": 6.28,
+          "alert-soft": 7.01
+        },
+        "accent-3": {
+          "bg": 12.19,
+          "bg-2": 11.47,
+          "surface": 10.98,
+          "surface-2": 9.87,
+          "code-bg": 11.53,
+          "wash": 9.3,
+          "alert-soft": 10.37
+        },
+        "link": {
+          "bg": 12.74,
+          "bg-2": 11.99,
+          "surface": 11.47,
+          "surface-2": 10.32,
+          "code-bg": 12.04,
+          "wash": 9.72,
+          "alert-soft": 10.84
+        },
+        "code-ink": {
+          "bg": 13.04,
+          "bg-2": 12.27,
+          "surface": 11.74,
+          "surface-2": 10.56,
+          "code-bg": 12.32,
+          "wash": 9.94,
+          "alert-soft": 11.09
+        },
+        "ok": {
+          "bg": 12.67,
+          "bg-2": 11.92,
+          "surface": 11.41,
+          "surface-2": 10.26,
+          "code-bg": 11.98,
+          "wash": 9.67,
+          "alert-soft": 10.78
+        },
+        "alert": {
+          "bg": 9.04,
+          "bg-2": 8.5,
+          "surface": 8.14,
+          "surface-2": 7.32,
+          "code-bg": 8.54,
+          "wash": 6.89,
+          "alert-soft": 7.69
+        },
+        "gold-flat": {
+          "bg": 11.61,
+          "bg-2": 10.92,
+          "surface": 10.46,
+          "surface-2": 9.4,
+          "code-bg": 10.98,
+          "wash": 8.86,
+          "alert-soft": 9.88
+        }
+      },
+      "worstOverHues": {
+        "ink": {
+          "bg": {
+            "ratio": 15.56,
+            "hue": 310,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 14.67,
+            "hue": 312,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 14.06,
+            "hue": 313,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 12.68,
+            "hue": 317,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 14.74,
+            "hue": 312,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 12.04,
+            "hue": 182,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 12.92,
+            "hue": 307,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "ink-2": {
+          "bg": {
+            "ratio": 12.09,
+            "hue": 222,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 11.38,
+            "hue": 214,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 10.9,
+            "hue": 208,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 9.8,
+            "hue": 197,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 11.43,
+            "hue": 214,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 9.2,
+            "hue": 182,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 10.13,
+            "hue": 272,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "muted": {
+          "bg": {
+            "ratio": 6.49,
+            "hue": 300,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 6.12,
+            "hue": 300,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 5.87,
+            "hue": 300,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 5.29,
+            "hue": 301,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 6.15,
+            "hue": 301,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 4.97,
+            "hue": 182,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 5.39,
+            "hue": 303,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "accent": {
+          "bg": {
+            "ratio": 9.94,
+            "hue": 32,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 9.35,
+            "hue": 32,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 8.95,
+            "hue": 32,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 8.06,
+            "hue": 33,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 9.4,
+            "hue": 32,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 7.8,
+            "hue": 33,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 8.38,
+            "hue": 30,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "accent-strong": {
+          "bg": {
+            "ratio": 12.8,
+            "hue": 32,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 12.05,
+            "hue": 33,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 11.53,
+            "hue": 34,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 10.38,
+            "hue": 35,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 12.1,
+            "hue": 33,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 10.02,
+            "hue": 1,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 10.73,
+            "hue": 5,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "accent-2": {
+          "bg": {
+            "ratio": 7.97,
+            "hue": 94,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 7.49,
+            "hue": 95,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 7.16,
+            "hue": 95,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 6.43,
+            "hue": 95,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 7.52,
+            "hue": 95,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 6.1,
+            "hue": 100,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 6.71,
+            "hue": 95,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "accent-3": {
+          "bg": {
+            "ratio": 11.24,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 10.55,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 10.09,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 9.06,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 10.6,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 8.54,
+            "hue": 145,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 9.46,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "link": {
+          "bg": {
+            "ratio": 11.15,
+            "hue": 32,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 10.49,
+            "hue": 33,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 10.04,
+            "hue": 33,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 9.04,
+            "hue": 34,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 10.54,
+            "hue": 33,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 8.74,
+            "hue": 34,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 9.4,
+            "hue": 29,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "code-ink": {
+          "bg": {
+            "ratio": 12.54,
+            "hue": 290,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 11.83,
+            "hue": 290,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 11.34,
+            "hue": 289,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 10.21,
+            "hue": 39,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 11.88,
+            "hue": 290,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 9.83,
+            "hue": 313,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 10.42,
+            "hue": 295,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "ok": {
+          "bg": {
+            "ratio": 10.66,
+            "hue": 80,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 10.02,
+            "hue": 80,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 9.58,
+            "hue": 80,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 8.6,
+            "hue": 81,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 10.06,
+            "hue": 80,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 8.22,
+            "hue": 87,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 8.98,
+            "hue": 81,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "alert": {
+          "bg": {
+            "ratio": 8.93,
+            "hue": 95,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 8.39,
+            "hue": 96,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 8.02,
+            "hue": 96,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 7.2,
+            "hue": 96,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 8.43,
+            "hue": 96,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 6.84,
+            "hue": 101,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 7.52,
+            "hue": 96,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "gold-flat": {
+          "bg": {
+            "ratio": 10.65,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 10,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 9.57,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 8.59,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 10.05,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 8.1,
+            "hue": 144,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 8.96,
+            "hue": 142,
+            "below45": 0,
+            "below30": 0
+          }
+        }
+      },
+      "huesBelowBar": 0,
+      "reversePairings": {
+        "bg-on-accent": {
+          "atDefaultHue": 11.72,
+          "worstRatio": 9.94,
+          "worstHue": 32,
+          "huesBelowBar": 0
+        }
+      },
+      "maxGamutOvershoot": 0.96
+    },
+    "light": {
+      "pairings": 84,
+      "failuresAtDefaultHue": 24,
+      "atDefaultHue": {
+        "ink": {
+          "bg": 13.43,
+          "bg-2": 12.75,
+          "surface": 13.92,
+          "surface-2": 13,
+          "code-bg": 12.75,
+          "wash": 11.92,
+          "alert-soft": 12.22
+        },
+        "ink-2": {
+          "bg": 9.04,
+          "bg-2": 8.59,
+          "surface": 9.38,
+          "surface-2": 8.76,
+          "code-bg": 8.59,
+          "wash": 8.03,
+          "alert-soft": 8.23
+        },
+        "muted": {
+          "bg": 5.03,
+          "bg-2": 4.78,
+          "surface": 5.21,
+          "surface-2": 4.87,
+          "code-bg": 4.77,
+          "wash": 4.46,
+          "alert-soft": 4.57
+        },
+        "accent": {
+          "bg": 4.05,
+          "bg-2": 3.85,
+          "surface": 4.2,
+          "surface-2": 3.92,
+          "code-bg": 3.84,
+          "wash": 3.59,
+          "alert-soft": 3.68
+        },
+        "accent-strong": {
+          "bg": 6.79,
+          "bg-2": 6.45,
+          "surface": 7.04,
+          "surface-2": 6.58,
+          "code-bg": 6.45,
+          "wash": 6.03,
+          "alert-soft": 6.18
+        },
+        "accent-2": {
+          "bg": 3.83,
+          "bg-2": 3.63,
+          "surface": 3.97,
+          "surface-2": 3.71,
+          "code-bg": 3.63,
+          "wash": 3.4,
+          "alert-soft": 3.48
+        },
+        "accent-3": {
+          "bg": 4.68,
+          "bg-2": 4.44,
+          "surface": 4.85,
+          "surface-2": 4.53,
+          "code-bg": 4.44,
+          "wash": 4.15,
+          "alert-soft": 4.25
+        },
+        "link": {
+          "bg": 5.47,
+          "bg-2": 5.19,
+          "surface": 5.67,
+          "surface-2": 5.29,
+          "code-bg": 5.19,
+          "wash": 4.85,
+          "alert-soft": 4.97
+        },
+        "code-ink": {
+          "bg": 8.82,
+          "bg-2": 8.37,
+          "surface": 9.14,
+          "surface-2": 8.54,
+          "code-bg": 8.37,
+          "wash": 7.82,
+          "alert-soft": 8.02
+        },
+        "ok": {
+          "bg": 5.29,
+          "bg-2": 5.02,
+          "surface": 5.48,
+          "surface-2": 5.12,
+          "code-bg": 5.02,
+          "wash": 4.69,
+          "alert-soft": 4.81
+        },
+        "alert": {
+          "bg": 5.35,
+          "bg-2": 5.08,
+          "surface": 5.55,
+          "surface-2": 5.18,
+          "code-bg": 5.08,
+          "wash": 4.75,
+          "alert-soft": 4.87
+        },
+        "gold-flat": {
+          "bg": 4.68,
+          "bg-2": 4.44,
+          "surface": 4.85,
+          "surface-2": 4.53,
+          "code-bg": 4.44,
+          "wash": 4.15,
+          "alert-soft": 4.25
+        }
+      },
+      "worstOverHues": {
+        "ink": {
+          "bg": {
+            "ratio": 13.07,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 12.38,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 13.63,
+            "hue": 120,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 12.65,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 12.38,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 11.64,
+            "hue": 106,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 11.95,
+            "hue": 123,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "ink-2": {
+          "bg": {
+            "ratio": 8.78,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 8.32,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 9.16,
+            "hue": 120,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 8.5,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 8.32,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 7.82,
+            "hue": 107,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 8.03,
+            "hue": 123,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "muted": {
+          "bg": {
+            "ratio": 4.9,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 4.64,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 5.11,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 4.74,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 4.64,
+            "hue": 119,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 4.36,
+            "hue": 104,
+            "below45": 208,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 4.48,
+            "hue": 123,
+            "below45": 72,
+            "below30": 0
+          }
+        },
+        "accent": {
+          "bg": {
+            "ratio": 4.01,
+            "hue": 167,
+            "below45": 268,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 3.8,
+            "hue": 166,
+            "below45": 360,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 4.17,
+            "hue": 172,
+            "below45": 194,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 3.88,
+            "hue": 167,
+            "below45": 360,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 3.8,
+            "hue": 166,
+            "below45": 360,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 3.57,
+            "hue": 172,
+            "below45": 360,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 3.65,
+            "hue": 170,
+            "below45": 360,
+            "below30": 0
+          }
+        },
+        "accent-strong": {
+          "bg": {
+            "ratio": 6.72,
+            "hue": 165,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 6.38,
+            "hue": 164,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 6.99,
+            "hue": 171,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 6.51,
+            "hue": 165,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 6.38,
+            "hue": 164,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 6,
+            "hue": 171,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 6.12,
+            "hue": 169,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "accent-2": {
+          "bg": {
+            "ratio": 3.42,
+            "hue": 27,
+            "below45": 360,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 3.25,
+            "hue": 28,
+            "below45": 360,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 3.54,
+            "hue": 25,
+            "below45": 360,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 3.31,
+            "hue": 27,
+            "below45": 360,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 3.25,
+            "hue": 27,
+            "below45": 360,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 3.01,
+            "hue": 26,
+            "below45": 360,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 3.11,
+            "hue": 28,
+            "below45": 360,
+            "below30": 0
+          }
+        },
+        "accent-3": {
+          "bg": {
+            "ratio": 4.53,
+            "hue": 287,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 4.31,
+            "hue": 287,
+            "below45": 246,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 4.65,
+            "hue": 289,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 4.39,
+            "hue": 287,
+            "below45": 149,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 4.31,
+            "hue": 287,
+            "below45": 247,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 4,
+            "hue": 286,
+            "below45": 360,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 4.15,
+            "hue": 272,
+            "below45": 360,
+            "below30": 0
+          }
+        },
+        "link": {
+          "bg": {
+            "ratio": 5.41,
+            "hue": 166,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 5.13,
+            "hue": 165,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 5.63,
+            "hue": 171,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 5.24,
+            "hue": 166,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 5.13,
+            "hue": 165,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 4.82,
+            "hue": 171,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 4.93,
+            "hue": 170,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "code-ink": {
+          "bg": {
+            "ratio": 8.73,
+            "hue": 159,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 8.28,
+            "hue": 157,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 9.08,
+            "hue": 166,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 8.45,
+            "hue": 159,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 8.28,
+            "hue": 158,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 7.79,
+            "hue": 165,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 7.96,
+            "hue": 165,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "ok": {
+          "bg": {
+            "ratio": 5.28,
+            "hue": 208,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 5.02,
+            "hue": 205,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 5.46,
+            "hue": 216,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 5.12,
+            "hue": 208,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 5.02,
+            "hue": 205,
+            "below45": 0,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 4.67,
+            "hue": 220,
+            "below45": 0,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 4.81,
+            "hue": 206,
+            "below45": 0,
+            "below30": 0
+          }
+        },
+        "alert": {
+          "bg": {
+            "ratio": 4.68,
+            "hue": 27,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 4.45,
+            "hue": 28,
+            "below45": 36,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 4.84,
+            "hue": 25,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 4.53,
+            "hue": 27,
+            "below45": 0,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 4.45,
+            "hue": 28,
+            "below45": 36,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 4.12,
+            "hue": 27,
+            "below45": 162,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 4.26,
+            "hue": 28,
+            "below45": 106,
+            "below30": 0
+          }
+        },
+        "gold-flat": {
+          "bg": {
+            "ratio": 4.53,
+            "hue": 287,
+            "below45": 0,
+            "below30": 0
+          },
+          "bg-2": {
+            "ratio": 4.31,
+            "hue": 287,
+            "below45": 246,
+            "below30": 0
+          },
+          "surface": {
+            "ratio": 4.65,
+            "hue": 289,
+            "below45": 0,
+            "below30": 0
+          },
+          "surface-2": {
+            "ratio": 4.39,
+            "hue": 287,
+            "below45": 149,
+            "below30": 0
+          },
+          "code-bg": {
+            "ratio": 4.31,
+            "hue": 287,
+            "below45": 247,
+            "below30": 0
+          },
+          "wash": {
+            "ratio": 4,
+            "hue": 286,
+            "below45": 360,
+            "below30": 0
+          },
+          "alert-soft": {
+            "ratio": 4.15,
+            "hue": 272,
+            "below45": 360,
+            "below30": 0
+          }
+        }
+      },
+      "huesBelowBar": 8126,
+      "reversePairings": {
+        "bg-on-accent": {
+          "atDefaultHue": 4.05,
+          "worstRatio": 4.01,
+          "worstHue": 167,
+          "huesBelowBar": 268
+        }
+      },
+      "maxGamutOvershoot": 0.62
+    }
+  }
+}
